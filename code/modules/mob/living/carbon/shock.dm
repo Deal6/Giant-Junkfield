@@ -123,6 +123,10 @@
 			to_chat(src, "<span class='danger'>[pick("The pain is excruciating", "Please, just end the pain", "Your whole body is going numb")]!</span>")
 			Weaken(10)
 
+	if(shock_stage >= soft_crit_threshold)
+		to_chat(src, "<span class='danger'>It's too hard to stand of your feet</span>")
+		Weaken(10)
+
 	if(shock_stage >= hard_crit_threshold)
 		enter_hard_crit()
 
