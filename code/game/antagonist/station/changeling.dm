@@ -24,7 +24,7 @@
 	)
 
 /datum/antagonist/carrion/special_init()
-	owner.current.make_carrion()
+	//owner.current.make_carrion()
 
 /datum/antagonist/carrion/can_become_antag(datum/mind/player)
 	if(..() && ishuman(player.current))
@@ -41,5 +41,5 @@
 
 	for(var/name in stat_modifiers)
 		L.stats.changeStat(name, stat_modifiers[name])
-		
+
 	spawn_uplink(L, 5)

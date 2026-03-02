@@ -551,63 +551,7 @@
 	jets.holder = null
 	jets.trail.set_up(jets)
 
-/obj/item/rig_module/autodoc
-	name = "autodoc module"
-	desc = "A complex surgery system for almost all your needs."
-	use_power_cost = 10
-	active = 1
-	usable = 1
 
-	interface_name = "Autodoc"
-	interface_desc = "Module with set of instruments that is capable to preform surgery on user"
-	var/datum/autodoc/autodoc_processor
-	var/autodoc_type = /datum/autodoc
-	var/turf/wearer_loc
-
-/obj/item/rig_module/autodoc/Initialize()
-	. = ..()
-	autodoc_processor = new autodoc_type(src)
-	autodoc_processor.damage_heal_amount = 20
-
-/obj/item/rig_module/autodoc/Destroy()
-	QDEL_NULL(autodoc_processor)
-	return ..()
-
-/obj/item/rig_module/autodoc/engage()
-	if(!..())
-		return 0
-	if(autodoc_processor.active)
-		autodoc_processor.stop()
-	autodoc_processor.set_patient(holder.wearer)
-	nano_ui_interact(usr)
-	return 1
-/obj/item/rig_module/autodoc/Topic(href, href_list)
-	return autodoc_processor.Topic(href, href_list)
-
-/obj/item/rig_module/autodoc/Process()
-	if(..())
-		autodoc_processor.stop()
-	if(autodoc_processor.active)
-		if(wearer_loc == null)
-			wearer_loc = get_turf(holder.wearer)
-		if(wearer_loc != get_turf(holder.wearer))
-			autodoc_processor.fail()
-		passive_power_cost = 5
-		engage_string = "Abort operations"
-	else
-		engage_string = "Interact"
-		passive_power_cost = 0
-		wearer_loc = null
-
-/obj/item/rig_module/autodoc/nano_ui_interact(mob/user, ui_key, datum/nanoui/ui, force_open, datum/nanoui/master_ui, datum/nano_topic_state/state = GLOB.deep_inventory_state)
-	autodoc_processor.nano_ui_interact(user, ui_key, ui, force_open, state = GLOB.deep_inventory_state)
-/obj/item/rig_module/autodoc/activate()
-	return
-/obj/item/rig_module/autodoc/deactivate()
-	return
-
-/obj/item/rig_module/autodoc/commercial
-	autodoc_type = /datum/autodoc/capitalist_autodoc
 
 /obj/item/rig_module/cape
 	name = "cape"
