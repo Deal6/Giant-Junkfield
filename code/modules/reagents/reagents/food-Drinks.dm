@@ -523,7 +523,6 @@
 	taste_description = "berries"
 	sanity_gain_ingest = 0.8 //Bad for your health but good for your mental state
 	color = "#863353"
-	strength = 5
 
 	glass_unique_appearance = TRUE
 	glass_icon_state = "poisonberryjuice"
@@ -684,24 +683,7 @@
 	glass_name = "coffee"
 	glass_desc = "Don't drop it, or you'll send scalding liquid and glass shards everywhere."
 
-/datum/reagent/drink/coffee/affect_ingest(mob/living/carbon/M, alien, effect_multiplier)
-	..()
-	if(adj_temp > 0)
-		holder.remove_reagent("frostoil", 1 * effect_multiplier)
-	// Coffee is really bad for you with busted kidneys.
-	if(ishuman(M))
-		var/mob/living/carbon/human/H = M
-		var/obj/item/organ/internal/kidney/K = H.random_organ_by_process(OP_KIDNEYS)
-		if(istype(K))
-			if(K.is_bruised())
-				M.add_chemical_effect(CE_TOXIN, 0.5)
-			else if(K.is_broken())
-				M.add_chemical_effect(CE_TOXIN, 1)
-	M.add_chemical_effect(CE_PULSE, 1)
 
-/datum/reagent/drink/coffee/overdose(mob/living/carbon/M, alien)
-	M.make_jittery(5)
-	M.add_chemical_effect(CE_PULSE, 2)
 
 /datum/reagent/drink/coffee/icecoffee
 	name = "Iced Coffee"
@@ -2661,7 +2643,6 @@
 
 /datum/reagent/alcohol/roachbeer/overdose(mob/living/carbon/M)
 	..()
-	M.add_side_effect("Headache", 11)
 	M.slurring = max(M.slurring, 30)
 	if(prob(5))
 		M.vomit()
@@ -2711,7 +2692,6 @@
 
 /datum/reagent/alcohol/kaiserbeer/overdose(mob/living/carbon/M)
 	..()
-	M.add_side_effect("Headache", 11)
 	if(prob(5))
 		M.vomit()
 	M.add_chemical_effect(CE_TOXIN, 10)

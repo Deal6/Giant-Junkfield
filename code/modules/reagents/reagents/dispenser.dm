@@ -450,7 +450,6 @@
 
 /datum/reagent/organic/sugar/overdose(mob/living/carbon/M, alien)
 	..()
-	M.add_side_effect("Headache", 11)
 	M.make_jittery(5)
 	M.add_chemical_effect(CE_PULSE, 2)
 	if(ishuman(M))

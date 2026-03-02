@@ -45,7 +45,7 @@
 	offer_types = list(
 		/obj/item/bluespace_crystal = offer_data("bluespace crystal", 500, 10),
 		/obj/item/organ/internal/scaffold = offer_data_mods("aberrant organ (input, process, output, secondary)", 2400, 4, OFFER_ABERRANT_ORGAN_PLUS, 4),
-		/datum/reagent/stim/machine_spirit = offer_data("Machine Spirit bottle (60u)", 3200, 2),
+/*		/datum/reagent/stim/machine_spirit = offer_data("Machine Spirit bottle (60u)", 3200, 2),
 		/datum/reagent/stim/grape_drops = offer_data("Grape drops bottle (60u)", 3200, 2),
 		/datum/reagent/stim/ultra_surgeon = offer_data("UltraSurgeon bottle (60u)", 3200, 2),
 		/datum/reagent/stim/violence_ultra = offer_data("Violence Ultra bottle (60u)", 3200, 2),
@@ -60,5 +60,5 @@
 		/obj/item/slime_extract/oil = offer_data("oil slime extract", 10000, 1),
 		/obj/item/slime_extract/adamantine = offer_data("adamantine slime extract", 10000, 1),
 		/datum/reagent/toxin/slimetoxin = offer_data("mutation toxin (60u)", 10000, 1),
-		/datum/reagent/toxin/aslimetoxin = offer_data("advanced mutation toxin (60u)", 20000, 1)
+		/datum/reagent/toxin/aslimetoxin = offer_data("advanced mutation toxin (60u)", 20000, 1)*/
 	)

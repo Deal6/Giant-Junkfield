@@ -39,12 +39,12 @@
 #define BLOOD_VOLUME_OKAY_MODIFIER    35
 #define BLOOD_VOLUME_BAD_MODIFIER     20
 
-// Organ processes
-#define OP_EYES          "eyes"
-#define OP_HEART         "heart"
-#define OP_LUNGS         "lungs"
-#define OP_LIVER         "liver"
-#define OP_KIDNEYS       "kidneys"
+// Organ processes		// IF YOU ADD ORGAN: define in "" for a process proc name (example: we define OP_EYES "eye" cuz "eye"+"_process"()) [internal_organ_processes.dm]
+#define OP_EYES          "eye"				// process
+#define OP_HEART         "heart"			// process
+#define OP_LUNGS         "lung"				// process
+#define OP_LIVER         "liver"			// process
+#define OP_KIDNEYS       "kidney"			// process
 #define OP_APPENDIX      "appendix"
 #define OP_STOMACH       "stomach"
 #define OP_BONE          "bone"

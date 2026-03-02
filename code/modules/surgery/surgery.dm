@@ -70,8 +70,7 @@
 			H.bloody_body(organ.owner, 0)
 
 	if(can_infect && prob(5) && istype(organ, /obj/item/organ/internal))
-		var/obj/item/organ/internal/I = organ
-		I.add_wound(pick(subtypesof(/datum/internal_wound/organic/infection)))
+		//infect here
 
 	if(inflict_agony)
 		var/strength = inflict_agony

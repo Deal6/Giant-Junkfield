@@ -518,7 +518,7 @@ var/list/rank_prefix = list(\
 				return
 
 			var/datum/report_field/array/recordnote = E.get_linkage_secNotes()
-			
+
 			if(recordnote)
 				recordnote.add_value(t1)
 
@@ -533,7 +533,7 @@ var/list/rank_prefix = list(\
 				perpname = src.name
 
 			var/datum/computer_file/report/crew_record/E = get_crewmember_record(perpname)
-			if(E)	
+			if(E)
 				var/setmedical = input(usr, "Specify a new medical status for this person.", "Medical HUD", E.get_status()) in GLOB.physical_statuses
 
 				if(hasHUD(usr,"medical"))
@@ -563,7 +563,7 @@ var/list/rank_prefix = list(\
 				perpname = src.name
 				var/datum/computer_file/report/crew_record/E = get_crewmember_record(perpname)
 				var/datum/report_field/arrayclump/M = E.get_linkage_medRecord()
-				if(E)	
+				if(E)
 					to_chat(usr, "<b>Name:</b> [E.get_name()]	<b>Blood Type:</b> [E.get_bloodtype()]")
 					to_chat(usr, "<b>DNA:</b> [E.get_dna()]")
 					to_chat(usr, "<b>Prosthetics:</b> [M.value["prosthetics"]]")
@@ -590,13 +590,6 @@ var/list/rank_prefix = list(\
 ///eyecheck()
 ///Returns a number between -1 to 2
 /mob/living/carbon/human/eyecheck()
-	if(!species.has_process[OP_EYES]) //No eyes, can't hurt them.
-		return FLASH_PROTECTION_MAJOR
-
-	var/eye_efficiency = get_organ_efficiency(OP_EYES)
-	if(eye_efficiency <= 1)
-		return FLASH_PROTECTION_MAJOR
-
 	return flash_protection
 
 /mob/living/carbon/human/earcheck()

@@ -222,7 +222,6 @@
 	M.stats.addTempStat(STAT_MEC, -STAT_LEVEL_BASIC, STIM_TIME, "nicotine_w")
 
 /datum/reagent/drug/nicotine/overdose(mob/living/carbon/M, alien)
-	M.add_side_effect("Headache", 11)
 	if(prob(5))
 		M.vomit()
 	M.adjustCloneLoss(0.5)

@@ -67,9 +67,9 @@
 	//No need to update all of these procs if the guy is dead.
 	if(. && !in_stasis)
 
-		//Organs and blood
+		// # Organs and blood
 		handle_organs()
-		process_internal_organs()
+		//process_internal_organs()
 		handle_blood()
 		stabilize_body_temperature() //Body temperature adjusts itself (self-regulation)
 
@@ -77,7 +77,6 @@
 
 		handle_pain()
 
-		handle_medical_side_effects()
 
 		if(life_tick % 2)	//Upadated every 2 life ticks, lots of for loops in this, needs to feel smother in the UI
 			for(var/obj/item/organ/external/E in organs)

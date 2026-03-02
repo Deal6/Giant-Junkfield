@@ -568,7 +568,7 @@
 	if(!istype(C) || C.stat == DEAD)
 		return
 	cut_overlays()
-	switch(C.metabolism_effects.get_nsa())
+	/*switch(C.metabolism_effects.get_nsa())
 		if(200 to INFINITY)
 			overlays += ovrls["nsa10"]
 		if(-INFINITY to 20)
@@ -591,7 +591,7 @@
 			overlays += ovrls["nsa8"]
 		if(180 to 200)
 			overlays += ovrls["nsa9"]
-
+*/
 /obj/screen/nsa/DEADelize()
 	cut_overlays()
 	overlays += ovrls["nsa0"]
