@@ -226,36 +226,36 @@ GLOBAL_VAR_INIT(GLOBAL_INSIGHT_MOD, 1)
 
 		call(src, pickweight(level < 30 ? level < 20 ? effects_20 : effects_30 : effects_40))()
 
+#warn pick_desires() in sanity screams at me 239-241
+// /datum/sanity/proc/pick_desires()
+// 	desires.Cut()
+// 	var/list/candidates = list(
+// 		INSIGHT_DESIRE_FOOD,
+// 		INSIGHT_DESIRE_ALCOHOL,
+// 		INSIGHT_DESIRE_SMOKING,
+// 		INSIGHT_DESIRE_DRUGS,
+// 	)
 
-/datum/sanity/proc/pick_desires()
-	desires.Cut()
-	var/list/candidates = list(
-		INSIGHT_DESIRE_FOOD,
-		INSIGHT_DESIRE_ALCOHOL,
-		INSIGHT_DESIRE_SMOKING,
-		INSIGHT_DESIRE_DRUGS,
-	)
-
-	for(var/i in owner.metabolism_effects.addiction_list)
-		if(istype(i, /datum/reagent/drug))
-			if(istype(i, /datum/reagent/drug/nicotine))
-				candidates.Remove(INSIGHT_DESIRE_SMOKING)
-				continue
-			candidates.Remove(INSIGHT_DESIRE_DRUGS)
-	for(var/i = 0; i < INSIGHT_DESIRE_COUNT; i++)
-		var/desire = pick_n_take(candidates)
-		var/list/potential_desires = list()
-		switch(desire)
-			if(INSIGHT_DESIRE_FOOD)
-				potential_desires = all_types_food.Copy()
-			if(INSIGHT_DESIRE_ALCOHOL)
-				potential_desires = all_taste_drinks.Copy()
-			else
-				desires += desire
-				continue
-		if(potential_desires.len)
-			var/candidate = pick(potential_desires)
-			desires += candidate
+// 	for(var/i in owner.metabolism_effects.addiction_list)
+// 		if(istype(i, /datum/reagent/drug))
+// 			if(istype(i, /datum/reagent/drug/nicotine))
+// 				candidates.Remove(INSIGHT_DESIRE_SMOKING)
+// 				continue
+// 			candidates.Remove(INSIGHT_DESIRE_DRUGS)
+// 	for(var/i = 0; i < INSIGHT_DESIRE_COUNT; i++)
+// 		var/desire = pick_n_take(candidates)
+// 		var/list/potential_desires = list()
+// 		switch(desire)
+// 			if(INSIGHT_DESIRE_FOOD)
+// 				potential_desires = all_types_food.Copy()
+// 			if(INSIGHT_DESIRE_ALCOHOL)
+// 				potential_desires = all_taste_drinks.Copy()
+// 			else
+// 				desires += desire
+// 				continue
+// 		if(potential_desires.len)
+// 			var/candidate = pick(potential_desires)
+// 			desires += candidate
 	print_desires()
 
 /datum/sanity/proc/print_desires()
@@ -379,31 +379,32 @@ GLOBAL_VAR_INIT(GLOBAL_INSIGHT_MOD, 1)
 		else
 			changeLevel(penalty*death_view_multiplier)
 
+#warn Multiple errors
 /datum/sanity/proc/onShock(amount)
 	changeLevel(-SANITY_DAMAGE_SHOCK(amount, owner.stats.getStat(STAT_VIG)))
 
 /datum/sanity/proc/onDrug(datum/reagent/drug/R, multiplier)
-	changeLevel(R.sanity_gain * multiplier)
-	if(resting)
-		add_rest(INSIGHT_DESIRE_DRUGS, 4 * multiplier)
+	// changeLevel(R.sanity_gain * multiplier)
+	// if(resting)
+	// 	add_rest(INSIGHT_DESIRE_DRUGS, 4 * multiplier)
 
 /datum/sanity/proc/onToxin(datum/reagent/toxin/R, multiplier)
-	changeLevel(-R.sanityloss * multiplier)
+	// changeLevel(-R.sanityloss * multiplier)
 
 /datum/sanity/proc/onReagent(datum/reagent/E, multiplier)
-	var/sanity_gain = E.sanity_gain_ingest
-	if(E.id == "ethanol")
-		sanity_gain /= 5
-	else if(istype(E, /datum/reagent/alcohol))
-		var/datum/reagent/alcohol/fine_drink = E
-		sanity_gain *= (40 / (fine_drink.strength + 15))
-	changeLevel(sanity_gain * multiplier)
-	if(resting && E.taste_tag.len)
-		for(var/taste_tag in E.taste_tag)
-			if(multiplier <= 1 )
-				add_rest(taste_tag, 4 * 1/E.taste_tag.len)  //just so it got somme effect of things with small multipliers
-			else
-				add_rest(taste_tag, 4 * multiplier/E.taste_tag.len)
+	// var/sanity_gain = E.sanity_gain_ingest
+	// if(E.id == "ethanol")
+	// 	sanity_gain /= 5
+	// else if(istype(E, /datum/reagent/alcohol))
+	// 	var/datum/reagent/alcohol/fine_drink = E
+	// 	sanity_gain *= (40 / (fine_drink.strength + 15))
+	// changeLevel(sanity_gain * multiplier)
+	// if(resting && E.taste_tag.len)
+	// 	for(var/taste_tag in E.taste_tag)
+	// 		if(multiplier <= 1 )
+	// 			add_rest(taste_tag, 4 * 1/E.taste_tag.len)  //just so it got somme effect of things with small multipliers
+	// 		else
+	// 			add_rest(taste_tag, 4 * multiplier/E.taste_tag.len)
 
 /datum/sanity/proc/onEat(obj/item/reagent_containers/food/snacks/snack, snack_sanity_gain, snack_sanity_message)
 	if(world.time > eat_time_message && snack_sanity_message)

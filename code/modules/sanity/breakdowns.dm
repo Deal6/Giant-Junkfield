@@ -547,16 +547,17 @@
 						"A little more, a little more, you would pay anything to consume a little more.")
 
 /datum/breakdown/common/new_heights/update()
-	. = ..()
-	if(!.)
-		return FALSE
-	if(holder.owner.metabolism_effects.nsa_current >= 100)
-		finished = TRUE
-		conclude()
-		return FALSE
-	if(world.time >= message_time)
-		message_time = world.time + BREAKDOWN_ALERT_COOLDOWN
-		to_chat(holder.owner, SPAN_NOTICE(pick(messages)))
+#warn Breadown New Heights
+	// . = ..()
+	// if(!.)
+	// 	return FALSE
+	// if(holder.owner.metabolism_effects.nsa_current >= 100)
+	// 	finished = TRUE
+	// 	conclude()
+	// 	return FALSE
+	// if(world.time >= message_time)
+	// 	message_time = world.time + BREAKDOWN_ALERT_COOLDOWN
+	// 	to_chat(holder.owner, SPAN_NOTICE(pick(messages)))
 
 /datum/breakdown/common/obsession
 	name = "Obsession"

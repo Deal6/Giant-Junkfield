@@ -86,27 +86,28 @@
 	get_light_and_color(parent)
 	..()
 
+#warn What? What the FUCK does it do?
 /obj/effect/spider/eggcluster/Destroy()
 	STOP_PROCESSING(SSobj, src)
-	if(istype(loc, /obj/item/organ/external))
-		var/obj/item/organ/external/O = loc
-		O.implants -= src
+	// if(istype(loc, /obj/item/organ/external))
+	// 	var/obj/item/organ/external/O = loc
+	// 	O.implants -= src
 
 	. = ..()
-
+#warn no implants
 /obj/effect/spider/eggcluster/Process()
-	amount_grown += rand(0,2)
-	if(amount_grown >= 100)
-		var/num = rand(spiderlings_lower,spiderlings_upper)
-		var/obj/item/organ/external/O
-		if(istype(loc, /obj/item/organ/external))
-			O = loc
+	// amount_grown += rand(0,2)
+	// if(amount_grown >= 100)
+	// 	var/num = rand(spiderlings_lower,spiderlings_upper)
+	// 	var/obj/item/organ/external/O
+	// 	if(istype(loc, /obj/item/organ/external))
+	// 		O = loc
 
-		for(var/i=0, i<num, i++)
-			var/spiderling = new /obj/effect/spider/spiderling(loc, src)
-			if(O)
-				O.implants += spiderling
-		qdel(src)
+	// 	for(var/i=0, i<num, i++)
+	// 		var/spiderling = new /obj/effect/spider/spiderling(loc, src)
+	// 		if(O)
+	// 			O.implants += spiderling
+	// 	qdel(src)
 
 /obj/effect/spider/spiderling
 	name = "spiderling"
@@ -133,14 +134,15 @@
 	get_light_and_color(parent)
 	..()
 
+#warn no implants
 /obj/effect/spider/spiderling/Destroy()
 	STOP_PROCESSING(SSobj, src)
-	if(entry_vent)
-		entry_vent = null
-	walk(src, 0)
-	if (istype(loc, /obj/item/organ/external))
-		var/obj/item/organ/external/O = loc
-		O.implants -= src
+	// if(entry_vent)
+	// 	entry_vent = null
+	// walk(src, 0)
+	// if (istype(loc, /obj/item/organ/external))
+	// 	var/obj/item/organ/external/O = loc
+	// 	O.implants -= src
 	. = ..()
 
 /obj/effect/spider/spiderling/Bump(atom/user)
@@ -231,7 +233,9 @@
 		if(!amount_grown) amount_grown = 1
 		var/obj/item/organ/external/O = loc
 		if(!O.owner || O.owner.stat == DEAD || amount_grown > 80)
-			O.implants -= src
+
+#warn no implants
+			// O.implants -= src
 			src.loc = O.owner ? O.owner.loc : O.loc
 			src.visible_message("<span class='warning'>\A [src] makes its way out of [O.owner ? "[O.owner]'s [O.name]" : "\the [O]"]!</span>")
 			if(O.owner)

@@ -49,7 +49,7 @@
 		list(QUALITY_HAMMERING, 15, 10), //Harden into shape
 		list(/obj/item/tool_upgrade/augment/spikes, 1, "time" = 10) //Put 'spiked' in the name
 	)
-
+#warn Craft below
 /datum/craft_recipe/clothing/dusters/gloves
 	name = "weighted knuckle gloves"
 	result = /obj/item/clothing/gloves/dusters/gloves
@@ -58,7 +58,7 @@
 		list(CRAFT_MATERIAL, 3, MATERIAL_PLASTEEL), //Grab some plasteel
 		list(QUALITY_HAMMERING, 15, 10), //Harden into powder
 		list(QUALITY_HAMMERING, 15, 10), //Harden into FINE powder
-		list(/obj/item/stack/medical/bruise_pack/handmade, 2, "time" = 10) //Cover the holes up
+		// list(/obj/item/stack/medical/bruise_pack/handmade, 2, "time" = 10) //Cover the holes up
 	)
 
 /datum/craft_recipe/clothing/cardborg_suit
@@ -164,12 +164,12 @@
 		list(CRAFT_MATERIAL, 4, MATERIAL_STEEL),
 		list(/obj/item/stack/cable_coil, 2)
 	)
-
+#warn Craft below
 /datum/craft_recipe/clothing/chest_rig
 	name = "chest rig"
 	result = /obj/item/clothing/suit/storage/vest/chestrig
 	steps = list(
-		list(/obj/item/stack/medical/bruise_pack/handmade, 3, "time" = 10),
+		// list(/obj/item/stack/medical/bruise_pack/handmade, 3, "time" = 10),
 		list(/obj/item/stack/rods, 2, "time" = 10),
 		list(/obj/item/stack/cable_coil, 2),
 	)

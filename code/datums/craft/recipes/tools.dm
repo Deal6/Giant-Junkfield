@@ -3,14 +3,14 @@
 	time = 100
 	related_stats = list(STAT_COG)
 
-
-/datum/craft_recipe/tool/webtape
-	name = "Web tape"
-	result = /obj/item/tool/tape_roll/web
-	steps = list(
-		list(/obj/item/stack/medical/bruise_pack/handmade, 3, "time" = 50),
-		list(/obj/effect/spider/stickyweb, 1, "time" = 30)
-	)
+#warn webtape elow is kill
+// /datum/craft_recipe/tool/webtape
+// 	name = "Web tape"
+// 	result = /obj/item/tool/tape_roll/web
+// 	steps = list(
+// 		list(/obj/item/stack/medical/bruise_pack/handmade, 3, "time" = 50),
+// 		list(/obj/effect/spider/stickyweb, 1, "time" = 30)
+// 	)
 
 //A shard of glass wrapped in tape makes a crude sort of knife
 /datum/craft_recipe/tool/shiv
@@ -170,7 +170,7 @@
 		list(CRAFT_MATERIAL, 3, MATERIAL_PLASTEEL),			//additional frame to support wires
 		list(QUALITY_WELDING, 10, "time" = 70),				//secure frame
 		list(/obj/item/stack/cable_coil, 30, "time" = 10),	//add wiring
-		list(QUALITY_WIRE_CUTTING, 10, "time" = 60),		//adjust wiring	
+		list(QUALITY_WIRE_CUTTING, 10, "time" = 60),		//adjust wiring
 	)
 
 //Welding backpack disassembled into a smaller tank

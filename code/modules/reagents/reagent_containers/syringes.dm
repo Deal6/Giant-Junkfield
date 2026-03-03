@@ -201,20 +201,20 @@
 				if(istype(H))
 					var/obj/item/organ/external/affecting = H.get_organ(user.targeted_organ)
 					if(user && user.stats.getStat(STAT_BIO) < STAT_LEVEL_BASIC)
-						if(prob(affecting.get_damage() - user.stats.getStat(STAT_BIO)))
-							var/pain = rand(min(30,affecting.get_damage()), max(affecting.get_damage() + 30,60) - user.stats.getStat(STAT_BIO))
-							H.pain(affecting, pain)
-							if(user != H)
-								to_chat(H, "<span class='[pain > 50 ? "danger" : "warning"]'>\The [user]'s amateur actions caused you [pain > 50 ? "a lot of " : ""]pain.</span>")
-								to_chat(user, SPAN_WARNING("Your amateur actions caused [H] [pain > 50 ? "a lot of " : ""]pain."))
-							else
-								to_chat(user, "<span class='[pain > 50 ? "danger" : "warning"]'>Your amateur actions caused you [pain > 50 ? "a lot of " : ""]pain.</span>")
+						// if(prob(affecting.get_damage() - user.stats.getStat(STAT_BIO)))
+						// 	var/pain = rand(min(30,affecting.get_damage()), max(affecting.get_damage() + 30,60) - user.stats.getStat(STAT_BIO))
+						H.pain(affecting, pain)
+						if(user != H)
+							to_chat(H, "<span class='[pain > 50 ? "danger" : "warning"]'>\The [user]'s amateur actions caused you [pain > 50 ? "a lot of " : ""]pain.</span>")
+							to_chat(user, SPAN_WARNING("Your amateur actions caused [H] [pain > 50 ? "a lot of " : ""]pain."))
+						else
+							to_chat(user, "<span class='[pain > 50 ? "danger" : "warning"]'>Your amateur actions caused you [pain > 50 ? "a lot of " : ""]pain.</span>")
 				else
 					to_chat(target, SPAN_NOTICE("You feel a tiny prick!"))
 			else
 				trans = reagents.trans_to(target, amount_per_transfer_from_this)
 			to_chat(user, SPAN_NOTICE("You inject [trans] units of the solution. [src] now contains [src.reagents.total_volume] units."))
-
+#warn LOOK ABOVE, yeah these commented lines: get_damage is unknown
 
 /obj/item/reagent_containers/syringe/update_icon()
 	cut_overlays()
@@ -244,49 +244,50 @@
 		add_overlay(injoverlay)
 		update_wear_icon()
 
+#warn Doesnt know what is_stump() is
 /obj/item/reagent_containers/syringe/proc/syringestab(mob/living/carbon/target as mob, mob/living/carbon/user as mob)
-	if(ishuman(target))
+	// if(ishuman(target))
 
-		var/mob/living/carbon/human/H = target
+	// 	var/mob/living/carbon/human/H = target
 
-		var/target_zone = ran_zone(check_zone(user.targeted_organ, target))
-		var/obj/item/organ/external/affecting = H.get_organ(target_zone)
+	// 	var/target_zone = ran_zone(check_zone(user.targeted_organ, target))
+	// 	var/obj/item/organ/external/affecting = H.get_organ(target_zone)
 
-		if (!affecting || affecting.is_stump())
-			to_chat(user, SPAN_DANGER("They are missing that limb!"))
-			return
+	// 	if (!affecting || affecting.is_stump())
+	// 		to_chat(user, SPAN_DANGER("They are missing that limb!"))
+	// 		return
 
-		var/hit_area = affecting.name
+	// 	var/hit_area = affecting.name
 
-		if((user != target) && H.check_shields(7, src, user, "\the [src]"))
-			return
+	// 	if((user != target) && H.check_shields(7, src, user, "\the [src]"))
+	// 		return
 
-		if (target != user && H.getarmor(target_zone, ARMOR_MELEE) > 5 && prob(50))
-			user.visible_message(SPAN_DANGER("[user] tries to stab [target] in \the [hit_area] with [src.name], but the attack is deflected by armor!"))
-			user.remove_from_mob(src)
-			qdel(src)
+	// 	if (target != user && H.getarmor(target_zone, ARMOR_MELEE) > 5 && prob(50))
+	// 		user.visible_message(SPAN_DANGER("[user] tries to stab [target] in \the [hit_area] with [src.name], but the attack is deflected by armor!"))
+	// 		user.remove_from_mob(src)
+	// 		qdel(src)
 
-			user.attack_log += "\[[time_stamp()]\]<font color='red'> Attacked [target.name] ([target.ckey]) with \the [src] (INTENT: HARM).</font>"
-			target.attack_log += "\[[time_stamp()]\]<font color='orange'> Attacked by [user.name] ([user.ckey]) with [src.name] (INTENT: HARM).</font>"
-			msg_admin_attack("[key_name_admin(user)] attacked [key_name_admin(target)] with [src.name] (INTENT: HARM) (<a href='byond://?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
+	// 		user.attack_log += "\[[time_stamp()]\]<font color='red'> Attacked [target.name] ([target.ckey]) with \the [src] (INTENT: HARM).</font>"
+	// 		target.attack_log += "\[[time_stamp()]\]<font color='orange'> Attacked by [user.name] ([user.ckey]) with [src.name] (INTENT: HARM).</font>"
+	// 		msg_admin_attack("[key_name_admin(user)] attacked [key_name_admin(target)] with [src.name] (INTENT: HARM) (<a href='byond://?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 
-			return
+	// 		return
 
-		user.visible_message(SPAN_DANGER("[user] stabs [target] in \the [hit_area] with [src.name]!"))
+	// 	user.visible_message(SPAN_DANGER("[user] stabs [target] in \the [hit_area] with [src.name]!"))
 
-		if(affecting.take_damage(3))
-			H.UpdateDamageIcon()
+	// 	if(affecting.take_damage(3))
+	// 		H.UpdateDamageIcon()
 
-	else
-		user.visible_message(SPAN_DANGER("[user] stabs [target] with [src.name]!"))
-		target.take_organ_damage(3)// 7 is the same as crowbar punch
+	// else
+	// 	user.visible_message(SPAN_DANGER("[user] stabs [target] with [src.name]!"))
+	// 	target.take_organ_damage(3)// 7 is the same as crowbar punch
 
-	var/syringestab_amount_transferred = rand(0, (reagents.total_volume - 5)) //nerfed by popular demand
-	var/contained_reagents = reagents.log_list()
-	var/trans = reagents.trans_to_mob(target, syringestab_amount_transferred, CHEM_BLOOD)
-	if(isnull(trans)) trans = 0
-	admin_inject_log(user, target, src, contained_reagents, trans, violent=1)
-	break_syringe(target, user)
+	// var/syringestab_amount_transferred = rand(0, (reagents.total_volume - 5)) //nerfed by popular demand
+	// var/contained_reagents = reagents.log_list()
+	// var/trans = reagents.trans_to_mob(target, syringestab_amount_transferred, CHEM_BLOOD)
+	// if(isnull(trans)) trans = 0
+	// admin_inject_log(user, target, src, contained_reagents, trans, violent=1)
+	// break_syringe(target, user)
 
 /obj/item/reagent_containers/syringe/proc/break_syringe(mob/living/carbon/target, mob/living/carbon/user)
 	if(!breakable)

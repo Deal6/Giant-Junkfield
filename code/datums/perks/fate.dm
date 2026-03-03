@@ -69,23 +69,24 @@
 			You start with a permanent addiction to a random stimulator, as well as a bottle of pills containing the drug. \
 			Beware, if you get addicted to another stimulant, you will not get rid of the addiction."
 
+#warn Drug addict: we don't have addictions list
 /datum/perk/fate/drug_addict/assign(mob/living/carbon/human/H)
 	if(!..() || !holder)
 		return
-	spawn(1)
-		var/turf/T = get_turf(holder)
-		var/drugtype = pick(subtypesof(/datum/reagent/stim))
-		if(!(drugtype in holder.metabolism_effects.addiction_list))
-			var/datum/reagent/drug = new drugtype
-			holder.metabolism_effects.addiction_list.Add(drug)
-			var/obj/item/storage/pill_bottle/PB = new /obj/item/storage/pill_bottle(T)
-			PB.name = "[drug] (15 units)"
-			for(var/i=1 to 12)
-				var/obj/item/reagent_containers/pill/pill = new /obj/item/reagent_containers/pill(T)
-				pill.reagents.add_reagent(drug.id, 15)
-				pill.name = "[drug]"
-				PB.handle_item_insertion(pill)
-			holder.equip_to_storage_or_drop(PB)
+	// spawn(1)
+	// 	var/turf/T = get_turf(holder)
+	// 	var/drugtype = pick(subtypesof(/datum/reagent/stim))
+	// 	if(!(drugtype in holder.metabolism_effects.addiction_list))
+	// 		var/datum/reagent/drug = new drugtype
+	// 		holder.metabolism_effects.addiction_list.Add(drug)
+	// 		var/obj/item/storage/pill_bottle/PB = new /obj/item/storage/pill_bottle(T)
+	// 		PB.name = "[drug] (15 units)"
+	// 		for(var/i=1 to 12)
+	// 			var/obj/item/reagent_containers/pill/pill = new /obj/item/reagent_containers/pill(T)
+	// 			pill.reagents.add_reagent(drug.id, 15)
+	// 			pill.name = "[drug]"
+	// 			PB.handle_item_insertion(pill)
+	// 		holder.equip_to_storage_or_drop(PB)
 
 /datum/perk/fate/alcoholic
 	name = "Alcoholic"

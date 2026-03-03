@@ -96,16 +96,16 @@
 		list(CRAFT_MATERIAL, 1, MATERIAL_CARDBOARD)
 	)
 	related_stats = list(STAT_COG)
-
-/datum/craft_recipe/bone_braces
-	name = "bone braces"
-	result = /obj/item/modification/organ/internal/electromechanical/bone_braces
-	steps = list(
-		list(CRAFT_MATERIAL, 3, MATERIAL_PLASTEEL),
-		list(QUALITY_WELDING, 20, 50),
-		list(QUALITY_WIRE_CUTTING, 10, 120)
-	)
-	related_stats = list(STAT_COG, STAT_BIO, STAT_MEC)
+#warn craft bone recipes is kill
+// /datum/craft_recipe/bone_braces
+// 	name = "bone braces"
+// 	result = /obj/item/modification/organ/internal/electromechanical/bone_braces
+// 	steps = list(
+// 		list(CRAFT_MATERIAL, 3, MATERIAL_PLASTEEL),
+// 		list(QUALITY_WELDING, 20, 50),
+// 		list(QUALITY_WIRE_CUTTING, 10, 120)
+// 	)
+// 	related_stats = list(STAT_COG, STAT_BIO, STAT_MEC)
 
 /datum/craft_recipe/plastic_bag
 	name = "plastic bag"

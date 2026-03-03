@@ -30,19 +30,19 @@
 
 
 	)
-
+#warn Backalley disks
 /obj/item/computer_hardware/hard_drive/portable/design/surgery
 	disk_name = "Back Alley Organs"
 	icon_state = "moebius"
-	license = 10
-	designs = list(
-		/datum/design/organ/back_alley/ex_lungs,
-		/datum/design/organ/back_alley/huge_heart,
-		/datum/design/organ/back_alley/big_liver,
-		/datum/design/organ/back_alley/hyper_nerves,
-		/datum/design/organ/back_alley/super_muscle,
-		/datum/design/organ/back_alley/ex_blood_vessel
-	)
+	// license = 10
+	// designs = list(
+	// 	/datum/design/organ/back_alley/ex_lungs,
+	// 	/datum/design/organ/back_alley/huge_heart,
+	// 	/datum/design/organ/back_alley/big_liver,
+	// 	/datum/design/organ/back_alley/hyper_nerves,
+	// 	/datum/design/organ/back_alley/super_muscle,
+	// 	/datum/design/organ/back_alley/ex_blood_vessel
+	// )
 
 /obj/item/computer_hardware/hard_drive/portable/design/computer
 	disk_name = "Moebius Computer Parts"

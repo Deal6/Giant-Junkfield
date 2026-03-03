@@ -62,6 +62,7 @@
 
 	. = ..()
 
+#warn No implants below
 /obj/item/roach_egg/Process()
 	if (isturf(src.loc) || istype(src.loc, /obj/structure/closet) || istype(src.loc, /obj/item/organ/external)) // suppresses hatching when not in a suitable loc
 		if(amount_grown >= 100)
@@ -71,7 +72,7 @@
 				src.visible_message(SPAN_WARNING("A roachling makes its way out of [O.owner ? "[O.owner]\'s [O.name]" : "\the [O]"]!"))
 				if(O.owner)
 					O.owner.apply_damage(1, BRUTE, O.organ_tag, used_weapon = src)
-				O.implants -= src // Remove from implants and spawn the roachling on the ground
+				// O.implants -= src // Remove from implants and spawn the roachling on the ground
 				src.loc = O.owner ? O.owner.loc : O.loc
 
 			var/spawn_type = /mob/living/carbon/superior_animal/roach/roachling

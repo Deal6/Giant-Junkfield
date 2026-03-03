@@ -46,16 +46,18 @@
 			Your total NSA is increased and chance to gain an addiction decreased."
 	icon_state = "selfmedicated" // https://game-icons.net/1x1/lorc/overdose.html
 
+#warn NSA no more
 /datum/perk/selfmedicated/assign(mob/living/carbon/human/H)
-	if(..())
-		holder.metabolism_effects.addiction_chance_multiplier = 0.5
-		holder.metabolism_effects.nsa_threshold_base += 10
+	// if(..())
+	// 	holder.metabolism_effects.addiction_chance_multiplier = 0.5
+	// 	holder.metabolism_effects.nsa_threshold_base += 10
 
 /datum/perk/selfmedicated/remove()
-	if(holder)
-		holder.metabolism_effects.addiction_chance_multiplier = 1
-		holder.metabolism_effects.nsa_threshold_base -= 10
-	..()
+	// if(holder)
+	// 	holder.metabolism_effects.addiction_chance_multiplier = 1
+	// 	holder.metabolism_effects.nsa_threshold_base -= 10
+	// ..()
+
 
 /datum/perk/selfmedicated/chemist
 	name = "Chemical-junkie"
@@ -63,15 +65,16 @@
 			You get 10 more NSA points and a quarter more NSA ontop than a normal person. Your chance of getting addicted is also reduced to half and you can also see all reagents in beakers."
 	perk_shared_ability = PERK_SHARED_SEE_REAGENTS
 
+#warn NSA no more
 /datum/perk/selfmedicated/chemist/assign(mob/living/carbon/human/H)
-	if(..())
-		holder.metabolism_effects.nsa_threshold_base *= 1.25
+	// if(..())
+	// 	holder.metabolism_effects.nsa_threshold_base *= 1.25
 
 // Added on top , removed first
 /datum/perk/selfmedicated/chemist/remove()
-	if(holder)
-		holder.metabolism_effects.nsa_threshold_base /= 1.25
-	..()
+	// if(holder)
+	// 	holder.metabolism_effects.nsa_threshold_base /= 1.25
+	// ..()
 
 /datum/perk/vagabond
 	name = "Vagabond"

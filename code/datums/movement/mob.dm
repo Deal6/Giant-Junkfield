@@ -136,14 +136,15 @@
 		else if(istype(mob.buckled, /obj/structure/bed/chair/wheelchair))
 			. = MOVEMENT_HANDLED
 			if(ishuman(mob))
-				var/mob/living/carbon/human/driver = mob
-				var/obj/item/organ/external/l_arm = driver.get_organ(BP_L_ARM)
-				var/obj/item/organ/external/r_arm = driver.get_organ(BP_R_ARM)
-				if((!l_arm || l_arm.is_stump()) && (!r_arm || r_arm.is_stump()))
-					return // No arms to drive your chair? Tough luck!
-			//drunk wheelchair driving
+			// 	var/mob/living/carbon/human/driver = mob
+			// 	var/obj/item/organ/external/l_arm = driver.get_organ(BP_L_ARM)
+			// 	var/obj/item/organ/external/r_arm = driver.get_organ(BP_R_ARM)
+			// 	if((!l_arm || l_arm.is_stump()) && (!r_arm || r_arm.is_stump()))
+			// 		return // No arms to drive your chair? Tough luck!
+			// //drunk wheelchair driving
 			direction = mob.AdjustMovementDirection(direction)
 			mob.buckled.DoMove(direction, mob)
+#warn Above cuz is_stump() check
 
 /datum/movement_handler/mob/buckle_relay/MayMove(var/mover)
 	if(mob.buckled)

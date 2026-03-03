@@ -278,13 +278,14 @@
 		list(QUALITY_WELDING, 10, "time" = 30),
 		list(QUALITY_HAMMERING, 5, 10))
 
-/datum/craft_recipe/weapon/bone
-	name = "bone club"
-	result = /obj/item/tool/hammer/mace/makeshift/baseballbat/bone
-	steps = list(
-		list(/obj/item/organ/internal/bone/head, 1, "time" = 10),
-		list(/obj/item/stack/rods, 2, "time" = 10),
-		list(QUALITY_ADHESIVE, 15, 70)
+#warn Bone club is kill
+// /datum/craft_recipe/weapon/bone
+// 	name = "bone club"
+// 	result = /obj/item/tool/hammer/mace/makeshift/baseballbat/bone
+// 	steps = list(
+// 		list(/obj/item/organ/internal/bone/head, 1, "time" = 10),
+// 		list(/obj/item/stack/rods, 2, "time" = 10),
+// 		list(QUALITY_ADHESIVE, 15, 70)
 	)
 
 /datum/craft_recipe/weapon/sonic_grenade

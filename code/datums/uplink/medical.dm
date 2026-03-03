@@ -39,11 +39,12 @@
 	antag_roles = list(ROLE_CONTRACTOR,ROLE_MARSHAL,ROLE_INQUISITOR,ROLE_MERCENARY,ROLE_CARRION)
 	path = /obj/item/storage/box/syndie_kit/randomstim
 
-/datum/uplink_item/item/medical/gene_vial
-	name = "Genetic material vial"
-	item_cost = 5
-	path = /obj/item/gene_vial
-	antag_roles = list(ROLE_CARRION)
+#warn Genetic material is ded
+// /datum/uplink_item/item/medical/gene_vial
+// 	name = "Genetic material vial"
+// 	item_cost = 5
+// 	path = /obj/item/gene_vial
+// 	antag_roles = list(ROLE_CARRION)
 
 /datum/uplink_item/item/medical/nanopaste
 	name = "Nanopaste"

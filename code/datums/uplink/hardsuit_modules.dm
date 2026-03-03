@@ -29,10 +29,11 @@
 	item_cost = 3
 	path = /obj/item/rig_module/modular_injector
 
-/datum/uplink_item/item/hardsuit_modules/portable_autodoc
-	name = "Portable autodoc"
-	item_cost = 11
-	path = /obj/item/rig_module/autodoc
+#warn Hardsuit module is ded
+// /datum/uplink_item/item/hardsuit_modules/portable_autodoc
+// 	name = "Portable autodoc"
+// 	item_cost = 11
+// 	path = /obj/item/rig_module/autodoc
 
 /datum/uplink_item/item/hardsuit_modules/maneuvering_jets
 	name = "Maneuvering Jets"

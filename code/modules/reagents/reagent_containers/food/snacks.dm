@@ -44,15 +44,15 @@
 /obj/item/reagent_containers/food/snacks/New()
 	..()
 	get_food_tier()
-
+#warn Sanity gain from food screams at me
 /obj/item/reagent_containers/food/snacks/proc/get_sanity_gain(mob/living/carbon/eater) //sanity_gain per bite
 	var/current_nutriment
-	for(var/datum/reagent/reagent in reagents.reagent_list)
-		var/reagent_amount = 0
-		if(istype(reagent, /datum/reagent/organic/nutriment))
-			var/datum/reagent/organic/nutriment/N = reagent
-			reagent_amount = N.volume
-			current_nutriment += reagent_amount * N.nutriment_factor
+	// for(var/datum/reagent/reagent in reagents.reagent_list)
+	// 	var/reagent_amount = 0
+	// 	if(istype(reagent, /datum/reagent/organic/nutriment))
+	// 		var/datum/reagent/organic/nutriment/N = reagent
+	// 		reagent_amount = N.volume
+	// 		current_nutriment += reagent_amount * N.nutriment_factor
 	var/nutriment_percent = current_nutriment/reagents.total_volume
 	var/nutriment_eaten = min(reagents.total_volume, bitesize) * nutriment_percent
 	var/base_sanity_gain_per_bite = nutriment_eaten * sanity_gain

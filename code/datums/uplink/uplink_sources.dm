@@ -77,7 +77,8 @@ GLOBAL_LIST_INIT(default_uplink_source_priority, list(
 	U.wearer = H
 	U.implanted = TRUE
 	U.part = head
-	head.implants += U
+	#warn Traitor implant doesnt implant
+	// head.implants += U
 
 	U.on_install(H) // This proc handles the installation feedback
 

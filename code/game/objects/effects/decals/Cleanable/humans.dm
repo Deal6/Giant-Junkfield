@@ -66,6 +66,7 @@ var/global/list/image/splatter_cache=list()
 	if(basecolor == "rainbow") basecolor = get_random_colour(1)
 	color = basecolor
 
+#warn Inside: no is_stump() (Deal comment: I feel doubts about erismed rework at the moment, there's TOO MUCH SHIT, I'm afraid something we will forget to reemplement, I carefully inspect every file)
 /obj/effect/decal/cleanable/blood/Crossed(mob/living/carbon/human/perp)
 	if (!istype(perp))
 		return

@@ -2267,6 +2267,8 @@
 #include "code\modules\organs\external\subtypes\skeleton.dm"
 #include "code\modules\organs\external\subtypes\standard.dm"
 #include "code\modules\organs\external\subtypes\unbreakable.dm"
+#include "code\modules\organs\internal\eyes.dm"
+#include "code\modules\organs\internal\heart.dm"
 #include "code\modules\overmap\_defines.dm"
 #include "code\modules\overmap\overmap_shuttle.dm"
 #include "code\modules\overmap\sectors.dm"

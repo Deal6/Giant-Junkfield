@@ -43,8 +43,9 @@
 
 		var/obj/item/organ/external/head/head = H.get_organ(BP_HEAD)
 
-		if(head && head.disfigured) // If you cut off the head, it's not quite "harm"
-			harm_points += 1
+#warn Traitor disfigurement below
+		// if(head && head.disfigured) // If you cut off the head, it's not quite "harm"
+		// 	harm_points += 1
 
 		if(harm_points >= 4)
 			completed = TRUE

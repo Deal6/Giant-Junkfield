@@ -1242,20 +1242,21 @@ obj/screen/fire/DEADelize()
 /obj/screen/bionics/r_arm
 	target_organ = BP_R_ARM
 
-/obj/screen/bionics/update_icon()
-	var/mob/living/carbon/human/H = parentmob
-	if(istype(H))
-		var/obj/item/organ/external/E = H.organs_by_name[target_organ]
-		if(E?.module)
-			invisibility = 0
-			return
-	invisibility = 101
+#warn WTF IS BIONICS
+// /obj/screen/bionics/update_icon()
+// 	var/mob/living/carbon/human/H = parentmob
+// 	if(istype(H))
+// 		var/obj/item/organ/external/E = H.organs_by_name[target_organ]
+// 		if(E?.module)
+// 			invisibility = 0
+// 			return
+// 	invisibility = 101
 
-/obj/screen/bionics/Click()
-	var/mob/living/carbon/human/H = parentmob
-	if(istype(H))
-		var/obj/item/organ/external/E = H.organs_by_name[target_organ]
-		E?.module?.activate(H, E)
+// /obj/screen/bionics/Click()
+// 	var/mob/living/carbon/human/H = parentmob
+// 	// if(istype(H))
+// 	// 	var/obj/item/organ/external/E = H.organs_by_name[target_organ]
+// 	// 	E?.module?.activate(H, E)
 //-----------------------bionics (implant)------------------------------
 /obj/screen/implant_bionics
 	name = "implant bionics"

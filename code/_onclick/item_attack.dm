@@ -201,11 +201,12 @@ avoid code duplication. This includes items that may sometimes act as a standard
 /mob/living/attackby(obj/item/I, mob/living/user, var/params)
 	if(!ismob(user))
 		return FALSE
-	var/surgery_check = can_operate(src, user)
-	if(surgery_check && do_surgery(src, user, I, surgery_check)) //Surgery
-		return TRUE
-	else
-		return I.attack(src, user, user.targeted_organ)
+	// var/surgery_check = can_operate(src, user)
+	// if(surgery_check && do_surgery(src, user, I, surgery_check)) //Surgery
+	// 	return TRUE
+	// else
+	// 	return I.attack(src, user, user.targeted_organ)
+#warn ABOVE is do_surgery check
 
 //Used by Area of effect attacks, if it returns FALSE, it failed
 /obj/item/proc/attack_with_multiplier(mob/living/user, var/atom/target, var/modifier = 1)
