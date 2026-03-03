@@ -20,10 +20,10 @@
 	return ..()
 
 /mob/living/carbon/rejuvenate()
-	bloodstr.clear_reagents()
+/*loodstr.clear_reagents()
 	ingested.clear_reagents()
 	touching.clear_reagents()
-	metabolism_effects.clear_effects()
+	metabolism_effects.clear_effects()*/
 	nutrition = 400
 	shock_stage = 0
 	..()

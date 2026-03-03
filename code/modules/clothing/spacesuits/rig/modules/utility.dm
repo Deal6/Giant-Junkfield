@@ -552,7 +552,6 @@
 	jets.trail.set_up(jets)
 
 
-
 /obj/item/rig_module/cape
 	name = "cape"
 	desc = "A cape designed to be attached to hardsuits."
