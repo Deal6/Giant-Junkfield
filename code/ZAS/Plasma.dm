@@ -64,15 +64,15 @@ var/image/contamination_overlay = image('icons/effects/contamination.dmi')
 	//The proc that handles eye burning.
 	if(!species.has_process[OP_EYES])
 		return
-
-	var/obj/item/organ/internal/eyes/E = random_organ_by_process(OP_EYES)
-	if(E)
-		if(prob(20)) to_chat(src, SPAN_DANGER("Your eyes burn!"))
-		E.damage += 2.5
-		eye_blurry = min(eye_blurry+1.5,50)
-		if (prob(max(0,E.damage - 15) + 1) &&!eye_blind)
-			to_chat(src, SPAN_DANGER("You are blinded!"))
-			eye_blind += 20
+	#warn burn_eyes()
+	// var/obj/item/organ/internal/eyes/E = random_organ_by_process(OP_EYES)
+	// if(E)
+	// 	if(prob(20)) to_chat(src, SPAN_DANGER("Your eyes burn!"))
+	// 	E.damage += 2.5
+	// 	eye_blurry = min(eye_blurry+1.5,50)
+	// 	if (prob(max(0,E.damage - 15) + 1) &&!eye_blind)
+	// 		to_chat(src, SPAN_DANGER("You are blinded!"))
+	// 		eye_blind += 20
 
 /mob/living/carbon/human/proc/pl_head_protected()
 	//Checks if the head is adequately sealed.

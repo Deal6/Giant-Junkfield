@@ -41,7 +41,8 @@
 			/obj/item/gun/projectile/automatic/sts35 = custom_good_amount_range(list(1, 1))
 		),
 		"RIG Modules" = list(
-			/obj/item/rig_module/autodoc = custom_good_price(8525),
+			#warn Trade Station
+			// /obj/item/rig_module/autodoc = custom_good_price(8525),
 			/obj/item/rig_module/mounted = custom_good_price(10850),
 			/obj/item/rig_module/fabricator = custom_good_price(4650),
 			/obj/item/rig_module/fabricator/energy_net = custom_good_price(3875)
