@@ -1,4 +1,5 @@
-/mob/living/carbon/superior_animal/proc/check_AI_act()
+/
+mob/living/carbon/superior_animal/proc/check_AI_act()
 	if ((stat != CONSCIOUS) || !canmove || resting || lying || stasis || AI_inactive || client || grabbed_by_friend || !isturf(loc))
 		stance = HOSTILE_STANCE_IDLE
 		target_mob = null
@@ -7,7 +8,7 @@
 
 	return TRUE
 
-/*
+
 
 /mob/living/carbon/superior_animal/Life()
 	. = ..()
@@ -59,17 +60,17 @@
 	//Speaking
 	if(speak_chance && prob(speak_chance))
 		visible_emote(emote_see)
-*/
 
+#warn handle_chemicals_in_body
 /mob/living/carbon/superior_animal/handle_chemicals_in_body()
 	if(reagents)
 		chem_effects.Cut()
 		analgesic = 0
 
-		if(touching) touching.metabolize()
-		if(ingested) ingested.metabolize()
-		if(bloodstr) bloodstr.metabolize()
-		metabolism_effects.process()
+		// if(touching) touching.metabolize()
+		// if(ingested) ingested.metabolize()
+		// if(bloodstr) bloodstr.metabolize()
+		// metabolism_effects.process()
 
 		if(CE_PAINKILLER in chem_effects)
 			analgesic = chem_effects[CE_PAINKILLER]
