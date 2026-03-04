@@ -72,24 +72,25 @@
 	do_flick(FALSE)
 	sleep(1.5 SECONDS)
 
-	if(is_meatcube)
-		var/obj/item/reagent_containers/food/snacks/moecube/C = new(loc)
-		C.gene_type = gene_cache["type"]
-		C.gene_value = gene_cache["content"]
-		log_add("Created genome imprinter for [gene_cache["name"]]")
-		if(gene_cache["type"] == "mutation")
-			var/datum/mutation/M = gene_cache["content"]
-			C.gene_value = M
-		C.set_genes()
-	else
-		var/obj/item/reagent_containers/food/snacks/moecube/worm/C = new(loc)
-		if(gene_cache["type"] == "mutation")
-			var/datum/mutation/M = gene_cache["content"]
-			C.gene_value = M
-			log_add("Created cleansing substrate for [gene_cache["name"]]")
-		else
-			log_add("Created universal cleansing substrate.")
-		C.set_genes()
+#warn meatcube idk...
+	// if(is_meatcube)
+	// 	var/obj/item/reagent_containers/food/snacks/moecube/C = new(loc)
+	// 	C.gene_type = gene_cache["type"]
+	// 	C.gene_value = gene_cache["content"]
+	// 	log_add("Created genome imprinter for [gene_cache["name"]]")
+	// 	if(gene_cache["type"] == "mutation")
+	// 		var/datum/mutation/M = gene_cache["content"]
+	// 		C.gene_value = M
+	// 	C.set_genes()
+	// else
+	// 	var/obj/item/reagent_containers/food/snacks/moecube/worm/C = new(loc)
+	// 	if(gene_cache["type"] == "mutation")
+	// 		var/datum/mutation/M = gene_cache["content"]
+	// 		C.gene_value = M
+	// 		log_add("Created cleansing substrate for [gene_cache["name"]]")
+	// 	else
+	// 		log_add("Created universal cleansing substrate.")
+	// 	C.set_genes()
 
 /obj/machinery/dna/moeballs_printer/attackby(obj/item/I, mob/living/user)
 	if(istype(I, /obj/item/reagent_containers/glass/beaker) && !beaker && insert_item(I, user))

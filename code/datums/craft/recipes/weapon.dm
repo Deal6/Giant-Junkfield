@@ -286,7 +286,7 @@
 // 		list(/obj/item/organ/internal/bone/head, 1, "time" = 10),
 // 		list(/obj/item/stack/rods, 2, "time" = 10),
 // 		list(QUALITY_ADHESIVE, 15, 70)
-	)
+//	)
 
 /datum/craft_recipe/weapon/sonic_grenade
 	name = "Loudmouth grenade"

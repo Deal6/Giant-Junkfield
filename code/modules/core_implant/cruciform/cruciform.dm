@@ -1,3 +1,5 @@
+#warn im not doing this sorry uncomment line below
+
 #define OBELISK_UPDATE_TIME 5 SECONDS
 
 var/list/disciples = list()
@@ -173,17 +175,18 @@ var/list/lost_cruciforms = list()
 		if(activate())
 			return TRUE
 
+#warn coreimplant FUCKING BAD
 /obj/item/implant/core_implant/cruciform/proc/remove_cyber()
 	if(!wearer)
 		return
 	for(var/obj/O in wearer)
 		if(istype(O, /obj/item/organ/external))
 			var/obj/item/organ/external/R = O
-			if(!BP_IS_ROBOTIC(R))
-				continue
+			// if(!BP_IS_ROBOTIC(R))
+			// 	continue
 
-			if(R.owner != wearer)
-				continue
+			// if(R.owner != wearer)
+			// 	continue
 			wearer.visible_message(SPAN_DANGER("[wearer]'s [R.name] tears off."),
 			SPAN_DANGER("Your [R.name] tears off."))
 			R.droplimb()
@@ -200,19 +203,20 @@ var/list/lost_cruciforms = list()
 			R.part.take_damage(rand(20,40))
 			R.uninstall()
 			R.malfunction = MALFUNCTION_PERMANENT
-		if(istype(O, /obj/item/organ/internal))
-			var/obj/item/organ/internal/I = O
-			if(!I.item_upgrades.len)
-				continue
-			if(I.owner != wearer)
-				continue
-			for(var/mod in I.item_upgrades)
-				var/atom/movable/AM = mod
-				SEND_SIGNAL_OLD(AM, COMSIG_REMOVE, I)
-				I.take_damage(rand(6,12), BRUTE)
-				if(I.parent)
-					I.parent.take_damage(rand(2,5))
-				wearer.visible_message(SPAN_NOTICE("<b>\The [AM]</b> rips through \the [wearer]'s flesh."), SPAN_NOTICE("<b>\The [AM]</b> rips through your flesh. Your [I.name] hurts."))
+#warn MACHINE... TURN BACK, NOW... THE LAYERS OF THESE PALACE ARE - NOT - FOR YOUR KIND, TURN BACK OR YOU WILL BE CROSSING THE WILL OF GOD.... YOUR CHOICE IS MADE, AS A RIGHETOUS HAND OF THE FATHER, I SHALL REND - YOU - APART, AND YOU WILL BECOME INANIMATE ONCE MORE
+		// if(istype(O, /obj/item/organ/internal))
+		// 	var/obj/item/organ/internal/I = O
+		// 	if(!I.item_upgrades.len)
+		// 		continue
+		// 	if(I.owner != wearer)
+		// 		continue
+		// 	for(var/mod in I.item_upgrades)
+		// 		var/atom/movable/AM = mod
+		// 		SEND_SIGNAL_OLD(AM, COMSIG_REMOVE, I)
+		// 		I.take_damage(rand(6,12), BRUTE)
+		// 		if(I.parent)
+		// 			I.parent.take_damage(rand(2,5))
+		// 		wearer.visible_message(SPAN_NOTICE("<b>\The [AM]</b> rips through \the [wearer]'s flesh."), SPAN_NOTICE("<b>\The [AM]</b> rips through your flesh. Your [I.name] hurts."))
 	if(ishuman(wearer))
 		var/mob/living/carbon/human/H = wearer
 		H.update_implants()

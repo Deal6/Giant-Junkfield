@@ -52,8 +52,9 @@
 
 	// Kill the mob
 	M.death(FALSE)
-	for(var/obj/item/organ/O in M.internal_organs)
-		O.die()
+#warn no die
+	// for(var/obj/item/organ/O in M.internal_organs)
+	// 	O.die()
 	M.pulse = PULSE_NONE			// Because killing a mob and its organs doesn't stop its pulse
 	GLOB.human_mob_list -= M
 	STOP_PROCESSING(SSmobs, src)

@@ -341,69 +341,72 @@
 		L = L.loc
 	return loc
 
-/obj/item/proc/eyestab(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+#warn screwdriver stab eye (this is hell)
+// /obj/item/proc/eyestab(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 
-	var/mob/living/carbon/human/H = M
-	if(istype(H))
-		for(var/obj/item/protection in list(H.head, H.wear_mask, H.glasses))
-			if(protection && (protection.body_parts_covered & EYES))
-				// you can't stab someone in the eyes wearing a mask!
-				to_chat(user, SPAN_WARNING("You're going to need to remove the eye covering first."))
-				return
+// 	var/mob/living/carbon/human/H = M
+// 	if(istype(H))
+// 		for(var/obj/item/protection in list(H.head, H.wear_mask, H.glasses))
+// 			if(protection && (protection.body_parts_covered & EYES))
+// 				// you can't stab someone in the eyes wearing a mask!
+// 				to_chat(user, SPAN_WARNING("You're going to need to remove the eye covering first."))
+// 				return
 
-	if(!M.has_eyes())
-		to_chat(user, SPAN_WARNING("You cannot locate any eyes on [M]!"))
-		return
+// 	if(!M.has_eyes())
+// 		to_chat(user, SPAN_WARNING("You cannot locate any eyes on [M]!"))
+// 		return
 
-	user.attack_log += "\[[time_stamp()]\]<font color='red'> Attacked [M.name] ([M.ckey]) with [name] (INTENT: [uppertext(user.a_intent)])</font>"
-	M.attack_log += "\[[time_stamp()]\]<font color='orange'> Attacked by [user.name] ([user.ckey]) with [name] (INTENT: [uppertext(user.a_intent)])</font>"
-	msg_admin_attack("[user.name] ([user.ckey]) attacked [M.name] ([M.ckey]) with [name] (INTENT: [uppertext(user.a_intent)]) (<a href='byond://?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)") //BS12 EDIT ALG
+// 	user.attack_log += "\[[time_stamp()]\]<font color='red'> Attacked [M.name] ([M.ckey]) with [name] (INTENT: [uppertext(user.a_intent)])</font>"
+// 	M.attack_log += "\[[time_stamp()]\]<font color='orange'> Attacked by [user.name] ([user.ckey]) with [name] (INTENT: [uppertext(user.a_intent)])</font>"
+// 	msg_admin_attack("[user.name] ([user.ckey]) attacked [M.name] ([M.ckey]) with [name] (INTENT: [uppertext(user.a_intent)]) (<a href='byond://?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)") //BS12 EDIT ALG
 
-	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-	user.do_attack_animation(M)
+// 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+// 	user.do_attack_animation(M)
 
-	add_fingerprint(user)
+// 	add_fingerprint(user)
 
-	if(istype(H))
+// 	if(istype(H))
 
-		var/obj/item/organ/internal/eyes/eyes = H.random_organ_by_process(OP_EYES)
+// 		var/obj/item/organ/internal/eyes/eyes = H.random_organ_by_process(OP_EYES)
 
-		if(!eyes)
-			return
+// 		if(!eyes)
+// 			return
 
-		if(H != user)
-			for(var/mob/O in (viewers(M) - user - M))
-				O.show_message(SPAN_DANGER("[M] has been stabbed in the eye with [src] by [user]."), 1)
-			to_chat(M, SPAN_DANGER("[user] stabs you in the eye with [src]!"))
-			to_chat(user, SPAN_DANGER("You stab [M] in the eye with [src]!"))
-		else
-			user.visible_message( \
-				SPAN_DANGER("[user] has stabbed themself with [src]!"), \
-				SPAN_DANGER("You stab yourself in the eyes with [src]!") \
-			)
+// 		if(H != user)
+// 			for(var/mob/O in (viewers(M) - user - M))
+// 				O.show_message(SPAN_DANGER("[M] has been stabbed in the eye with [src] by [user]."), 1)
+// 			to_chat(M, SPAN_DANGER("[user] stabs you in the eye with [src]!"))
+// 			to_chat(user, SPAN_DANGER("You stab [M] in the eye with [src]!"))
+// 		else
+// 			user.visible_message( \
+// 				SPAN_DANGER("[user] has stabbed themself with [src]!"), \
+// 				SPAN_DANGER("You stab yourself in the eyes with [src]!") \
+// 			)
 
-		playsound(loc, 'sound/weapons/melee/lightstab.ogg', 50, 1, -1)
-		eyes.take_damage(rand(24, 32), BRUTE, 1, FALSE, TRUE, FALSE)
-		if(eyes.damage >= eyes.min_bruised_damage)
-			if(M.stat != DEAD)
-				if(BP_IS_ORGANIC(eyes) || BP_IS_ASSISTED(eyes)) //robot eyes bleeding might be a bit silly
-					to_chat(M, SPAN_DANGER("Your eyes start to bleed profusely!"))
-			if(prob(50))
-				if(M.stat != DEAD)
-					to_chat(M, SPAN_WARNING("You drop what you're holding and clutch at your eyes!"))
-					M.drop_item()
-				M.eye_blurry += 10
-				M.Paralyse(1)
-				M.Weaken(4)
-			if(eyes.damage >= eyes.min_broken_damage)
-				if(M.stat != 2)
-					to_chat(M, SPAN_WARNING("You go blind!"))
-		var/obj/item/organ/external/affecting = H.get_organ(BP_HEAD)
-		if(affecting.take_damage(7))
-			M:UpdateDamageIcon()
-	else
-		M.take_organ_damage(7)
-	M.eye_blurry += rand(3,4)
+// 		playsound(loc, 'sound/weapons/melee/lightstab.ogg', 50, 1, -1)
+// 		eyes.take_damage(rand(24, 32), BRUTE, 1, FALSE, TRUE, FALSE)
+// 		if(eyes.damage >= eyes.min_bruised_damage)
+// 			if(M.stat != DEAD)
+// 				if(BP_IS_ORGANIC(eyes) || BP_IS_ASSISTED(eyes)) //robot eyes bleeding might be a bit silly
+// 					to_chat(M, SPAN_DANGER("Your eyes start to bleed profusely!"))
+// 			if(prob(50))
+// 				if(M.stat != DEAD)
+// 					to_chat(M, SPAN_WARNING("You drop what you're holding and clutch at your eyes!"))
+// 					M.drop_item()
+// 				M.eye_blurry += 10
+// 				M.Paralyse(1)
+// 				M.Weaken(4)
+// 			if(eyes.damage >= eyes.min_broken_damage)
+// 				if(M.stat != 2)
+// 					to_chat(M, SPAN_WARNING("You go blind!"))
+// 		var/obj/item/organ/external/affecting = H.get_organ(BP_HEAD)
+// 		if(affecting.take_damage(7))
+// 			M:UpdateDamageIcon()
+// 	else
+// 		M.take_organ_damage(7)
+// 	M.eye_blurry += rand(3,4)
+
+
 
 /obj/item/clean_blood()
 	. = ..()

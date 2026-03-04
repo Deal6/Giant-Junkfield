@@ -7,8 +7,9 @@
 	if(!..())
 		return FALSE
 	for(var/obj/item/organ/external/Ex in H.organs)
-		if(!BP_IS_ROBOTIC(Ex))
-			return TRUE
+#warn Breakdown wants to know if your limb is chrome
+		// if(!BP_IS_ROBOTIC(Ex))
+		// 	return TRUE
 	return FALSE
 
 /datum/individual_objective/upgrade/assign()

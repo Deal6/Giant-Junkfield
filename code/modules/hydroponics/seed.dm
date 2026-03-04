@@ -165,9 +165,10 @@
 	else
 		return
 
+#warn what..?
 	if(affecting)
 		affecting.take_damage(damage, 0)
-		affecting.add_autopsy_data("Thorns",damage)
+		// affecting.add_autopsy_data("Thorns",damage)
 	else
 		target.adjustBruteLoss(damage)
 	target.UpdateDamageIcon()

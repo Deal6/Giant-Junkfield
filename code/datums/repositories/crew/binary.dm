@@ -6,8 +6,7 @@
 		crew_data["muted"] = TRUE
 	if(!H.isSynthetic())
 	#warn line below there was a check for organic heart
-		var/obj/item/organ/internal/vital/heart/O
-		if(O)
+		if(/obj/item/organ/internal/vital/heart/)
 			var/pulse = H.pulse()
 			if(pulse == PULSE_NONE || pulse == PULSE_THREADY)
 				crew_data["alert"] = TRUE

@@ -240,6 +240,7 @@
 		. = 1
 	ignored |= user
 
+#warn 252 line
 /mob/living/bot/medbot/explode()
 	on = FALSE
 	visible_message(SPAN_DANGER("[src] blows apart!"))
@@ -248,7 +249,7 @@
 
 	new /obj/item/storage/firstaid(Tsec)
 	new /obj/item/device/assembly/prox_sensor(Tsec)
-	new /obj/item/device/scanner/health(Tsec)
+	// new /obj/item/device/scanner/health(Tsec)
 	if (prob(50))
 		new /obj/item/robot_parts/l_arm(Tsec)
 

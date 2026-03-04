@@ -1,3 +1,4 @@
+#warn custom_pain("
 /datum/ritual/cruciform/base
 	name = "cruciform"
 	phrase = null
@@ -70,24 +71,25 @@
 	ignore_stuttering = TRUE
 	power = 25
 
+#warn NT core reject thiiing
 /datum/ritual/cruciform/base/reject/perform(mob/living/carbon/human/H, obj/item/implant/core_implant/C)
-	for(var/obj/item/organ/external/limb in H)
-		for(var/obj/thing in limb.implants)
-			if(thing != C)
-				if(istype(thing, /obj/item/implant))
-					var/obj/item/implant/implant = thing
-					implant.uninstall()
-					implant.malfunction = MALFUNCTION_PERMANENT
-				else
-					limb.remove_item(thing)
-				limb.take_damage(rand(15, 30))
-				to_chat(H, SPAN_DANGER("[thing.name] rips through your [limb.name]."))
+	// for(var/obj/item/organ/external/limb in H)
+	// 	for(var/obj/thing in limb.implants)
+	// 		if(thing != C)
+	// 			if(istype(thing, /obj/item/implant))
+	// 				var/obj/item/implant/implant = thing
+	// 				implant.uninstall()
+	// 				implant.malfunction = MALFUNCTION_PERMANENT
+	// 			else
+	// 				limb.remove_item(thing)
+	// 			limb.take_damage(rand(15, 30))
+	// 			to_chat(H, SPAN_DANGER("[thing.name] rips through your [limb.name]."))
 
-		if(BP_IS_ROBOTIC(limb))
-			to_chat(H, SPAN_DANGER("Your [limb.name] tears off."))
-			limb.droplimb()
-			H.update_implants()
-	return TRUE
+	// 	if(BP_IS_ROBOTIC(limb))
+	// 		to_chat(H, SPAN_DANGER("Your [limb.name] tears off."))
+	// 		limb.droplimb()
+	// 		H.update_implants()
+	// return TRUE
 
 /datum/ritual/cruciform/base/reveal
 	name = "Reveal Adversaries"
@@ -367,7 +369,7 @@
 			E.take_damage(5, BRUTE, sharp = FALSE)
 			//Deal 25 damage in five hits. Using multiple small hits mostly prevents internal damage
 
-		M.custom_pain("You feel the nails of the cruciform drive into your ribs!",1)
+		// M.custom_pain("You feel the nails of the cruciform drive into your ribs!",1)
 		M.update_implants()
 		M.updatehealth()
 	set_personal_cooldown(user)
@@ -396,7 +398,7 @@
 		var/mob/living/carbon/human/H = M
 		var/obj/item/organ/external/E = H.organs_by_name[BP_CHEST]
 		E.take_damage(15)
-		H.custom_pain("You feel the cruciform ripping out of your chest!",1)
+		// H.custom_pain("You feel the cruciform ripping out of your chest!",1)
 		CI.uninstall()
 		return TRUE
 

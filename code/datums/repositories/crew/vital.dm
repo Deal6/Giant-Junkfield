@@ -5,8 +5,7 @@
 	crew_data["pulse_span"] = "neutral"
 
 	if(!H.isSynthetic() && H.should_have_process(OP_HEART))
-		var/obj/item/organ/internal/vital/heart/O
-		if(O) // Organic check
+		if(/obj/item/organ/internal/vital/heart/) // Organic check
 			crew_data["true_pulse"] = H.pulse()
 			crew_data["pulse"] = H.get_pulse(1)
 			switch(crew_data["true_pulse"])

@@ -1,3 +1,5 @@
+#warn 101 and 116
+
 GLOBAL_LIST_INIT(dna_machinery_styles, list(
 	"cyan",
 	"yellow",
@@ -96,7 +98,7 @@ var/global/default_dna_machinery_style
 		user.dormant_mutations -= duplicate
 
 	user.active_mutations |= src
-	user.metabolism_effects.adjust_nsa(NSA_load, "Mutation_[hex]_[name]")
+	// user.metabolism_effects.adjust_nsa(NSA_load, "Mutation_[hex]_[name]")
 	user.mutation_count_by_tier["[tier_num]"]++
 	user.mutation_index += tier_num
 
@@ -111,7 +113,7 @@ var/global/default_dna_machinery_style
 		user.dormant_mutations |= src
 
 	user.active_mutations -= src
-	user.metabolism_effects.remove_nsa("Mutation_[hex]_[name]")
+	// user.metabolism_effects.remove_nsa("Mutation_[hex]_[name]")
 	user.mutation_count_by_tier["[tier_num]"]--
 	user.mutation_index -= tier_num
 

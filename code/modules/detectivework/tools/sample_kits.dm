@@ -1,3 +1,4 @@
+#warn detectivework
 /obj/item/sample
 	name = "forensic sample"
 	icon = 'icons/obj/forensics.dmi'
@@ -76,50 +77,50 @@
 	name = "[initial(name)] (\the [H])"
 	icon_state = "fingerprint1"
 
-/obj/item/sample/print/attack(var/mob/living/M, var/mob/user)
+// /obj/item/sample/print/attack(var/mob/living/M, var/mob/user)
 
-	if(!ishuman(M))
-		return ..()
+// 	if(!ishuman(M))
+// 		return ..()
 
-	if(evidence && evidence.len)
-		return 0
+// 	if(evidence && evidence.len)
+// 		return 0
 
-	var/mob/living/carbon/human/H = M
+// 	var/mob/living/carbon/human/H = M
 
-	if(H.gloves)
-		to_chat(user, SPAN_WARNING("\The [H] is wearing gloves."))
-		return 1
+// 	if(H.gloves)
+// 		to_chat(user, SPAN_WARNING("\The [H] is wearing gloves."))
+// 		return 1
 
-	if(user != H && H.a_intent != I_HELP && !H.lying)
-		user.visible_message(SPAN_DANGER("\The [user] tries to take prints from \the [H], but they move away."))
-		return 1
+// 	if(user != H && H.a_intent != I_HELP && !H.lying)
+// 		user.visible_message(SPAN_DANGER("\The [user] tries to take prints from \the [H], but they move away."))
+// 		return 1
 
-	if(user.targeted_organ == BP_R_ARM || user.targeted_organ == BP_L_ARM)
-		var/has_hand
-		var/obj/item/organ/external/O = H.organs_by_name[BP_R_ARM]
-		if(istype(O) && !O.is_stump())
-			has_hand = 1
-		else
-			O = H.organs_by_name[BP_L_ARM]
-			if(istype(O) && !O.is_stump())
-				has_hand = 1
-		if(!has_hand)
-			to_chat(user, SPAN_WARNING("They don't have any hands."))
-			return 1
-		user.visible_message("[user] takes a copy of \the [H]'s fingerprints.")
-		var/fullprint = H.get_full_print()
-		evidence[fullprint] = fullprint
-		copy_evidence(src)
-		name = "[initial(name)] (\the [H])"
-		icon_state = "fingerprint1"
-		return 1
-	return 0
+// 	if(user.targeted_organ == BP_R_ARM || user.targeted_organ == BP_L_ARM)
+// 		var/has_hand
+// 		var/obj/item/organ/external/O = H.organs_by_name[BP_R_ARM]
+// 		if(istype(O) && !O.is_stump())
+// 			has_hand = 1
+// 		else
+// 			O = H.organs_by_name[BP_L_ARM]
+// 			if(istype(O) && !O.is_stump())
+// 				has_hand = 1
+// 		if(!has_hand)
+// 			to_chat(user, SPAN_WARNING("They don't have any hands."))
+// 			return 1
+// 		user.visible_message("[user] takes a copy of \the [H]'s fingerprints.")
+// 		var/fullprint = H.get_full_print()
+// 		evidence[fullprint] = fullprint
+// 		copy_evidence(src)
+// 		name = "[initial(name)] (\the [H])"
+// 		icon_state = "fingerprint1"
+// 		return 1
+// 	return 0
 
-/obj/item/sample/print/copy_evidence(var/atom/supplied)
-	if(supplied.fingerprints && supplied.fingerprints.len)
-		for(var/print in supplied.fingerprints)
-			evidence[print] = supplied.fingerprints[print]
-		supplied.fingerprints.Cut()
+// /obj/item/sample/print/copy_evidence(var/atom/supplied)
+// 	if(supplied.fingerprints && supplied.fingerprints.len)
+// 		for(var/print in supplied.fingerprints)
+// 			evidence[print] = supplied.fingerprints[print]
+// 		supplied.fingerprints.Cut()
 
 /obj/item/forensics/sample_kit
 	name = "fiber collection kit"

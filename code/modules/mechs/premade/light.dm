@@ -1,3 +1,4 @@
+#warn lightmech sleeper
 //light exosuit components use reinforced plastics to be weaker, but faster than other components. Meant for utility use rather than combat.
 /mob/living/exosuit/premade/light
 	name = "light exosuit"
@@ -17,6 +18,6 @@
 	)
 	installed_systems = list(
 		HARDPOINT_LEFT_HAND = /obj/item/mech_equipment/catapult,
-		HARDPOINT_BACK = /obj/item/mech_equipment/sleeper,
+		// HARDPOINT_BACK = /obj/item/mech_equipment/sleeper,
 		HARDPOINT_HEAD = /obj/item/mech_equipment/light,
 	)

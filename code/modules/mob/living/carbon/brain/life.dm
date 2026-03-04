@@ -68,15 +68,15 @@
 		//adjustFireLoss(2.5*discomfort)
 		adjustFireLoss(5*discomfort)
 
-
+#warn no metabolism 76-79
 /mob/living/carbon/brain/handle_chemicals_in_body()
 	chem_effects.Cut()
 	analgesic = 0
 
-	if(touching) touching.metabolize()
-	if(ingested) ingested.metabolize()
-	if(bloodstr) bloodstr.metabolize()
-	metabolism_effects.process()
+	// if(touching) touching.metabolize()
+	// if(ingested) ingested.metabolize()
+	// if(bloodstr) bloodstr.metabolize()
+	// metabolism_effects.process()
 
 	if(CE_PAINKILLER in chem_effects)
 		analgesic = chem_effects[CE_PAINKILLER]

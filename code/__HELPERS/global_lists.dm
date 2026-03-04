@@ -185,7 +185,8 @@ GLOBAL_LIST_EMPTY(ignore_health_alerts_from)
 
 
 	//Surgery Steps - Initialize all /datum/surgery_step into a list
-	paths = subtypesof(/datum/surgery_step)
+#warn surgery_step below (uncomment line below?)
+/*	paths = subtypesof(/datum/surgery_step)
 	for(var/path in paths)
 		var/datum/surgery_step/S = new path
 		GLOB.surgery_steps[path] = S
@@ -200,7 +201,7 @@ GLOBAL_LIST_EMPTY(ignore_health_alerts_from)
 	for(var/T in paths)
 		var/datum/old_surgery_step/S = new T
 		GLOB.old_surgery_steps += S
-	sort_surgeries()
+	sort_surgeries()*/
 
 	//List of job department datums
 	paths = subtypesof(/datum/department)

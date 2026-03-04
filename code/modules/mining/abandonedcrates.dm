@@ -89,8 +89,10 @@
 			new/obj/item/weed_extract(src)
 		if(88)
 			new/obj/item/xenos_claw(src)
+#warn no heart
 		if(90)
-			new/obj/item/organ/internal/vital/heart(src)
+			new/obj/item/xenos_claw(src)
+			// new/obj/item/organ/internal/vital/heart(src)
 		if(91)
 			new/obj/item/tool/sword/katana(src)
 		if(92)

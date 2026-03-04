@@ -232,24 +232,25 @@
 	else if(isorgan(loc))
 		if(!amount_grown) amount_grown = 1
 		var/obj/item/organ/external/O = loc
-		if(!O.owner || O.owner.stat == DEAD || amount_grown > 80)
+		//if(!O.owner || O.owner.stat == DEAD || amount_grown > 80)
+		if(!O.owner || amount_grown > 80)
 
 #warn no implants
-			// O.implants -= src
-			src.loc = O.owner ? O.owner.loc : O.loc
-			src.visible_message("<span class='warning'>\A [src] makes its way out of [O.owner ? "[O.owner]'s [O.name]" : "\the [O]"]!</span>")
-			if(O.owner)
-				O.owner.apply_damage(1, BRUTE, O.organ_tag, used_weapon = src)
-		else if(prob(1))
-			O.owner.apply_damage(1, TOX, O.organ_tag)
-			if(world.time > last_itch + 30 SECONDS)
-				last_itch = world.time
-				to_chat(O.owner, SPAN_NOTICE("Your [O.name] itches..."))
-	else if(prob(1))
-		src.visible_message(SPAN_NOTICE("\The [src] skitters."))
+	// 		// O.implants -= src
+	// 		src.loc = O.owner ? O.owner.loc : O.loc
+	// 		src.visible_message("<span class='warning'>\A [src] makes its way out of [O.owner ? "[O.owner]'s [O.name]" : "\the [O]"]!</span>")
+	// 		if(O.owner)
+	// 			O.owner.apply_damage(1, BRUTE, O.organ_tag, used_weapon = src)
+	// 	else if(prob(1))
+	// 		O.owner.apply_damage(1, TOX, O.organ_tag)
+	// 		if(world.time > last_itch + 30 SECONDS)
+	// 			last_itch = world.time
+	// 			to_chat(O.owner, SPAN_NOTICE("Your [O.name] itches..."))
+	// else if(prob(1))
+	// 	src.visible_message(SPAN_NOTICE("\The [src] skitters."))
 
-	if(amount_grown)
-		amount_grown += rand(0,2)
+	// if(amount_grown)
+	// 	amount_grown += rand(0,2)
 
 /obj/effect/decal/cleanable/spiderling_remains
 	name = "spiderling remains"

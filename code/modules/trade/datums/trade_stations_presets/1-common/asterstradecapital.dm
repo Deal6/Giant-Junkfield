@@ -143,5 +143,6 @@
 		/obj/item/tool/hammer/sledgehammer/onestar = offer_data("one star sledgehammer", 5000, 3),
 		/obj/item/tool/screwdriver/combi_driver/onestar = offer_data("one star combi driver", 6500, 3),
 		/obj/item/tool/weldingtool/onestar = offer_data("one star welding tool", 6500, 3),
-		/obj/item/organ/external/robotic/one_star = offer_data("one star external prosthetic", 5000, 4)
+#warn THIS
+		// /obj/item/organ/external/robotic/one_star = offer_data("one star external prosthetic", 5000, 4)
 	)

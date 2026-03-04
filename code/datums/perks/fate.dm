@@ -96,10 +96,11 @@
 			There is only one key to survival, and it is the liquid that has shown you the way down. \
 			You have a permanent alcohol addiction, which gives you a boost to combat stats while under the influence and lowers your cognition permanently."
 
-/datum/perk/fate/alcoholic/assign(mob/living/carbon/human/H)
-	if(..() && !(/datum/reagent/ethanol in holder.metabolism_effects.addiction_list))
-		var/datum/reagent/R = new /datum/reagent/ethanol
-		holder.metabolism_effects.addiction_list.Add(R)
+#warn Alchoholic perk
+// /datum/perk/fate/alcoholic/assign(mob/living/carbon/human/H)
+// 	if(..() && !(/datum/reagent/ethanol in holder.metabolism_effects.addiction_list))
+// 		var/datum/reagent/R = new /datum/reagent/ethanol
+// 		holder.metabolism_effects.addiction_list.Add(R)
 
 /datum/perk/fate/alcoholic_active
 	name = "Alcoholic - active"

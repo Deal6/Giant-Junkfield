@@ -201,14 +201,14 @@
 	name = "yellow folder"
 	result = /obj/item/folder/yellow
 
-
-/datum/craft_recipe/bandage
-	name = "bandages"
-	result = /obj/item/stack/medical/bruise_pack/handmade
-	steps = list(
-		list(/obj/item/clothing, 1, time = 30)
-	)
-	related_stats = list(STAT_COG)
+#warn bondage
+// /datum/craft_recipe/bandage
+// 	name = "bandages"
+// 	result = /obj/item/stack/medical/bruise_pack/handmade
+// 	steps = list(
+// 		list(/obj/item/clothing, 1, time = 30)
+// 	)
+// 	related_stats = list(STAT_COG)
 
 /datum/craft_recipe/handmade_handtele
 	name = "cheap hand-tele"
@@ -330,7 +330,8 @@
 		list(CRAFT_MATERIAL, 2, MATERIAL_WOOD, "time" = 0), //get a nice piece of wood
 		list(QUALITY_CUTTING, 10, 10) // and cut it into a nice shape
 	)
-
+#warn fuck off im lazy here just uncomment line below
+/*
 /datum/craft_recipe/makeshift_leg
 	name = "Makeshift prosthetic left leg"
 	result = /obj/item/organ/external/robotic/makeshift/l_leg
@@ -382,3 +383,4 @@
 		list(CRAFT_MATERIAL, 3, MATERIAL_PLASTIC)
 	)
 	related_stats = list(STAT_MEC)
+*/

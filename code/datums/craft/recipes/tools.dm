@@ -3,7 +3,7 @@
 	time = 100
 	related_stats = list(STAT_COG)
 
-#warn webtape elow is kill
+#warn webtape below is kill
 // /datum/craft_recipe/tool/webtape
 // 	name = "Web tape"
 // 	result = /obj/item/tool/tape_roll/web

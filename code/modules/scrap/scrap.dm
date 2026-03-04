@@ -197,8 +197,9 @@ GLOBAL_LIST_EMPTY(scrap_base_cache)
 				var/picked = pick(check)
 				var/obj/item/organ/external/affecting = H.get_organ(picked)
 				if(affecting)
-					if(BP_IS_ROBOTIC(affecting))
-						return
+#warn me when im BP_ROBOTIC YEEEEEEEEAAAAAAAAAAAAAAAAAAAAAAAH
+					// if(BP_IS_ROBOTIC(affecting))
+					// 	return
 					if(affecting.take_damage(5, 0))
 						H.UpdateDamageIcon()
 					H.reagents.add_reagent("toxin", pick(prob(50);0,prob(50);5,prob(10);10,prob(1);25))
@@ -281,8 +282,9 @@ GLOBAL_LIST_EMPTY(scrap_base_cache)
 			return FALSE
 		to_chat(user, SPAN_DANGER("Ouch! You cut yourself while picking through \the [src]."))
 		BP.take_damage(5, null, TRUE, TRUE, "Sharp debris")
-		if(!BP_IS_ROBOTIC(BP))
-			victim.reagents.add_reagent("toxin", pick(prob(50);0,prob(50);5,prob(10);10,prob(1);25))
+#warn scrap toxins. BWEH
+		// if(!BP_IS_ROBOTIC(BP))
+		// 	victim.reagents.add_reagent("toxin", pick(prob(50);0,prob(50);5,prob(10);10,prob(1);25))
 		if(victim.species.flags & NO_PAIN) // So we still take damage, but actually dig through.
 			return FALSE
 		return TRUE
