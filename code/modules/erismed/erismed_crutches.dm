@@ -1,4 +1,6 @@
 /obj/item/organ/external
+	var/brute_dam = 0
+	var/burn_dam = 0
 
 /obj/item/organ/external/proc/droplimb() //Fully rework and maybe change name too
 
@@ -11,7 +13,7 @@
 //carrion spooders
 /obj/item/implant/carrion_spider
 	var/spider_price = 10
-	var/owner_mob = "your_mom or someone else who has spider"
+	var/mob/owner_mob = "your_mom or someone else who has spider"
 
 /obj/item/implant/carrion_spider/proc/die()
 	to_chat(src, "prank ultrakill")

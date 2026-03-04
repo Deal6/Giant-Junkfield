@@ -76,10 +76,11 @@
 	chem_effects.Cut()
 	analgesic = 0
 
-	if(touching) touching.metabolize()
-	if(ingested) ingested.metabolize()
-	if(bloodstr) bloodstr.metabolize()
-	metabolism_effects.process()
+	// if(touching) touching.metabolize()
+	// if(ingested) ingested.metabolize()
+	// if(bloodstr) bloodstr.metabolize()
+	// metabolism_effects.process()
+	#warn Slime metabolism
 
 	if(CE_PAINKILLER in chem_effects)
 		analgesic = chem_effects[CE_PAINKILLER]
