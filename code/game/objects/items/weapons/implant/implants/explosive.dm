@@ -53,40 +53,41 @@
 	qdel(src)
 
 /obj/item/implant/explosive/activate(delay)
-	if (malfunction == MALFUNCTION_PERMANENT)
-		return
+	// if (malfunction == MALFUNCTION_PERMANENT)
+	// 	return
 
-	STOP_PROCESSING(SSobj, src)
-	sleep(delay)
+	// STOP_PROCESSING(SSobj, src)
+	// sleep(delay)
 
-	if(istype(wearer, /mob/))
-		var/mob/T = wearer
-		message_admins("Explosive implant triggered in [T] ([T.key]). (<a href='byond://?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</a>) ")
-		log_game("Explosive implant triggered in [T] ([T.key]).")
+	// if(istype(wearer, /mob/))
+	// 	var/mob/T = wearer
+	// 	message_admins("Explosive implant triggered in [T] ([T.key]). (<a href='byond://?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</a>) ")
+	// 	log_game("Explosive implant triggered in [T] ([T.key]).")
 
-		if(ishuman(wearer))
-			if(part)
-				wearer.visible_message("<span class='warning'>Something beeps inside [wearer][part ? "'s [part.name]" : ""]!</span>")
-				playsound(loc, 'sound/items/countdown.ogg', 75, 1, -3)
-				sleep(25)
-				if (part.organ_tag in list(BP_CHEST, BP_HEAD, BP_GROIN))
-					part.createwound(BRUISE, 60)
-					explosion(get_turf(src), 400, 75)
-					qdel(src)
-				else
-					explosion(get_turf(src), 400, 75)
-					part.droplimb(0,DROPLIMB_BLUNT)
-					qdel(src)
+	// 	if(ishuman(wearer))
+	// 		if(part)
+	// 			wearer.visible_message("<span class='warning'>Something beeps inside [wearer][part ? "'s [part.name]" : ""]!</span>")
+	// 			playsound(loc, 'sound/items/countdown.ogg', 75, 1, -3)
+	// 			sleep(25)
+	// 			if (part.organ_tag in list(BP_CHEST, BP_HEAD, BP_GROIN))
+	// 				part.createwound(BRUISE, 60)
+	// 				explosion(get_turf(src), 400, 75)
+	// 				qdel(src)
+	// 			else
+	// 				explosion(get_turf(src), 400, 75)
+	// 				part.droplimb(0,DROPLIMB_BLUNT)
+	// 				qdel(src)
 
-		else
-			do_boom()
-	else
-		do_boom()
+	// 	else
+	// 		do_boom()
+	// else
+	// 	do_boom()
 
-	var/turf/t = get_turf(wearer)
+	// var/turf/t = get_turf(wearer)
 
-	if(t)
-		t.hotspot_expose(3500,125)
+	// if(t)
+	// 	t.hotspot_expose(3500,125)
+	#warn Explode human with implant
 
 /obj/item/implant/explosive/on_uninstall()
 	if(!istype(wearer) || !wearer.mind)

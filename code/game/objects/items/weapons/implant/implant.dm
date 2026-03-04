@@ -51,41 +51,42 @@
 
 //return TRUE for implanter icon update.
 /obj/item/implant/proc/install(mob/living/target, organ, mob/user)
-	var/obj/item/organ/external/affected
-	if (ishuman(target))
-		var/mob/living/carbon/human/H = target
-		affected = H.organs_by_name[organ]
-		if(!affected)
-			if(allowed_organs.len)
-				organ = pick(allowed_organs)
-			else
-				organ = BP_CHEST
-		affected = H.organs_by_name[organ]
+	// var/obj/item/organ/external/affected
+	// if (ishuman(target))
+	// 	var/mob/living/carbon/human/H = target
+	// 	affected = H.organs_by_name[organ]
+	// 	if(!affected)
+	// 		if(allowed_organs.len)
+	// 			organ = pick(allowed_organs)
+	// 		else
+	// 			organ = BP_CHEST
+	// 	affected = H.organs_by_name[organ]
 
-		if(!affected)
-			to_chat(user, SPAN_WARNING("[H] is missing that body part!"))
-			return
+	// 	if(!affected)
+	// 		to_chat(user, SPAN_WARNING("[H] is missing that body part!"))
+	// 		return
 
-		if(allowed_organs && allowed_organs.len && !(organ in allowed_organs))
-			to_chat(user, SPAN_WARNING("[src] cannot be implanted in this limb."))
-			return
+	// 	if(allowed_organs && allowed_organs.len && !(organ in allowed_organs))
+	// 		to_chat(user, SPAN_WARNING("[src] cannot be implanted in this limb."))
+	// 		return
 
-	if(!can_install(target, affected))
-		to_chat(user, SPAN_WARNING("You can't install [src]."))
-		return
-	forceMove(target)
-	wearer = target
-	implanted = TRUE
-	if(affected)
-		affected.implants |= src
-		part = affected
-		SSnano.update_uis(affected) // Update surgery UI window, if any
+	// if(!can_install(target, affected))
+	// 	to_chat(user, SPAN_WARNING("You can't install [src]."))
+	// 	return
+	// forceMove(target)
+	// wearer = target
+	// implanted = TRUE
+	// if(affected)
+	// 	affected.implants |= src
+	// 	part = affected
+	// 	SSnano.update_uis(affected) // Update surgery UI window, if any
 
-	on_install(target, affected)
-	wearer.update_implants()
-	for(var/mob/living/carbon/human/H in viewers(target))
-		SEND_SIGNAL_OLD(H, COMSIG_HUMAN_INSTALL_IMPLANT, target, src)
-	return TRUE
+	// on_install(target, affected)
+	// wearer.update_implants()
+	// for(var/mob/living/carbon/human/H in viewers(target))
+	// 	SEND_SIGNAL_OLD(H, COMSIG_HUMAN_INSTALL_IMPLANT, target, src)
+	// return TRUE
+	#warn Implant install
 
 /obj/item/implant/proc/can_install(var/mob/living/target, var/obj/item/organ/external/E)
 	return TRUE
@@ -93,16 +94,17 @@
 /obj/item/implant/proc/on_install(var/mob/living/target, var/obj/item/organ/external/E)
 
 /obj/item/implant/proc/uninstall()
-	on_uninstall()
-	forceMove(get_turf(wearer))
-	if(part)
-		part.implants.Remove(src)
-	part = null
-	implanted = FALSE
-	if(ishuman(wearer))
-		var/mob/living/carbon/human/H = wearer
-		H.update_implants()
-	wearer = null
+	// on_uninstall()
+	// forceMove(get_turf(wearer))
+	// if(part)
+	// 	part.implants.Remove(src)
+	// part = null
+	// implanted = FALSE
+	// if(ishuman(wearer))
+	// 	var/mob/living/carbon/human/H = wearer
+	// 	H.update_implants()
+	// wearer = null
+	#warn Implant uninstall
 
 /obj/item/implant/proc/on_uninstall()
 
@@ -133,9 +135,10 @@
 	return null
 
 /obj/item/implant/Destroy()
-	if(part)
-		part.implants.Remove(src)
-	return ..()
+	// if(part)
+	// 	part.implants.Remove(src)
+	// return ..()
+	#warn Implant destroy
 
 /obj/item/implant/explosive/emp_act(severity)
 	malfunction(severity)

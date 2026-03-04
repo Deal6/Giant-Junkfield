@@ -48,8 +48,9 @@
 					W.layer = initial(W.layer)
 
 /obj/item/implant/freedom/on_install(mob/living/carbon/source, obj/item/organ/O)
-	if(O.organ_tag in list(BP_L_LEG, BP_R_LEG))
-		install_organ = INSTALL_FOOTS
+	// if(O.organ_tag in list(BP_L_LEG, BP_R_LEG))
+	// 	install_organ = INSTALL_FOOTS
+	#warn Implant instal. Note: Maybe make shared proc for every implant
 
 /obj/item/implant/freedom/on_install(mob/living/source)
 
