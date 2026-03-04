@@ -184,22 +184,22 @@
 		if(SSticker.current_state != GAME_STATE_PLAYING)
 			to_chat(usr, "\red The round is either not ready, or has already finished...")
 			return
-
+#warn Sas
 		// Warn the player if they are trying to spawn without a brain
-		var/datum/body_modification/mod = client.prefs.get_modification(BP_BRAIN)
-		if(istype(mod, /datum/body_modification/limb/amputation))
-			if(alert(src,"Are you sure you wish to spawn without a brain? This will likely cause you to do die immediately. \
-			              If not, go to the Augmentation section of Setup Character and change the \"brain\" slot from Removed to the desired kind of brain.", \
-						  "Player Setup", "Yes", "No") == "No")
-				return 0
+		// var/datum/body_modification/mod = client.prefs.get_modification(BP_BRAIN)
+		// if(istype(mod, /datum/body_modification/limb/amputation))
+		// 	if(alert(src,"Are you sure you wish to spawn without a brain? This will likely cause you to do die immediately. \
+		// 	              If not, go to the Augmentation section of Setup Character and change the \"brain\" slot from Removed to the desired kind of brain.", \
+		// 				  "Player Setup", "Yes", "No") == "No")
+		// 		return 0
 
 		// Warn the player if they are trying to spawn without eyes
-		mod = client.prefs.get_modification(BP_EYES)
-		if(istype(mod, /datum/body_modification/limb/amputation))
-			if(alert(src,"Are you sure you wish to spawn without eyes? It will likely be difficult to see without them. \
-			              If not, go to the Augmentation section of Setup Character and change the \"eyes\" slot from Removed to the desired kind of eyes.", \
-						  "Player Setup", "Yes", "No") == "No")
-				return 0
+		// mod = client.prefs.get_modification(BP_EYES)
+		// if(istype(mod, /datum/body_modification/limb/amputation))
+		// 	if(alert(src,"Are you sure you wish to spawn without eyes? It will likely be difficult to see without them. \
+		// 	              If not, go to the Augmentation section of Setup Character and change the \"eyes\" slot from Removed to the desired kind of eyes.", \
+		// 				  "Player Setup", "Yes", "No") == "No")
+		// 		return 0
 
 		if(!check_rights(R_ADMIN, 0))
 			var/datum/species/S = all_species[client.prefs.species]

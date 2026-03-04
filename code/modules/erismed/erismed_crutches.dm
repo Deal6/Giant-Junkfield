@@ -39,7 +39,22 @@
 /obj/item/mech_equipment/auto_mender
 
 
-/obj/item/organ/interval/vital/brain
+/obj/item/organ/internal/vital/brain
+/obj/item/organ/internal/vital/
+/obj/item/organ/internal/
+/obj/item/organ/
 
-/obj/item/implanter
-	var/obj/item/implant/implant
+/obj/item/organ/proc/take_damage(var/number)
+	to_chat(src, "[src] tried to take damage for [number] damage :)")
+
+/obj/item/implanter/(var/insert)
+	var/obj/item/implant/implant = TRUE
+
+
+ /obj/item/organ/external/
+	var/is_usable = TRUE
+
+/obj/item/device/scanner/health
+
+/datum/design/research/item/exosuit/sleeper
+/datum/design/research/item/exosuit/sleeper/upgraded

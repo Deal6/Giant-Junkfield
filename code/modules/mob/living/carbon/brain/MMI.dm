@@ -7,16 +7,16 @@
 	brainmob.container = src
 	brainmob.silent = 0
 	..()
-
-/obj/item/device/mmi/digital/transfer_identity(mob/living/carbon/H)
-	brainmob.b_type = H.b_type
-	brainmob.dna_trace = H.dna_trace
-	brainmob.fingers_trace = H.fingers_trace
-	brainmob.timeofhostdeath = H.timeofdeath
-	brainmob.stat = 0
-	if(H.mind)
-		H.mind.transfer_to(brainmob)
-	return
+#warn bap
+// /obj/item/device/mmi/digital/transfer_identity(mob/living/carbon/H)
+// 	brainmob.b_type = H.b_type
+// 	brainmob.dna_trace = H.dna_trace
+// 	brainmob.fingers_trace = H.fingers_trace
+// 	brainmob.timeofhostdeath = H.timeofdeath
+// 	brainmob.stat = 0
+// 	if(H.mind)
+// 		H.mind.transfer_to(brainmob)
+// 	return
 
 /obj/item/device/mmi
 	name = "man-machine interface"
@@ -34,7 +34,8 @@
 	var/locked = 0
 	var/mob/living/carbon/brain/brainmob = null//The current occupant.
 	var/obj/item/organ/internal/vital/brain/brainobj = null	//The current brain organ.
-
+#warn hrrr... mimimimi...
+/*
 /obj/item/device/mmi/attackby(var/obj/item/O as obj, var/mob/user as mob)
 	if(istype(O,/obj/item/organ/internal/vital/brain) && !brainmob) //Time to stick a brain in it --NEO
 
@@ -195,3 +196,4 @@
 			if(3)
 				brainmob.emp_damage += rand(0,10)
 	..()
+*/

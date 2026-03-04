@@ -1,3 +1,4 @@
+#warn bad
 #define PROCESS_REACTION_ITER 5 //when processing a reaction, iterate this many times
 
 /datum/reagents
@@ -132,9 +133,9 @@
 	var/temperature = chem_temp
 	for(var/thing in reagent_list)
 		var/datum/reagent/R = thing
-		if(R.custom_temperature_effects(temperature))
-			reaction_occured = TRUE
-			continue
+		// if(R.custom_temperature_effects(temperature))
+		// 	reaction_occured = TRUE
+		// 	continue
 
 		// Check if the reagent is decaying or not.
 		var/list/replace_self_with
@@ -216,8 +217,8 @@
 	for(var/datum/reagent/current in reagent_list)
 		if(current.id == id)
 			current.volume += amount
-			if(!isnull(data)) // For all we know, it could be zero or empty string and meaningful
-				current.mix_data(data, amount)
+			// if(!isnull(data)) // For all we know, it could be zero or empty string and meaningful
+			// 	current.mix_data(data, amount)
 			update_total()
 			if(!safety)
 				handle_reactions()
@@ -266,8 +267,8 @@
 			update_total()
 			if(my_atom)
 				my_atom.on_reagent_change()
-				if(isliving(my_atom))
-					current.on_mob_delete(my_atom)
+				// if(isliving(my_atom))
+				// 	current.on_mob_delete(my_atom)
 
 			return 0
 
@@ -329,7 +330,7 @@
 /datum/reagents/proc/get_data(id)
 	for(var/datum/reagent/current in reagent_list)
 		if(current.id == id)
-			return current.get_data()
+			// return current.get_data()
 	return 0
 
 /datum/reagents/proc/log_list() // Used in attack logs
@@ -374,7 +375,7 @@
 
 	for(var/datum/reagent/current in reagent_list)
 		var/amount_to_transfer = current.volume * part
-		target.add_reagent(current.id, amount_to_transfer * multiplier, current.get_data(), safety = 1) // We don't react until everything is in place
+		// target.add_reagent(current.id, amount_to_transfer * multiplier, current.get_data(), safety = 1) // We don't react until everything is in place
 		if(!copy)
 			remove_reagent(current.id, amount_to_transfer, 1)
 
@@ -452,7 +453,7 @@
 		return
 
 	for(var/datum/reagent/current in reagent_list)
-		current.touch_mob(target, current.volume)
+		// current.touch_mob(target, current.volume)
 
 	update_total()
 
@@ -465,9 +466,9 @@
 			return TRUE // halt powder pile/smears creation without wasting reagents
 
 	var/handled = TRUE
-	for(var/datum/reagent/current in reagent_list)
-		if(!current.touch_turf(target, current.volume))
-			handled = FALSE
+	// for(var/datum/reagent/current in reagent_list)
+		// if(!current.touch_turf(target, current.volume))
+		// 	handled = FALSE
 	update_total()
 	return handled
 
@@ -475,8 +476,8 @@
 	if(!target || !istype(target) || !target.simulated)
 		return
 
-	for(var/datum/reagent/current in reagent_list)
-		current.touch_obj(target, current.volume)
+	// for(var/datum/reagent/current in reagent_list)
+	// 	current.touch_obj(target, current.volume)
 
 	update_total()
 

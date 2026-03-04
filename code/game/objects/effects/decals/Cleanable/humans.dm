@@ -73,11 +73,12 @@ var/global/list/image/splatter_cache=list()
 	if(amount < 1)
 		return
 
-	var/obj/item/organ/external/l_leg = perp.get_organ(BP_L_LEG)
-	var/obj/item/organ/external/r_leg = perp.get_organ(BP_R_LEG)
+#warn mhm
+	// var/obj/item/organ/external/l_leg = perp.get_organ(BP_L_LEG)
+	// var/obj/item/organ/external/r_leg = perp.get_organ(BP_R_LEG)
 	var/hasfeet = 1
-	if((!l_leg || l_leg.is_stump()) && (!r_leg || r_leg.is_stump()))
-		hasfeet = 0
+	// if((!l_leg || l_leg.is_stump()) && (!r_leg || r_leg.is_stump()))
+	// 	hasfeet = 0
 	if(perp.shoes && !perp.buckled)//Adding blood to shoes
 		var/obj/item/clothing/shoes/S = perp.shoes
 		if(istype(S))

@@ -117,13 +117,14 @@
 	build_path = /obj/item/mech_equipment/towing_hook
 
 //MEDICAL
-/datum/design/research/item/exosuit/sleeper
-	name = "mounted sleeper"
-	build_path = /obj/item/mech_equipment/sleeper
+#warn bad
+// /datum/design/research/item/exosuit/sleeper
+// 	name = "mounted sleeper"
+// 	build_path = /obj/item/mech_equipment/sleeper
 
-/datum/design/research/item/exosuit/sleeper/upgraded
-	name = "mounted sleeper MK2"
-	build_path = /obj/item/mech_equipment/sleeper/upgraded
+// /datum/design/research/item/exosuit/sleeper/upgraded
+// 	name = "mounted sleeper MK2"
+// 	build_path = /obj/item/mech_equipment/sleeper/upgraded
 
 /datum/design/research/item/exosuit/automender
 	name = "mech auto-mender"

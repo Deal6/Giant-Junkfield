@@ -38,26 +38,27 @@
 	GLOB.all_faction_items -= src
 	..()
 
-/obj/item/reagent_containers/bonsai/Process()
-	if(++ticks % 10 == 0 && reagents.total_volume)
-		var/reagent_count = 0
-		for(var/datum/reagent/R in reagents.reagent_list)
-			if(istype(R, /datum/reagent/alcohol))
-				reagent_count += R.volume
-				R.remove_self(R.volume)
-		if(reagent_count > 10)
-			var/amount_to_spawn = round(reagent_count/10)
-			for(var/i = 0 to amount_to_spawn)
-				var/datum/seed/S = plant_controller.seeds[pick(
-					"tomato",
-					"carrot",
-					"corn",
-					"eggplant",
-					"chili",
-					"mushroom",
-					"wheat",
-					"potato",
-					"rice")]
-				S.harvest(get_turf(src),0,0,1)
-				flick(icon_state+"_animation", src)
-				playsound(loc, 'sound/effects/ding2.ogg', 50, 1, -1)
+#warn Bonsai
+// /obj/item/reagent_containers/bonsai/Process()
+// 	if(++ticks % 10 == 0 && reagents.total_volume)
+// 		var/reagent_count = 0
+// 		for(var/datum/reagent/R in reagents.reagent_list)
+// 			if(istype(R, /datum/reagent/alcohol))
+// 				reagent_count += R.volume
+// 				R.remove_self(R.volume)
+// 		if(reagent_count > 10)
+// 			var/amount_to_spawn = round(reagent_count/10)
+// 			for(var/i = 0 to amount_to_spawn)
+// 				var/datum/seed/S = plant_controller.seeds[pick(
+// 					"tomato",
+// 					"carrot",
+// 					"corn",
+// 					"eggplant",
+// 					"chili",
+// 					"mushroom",
+// 					"wheat",
+// 					"potato",
+// 					"rice")]
+// 				S.harvest(get_turf(src),0,0,1)
+// 				flick(icon_state+"_animation", src)
+// 				playsound(loc, 'sound/effects/ding2.ogg', 50, 1, -1)

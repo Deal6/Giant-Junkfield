@@ -183,11 +183,12 @@
 	required_tech_levels = list()
 	cost = 1000
 
-	unlocks_designs = list(	/datum/design/research/item/autodoc,
-							/datum/design/research/item/autodoc_commercial,
-							/datum/design/research/item/chem_dispenser,
-							/datum/design/research/item/medhud,
-							/datum/design/research/structure/bidonadv
+	unlocks_designs = list(
+		/datum/design/research/item/autodoc,
+		/datum/design/research/item/autodoc_commercial,
+		/datum/design/research/item/chem_dispenser,
+		/datum/design/research/item/medhud,
+		/datum/design/research/structure/bidonadv
 							)
 
 /datum/technology/tracker_tablet
@@ -261,35 +262,36 @@
 							/datum/design/research/circuit/moeballs_printer,
 							/datum/design/research/item/dna_scanner)
 
-/datum/technology/top_biotech
-	name = "Augmentations' Biotech"
-	desc = "Augmentations for body, this tech using almost all previous technologies."
-	tech_type = RESEARCH_BIOTECH
+#warn bad
+// /datum/technology/top_biotech
+// 	name = "Augmentations' Biotech"
+// 	desc = "Augmentations for body, this tech using almost all previous technologies."
+// 	tech_type = RESEARCH_BIOTECH
 
-	x = 0.7
-	y = 0.8
-	icon = "scalpelmanager"
+// 	x = 0.7
+// 	y = 0.8
+// 	icon = "scalpelmanager"
 
-	required_technologies = list(	/datum/technology/advanced_biotech,
-									/datum/technology/portable_biotech
-								)
-	required_tech_levels = list()
-	cost = 2000
+// 	required_technologies = list(	/datum/technology/advanced_biotech,
+// 									/datum/technology/portable_biotech
+// 								)
+// 	required_tech_levels = list()
+// 	cost = 2000
 
-	unlocks_designs = list(	/datum/design/research/item/mechfab/modules/armor,
-							/datum/design/research/item/mechfab/modules/armblade,
-							/datum/design/research/item/mechfab/modules/runner,
-							/datum/design/research/item/mechfab/modules/multitool/surgical,
-							/datum/design/research/item/mechfab/modules/multitool/engineer,
-							/datum/design/research/item/mechfab/modules/multitool/miner,
-							/datum/design/research/item/mechfab/prosthesis_moebius/r_arm,
-							/datum/design/research/item/mechfab/prosthesis_moebius/l_arm,
-							/datum/design/research/item/mechfab/prosthesis_moebius/r_leg,
-							/datum/design/research/item/mechfab/prosthesis_moebius/l_leg,
-							/datum/design/research/item/mechfab/prosthesis_moebius/groin,
-							/datum/design/research/item/mechfab/prosthesis_moebius/torso,
-							/datum/design/research/item/mechfab/prosthesis_moebius/head
-							)
+// 	unlocks_designs = list(	/datum/design/research/item/mechfab/modules/armor,
+// 							/datum/design/research/item/mechfab/modules/armblade,
+// 							/datum/design/research/item/mechfab/modules/runner,
+// 							/datum/design/research/item/mechfab/modules/multitool/surgical,
+// 							/datum/design/research/item/mechfab/modules/multitool/engineer,
+// 							/datum/design/research/item/mechfab/modules/multitool/miner,
+// 							/datum/design/research/item/mechfab/prosthesis_moebius/r_arm,
+// 							/datum/design/research/item/mechfab/prosthesis_moebius/l_arm,
+// 							/datum/design/research/item/mechfab/prosthesis_moebius/r_leg,
+// 							/datum/design/research/item/mechfab/prosthesis_moebius/l_leg,
+// 							/datum/design/research/item/mechfab/prosthesis_moebius/groin,
+// 							/datum/design/research/item/mechfab/prosthesis_moebius/torso,
+// 							/datum/design/research/item/mechfab/prosthesis_moebius/head
+// 							)
 
 /datum/technology/mind_biotech
 	name = "Mind Biotech"
