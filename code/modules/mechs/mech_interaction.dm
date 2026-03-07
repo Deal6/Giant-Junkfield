@@ -330,7 +330,8 @@
 		for(var/hardpoint in hardpoints)
 			if(istype(hardpoints[hardpoint], /obj/item/mech_equipment/auto_mender))
 				var/obj/item/mech_equipment/auto_mender/mend = hardpoints[hardpoint]
-				choices["[hardpoint] - [mend.trauma_charges_stored]/[mend.trauma_storage_max] charges"] = mend
+				#warn whatever
+				//choices["[hardpoint] - [mend.trauma_charges_stored]/[mend.trauma_storage_max] charges"] = mend
 		var/obj/item/mech_equipment/auto_mender/choice = null
 		if(!length(choices))
 			return

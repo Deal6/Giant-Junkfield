@@ -31,22 +31,22 @@
 
 /obj/item/reagent_containers/blood/update_icon()
 	cut_overlays()
+#warn HE PUNCHED OUT ALL MY BLOOD
+	// if(!reagents || !reagents.total_volume)
+	// 	return
 
-	if(!reagents || !reagents.total_volume)
-		return
+	// var/has_blood
+	// for(var/datum/reagent/current in reagents.reagent_list)
+	// 	if(current.id == "blood")
+	// 		has_blood = TRUE
 
-	var/has_blood
-	for(var/datum/reagent/current in reagents.reagent_list)
-		if(current.id == "blood")
-			has_blood = TRUE
-
-	if(!has_blood)
-		var/mutable_appearance/filling = mutable_appearance(icon, "[icon_state][get_filling_state()]")
-		filling.color = reagents.get_color()
-		add_overlay(filling)
-	else
-		var/mutable_appearance/filling = mutable_appearance(icon, "[icon_state]-blood[get_filling_state()]")
-		add_overlay(filling)
+	// if(!has_blood)
+	// 	var/mutable_appearance/filling = mutable_appearance(icon, "[icon_state][get_filling_state()]")
+	// 	filling.color = reagents.get_color()
+	// 	add_overlay(filling)
+	// else
+	// 	var/mutable_appearance/filling = mutable_appearance(icon, "[icon_state]-blood[get_filling_state()]")
+	// 	add_overlay(filling)
 
 /obj/item/reagent_containers/blood/proc/update_name()
 	var/list/data = reagents.get_data("blood")

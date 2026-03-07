@@ -62,7 +62,8 @@
 	O.job = "Robot"
 	if(O.mind.assigned_role == "Robot")
 		O.mmi = new /obj/item/device/mmi(O)
-		O.mmi.transfer_identity(src)
+		#warn bad
+		//O.mmi.transfer_identity(src)
 
 	callHook("borgify", list(O))
 	O.Namepick()

@@ -5,9 +5,9 @@
 ///Process_Grab()
 ///Called by client/Move()
 ///Checks to see if you are grabbing anything and if moving will affect your grab.
-/client/proc/Process_Grab()
-	for(var/obj/item/grab/G in list(mob.l_hand, mob.r_hand))
-		G.reset_kill_state() //no wandering across the station/asteroid while choking someone
+// /client/proc/Process_Grab()
+// 	for(var/obj/item/grab/G in list(mob.l_hand, mob.r_hand))
+// 		G.reset_kill_state() //no wandering across the station/asteroid while choking someone
 
 // /obj/item/grab
 // 	name = "grab"

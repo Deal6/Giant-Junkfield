@@ -22,7 +22,9 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 	. = ..()
 	GLOB.all_crew_records.Remove(src)
 
+#warn Commented crew records because no organs
 /datum/computer_file/report/crew_record/proc/load_from_mob(var/mob/living/carbon/human/H)
+/*
 	if(istype(H))
 		if(H.job == ASSISTANT_TITLE) // As stowaways, Vagabond do not show up on the crew manifest.
 			GLOB.all_crew_records.Remove(src)
@@ -59,6 +61,7 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 		var/list/wounds = list()
 		var/list/prosthetics = list()
 		var/list/scannedlimbs = list()
+
 		for(var/datum/organ_description/OD in H.species.has_limbs) // default limbs for species
 			if(H.organs_by_name[OD.organ_tag])
 				if(istype(H.organs_by_name[OD.organ_tag], OD.default_type)) // these lists contain abnormalilities, so normalities are skipped.
@@ -69,7 +72,7 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 						wounds.Add("[organthing.name] instead of [OD.name]")
 					else
 						prosthetics.Add(organthing.name)
-						
+
 						scannedlimbs.Add(organthing)
 				// TODO: add organ checks once FBPs are better coded
 			else
@@ -94,7 +97,7 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 		medRecord.value["prosthetics"] = prosthetics.len ? prosthetics :  list("No prosthetics on record.")
 		medRecord.value["Body state"] = bodystate ? bodystate : list("\[Data Missing\]")
 		medRecord.value["chemhistory"] = addictions.len ? addictions : list("Chemical record is clean.")
-		
+
 		var/list/psychological = list()
 		for(var/datum/perk/profile in H.stats.perks)
 			switch(profile.type)
@@ -181,7 +184,7 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 
 	// Antag record
 	set_antagRecord(H && H.exploit_record && !jobban_isbanned(H, "Records") ? html_decode(H.exploit_record) : "")
-
+*/
 // Global methods
 // Used by character creation to create a record for new arrivals.
 /proc/CreateModularRecord(var/mob/living/carbon/human/H)

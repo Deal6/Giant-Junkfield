@@ -35,7 +35,9 @@
 		/mob/living/proc/hide,
 		/mob/living/simple_animal/spider_core/proc/generate_body))
 
+#warn core deth...
 /mob/living/simple_animal/spider_core/death()
+/*
 	var/obj/item/organ/internal/core = locate(/obj/item/organ/internal/carrion/core) in contents
 	if(core)
 		core.forceMove(loc)
@@ -43,7 +45,7 @@
 		core.refresh_damage()
 	playsound(loc, 'sound/voice/shriek1.ogg', 50)
 	qdel(src)
-	
+*/
 
 /mob/living/simple_animal/spider_core/proc/generate_body()
 	set name = "Build a Body"
@@ -60,8 +62,9 @@
 	H.randomize_appearance()
 	visible_message(SPAN_DANGER("[src] morphs into a human body!"))
 	gibs(loc, null)
+/*
 	var/obj/item/organ/internal/carrion/core/core = locate(/obj/item/organ/internal/carrion/core) in contents
-	
+
 	var/list/powers_to_buy = list()
 
 	H.faction = "spiders"
@@ -92,5 +95,5 @@
 			core.purchasePower(CP, TRUE)
 
 		core.associated_spider = null
-
+*/
 	qdel(src)

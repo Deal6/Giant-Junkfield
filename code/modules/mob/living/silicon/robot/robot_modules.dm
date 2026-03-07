@@ -363,14 +363,15 @@ var/global/list/robot_modules = list(
 
 	..(R)
 
-
+#warn bad
 /obj/item/robot_module/medical/general/respawn_consumable(mob/living/silicon/robot/R, var/amount)
 	var/obj/item/reagent_containers/syringe/S = locate() in src.modules
+/*
 	if(S.mode == 2)
 		S.reagents.clear_reagents()
 		S.mode = initial(S.mode)
 		S.desc = initial(S.desc)
-		S.update_icon()
+		S.update_icon()*/
 
 	if(src.emag)
 		var/obj/item/reagent_containers/spray/PS = src.emag

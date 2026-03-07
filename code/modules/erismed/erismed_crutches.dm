@@ -4,6 +4,15 @@
 
 /obj/item/organ/external/proc/droplimb() //Fully rework and maybe change name too
 
+
+/obj/item/organ/proc/is_usable()
+
+/obj/proc/affect_grab(var/mob/user, var/mob/target, var/state)
+
+/obj/item/grab
+	var/mob/affecting
+	var/state
+
 /obj/item/implanter
 
 /obj/item/implanter/installer
@@ -35,7 +44,8 @@
 /proc/remove_nsa()
 
 /datum/reagents/metabolism
-
+/datum/reagent/
+	var/name
 /obj/item/mech_equipment/auto_mender
 
 
@@ -44,12 +54,10 @@
 /obj/item/organ/internal/
 /obj/item/organ/
 
-/obj/item/organ/proc/take_damage(var/number)
-	to_chat(src, "[src] tried to take damage for [number] damage :)")
-
 /obj/item/implanter/(var/insert)
 	var/obj/item/implant/implant = TRUE
 
+/obj/item/device/proc/transfer_identity(var/mob/living/carbon/H)
 
  /obj/item/organ/external/
 	var/is_usable = TRUE

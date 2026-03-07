@@ -12,7 +12,9 @@
 GLOBAL_LIST_EMPTY(catalogs)
 GLOBAL_LIST_EMPTY(all_catalog_entries_by_type)
 
+#warn I think this is chemapp?
 /hook/startup/proc/createCatalogs()
+/*
 	// Reagents
 	for(var/V in GLOB.chemical_reagents_list)
 		var/datum/reagent/D = GLOB.chemical_reagents_list[V]
@@ -52,8 +54,11 @@ GLOBAL_LIST_EMPTY(all_catalog_entries_by_type)
 	C.entry_list = sortTim(C.entry_list, /proc/cmp_catalog_entry_asc)
 	createCookingCatalogs()
 	return TRUE
+*/
+#warn erik...
 
 /proc/create_catalog_entry(var/datum/thing, var/catalog_id)
+/*
 	if(catalog_id && !GLOB.catalogs[catalog_id])
 		GLOB.catalogs[catalog_id] = new /datum/catalog(catalog_id)
 	if(!GLOB.all_catalog_entries_by_type[thing.type])
@@ -80,7 +85,7 @@ GLOBAL_LIST_EMPTY(all_catalog_entries_by_type)
 		if(!C.entry_list.Find(GLOB.all_catalog_entries_by_type[thing.type]))
 			C.add_entry(GLOB.all_catalog_entries_by_type[thing.type])
 	return TRUE
-
+*/
 /proc/get_catalog_entry(var/type)
 	if(GLOB.all_catalog_entries_by_type[type])
 		return GLOB.all_catalog_entries_by_type[type]
@@ -193,12 +198,14 @@ GLOBAL_LIST_EMPTY(all_catalog_entries_by_type)
 			return
 	can_be_used_in.Add(reagent_type)
 
+#warn errur
 /datum/catalog_entry/reagent/New(datum/reagent/V)
 	if(!istype(V))
 		error("wrong usage of [src.type]")
 		qdel(src)
 		return
 	..()
+	/*
 	// SPECIFICTS
 	title = V.name
 	thing_nature = "Reagent"
@@ -243,7 +250,7 @@ GLOBAL_LIST_EMPTY(all_catalog_entries_by_type)
 	if(V.addiction_threshold || V.addiction_chance)
 		addiction_chance = V.addiction_threshold ? "high" : V.addiction_chance <= 10 ? "Low" : V.addiction_chance <= 25 ? "Moderate" : "High"
 		addiction_threshold = V.addiction_threshold
-
+*/
 /datum/catalog_entry/reagent/catalog_ui_data(mob/user, ui_key = "main")
 	var/list/data = ..()
 	data["reagent_state"] = reagent_state
@@ -325,7 +332,9 @@ GLOBAL_LIST_EMPTY(all_catalog_entries_by_type)
 		if(findtext(i, value))
 			return TRUE
 
+#warn error BAD!!!
 /datum/catalog_entry/drink/New(var/datum/reagent/V)
+/*
 	if(!istype(V))
 		error("wrong usage of [src.type]")
 		qdel(src)
@@ -360,7 +369,7 @@ GLOBAL_LIST_EMPTY(all_catalog_entries_by_type)
 		recipe_data = list()
 		for(var/datum/chemical_reaction/R in recipes)
 			recipe_data += list(R.nano_ui_data())
-
+*/
 /datum/catalog_entry/drink/nano_ui_data(mob/user, ui_key = "main")
 	var/list/data = ..()
 

@@ -170,16 +170,16 @@
 						RIG_modules += list(current_module)
 				. += list(list("RIG_INTERFACE_DATA", RIG_pieces, RIG_modules))
 
-	var/chemvessel_efficiency = get_organ_efficiency(OP_CHEMICALS)
-	if(chemvessel_efficiency > 1)
-		. += list(list("Chemical Storage: [carrion_stored_chemicals]/[round(0.5 * chemvessel_efficiency)]"))
+	// var/chemvessel_efficiency = get_organ_efficiency(OP_CHEMICALS)
+	// if(chemvessel_efficiency > 1)
+	// 	. += list(list("Chemical Storage: [carrion_stored_chemicals]/[round(0.5 * chemvessel_efficiency)]"))
 
-	var/maw_efficiency = get_organ_efficiency(OP_MAW)
-	if(maw_efficiency > 1)
-		. += list(list("Gnawing hunger: [carrion_hunger]/[round(maw_efficiency/10)]"))
-	var/obj/item/implant/core_implant/cruciform/C = get_core_implant(/obj/item/implant/core_implant/cruciform)
-	if(C)
-		. += list(list("Cruciform: [C.power]/[C.max_power]"))
+	// var/maw_efficiency = get_organ_efficiency(OP_MAW)
+	// if(maw_efficiency > 1)
+	// 	. += list(list("Gnawing hunger: [carrion_hunger]/[round(maw_efficiency/10)]"))
+	// var/obj/item/implant/core_implant/cruciform/C = get_core_implant(/obj/item/implant/core_implant/cruciform)
+	// if(C)
+	// 	. += list(list("Cruciform: [C.power]/[C.max_power]"))
 
 /mob/living/carbon/human/flash(duration = 0, drop_items = FALSE, doblind = FALSE, doblurry = FALSE)
 	if(blinded)
@@ -359,7 +359,7 @@ var/list/rank_prefix = list(\
 //Returns "Unknown" if facially disfigured and real_name if not. Useful for setting name when polyacided or when updating a human's name variable
 /mob/living/carbon/human/get_face_name()
 	var/obj/item/organ/external/head = get_organ(BP_HEAD)
-	if(!head || head.disfigured || head.is_stump() || !real_name) // || (HUSK in mutations) 	//disfigured. use id-name if possible
+	if(!head || head.is_stump() || !real_name) // || (HUSK in mutations) || head.disfigured	//disfigured. use id-name if possible
 		return "Unknown"
 	return real_name
 

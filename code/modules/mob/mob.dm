@@ -570,6 +570,7 @@
 
 /mob/proc/pull_damage()
 	if(ishuman(src))
+/*
 		var/mob/living/carbon/human/H = src
 		if(H.health - H.halloss <= HEALTH_THRESHOLD_SOFTCRIT)
 			for(var/name in H.organs_by_name)
@@ -579,7 +580,8 @@
 						return 1
 		else
 			return 0
-
+*/
+		return 0
 /mob/MouseDrop(mob/M as mob)
 	..()
 	if(M != usr) return
@@ -756,10 +758,6 @@ All Canmove setting in this proc is temporary. This var should not be set from h
 		canmove = TRUE
 		set_density(initial(density))
 	reset_layer()
-
-	for(var/obj/item/grab/G in grabbed_by)
-		if(G.force_stand())
-			lying = 0
 
 	//Temporarily moved here from the various life() procs
 	//I'm fixing stuff incrementally so this will likely find a better home.
@@ -979,7 +977,8 @@ mob/proc/yank_out_object()
 	valid_objects = get_visible_implants()
 	if(valid_objects.len == 1) //Yanking out last object - removing verb.
 		remove_verb(src, /mob/proc/yank_out_object)
-
+#warn axe in my fucking chest!!!
+/*
 	if(ishuman(src))
 		var/mob/living/carbon/human/H = src
 		var/obj/item/organ/external/affected
@@ -998,7 +997,7 @@ mob/proc/yank_out_object()
 		if (ishuman(U))
 			var/mob/living/carbon/human/human_user = U
 			human_user.bloody_hands(H)
-
+*/
 	else
 		embedded -= selection
 		selection.on_embed_removal(src)

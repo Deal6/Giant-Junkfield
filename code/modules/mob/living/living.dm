@@ -884,5 +884,6 @@ default behaviour is:
 	return FALSE
 
 //Makes a blood drop, leaking amt units of blood from the mob
+#warn bad
 /mob/living/proc/drip_blood(var/amt as num)
-	blood_splatter(src,src)
+	//blood_splatter(src,src)

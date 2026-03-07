@@ -33,11 +33,13 @@
 		detach()
 		leave_host()
 
+#warn bad
 /mob/living/simple_animal/borer/proc/infest()
 	set category = "Abilities"
 	set name = "Infest"
 	set desc = "Infest a suitable humanoid host."
 
+/*
 	if(stat)
 		return
 
@@ -136,8 +138,12 @@
 				// If they're in normally, implant removal can get them out.
 				var/obj/item/organ/external/head = H.get_organ(BP_HEAD)
 				head.implants += src
+*/
 
-// BRAIN WORM ZOMBIES AAAAH.
+
+
+// BRAIN WORM ZOMBIES AAAAH
+#warn bad
 /mob/living/simple_animal/borer/proc/replace_brain()
 
 	var/mob/living/carbon/human/H = host
@@ -147,7 +153,7 @@
 		return
 
 	to_chat(src, SPAN_DANGER("You settle into the empty brainpan and begin to expand, fusing inextricably with the dead flesh of [H]."))
-
+/*
 	H.add_language(LANGUAGE_CORTICAL)
 
 	// Remove the usual "host control" abilities
@@ -193,12 +199,15 @@
 			all_damage = H.getBruteLoss() + H.getFireLoss() + H.getOxyLoss()
 		H.stat = UNCONSCIOUS
 		H.updatehealth()
+*/
 
+#warn bad
 /mob/living/simple_animal/borer/proc/secrete_chemicals()
 	set category = "Abilities"
 	set name = "Secrete Chemicals"
 	set desc = "Push some chemicals into your host's bloodstream."
 
+/*
 	if(stat)
 		return
 
@@ -228,6 +237,8 @@
 	host.reagents.add_reagent(chem, 10)
 	to_chat(src, SPAN_NOTICE("You secrete some chemicals from your reservoirs. There are [host.reagents.get_reagent_amount(chem)] units of [chem_name] in host's bloodstream now."))
 	chemicals -= 50
+*/
+
 
 /mob/living/simple_animal/borer/proc/paralyze_victim()
 	set category = "Abilities"
@@ -393,7 +404,8 @@
 	host.Weaken(10)
 	host.Paralyse(10)
 	host.restore_blood()
-	host.fixblood()
+	#warn bad
+	//host.fixblood()
 	host.update_lying_buckled_and_verb_status()
 	chemicals -= 500
 

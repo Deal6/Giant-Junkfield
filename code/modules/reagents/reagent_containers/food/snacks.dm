@@ -180,7 +180,8 @@
 		var/mob/living/carbon/human/human = mob
 		var/fullness_modifier = 1
 		if(istype(human))
-			fullness_modifier = 100 / human.get_organ_efficiency(OP_STOMACH)
+#warn 1 line below
+			fullness_modifier = 100 // / human.get_organ_efficiency(OP_STOMACH)
 		var/fullness = (carbon.nutrition + (carbon.reagents.get_reagent_amount("nutriment") * 25)) * fullness_modifier
 		if(carbon == user)								//If you're eating it yourself
 			if(istype(human))

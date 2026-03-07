@@ -1,6 +1,6 @@
 
 //Chemical Reagents - Initialises all /datum/reagent into a list indexed by reagent id
-/proc/initialize_chemical_reagents()
+// /proc/initialize_chemical_reagents()
 	// var/paths = typesof(/datum/reagent) - /datum/reagent
 	// GLOB.chemical_reagents_list = list()
 	// for(var/path in paths)
@@ -10,7 +10,7 @@
 	// 	GLOB.chemical_reagents_list[D.id] = D
 
 #warn reagent
-/datum/reagent
+// /datum/reagent
 	// var/name = ""
 	// var/id = "reagent"
 	// var/description = "A non-descript chemical."

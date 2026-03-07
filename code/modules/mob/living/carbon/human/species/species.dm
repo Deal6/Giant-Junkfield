@@ -129,7 +129,7 @@
 	var/holder_type
 	var/gluttonous                // Can eat some mobs. Values can be GLUT_TINY, GLUT_SMALLER, GLUT_ANYTHING.
 	var/species_rarity_value = 1          // Relative rarity/collector value for this species.
-	                              // Determines the organs that the species spawns with and
+/*	                              // Determines the organs that the species spawns with and
 	var/list/has_process = list(    // which required-process checks are conducted and defalut organs for them.
 		OP_HEART =    /obj/item/organ/internal/vital/heart,
 		OP_LUNGS =    /obj/item/organ/internal/vital/lungs,
@@ -153,7 +153,7 @@
 		BP_L_LEG =  new /datum/organ_description/leg/left,
 		BP_R_LEG =  new /datum/organ_description/leg/right
 		)
-
+*/
 	// Misc
 	var/list/genders = list(MALE, FEMALE)
 

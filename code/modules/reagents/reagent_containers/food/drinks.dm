@@ -61,20 +61,21 @@
 /obj/item/reagent_containers/food/drinks/feed_sound(var/mob/user)
 	playsound(user.loc, 'sound/items/drink.ogg', rand(10, 50), 1)
 
+#warn Womp
 /obj/item/reagent_containers/food/drinks/update_icon()
-	cut_overlays()
-	if(reagents && reagents.total_volume)
-		if(base_name)
-			var/datum/reagent/R = reagents.get_master_reagent()
-			SetName("[base_name] of [R.glass_name ? R.glass_name : "something"]")
-			desc = R.glass_desc ? R.glass_desc : initial(desc)
-		if(filling_states)
-			var/mutable_appearance/filling = mutable_appearance(icon, "[base_icon][get_filling_state()]")
-			filling.color = reagents.get_color()
-			add_overlay(filling)
-	else
-		SetName(initial(name))
-		desc = initial(desc)
+	// cut_overlays()
+	// if(reagents && reagents.total_volume)
+	// 	if(base_name)
+	// 		var/datum/reagent/R = reagents.get_master_reagent()
+	// 		SetName("[base_name] of [R.glass_name ? R.glass_name : "something"]")
+	// 		desc = R.glass_desc ? R.glass_desc : initial(desc)
+	// 	if(filling_states)
+	// 		var/mutable_appearance/filling = mutable_appearance(icon, "[base_icon][get_filling_state()]")
+	// 		filling.color = reagents.get_color()
+	// 		add_overlay(filling)
+	// else
+	// 	SetName(initial(name))
+	// 	desc = initial(desc)
 
 /obj/item/reagent_containers/food/drinks/proc/gulp_whole()
 	set category = "Object"

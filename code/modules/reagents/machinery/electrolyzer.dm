@@ -12,8 +12,8 @@
 	var/obj/item/reagent_containers/separation_beaker
 	var/convertion_coefficient = 2
 	var/on = FALSE
-
-
+#warn bad
+/*
 
 // returns FALSE on errors TRUE on success and -1 if nothing to do
 /proc/electrolysis(var/obj/item/reagent_containers/primary_beaker, var/obj/item/reagent_containers/secondary_beaker, var/amount)
@@ -360,3 +360,5 @@
 
 	return 1 // update UIs attached to this object
 
+*/
+#warn here :)

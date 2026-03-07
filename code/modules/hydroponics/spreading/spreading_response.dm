@@ -1,15 +1,15 @@
 
 /obj/effect/plant/HasProximity(var/atom/movable/AM)
-
+#warn bad below
 	if(seed.get_trait(TRAIT_CHEM_SPRAYER))
 		spawn(0)
 			var/obj/effect/effect/water/chempuff/D = new/obj/effect/effect/water/chempuff(get_turf(src))
 			var/turf/my_target = get_turf(AM)
-			D.create_reagents(10*seed.chems.len)
+			// D.create_reagents(10*seed.chems.len)
 			if(!src)
 				return
 			for (var/reagent in seed.chems)
-				D.reagents.add_reagent(reagent, 10)
+				// D.reagents.add_reagent(reagent, 10)
 			D.set_color()
 			D.set_up(my_target, 1, 10)
 

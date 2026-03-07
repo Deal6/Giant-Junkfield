@@ -116,6 +116,8 @@
 		if(SSticker.current_state <= GAME_STATE_PREGAME) // Make sure we don't ready up after the round has started
 			ready = text2num(href_list["ready"])
 			if(ready)
+#warn bad
+/*
 				// Warn the player if they are trying to spawn without a brain
 				var/datum/body_modification/mod = client.prefs.get_modification(BP_BRAIN)
 				if(istype(mod, /datum/body_modification/limb/amputation))
@@ -133,6 +135,7 @@
 								"Player Setup", "Yes", "No") == "No")
 						ready = 0
 						return
+*/
 		else
 			ready = 0
 

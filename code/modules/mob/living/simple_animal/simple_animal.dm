@@ -286,7 +286,9 @@
 //Simple reagent processing for simple animals
 //This allows animals to digest food, and only food
 //Most drugs, poisons etc, are designed to work on carbons and affect many values a simple animal doesnt have
+#warn process_food() bad
 /mob/living/simple_animal/proc/process_food()
+/*
 	if (hunger_enabled)
 		if (nutrition)
 			adjustNutrition(-nutrition_step)//Bigger animals get hungry faster
@@ -314,7 +316,7 @@
 					heal_amount -= n
 				updatehealth()
 			current.remove_self(removed)//If its not food, it just does nothing. no fancy effects
-
+*/
 /mob/living/simple_animal/can_eat()
 	if (!hunger_enabled || nutrition > max_nutrition * 0.9)
 		return 0//full

@@ -80,7 +80,8 @@
 	user.set_machine(src)
 	update_icon()
 
-
+#warn bad
+/*
 /obj/machinery/cryo_slab/affect_grab(mob/user, mob/target)
 	if(han_solo)
 		to_chat(user, SPAN_NOTICE("[src] is already occupied!"))
@@ -94,7 +95,7 @@
 	set_occupant(target)
 	add_fingerprint(user)
 	return TRUE
-
+*/
 
 /obj/machinery/cryo_slab/MouseDrop_T(mob/target, mob/user)
 	if(!ishuman(target))
