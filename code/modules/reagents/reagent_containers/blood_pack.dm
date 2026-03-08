@@ -49,12 +49,13 @@
 	// 	add_overlay(filling)
 
 /obj/item/reagent_containers/blood/proc/update_name()
-	var/list/data = reagents.get_data("blood")
-	if(data)
-		blood_type = data["blood_type"]
-		name = "blood pack ([blood_type])"
-	else
-		name = "blood pack"
+#warn blablabla
+	// var/list/data = reagents.get_data("blood")
+	// if(data)
+	// 	blood_type = data["blood_type"]
+	// 	name = "blood pack ([blood_type])"
+	// else
+	// 	name = "blood pack"
 
 #define bloodtypeandpackname(bloodtype) name = "blood pack ("+bloodtype+")"; blood_type = bloodtype;
 /obj/item/reagent_containers/blood/APlus

@@ -32,7 +32,8 @@
 		/obj/structure/sink,
 		/obj/item/storage,
 		/obj/machinery/atmospherics/unary/cryo_cell,
-		/obj/item/grenade/chem_grenade,
+		#warn baaaadd
+		// /obj/item/grenade/chem_grenade,
 		/mob/living/bot/medbot,
 		/obj/item/storage/secure/safe,
 		/obj/structure/medical_stand,

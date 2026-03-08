@@ -555,42 +555,42 @@ obj/structure/cable/proc/cableColor(var/colorC)
 
 //you can use wires to heal robotics
 /obj/item/stack/cable_coil/afterattack(var/mob/M, var/mob/user)
+#warn bad
+	// if(ishuman(M))
+	// 	var/mob/living/carbon/human/H = M
+	// 	var/obj/item/organ/external/S = H.organs_by_name[user.targeted_organ]
 
-	if(ishuman(M))
-		var/mob/living/carbon/human/H = M
-		var/obj/item/organ/external/S = H.organs_by_name[user.targeted_organ]
+	// 	if (!S) return
+	// 	if(!BP_IS_ROBOTIC(S) || user.a_intent != I_HELP)
+	// 		return ..()
 
-		if (!S) return
-		if(!BP_IS_ROBOTIC(S) || user.a_intent != I_HELP)
-			return ..()
+	// 	if(S.burn_dam)
+	// 		if(S.burn_dam < ROBOLIMB_SELF_REPAIR_CAP)
+	// 			for(var/datum/wound/W in S.wounds)
+	// 				if(W.internal)
+	// 					return
+	// 				if(W.damtype_sanitize() != BURN)
+	// 					continue
+	// 				if(!do_mob(user, M, W.damage/5))
+	// 					to_chat(user, SPAN_NOTICE("You must stand still to repair \the [S]."))
+	// 					break
+	// 				if(!use(1))
+	// 					to_chat(user, SPAN_WARNING("You have run out of \the [src]."))
+	// 					return
+	// 				W.heal_damage(CLAMP(user.stats.getStat(STAT_MEC)/2.5, 5, 15))
+	// 				to_chat(user, SPAN_NOTICE("You patch some wounds on \the [S]."))
+	// 			S.update_damages()
+	// 			if(S.burn_dam)
+	// 				to_chat(user, SPAN_WARNING("\The [S] still needs further repair."))
+	// 			return
+	// 		else if(S.open != 2)
+	// 			to_chat(user, SPAN_DANGER("The damage is far too severe to patch over externally."))
+	// 		return 1
+	// 	else if(S.open != 2)
+	// 		to_chat(user, SPAN_NOTICE("Nothing to fix!"))
 
-		if(S.burn_dam)
-			if(S.burn_dam < ROBOLIMB_SELF_REPAIR_CAP)
-				for(var/datum/wound/W in S.wounds)
-					if(W.internal)
-						return
-					if(W.damtype_sanitize() != BURN)
-						continue
-					if(!do_mob(user, M, W.damage/5))
-						to_chat(user, SPAN_NOTICE("You must stand still to repair \the [S]."))
-						break
-					if(!use(1))
-						to_chat(user, SPAN_WARNING("You have run out of \the [src]."))
-						return
-					W.heal_damage(CLAMP(user.stats.getStat(STAT_MEC)/2.5, 5, 15))
-					to_chat(user, SPAN_NOTICE("You patch some wounds on \the [S]."))
-				S.update_damages()
-				if(S.burn_dam)
-					to_chat(user, SPAN_WARNING("\The [S] still needs further repair."))
-				return
-			else if(S.open != 2)
-				to_chat(user, SPAN_DANGER("The damage is far too severe to patch over externally."))
-			return 1
-		else if(S.open != 2)
-			to_chat(user, SPAN_NOTICE("Nothing to fix!"))
-
-	else
-		return ..()
+	// else
+	return ..()
 
 
 /obj/item/stack/cable_coil/update_icon()

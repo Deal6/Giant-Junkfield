@@ -19,15 +19,15 @@
 	if(get_active_mutation(T, MUTATION_ATHEIST))
 		fail("[T.name]\'s mutated flesh rejects your will.", user, C)
 		return FALSE
+#warn bad
+	// if(T.metabolism_effects.addiction_list.len)
+	// 	for(var/addiction in T.metabolism_effects.addiction_list)
+	// 		var/datum/reagent/R = addiction
+	// 		if(!R)
+	// 			T.metabolism_effects.addiction_list.Remove(R)
+	// 			continue
 
-	if(T.metabolism_effects.addiction_list.len)
-		for(var/addiction in T.metabolism_effects.addiction_list)
-			var/datum/reagent/R = addiction
-			if(!R)
-				T.metabolism_effects.addiction_list.Remove(R)
-				continue
-
-			T.metabolism_effects.addiction_list[R] += 15  // increase addiction level by 15
+	// 		T.metabolism_effects.addiction_list[R] += 15  // increase addiction level by 15
 			// target will go through the addiction stages and finally be free from the addiction once it reaches level 40
 			// it's a bad moment to go through but after 2 or 3 littany the addiction will be gone
 			// psychiatrist RP opportunity -> think about the sins that led you to this addiction
