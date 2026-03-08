@@ -138,3 +138,6 @@
 	return 0
 
 /datum/reagents/proc/trans_to_mob(mob/target, amount = 1, type = CHEM_BLOOD, multiplier = 1, copy = 0) // Transfer after checking into which holder...
+
+/datum/reagents/proc/get_free_space() // Returns free space.
+	return maximum_volume - total_volume
