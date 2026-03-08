@@ -11,4 +11,4 @@
 
 /obj/item/reagent_containers/spray/luminol/New()
 	..()
-	reagents.add_reagent("luminol", 250)
+	#warn reagents.add_reagent("luminol", 250)

@@ -278,7 +278,7 @@
 
 // /obj/machinery/reagentgrinder/industrial/Initialize()
 // 	. = ..()
-// 	create_reagents(INFINITY)
+// 	#warn bad // create reagents(INFINITY)
 
 // /obj/machinery/reagentgrinder/industrial/Process()
 // 	if(stat & (NOPOWER|BROKEN))
@@ -350,7 +350,7 @@
 
 // /obj/item/storage/makeshift_grinder/Initialize(mapload, ...)
 // 	. = ..()
-// 	create_reagents(60)
+// 	#warn bad // create reagents(60)
 
 // /obj/item/storage/makeshift_grinder/attack_self(mob/user)
 // 	var/time_to_finish = 60 - (40 * user.stats.getMult(STAT_TGH, STAT_LEVEL_ADEPT))
@@ -383,10 +383,10 @@
 // 					stack.use(amount_to_take)
 // 					if(QDELETED(stack))
 // 						src.contents.Remove(O)
-// 					reagents.add_reagent(get_material_name_by_stack_type(stack.type), (amount_to_take*REAGENTS_PER_SHEET))
+// 					#warn reagents.add_reagent(get_material_name_by_stack_type(stack.type), (amount_to_take*REAGENTS_PER_SHEET))
 // 					if(stack.reagents)
 // 						for(var/datum/reagent/R in stack.reagents.reagent_list)
-// 							reagents.add_reagent(R.id, R.volume)
+// 							#warn reagents.add_reagent(R.id, R.volume)
 // 					continue
 
 // 		if(O.reagents)

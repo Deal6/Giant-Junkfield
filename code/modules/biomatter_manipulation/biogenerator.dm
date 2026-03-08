@@ -54,9 +54,9 @@
 		return FALSE
 	if(generator.chamber.air1.gas["oxygen"] < 1)
 		return FALSE
-
-	if(port.pipes_dirtiness == 5 || !port.tank || !port.tank.reagents.has_reagent("biomatter", 1))
-		return FALSE
+#warn bad
+	// if(port.pipes_dirtiness == 5 || !port.tank || !port.tank.reagents.has_reagent("biomatter", 1))
+	// 	return FALSE
 
 	return TRUE
 

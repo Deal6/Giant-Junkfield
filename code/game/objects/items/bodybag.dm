@@ -152,14 +152,14 @@
 /obj/structure/closet/body_bag/cryobag/Entered(atom/movable/AM)
 	if(ishuman(AM))
 		var/mob/living/carbon/human/H = AM
-		H.EnterStasis()
+#warn bad		H.EnterStasis()
 		src.used = 1
 	..()
 
 /obj/structure/closet/body_bag/cryobag/Exited(atom/movable/AM)
 	if(ishuman(AM))
 		var/mob/living/carbon/human/H = AM
-		H.ExitStasis()
+#warn bad		H.ExitStasis()
 	..()
 
 /obj/structure/closet/body_bag/cryobag/return_air() //Used to make stasis bags protect from vacuum.

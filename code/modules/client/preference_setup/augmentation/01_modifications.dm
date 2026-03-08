@@ -92,26 +92,27 @@
 	dat += "<table cellpadding='1' cellspacing='0' width='100%'>"
 	dat += "<tr align='center'>"
 	var/counter = 0
-	for(var/organ in pref.internal_organs)
-		if(!(organ in body_modifications)) continue
+	#warn bad
+	// for(var/organ in pref.internal_organs)
+	// 	if(!(organ in body_modifications)) continue
 
-		var/datum/body_modification/mod = pref.get_modification(organ)
-		var/organ_name = capitalize(organ_tag_to_name[organ])
-		var/disp_name = mod.short_name
-		if(organ == pref.current_organ)
-			dat += "<td width='33%'><b><span style='background-color:pink'>[organ_name]</span></b>"
-		else
-			dat += "<td width='33%'><b>[organ_name]</b>"
-		if(!pref.modifications_allowed())
-			dat += "<br><a class='linkOff'>[disp_name]</a></td>"
-		else
-			dat += "<br><a href='byond://?src=\ref[src];organ=[organ]'>[disp_name]</a></td>"
+	// 	var/datum/body_modification/mod = pref.get_modification(organ)
+	// 	var/organ_name = capitalize(organ_tag_to_name[organ])
+	// 	var/disp_name = mod.short_name
+	// 	if(organ == pref.current_organ)
+	// 		dat += "<td width='33%'><b><span style='background-color:pink'>[organ_name]</span></b>"
+	// 	else
+	// 		dat += "<td width='33%'><b>[organ_name]</b>"
+	// 	if(!pref.modifications_allowed())
+	// 		dat += "<br><a class='linkOff'>[disp_name]</a></td>"
+	// 	else
+	// 		dat += "<br><a href='byond://?src=\ref[src];organ=[organ]'>[disp_name]</a></td>"
 
-		if(++counter >= 3)
-			dat += "</tr><tr align='center'>"
-			counter = 0
-	dat += "</tr></table>"
-	dat += "</span></div>"
+	// 	if(++counter >= 3)
+	// 		dat += "</tr><tr align='center'>"
+	// 		counter = 0
+	// dat += "</tr></table>"
+	// dat += "</span></div>"
 
 	return jointext(dat,null)
 

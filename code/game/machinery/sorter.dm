@@ -31,9 +31,10 @@
 				if((value in materials) && (!amount || materials[value] >= amount))
 					return TRUE
 
-		if(SORT_TYPE_REAGENT)
-			if(O && O.reagents && O.reagents.has_reagent(value, amount))
-				return TRUE
+#warn bad
+		// if(SORT_TYPE_REAGENT)
+		// 	if(O && O.reagents && O.reagents.has_reagent(value, amount))
+		// 		return TRUE
 
 		if(SORT_TYPE_NAME)
 			if(findtext(sorted.name, value))

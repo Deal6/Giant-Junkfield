@@ -204,8 +204,9 @@
 	icon_state = "secure"
 
 /obj/structure/closet/secure_closet/injection/populate_contents()
-	new /obj/item/reagent_containers/syringe/ld50_syringe/chlorine(src)
-	new /obj/item/reagent_containers/syringe/ld50_syringe/chlorine(src)
+#warn bad
+	// new /obj/item/reagent_containers/syringe/ld50_syringe/chlorine(src)
+	// new /obj/item/reagent_containers/syringe/ld50_syringe/chlorine(src)
 
 /obj/structure/closet/secure_closet/brig
 	name = "brig locker"

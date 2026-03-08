@@ -333,7 +333,7 @@ var/global/list/robot_modules = list(
 	src.modules += new /obj/item/device/scanner/reagent/adv(src)
 	src.modules += new /obj/item/autopsy_scanner(src) // an autopsy scanner
 	src.emag = new /obj/item/reagent_containers/spray(src)
-	src.emag.reagents.add_reagent("pacid", 250)
+#warn	src.emag.reagents.add_reagent("pacid", 250)
 	src.emag.name = "Polyacid spray"
 
 	var/datum/matter_synth/medicine = new /datum/matter_synth/medicine(10000)
@@ -375,7 +375,7 @@ var/global/list/robot_modules = list(
 
 	if(src.emag)
 		var/obj/item/reagent_containers/spray/PS = src.emag
-		PS.reagents.add_reagent("pacid", 2 * amount)
+		PS.#warn reagents.add_reagent("pacid", 2 * amount)
 	..()
 
 /obj/item/robot_module/medical/rescue
@@ -428,7 +428,7 @@ var/global/list/robot_modules = list(
 	src.modules += new /obj/item/inflatable_dispenser(src) // Allows usage of inflatables. Since they are basically robotic alternative to EMTs, they should probably have them.
 	src.modules += new /obj/item/device/gps(src) // for coordinating with medical suit health sensors console
 	src.emag = new /obj/item/reagent_containers/spray(src)
-	src.emag.reagents.add_reagent("pacid", 250)
+	#warn src.emag.reagents.add_reagent("pacid", 250)
 	src.emag.name = "Polyacid spray"
 
 	var/datum/matter_synth/medicine = new /datum/matter_synth/medicine(15000)
@@ -463,7 +463,7 @@ var/global/list/robot_modules = list(
 
 	if(src.emag)
 		var/obj/item/reagent_containers/spray/PS = src.emag
-		PS.reagents.add_reagent("pacid", 2 * amount)
+#warn 		PS.reagents.add_reagent("pacid", 2 * amount)
 
 	..()
 
@@ -761,7 +761,7 @@ var/global/list/robot_modules = list(
 	src.modules += new /obj/item/matter_decompiler(src) // free drone remains for all
 	src.modules += new /obj/item/device/t_scanner(src)
 	src.emag = new /obj/item/reagent_containers/spray(src)
-	src.emag.reagents.add_reagent("lube", 250)
+#warn 	src.emag.reagents.add_reagent("lube", 250)
 	src.emag.name = "Lube spray"
 
 
@@ -775,7 +775,7 @@ var/global/list/robot_modules = list(
 	LR.Charge(R, amount)
 	if(src.emag)
 		var/obj/item/reagent_containers/spray/S = src.emag
-		S.reagents.add_reagent("lube", 2 * amount)
+#warn 		S.reagents.add_reagent("lube", 2 * amount)
 
 
 /obj/item/robot_module/service
@@ -854,8 +854,8 @@ var/global/list/robot_modules = list(
 
 	var/datum/reagents/Re = new/datum/reagents(50)
 	src.emag.reagents = Re
-	Re.my_atom = src.emag
-	Re.add_reagent("beer2", 50)
+#warn 	Re.my_atom = src.emag
+#warn 	Re.add_reagent("beer2", 50)
 	src.emag.name = "Mickey Finn's Special Brew"
 
 	..(R)
@@ -864,10 +864,10 @@ var/global/list/robot_modules = list(
 /obj/item/robot_module/service/respawn_consumable(var/mob/living/silicon/robot/R, var/amount)
 	..()
 	var/obj/item/reagent_containers/food/condiment/enzyme/E = locate() in src.modules
-	E.reagents.add_reagent("enzyme", 2 * amount)
+#warn	E.reagents.add_reagent("enzyme", 2 * amount)
 	if(src.emag)
 		var/obj/item/reagent_containers/food/drinks/bottle/small/beer/B = src.emag
-		B.reagents.add_reagent("beer2", 2 * amount)
+#warn		B.reagents.add_reagent("beer2", 2 * amount)
 
 /obj/item/robot_module/miner
 	name = "miner robot module"
@@ -1141,7 +1141,7 @@ var/global/list/robot_modules = list(
 	//Objective stuff
 	modules += new /obj/item/storage/bsdm/permanent(src) //for sending off item contracts
 	modules += new /obj/item/gripper/antag(src) //For picking up item contracts
-	modules += new /obj/item/reagent_containers/syringe/blitzshell(src) //Blood extraction
+#warn 	modules += new /obj/item/reagent_containers/syringe/blitzshell(src) //Blood extraction
 	modules += new /obj/item/device/drone_uplink(src)
 	//Misc equipment
 	modules += new /obj/item/card/id/syndicate(src) //This is our access. Scan cards to get better access

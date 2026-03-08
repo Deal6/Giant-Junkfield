@@ -515,7 +515,7 @@
 		if(!A.reagents)
 			var/amount = input(usr, "Specify the reagent size of [A]", "Set Reagent Size", 50) as num
 			if(amount)
-				A.create_reagents(amount)
+				A.#warn bad // create reagents(amount)
 
 		if(A.reagents)
 			var/chosen_id
@@ -537,7 +537,7 @@
 			if(chosen_id)
 				var/amount = input(usr, "Choose the amount to add.", "Choose the amount.", A.reagents.get_free_space()) as num
 				if(amount)
-					A.reagents.add_reagent(chosen_id, amount)
+					A.#warn reagents.add_reagent(chosen_id, amount)
 					log_admin("[key_name(usr)] has added [amount] units of [chosen_id] to \the [A]")
 					message_admins("<span class='notice'>[key_name(usr)] has added [amount] units of [chosen_id] to \the [A]</span>")
 

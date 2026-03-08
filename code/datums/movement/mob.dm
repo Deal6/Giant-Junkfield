@@ -332,7 +332,8 @@
 		if(M && get_dist(old_turf, M) <= 1)
 			if (isturf(M.loc) && isturf(mob.loc) && mob.loc != old_turf && M.loc != mob.loc)
 				step(M, get_dir(M.loc, old_turf))
-		G.adjust_position()
+		// G.adjust_position()
+#warn bad above
 
 /mob/proc/AdjustMovementDirection(var/direction)
 	. = direction

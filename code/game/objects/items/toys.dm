@@ -38,7 +38,7 @@
 	preloaded_reagents = list()
 
 /obj/item/toy/balloon/New()
-	create_reagents(10)
+	#warn bad // create reagents(10)
 	..()
 
 /obj/item/toy/balloon/attack(mob/living/carbon/human/M, mob/user)
@@ -47,48 +47,50 @@
 /obj/item/toy/balloon/afterattack(atom/A as mob|obj, mob/user, proximity)
 	if(!proximity) return
 	if (istype(A, /obj/structure/reagent_dispensers/watertank) && get_dist(src,A) <= 1)
-		A.reagents.trans_to_obj(src, 10)
+#warn bad		A.reagents.trans_to_obj(src, 10)
 		to_chat(user, SPAN_NOTICE("You fill the balloon with the contents of [A]."))
 		src.desc = "A translucent balloon with some form of liquid sloshing around in it."
 		src.update_icon()
 	return
 
 /obj/item/toy/balloon/attackby(obj/O, mob/user)
-	if(istype(O, /obj/item/reagent_containers/glass))
-		if(O.reagents)
-			if(O.reagents.total_volume < 1)
-				to_chat(user, "The [O] is empty.")
-			else if(O.reagents.total_volume >= 1)
-				if(O.reagents.has_reagent("pacid", 1))
-					to_chat(user, "The acid chews through the balloon!")
-					O.reagents.splash(user, reagents.total_volume)
-					qdel(src)
-				else
-					src.desc = "A translucent balloon with some form of liquid sloshing around in it."
-					to_chat(user, SPAN_NOTICE("You fill the balloon with the contents of [O]."))
-					O.reagents.trans_to_obj(src, 10)
+#warn bad
+	// if(istype(O, /obj/item/reagent_containers/glass))
+	// 	if(O.reagents)
+	// 		if(O.reagents.total_volume < 1)
+	// 			to_chat(user, "The [O] is empty.")
+	// 		else if(O.reagents.total_volume >= 1)
+	// 			if(O.reagents.has_reagent("pacid", 1))
+	// 				to_chat(user, "The acid chews through the balloon!")
+	// 				O.reagents.splash(user, reagents.total_volume)
+	// 				qdel(src)
+	// 			else
+	// 				src.desc = "A translucent balloon with some form of liquid sloshing around in it."
+	// 				to_chat(user, SPAN_NOTICE("You fill the balloon with the contents of [O]."))
+	// 				O.reagents.trans_to_obj(src, 10)
 	src.update_icon()
 	return
 
 /obj/item/toy/balloon/throw_impact(atom/hit_atom)
-	if(src.reagents.total_volume >= 1)
-		src.visible_message(SPAN_WARNING("\The [src] bursts!"),"You hear a pop and a splash.")
-		src.reagents.touch_turf(get_turf(hit_atom))
-		for(var/atom/A in get_turf(hit_atom))
-			src.reagents.touch(A)
-		src.icon_state = "burst"
-		spawn(5)
-			if(src)
-				qdel(src)
+#warn bad
+	// if(src.reagents.total_volume >= 1)
+	// 	src.visible_message(SPAN_WARNING("\The [src] bursts!"),"You hear a pop and a splash.")
+	// 	src.reagents.touch_turf(get_turf(hit_atom))
+	// 	for(var/atom/A in get_turf(hit_atom))
+	// 		src.reagents.touch(A)
+	// 	src.icon_state = "burst"
+	// 	spawn(5)
+	// 		if(src)
+	// 			qdel(src)
 	return
-
+#warn bad
 /obj/item/toy/balloon/update_icon()
-	if(src.reagents.total_volume >= 1)
-		icon_state = "waterballoon"
-		item_state = "balloon"
-	else
-		icon_state = "waterballoon-e"
-		item_state = "balloon-empty"
+	// if(src.reagents.total_volume >= 1)
+	// 	icon_state = "waterballoon"
+	// 	item_state = "balloon"
+	// else
+	// 	icon_state = "waterballoon-e"
+	// 	item_state = "balloon-empty"
 
 /*
  * Fake telebeacon
@@ -233,7 +235,7 @@
 		D.name = "water"
 		D.icon = 'icons/obj/chemical.dmi'
 		D.icon_state = "chempuff"
-		D.create_reagents(5)
+		D.#warn bad // create reagents(5)
 		src.reagents.trans_to_obj(D, 1)
 		playsound(src.loc, 'sound/effects/spray3.ogg', 50, 1, -6)
 

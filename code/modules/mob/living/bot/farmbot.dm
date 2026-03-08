@@ -233,7 +233,7 @@
 		playsound(loc, "robot_talk_heavy", 100, 0, 0)
 		attacking = 1
 		while(do_after(src, 10) && tank.reagents.total_volume < tank.reagents.maximum_volume)
-			tank.reagents.add_reagent("water", 10)
+#warn 			tank.reagents.add_reagent("water", 10)
 			if(prob(5))
 				playsound(loc, 'sound/effects/slosh.ogg', 25, 1)
 		attacking = 0

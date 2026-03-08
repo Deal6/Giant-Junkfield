@@ -19,7 +19,8 @@
 		overlays += "on"
 		if(HasFuel())
 			overlays += "rotor_working"
-			overlays += "[max(round(reagents.total_volume / reagents.maximum_volume, 0.25) * 100, 25)]"
+			#warn bad
+			// overlays += "[max(round(reagents.total_volume / reagents.maximum_volume, 0.25) * 100, 25)]"
 		else
 			overlays += "0"
 	else

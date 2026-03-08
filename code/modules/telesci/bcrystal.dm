@@ -28,8 +28,8 @@
 	pixel_x = rand(-5, 5)
 	pixel_y = rand(-5, 5)
 	bluespace_entropy(entropy_value, get_turf(src), TRUE)
-//	create_reagents(10)
-//	reagents.add_reagent("bluespace_dust", blink_range)
+//	#warn bad // create reagents(10)
+//	#warn reagents.add_reagent("bluespace_dust", blink_range)
 
 /obj/item/bluespace_crystal/attack_self(mob/user)
 	user.visible_message(SPAN_WARNING("[user] crushes [src]!"), SPAN_DANGER("You crush [src]!"))

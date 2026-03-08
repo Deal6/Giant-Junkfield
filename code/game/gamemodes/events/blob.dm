@@ -436,8 +436,9 @@
 		//This allows them to wear acidproof gear to resist it
 		if (iscarbon(L))
 			var/datum/reagents/R = new /datum/reagents(4, null)
-			R.add_reagent("sacid", RAND_DECIMAL(0.8,4))
-			R.trans_to(L, R.total_volume)
+			#warn bad
+			// R.add_reagent("sacid", RAND_DECIMAL(0.8,4))
+			// R.trans_to(L, R.total_volume)
 			qdel(R)
 
 		return TRUE

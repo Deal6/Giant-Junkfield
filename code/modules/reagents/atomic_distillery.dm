@@ -29,7 +29,7 @@
 	. = ..()
 
 /obj/item/reagent_containers/atomic_distillery/Process()
-	reagents.add_reagent("atomvodka", 1)
+	#warn reagents.add_reagent("atomvodka", 1)
 
 /obj/item/reagent_containers/atomic_distillery/attackby(obj/item/I, mob/user, params)
 	if(nt_sword_attack(I, user))

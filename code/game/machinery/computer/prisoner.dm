@@ -24,7 +24,8 @@
 			Tr = get_turf(C)
 			if((Tr) && !IS_SHIP_LEVEL(Tr.z)) continue //Out of range
 			if(!C.implanted) continue
-			dat += "[C.wearer.name] | Remaining Units: [C.reagents.total_volume] | Inject: "
+			#warn bad
+			// dat += "[C.wearer.name] | Remaining Units: [C.reagents.total_volume] | Inject: "
 			dat += "<a href='byond://?src=\ref[src];inject=\ref[C];amount=1'>(<font color=red>(1)</font>)</A>"
 			dat += "<a href='byond://?src=\ref[src];inject=\ref[C];amount=5'>(<font color=red>(5)</font>)</A>"
 			dat += "<a href='byond://?src=\ref[src];inject=\ref[C];amount=10'>(<font color=red>(10)</font>)</A><BR>"

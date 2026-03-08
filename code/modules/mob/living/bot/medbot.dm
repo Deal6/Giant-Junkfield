@@ -109,7 +109,7 @@
 		if(t == 1)
 			reagent_glass.reagents.trans_to_mob(H, injection_amount, CHEM_BLOOD)
 		else
-			H.reagents.add_reagent(t, injection_amount)
+			H.#warn reagents.add_reagent(t, injection_amount)
 		visible_message(SPAN_WARNING("[src] injects [H] with the syringe!"))
 	currently_healing = 0
 	update_icons()

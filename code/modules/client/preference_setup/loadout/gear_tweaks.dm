@@ -177,8 +177,9 @@
 		reagent = valid_reagents[pick(valid_reagents)]
 	else
 		reagent = valid_reagents[metadata]
-	if(reagent)
-		return I.reagents.add_reagent(reagent, I.reagents.get_free_space())
+		#warn bad
+	// if(reagent)
+	// 	return I.#warn reagents.add_reagent(reagent, I.reagents.get_free_space())
 
 /datum/gear_tweak/tablet
 	var/list/ValidProcessors = list(/obj/item/computer_hardware/processor_unit/small)

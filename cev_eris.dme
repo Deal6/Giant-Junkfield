@@ -826,8 +826,6 @@
 #include "code\game\objects\effects\temp.dm"
 #include "code\game\objects\effects\temporary_visual.dm"
 #include "code\game\objects\effects\trails.dm"
-#include "code\game\objects\effects\chem\chemsmoke.dm"
-#include "code\game\objects\effects\chem\foam.dm"
 #include "code\game\objects\effects\chem\water.dm"
 #include "code\game\objects\effects\decals\cleanable.dm"
 #include "code\game\objects\effects\decals\contraband.dm"

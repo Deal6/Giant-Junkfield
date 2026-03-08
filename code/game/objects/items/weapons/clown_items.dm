@@ -36,12 +36,12 @@
 
 /obj/item/soap/New()
 	..()
-	create_reagents(20)
+	#warn bad // create reagents(20)
 	wet()
 
 /obj/item/soap/proc/wet()
 	playsound(loc, 'sound/effects/slosh.ogg', 25, 1)
-	reagents.add_reagent("cleaner", 20)
+	#warn reagents.add_reagent("cleaner", 20)
 
 /obj/item/soap/Crossed(AM as mob|obj)
 	if (isliving(AM))

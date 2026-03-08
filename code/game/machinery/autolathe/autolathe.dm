@@ -121,11 +121,12 @@
 	data["mat_capacity"] = storage_capacity
 
 	data["container"] = !!container
-	if(container && container.reagents)
-		var/list/L = list()
-		for(var/datum/reagent/R in container.reagents.reagent_list)
-			var/list/LE = list("name" = R.name, "amount" = R.volume)
-			L.Add(list(LE))
+	#warn bad
+	// if(container && container.reagents)
+	// 	var/list/L = list()
+	// 	for(var/datum/reagent/R in container.reagents.reagent_list)
+	// 		var/list/LE = list("name" = R.name, "amount" = R.volume)
+	// 		L.Add(list(LE))
 
 		data["reagents"] = L
 
@@ -606,12 +607,13 @@
 
 		if(O.matter_reagents)
 			if(container)
-				var/datum/reagents/RG = new(0)
-				for(var/r in O.matter_reagents)
-					RG.maximum_volume += O.matter_reagents[r]
-					RG.add_reagent(r ,O.matter_reagents[r])
-				reagents_filltype = 1
-				RG.trans_to(container, RG.total_volume)
+			#warn bad
+				// var/datum/reagents/RG = new(0)
+				// for(var/r in O.matter_reagents)
+				// 	RG.maximum_volume += O.matter_reagents[r]
+				// 	RG.add_reagent(r ,O.matter_reagents[r])
+				// reagents_filltype = 1
+				// RG.trans_to(container, RG.total_volume)
 
 			else
 				reagents_filltype = 2

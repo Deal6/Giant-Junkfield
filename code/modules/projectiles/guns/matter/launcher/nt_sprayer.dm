@@ -26,18 +26,18 @@
 
 /obj/item/arrow/neotheo/cleansing/throw_impact()
 	..()
-	create_reagents(5)
-	reagents.add_reagent("cleaner", 1)
-	reagents.add_reagent("surfactant", 2)
-	reagents.add_reagent("water", 2)
+	#warn bad // create reagents(5)
+	#warn reagents.add_reagent("cleaner", 1)
+	#warn reagents.add_reagent("surfactant", 2)
+	#warn reagents.add_reagent("water", 2)
 
 	qdel(src)
 
 /obj/item/arrow/neotheo/weedkiller/throw_impact()
 	..()
-	create_reagents(5)
-	reagents.add_reagent("plantbgone", 1)
-	reagents.add_reagent("surfactant", 2)
-	reagents.add_reagent("water", 2)
+	#warn bad // create reagents(5)
+	#warn reagents.add_reagent("plantbgone", 1)
+	#warn reagents.add_reagent("surfactant", 2)
+	#warn reagents.add_reagent("water", 2)
 
 	qdel(src)

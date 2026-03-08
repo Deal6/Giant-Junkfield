@@ -106,8 +106,9 @@
 	if(!canremove)
 		return FALSE
 	var/mob/living/carbon/human/attached_to = M
-	if (istype(attached_to) && attached_to.is_item_attached(src))
-		return FALSE
+#warn bad
+	// if (istype(attached_to) && attached_to.is_item_attached(src))
+	// 	return FALSE
 	if(!M.slot_is_accessible(slot, src, disable_warning? null : M))
 		return FALSE
 	return TRUE

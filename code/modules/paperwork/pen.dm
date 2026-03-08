@@ -82,7 +82,7 @@
 
 /obj/item/pen/reagent/New()
 	..()
-	create_reagents(30)
+	#warn bad // create reagents(30)
 
 /obj/item/pen/reagent/attack(mob/living/M, mob/user)
 
@@ -107,7 +107,7 @@
 
 /obj/item/pen/reagent/sleepy/New()
 	..()
-	reagents.add_reagent("chloralhydrate", 22)	//Used to be 100 sleep toxin//30 Chloral seems to be fatal, reducing it to 22./N
+	#warn reagents.add_reagent("chloralhydrate", 22)	//Used to be 100 sleep toxin//30 Chloral seems to be fatal, reducing it to 22./N
 
 
 /*
@@ -118,8 +118,8 @@
 
 /obj/item/pen/reagent/paralysis/New()
 	..()
-	reagents.add_reagent("zombiepowder", 10)
-	reagents.add_reagent("cryptobiolin", 15)
+	#warn reagents.add_reagent("zombiepowder", 10)
+	#warn reagents.add_reagent("cryptobiolin", 15)
 
 /*
  * Chameleon pen
@@ -199,6 +199,6 @@
 	New()
 		name = "[colourName] crayon"
 		if(grindable)
-			create_reagents(20)
-			reagents.add_reagent("crayon_dust_[colourName]", 20)
+			#warn bad // create reagents(20)
+			#warn reagents.add_reagent("crayon_dust_[colourName]", 20)
 		..()

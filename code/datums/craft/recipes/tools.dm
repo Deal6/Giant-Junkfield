@@ -92,22 +92,22 @@
 		list(QUALITY_ADHESIVE, 15, 100),
 		list(QUALITY_SCREW_DRIVING, 10, 40)
 	)
-
-/datum/craft_recipe/tool/toolimplant
-	name = "Improvised multitool implant"
-	result = /obj/item/organ_module/active/simple/makeshift
-	steps = list(
-		list(/obj/item/storage/toolbox, 1),
-		list(QUALITY_PRYING, 10, 70),
-		list(/obj/item/electronics/circuitboard, 1),
-		list(QUALITY_SCREW_DRIVING, 10, "time" = 40),
-		list(CRAFT_MATERIAL, 12, MATERIAL_STEEL),
-		list(QUALITY_WELDING, 10, 150),
-		list(/obj/item/stack/cable_coil, 5, "time" = 20),
-		list(QUALITY_WIRE_CUTTING, 10, "time" = 60),
-		list(QUALITY_ADHESIVE, 15, 70)
-	)
-	related_stats = list(STAT_MEC)
+#warn bad
+// /datum/craft_recipe/tool/toolimplant
+// 	name = "Improvised multitool implant"
+// 	result = /obj/item/organ_module/active/simple/makeshift
+// 	steps = list(
+// 		list(/obj/item/storage/toolbox, 1),
+// 		list(QUALITY_PRYING, 10, 70),
+// 		list(/obj/item/electronics/circuitboard, 1),
+// 		list(QUALITY_SCREW_DRIVING, 10, "time" = 40),
+// 		list(CRAFT_MATERIAL, 12, MATERIAL_STEEL),
+// 		list(QUALITY_WELDING, 10, 150),
+// 		list(/obj/item/stack/cable_coil, 5, "time" = 20),
+// 		list(QUALITY_WIRE_CUTTING, 10, "time" = 60),
+// 		list(QUALITY_ADHESIVE, 15, 70)
+// 	)
+// 	related_stats = list(STAT_MEC)
 
 /*************************
 	TOOL MODS
@@ -208,18 +208,18 @@
 		list(QUALITY_PRYING, 10, 80),
 		list(/obj/item/stack/rods, 1, 30)
 	)
+#warn bad
+// /datum/craft_recipe/tool/makeshift_electrolyser
+// 	name = "Makeshift electrolyser"
+// 	result = /obj/item/device/makeshift_electrolyser
 
-/datum/craft_recipe/tool/makeshift_electrolyser
-	name = "Makeshift electrolyser"
-	result = /obj/item/device/makeshift_electrolyser
-
-	steps = list(
-		list(CRAFT_MATERIAL, 2, MATERIAL_STEEL),
-		list(QUALITY_WIRE_CUTTING, 10, 20),
-		list(/obj/item/stack/cable_coil, 10, "time" = 10),
-		list(QUALITY_WIRE_CUTTING, 10, 20),
-		list(/obj/item/stack/rods, 2, 30)
-	)
+// 	steps = list(
+// 		list(CRAFT_MATERIAL, 2, MATERIAL_STEEL),
+// 		list(QUALITY_WIRE_CUTTING, 10, 20),
+// 		list(/obj/item/stack/cable_coil, 10, "time" = 10),
+// 		list(QUALITY_WIRE_CUTTING, 10, 20),
+// 		list(/obj/item/stack/rods, 2, 30)
+// 	)
 
 /datum/craft_recipe/tool/engi_hardcase
 	name = "Scrap Engi Hardcase"

@@ -296,14 +296,14 @@
 	pack.desc += " 'MB' has been scribbled on it."
 
 	pack = new /obj/item/storage/fancy/cigarettes(src)
-	pack.reagents.add_reagent("tricordrazine", 15 * pack.storage_slots)
+	pack.#warn reagents.add_reagent("tricordrazine", 15 * pack.storage_slots)
 	pack.desc += " 'T' has been scribbled on it."
 
 	new /obj/item/flame/lighter/zippo(src)
 
 /proc/fill_cigarre_package(obj/item/storage/fancy/cigarettes/C, list/reagents)
 	for(var/reagent in reagents)
-		C.reagents.add_reagent(reagent, reagents[reagent] * C.storage_slots)
+		C.#warn reagents.add_reagent(reagent, reagents[reagent] * C.storage_slots)
 
 /obj/item/storage/box/syndie_kit/ewar_voice
 	name = "electrowarfare and voice synthesiser kit"

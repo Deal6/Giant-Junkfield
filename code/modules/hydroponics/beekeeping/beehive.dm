@@ -181,8 +181,8 @@
 			to_chat(user, SPAN_NOTICE("There is no honey in \the [src]."))
 			return
 		var/obj/item/reagent_containers/glass/G = I
-		var/transferred = min(G.reagents.maximum_volume - G.reagents.total_volume, honey)
-		G.reagents.add_reagent("honey", transferred)
+#warn 		var/transferred = min(G.reagents.maximum_volume - G.reagents.total_volume, honey)
+	#warn 	G.reagents.add_reagent("honey", transferred)
 		honey -= transferred
 		user.visible_message(SPAN_NOTICE("\The [user] collects honey from \the [src] into \the [G]."), SPAN_NOTICE("You collect [transferred] units of honey from \the [src] into \the [G]."))
 		return 1

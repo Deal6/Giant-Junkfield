@@ -87,8 +87,8 @@
 		cell = new suitable_cell(src)
 
 	if(use_fuel_cost)
-		create_reagents(max_fuel)
-		reagents.add_reagent("fuel", max_fuel)
+		#warn bad // create reagents(max_fuel)
+		#warn reagents.add_reagent("fuel", max_fuel)
 
 	if(use_stock_cost)
 		stock = max_stock

@@ -52,9 +52,10 @@
 	name = "electrolyzer"
 	build_path = /obj/item/electronics/circuitboard/electrolyzer
 
-/datum/design/autolathe/circuit/reagentgrinder
-	name = "reagent grinder"
-	build_path = /obj/item/electronics/circuitboard/reagentgrinder
+#warn bad
+// /datum/design/autolathe/circuit/reagentgrinder
+// 	name = "reagent grinder"
+// 	build_path = /obj/item/electronics/circuitboard/reagentgrinder
 
 /datum/design/autolathe/circuit/smelter
 	name = "smelter"
@@ -64,9 +65,10 @@
 	name = "sorter"
 	build_path = /obj/item/electronics/circuitboard/sorter
 
-/datum/design/autolathe/circuit/industrialgrinder
-	name = "industrial grinder"
-	build_path = /obj/item/electronics/circuitboard/industrial_grinder
+#warn bad
+// /datum/design/autolathe/circuit/industrialgrinder
+// 	name = "industrial grinder"
+// 	build_path = /obj/item/electronics/circuitboard/industrial_grinder
 
 /datum/design/autolathe/circuit/craftingstation
 	name = "crafting station"

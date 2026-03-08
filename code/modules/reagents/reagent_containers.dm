@@ -21,7 +21,7 @@
 		amount_per_transfer_from_this = N
 
 /obj/item/reagent_containers/Initialize()
-	create_reagents(volume)
+	#warn bad // create reagents(volume)
 	. = ..() // This creates initial reagents
 	if(!possible_transfer_amounts)
 		src.verbs -= /obj/item/reagent_containers/verb/set_APTFT
@@ -232,7 +232,7 @@
 			var/amount = min(C.reagents.get_free_space(), min(amount_to_transfer, R.volume))
 #warn bad
 			if(!C.reagents.total_volume || C.reagents.has_reagent(R.id))
-				// C.reagents.add_reagent(R.id, amount, R.get_data())
+#warn 				// C.reagents.add_reagent(R.id, amount, R.get_data())
 				reagents.remove_reagent(R.id, amount)
 				amount_to_transfer = max(0,amount_to_transfer - amount)
 	return TRUE

@@ -534,7 +534,8 @@
 		time_entered = world.time
 		if(ishuman(occupant) && applies_stasis)
 			var/mob/living/carbon/human/H = occupant
-			H.EnterStasis()
+			#warn bad
+			// H.EnterStasis()
 			if(H.mind && H.mind.initial_account)
 				var/datum/money_account/A = H.mind.initial_account
 				if(A.employer && A.wage_original) // Dicrease personnel budget of our department, if have one
@@ -560,9 +561,10 @@
 		if(!QDELETED(occupant))
 			occupant.forceMove(get_turf(src))
 			occupant.reset_view(null)
-			if(ishuman(occupant) && applies_stasis)
-				var/mob/living/carbon/human/H = occupant
-				H.ExitStasis()
+			#warn bad
+			// if(ishuman(occupant) && applies_stasis)
+			// 	var/mob/living/carbon/human/H = occupant
+			// 	H.ExitStasis()
 		occupant = null
 
 	update_icon()

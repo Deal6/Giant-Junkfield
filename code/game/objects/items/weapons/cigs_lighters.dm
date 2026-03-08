@@ -119,7 +119,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 /obj/item/clothing/mask/smokable/Initialize()
 	reagent_flags |= NO_REACT // so it doesn't react until you light it
 	// Make the cigarrete a chemical holder of given volume before preloaded_reagents are spawned in
-	create_reagents(chem_volume)
+	#warn bad // create reagents(chem_volume)
 	. = ..()
 
 /obj/item/clothing/mask/smokable/Process()
@@ -671,9 +671,9 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 /obj/item/clothing/mask/vape/Initialize(mapload)
 	. = ..()
-	create_reagents(chem_volume, NO_REACT)
-	reagents.add_reagent("nicotine", 20)
-	reagents.add_reagent(pick(list("banana","berryjuice","grapejuice","lemonjuice","limejuice","orangejuice","watermelonjuice")), 10)
+	#warn bad // create reagents(chem_volume, NO_REACT)
+	#warn reagents.add_reagent("nicotine", 20)
+	#warn reagents.add_reagent(pick(list("banana","berryjuice","grapejuice","lemonjuice","limejuice","orangejuice","watermelonjuice")), 10)
 	if(!cell && suitable_cell)
 		cell = new suitable_cell(src)
 

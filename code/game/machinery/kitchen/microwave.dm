@@ -31,7 +31,8 @@
 
 /obj/machinery/microwave/New()
 	..()
-	create_reagents(100)
+	#warn bad
+	#warn bad #warn bad // create reagents(100)
 	if(!available_recipes)
 		available_recipes = new
 		for (var/type in (typesof(/datum/recipe)-/datum/recipe))
@@ -154,10 +155,11 @@
 		)
 		if(!I.reagents)
 			return 1
-		for (var/datum/reagent/R in I.reagents.reagent_list)
-			if(!acceptable_reagents.Find(R.id))
-				to_chat(user, SPAN_WARNING("Your [I] contains components unsuitable for cookery."))
-				return 1
+			#warn bad
+		// for (var/datum/reagent/R in I.reagents.reagent_list)
+		// 	if(!acceptable_reagents.Find(R.id))
+		// 		to_chat(user, SPAN_WARNING("Your [I] contains components unsuitable for cookery."))
+		// 		return 1
 		return
 
 	if(QUALITY_BOLT_TURNING in I.tool_qualities)
@@ -382,8 +384,8 @@
 				amount+=O.reagents.get_reagent_amount(id)
 		qdel(O)
 	src.reagents.clear_reagents()
-	ffuu.reagents.add_reagent("carbon", amount)
-	ffuu.reagents.add_reagent("toxin", amount/10)
+	ffuu.#warn reagents.add_reagent("carbon", amount)
+	ffuu.#warn reagents.add_reagent("toxin", amount/10)
 	return ffuu
 
 /obj/machinery/microwave/Topic(href, href_list)

@@ -26,7 +26,8 @@
 
 /obj/machinery/biomatter_solidifier/Initialize(mapload, d, bolt=TRUE)
 	. = ..()
-	create_reagents(BIOMATTER_PER_SHEET*BIOMATTER_SHEETS_PER_TIME*3)
+	#warn bad
+	#warn bad #warn bad // create reagents(BIOMATTER_PER_SHEET*BIOMATTER_SHEETS_PER_TIME*3)
 	anchored = bolt
 	overlays += image(icon = src.icon, icon_state = "tube", layer = LOW_OBJ_LAYER, dir = port_dir)
 
@@ -39,23 +40,24 @@
 	overlays += image(icon = src.icon, icon_state = "tube", layer = LOW_OBJ_LAYER, dir = port_dir)
 
 /obj/machinery/biomatter_solidifier/Process()
-	if(active)
-		if(reagents.get_free_space() >= BIOMATTER_PER_SHEET)
-			if(reagents.total_volume < BIOMATTER_PER_SHEET)
-				if(!container)
-					abort("Container of liquid biomatter required.")
-					return
-				else if(!container.reagents.has_reagent(MATERIAL_BIOMATTER, BIOMATTER_PER_SHEET))
-					abort("Insufficient amount of biomatter.")
-					return
-			if(container && container.reagents.has_reagent(MATERIAL_BIOMATTER, BIOMATTER_PER_SHEET))
-				var/quantity = min(reagents.get_free_space(), BIOMATTER_PER_SHEET*BIOMATTER_SHEETS_PER_TIME)
-				container.reagents.trans_id_to(src, MATERIAL_BIOMATTER, quantity, TRUE)
-		if(reagents.get_reagent_amount(MATERIAL_BIOMATTER) >= BIOMATTER_PER_SHEET)
-			process_biomatter()
-			use_power(active_power_usage)
-		else
-			abort("Insufficient amount of biomatter.")
+#warn bad
+	// if(active)
+	// 	if(reagents.get_free_space() >= BIOMATTER_PER_SHEET)
+	// 		if(reagents.total_volume < BIOMATTER_PER_SHEET)
+	// 			if(!container)
+	// 				abort("Container of liquid biomatter required.")
+	// 				return
+	// 			else if(!container.reagents.has_reagent(MATERIAL_BIOMATTER, BIOMATTER_PER_SHEET))
+	// 				abort("Insufficient amount of biomatter.")
+	// 				return
+	// 		if(container && container.reagents.has_reagent(MATERIAL_BIOMATTER, BIOMATTER_PER_SHEET))
+	// 			var/quantity = min(reagents.get_free_space(), BIOMATTER_PER_SHEET*BIOMATTER_SHEETS_PER_TIME)
+	// 			container.reagents.trans_id_to(src, MATERIAL_BIOMATTER, quantity, TRUE)
+	// 	if(reagents.get_reagent_amount(MATERIAL_BIOMATTER) >= BIOMATTER_PER_SHEET)
+	// 		process_biomatter()
+	// 		use_power(active_power_usage)
+	// 	else
+	// 		abort("Insufficient amount of biomatter.")
 
 /obj/machinery/biomatter_solidifier/proc/process_biomatter()
 	var/quantity = min(reagents.get_reagent_amount(MATERIAL_BIOMATTER), BIOMATTER_PER_SHEET*BIOMATTER_SHEETS_PER_TIME)

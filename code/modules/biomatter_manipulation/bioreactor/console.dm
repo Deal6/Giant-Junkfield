@@ -44,7 +44,8 @@
 			//non operational
 			data["status"] = 0
 
-	data["biotank_occupancy"] = MS_bioreactor.biotank_platform.biotank.reagents.total_volume || 0
+#warn bad
+	// data["biotank_occupancy"] = MS_bioreactor.biotank_platform.biotank.reagents.total_volume || 0
 	data["biotank_max_capacity"] = MS_bioreactor.biotank_platform.biotank.max_capacity
 	data["biotank_status"] = MS_bioreactor.biotank_platform.pipes_opened
 	data["pipes_condition"] = MS_bioreactor.biotank_platform.pipes_cleanness

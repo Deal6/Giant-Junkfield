@@ -39,15 +39,16 @@
 
 /datum/recipe/proc/check_reagents(var/datum/reagents/avail_reagents)
 	. = 1
-	for (var/r_r in reagents)
-		var/aval_r_amnt = avail_reagents.get_reagent_amount(r_r)
-		if (!(abs(aval_r_amnt - reagents[r_r])<0.5)) //if NOT equals
-			if (aval_r_amnt>reagents[r_r])
-				. = 0
-			else
-				return -1
-	if ((reagents?(reagents.len):(0)) < avail_reagents.reagent_list.len)
-		return 0
+	#warn bad
+	// for (var/r_r in reagents)
+	// 	var/aval_r_amnt = avail_reagents.get_reagent_amount(r_r)
+	// 	if (!(abs(aval_r_amnt - reagents[r_r])<0.5)) //if NOT equals
+	// 		if (aval_r_amnt>reagents[r_r])
+	// 			. = 0
+	// 		else
+	// 			return -1
+	// if ((reagents?(reagents.len):(0)) < avail_reagents.reagent_list.len)
+	// 	return 0
 	return .
 
 /datum/recipe/proc/check_fruit(var/obj/container)
@@ -92,27 +93,29 @@
 
 //general version
 /datum/recipe/proc/make(var/obj/container as obj)
-	var/obj/result_obj = new result(container)
-	for (var/obj/O in (container.contents-result_obj))
-		O.reagents.trans_to_obj(result_obj, O.reagents.total_volume)
-		qdel(O)
-	container.reagents.clear_reagents()
-	return result_obj
+#warn bad
+	// var/obj/result_obj = new result(container)
+	// for (var/obj/O in (container.contents-result_obj))
+	// 	O.reagents.trans_to_obj(result_obj, O.reagents.total_volume)
+	// 	qdel(O)
+	// container.reagents.clear_reagents()
+	// return result_obj
 
 // food-related
 /datum/recipe/proc/make_food(var/obj/container as obj)
-	if(!result)
-		to_chat(world, SPAN_DANGER("Recipe [type] is defined without a result, please bug this."))
-		return
-	var/obj/result_obj = new result(container)
-	for (var/obj/O in (container.contents-result_obj))
-		if (O.reagents)
-			O.reagents.del_reagent("nutriment")
-			O.reagents.update_total()
-			O.reagents.trans_to_obj(result_obj, O.reagents.total_volume)
-		qdel(O)
-	container.reagents.clear_reagents()
-	return result_obj
+#warn bad
+	// if(!result)
+	// 	to_chat(world, SPAN_DANGER("Recipe [type] is defined without a result, please bug this."))
+	// 	return
+	// var/obj/result_obj = new result(container)
+	// for (var/obj/O in (container.contents-result_obj))
+	// 	if (O.reagents)
+	// 		O.reagents.del_reagent("nutriment")
+	// 		O.reagents.update_total()
+	// 		O.reagents.trans_to_obj(result_obj, O.reagents.total_volume)
+	// 	qdel(O)
+	// container.reagents.clear_reagents()
+	// return result_obj
 
 /proc/select_recipe(var/list/datum/recipe/avaiable_recipes, var/obj/obj as obj, var/exact)
 	var/list/datum/recipe/possible_recipes = new

@@ -19,10 +19,11 @@
 	icon_state = "exertion" //https://game-icons.net/1x1/delapouite/weight-lifting-up.html
 
 /datum/perk/cooldown/exertion/on_process()
-	if(holder.reagents.has_reagent("protein_shake"))
-		perk_lifetime -= 3 SECONDS
-	else if(holder.reagents.has_reagent("protein_shake_commercial"))
-		perk_lifetime -= 2 SECONDS
+#warn bad
+	// if(holder.reagents.has_reagent("protein_shake"))
+	// 	perk_lifetime -= 3 SECONDS
+	// else if(holder.reagents.has_reagent("protein_shake_commercial"))
+	// 	perk_lifetime -= 2 SECONDS
 	..()
 
 /datum/perk/cooldown/exertion/assign(mob/living/carbon/human/H)

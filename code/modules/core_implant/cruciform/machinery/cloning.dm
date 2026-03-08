@@ -344,9 +344,9 @@
 
 /obj/machinery/neotheology/biomass_container/Initialize(mapload, d, bolt=TRUE)
 	. = ..()
-	create_reagents(biomass_capacity)
+	#warn bad // create reagents(biomass_capacity)
 	if(SSticker.current_state != GAME_STATE_PLAYING)
-		reagents.add_reagent("biomatter", 300)
+		#warn reagents.add_reagent("biomatter", 300)
 	anchored = bolt
 	var/turf/T = get_turf(src)
 	T?.levelupdate()
@@ -383,7 +383,7 @@
 					sheets_amount_to_transfer = B.amount
 				var/total_transfer_from_stack = 0
 				for(var/i=1;(i <= sheets_amount_to_transfer && i <= B.amount);i++)
-					reagents.add_reagent("biomatter", B.biomatter_in_sheet)
+					#warn reagents.add_reagent("biomatter", B.biomatter_in_sheet)
 					total_transfer_from_stack += B.biomatter_in_sheet
 				B.use(sheets_amount_to_transfer)
 				user.visible_message(

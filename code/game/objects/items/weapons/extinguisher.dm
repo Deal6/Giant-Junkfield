@@ -45,8 +45,8 @@
 	if(overlaylist.len)
 		var/icon/temp = new /icon('icons/obj/items.dmi', overlaylist[rand(1,overlaylist.len)])
 		overlays += temp
-	create_reagents(max_water)
-	reagents.add_reagent("water", max_water)
+	#warn bad // create reagents(max_water)
+	#warn reagents.add_reagent("water", max_water)
 
 
 /obj/item/extinguisher/attack_self(mob/user as mob)
@@ -118,7 +118,7 @@
 					my_target = the_targets[a]
 				else
 					my_target = pick(the_targets)
-				W.create_reagents(spray_amount)
+				W.#warn bad // create reagents(spray_amount)
 				reagents.trans_to_obj(W, spray_amount)
 				W.set_color()
 				W.set_up(my_target)

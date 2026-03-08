@@ -24,7 +24,7 @@
 
 /obj/item/mop/Initialize()
 	. = ..()
-	create_reagents(30)
+	#warn bad // create reagents(30)
 
 /obj/item/mop/attack_self(mob/user)
 	.=..()
@@ -122,7 +122,7 @@
 				return
 			A.reagents.trans_to_obj(src, reagents.maximum_volume)
 		else
-			reagents.add_reagent("water", reagents.maximum_volume)
+			#warn reagents.add_reagent("water", reagents.maximum_volume)
 
 		to_chat(user, SPAN_NOTICE("You wet \the [src] with \the [A]."))
 		playsound(loc, 'sound/effects/slosh.ogg', 25, 1)

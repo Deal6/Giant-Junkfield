@@ -128,20 +128,20 @@
 		list(QUALITY_SCREW_DRIVING, 10),
 		list(QUALITY_ADHESIVE, 15, 70)
 	)
-
+#warn bad
 /datum/craft_recipe/gun/armgun
-	name = "Embedded SMG"
-	result = /obj/item/organ_module/active/simple/armsmg
-	steps = list(
-		list(/obj/item/part/gun/frame/luty, 1),
-		list(QUALITY_HAMMERING, 10),
-		list(CRAFT_MATERIAL, 12, MATERIAL_PLASTEEL, "time" = 10),
-		list(QUALITY_WELDING, 10, "time" = 40),
-		list(/obj/item/stack/cable_coil, 5, "time" = 20),
-		list(CRAFT_MATERIAL, 5, MATERIAL_PLASTIC, "time" = 10),
-		list(QUALITY_SCREW_DRIVING, 10),
-		list(QUALITY_ADHESIVE, 15, 70)
-	)
+	// name = "Embedded SMG"
+	// result = /obj/item/organ_module/active/simple/armsmg
+	// steps = list(
+	// 	list(/obj/item/part/gun/frame/luty, 1),
+	// 	list(QUALITY_HAMMERING, 10),
+	// 	list(CRAFT_MATERIAL, 12, MATERIAL_PLASTEEL, "time" = 10),
+	// 	list(QUALITY_WELDING, 10, "time" = 40),
+	// 	list(/obj/item/stack/cable_coil, 5, "time" = 20),
+	// 	list(CRAFT_MATERIAL, 5, MATERIAL_PLASTIC, "time" = 10),
+	// 	list(QUALITY_SCREW_DRIVING, 10),
+	// 	list(QUALITY_ADHESIVE, 15, 70)
+	// )
 
 /datum/craft_recipe/gun/poweredcrossbow
 	name = "Powered crossbow"

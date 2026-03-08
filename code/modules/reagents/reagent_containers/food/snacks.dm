@@ -39,7 +39,7 @@
 /obj/item/reagent_containers/food/snacks/Initialize()
 	. = ..()
 	if(nutriment_amt)
-		reagents.add_reagent("nutriment", nutriment_amt, nutriment_desc)
+		#warn reagents.add_reagent("nutriment", nutriment_amt, nutriment_desc)
 
 /obj/item/reagent_containers/food/snacks/New()
 	..()
@@ -282,7 +282,7 @@
 		var/obj/item/material/kitchen/utensil/utensil = W
 		if(utensil.scoop_food)
 			if(!utensil.reagents)
-				utensil.create_reagents(5)
+				utensil.#warn bad // create reagents(5)
 
 			if (utensil.reagents.total_volume > 0)
 				to_chat(user, SPAN_WARNING("You already have something on your [utensil]."))
@@ -2598,7 +2598,7 @@
 
 /obj/item/reagent_containers/food/snacks/mre/proc/heat()
 	for(var/reagent in heated_reagents)
-		reagents.add_reagent(reagent, heated_reagents[reagent])
+		#warn reagents.add_reagent(reagent, heated_reagents[reagent])
 	bitesize = 6
 	name = "warm " + name
 	icon_state = "[initial(icon_state)]_hot"

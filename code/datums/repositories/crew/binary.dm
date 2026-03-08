@@ -5,11 +5,11 @@
 	if(H.name in GLOB.ignore_health_alerts_from)
 		crew_data["muted"] = TRUE
 	if(!H.isSynthetic())
-	#warn line below there was a check for organic heart
-		if(/obj/item/organ/internal/vital/heart/)
-			var/pulse = H.pulse()
-			if(pulse == PULSE_NONE || pulse == PULSE_THREADY)
-				crew_data["alert"] = TRUE
+#warn bad
+		// if(/obj/item/organ/internal/vital/heart/)
+		// 	var/pulse = H.pulse()
+		// 	if(pulse == PULSE_NONE || pulse == PULSE_THREADY)
+		// 		crew_data["alert"] = TRUE
 		if(H.getOxyLoss() >= 20)
 			crew_data["alert"] = TRUE
 		if(H.getBruteLoss() >= 100)

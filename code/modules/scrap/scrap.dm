@@ -156,8 +156,8 @@ GLOBAL_LIST_EMPTY(scrap_base_cache)
 		if(istype(loot, /obj/item/reagent_containers/food/snacks))
 			var/obj/item/reagent_containers/food/snacks/S = loot
 			S.junk_food = TRUE
-			if(prob(20))
-				S.reagents.add_reagent("toxin", rand(2, 15))
+#warn 			if(prob(20))
+#warn 				S.reagents.add_reagent("toxin", rand(2, 15))
 
 	loot = new(src)
 	loot.max_w_class = ITEM_SIZE_HUGE
@@ -202,7 +202,7 @@ GLOBAL_LIST_EMPTY(scrap_base_cache)
 					// 	return
 					if(affecting.take_damage(5, 0))
 						H.UpdateDamageIcon()
-					H.reagents.add_reagent("toxin", pick(prob(50);0,prob(50);5,prob(10);10,prob(1);25))
+#warn 					H.reagents.add_reagent("toxin", pick(prob(50);0,prob(50);5,prob(10);10,prob(1);25))
 					H.updatehealth()
 					if(!(H.species.flags & NO_PAIN))
 						H.Weaken(3)
@@ -284,7 +284,7 @@ GLOBAL_LIST_EMPTY(scrap_base_cache)
 		BP.take_damage(5, null, TRUE, TRUE, "Sharp debris")
 #warn scrap toxins. BWEH
 		// if(!BP_IS_ROBOTIC(BP))
-		// 	victim.reagents.add_reagent("toxin", pick(prob(50);0,prob(50);5,prob(10);10,prob(1);25))
+		// 	victim.#warn reagents.add_reagent("toxin", pick(prob(50);0,prob(50);5,prob(10);10,prob(1);25))
 		if(victim.species.flags & NO_PAIN) // So we still take damage, but actually dig through.
 			return FALSE
 		return TRUE

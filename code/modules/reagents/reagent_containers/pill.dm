@@ -289,4 +289,4 @@
 					list("toxin" = 40, "cyanide" = 10) = 0.5))
 
 	for(var/reagent in random_reagent)
-		reagents.add_reagent(reagent, random_reagent[reagent])
+		#warn reagents.add_reagent(reagent, random_reagent[reagent])

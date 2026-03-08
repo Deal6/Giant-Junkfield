@@ -97,33 +97,34 @@
 
 //This proc called on object/mob consumption
 /obj/machinery/multistructure/bioreactor_part/platform/proc/consume(atom/movable/object)
-	if(ishuman(object))
-		var/mob/living/carbon/human/H = object
-		for(var/obj/item/item in H.contents)
-			//non robotic limbs will be consumed
-			if(istype(item, /obj/item/organ))
-				var/obj/item/organ/organ = item
-				if(istype(organ, /obj/item/organ/external) && organ.nature == MODIFICATION_ORGANIC)
-					continue
-				var/obj/machinery/multistructure/bioreactor_part/platform/neighbor_platform = pick(MS_bioreactor.platforms)
-				organ.forceMove(get_turf(neighbor_platform))
-				organ.removed()
-				continue
-	if(istype(object, /obj/item/organ/internal/vital/brain))
-		var/obj/item/organ/internal/vital/brain/B = object
-		if(B.brainmob && B.brainmob.mind && B.brainmob.mind.key)
-			var/mob/M = key2mob(B.brainmob.mind.key)
-			to_chat(M, SPAN_NOTICE("Your remains have been dissolved and reused. Your crew respawn time is reduced by [(BIOREACTOR_RESPAWN_BONUS)/600] minutes."))
-			M << 'sound/effects/magic/blind.ogg'  //Play this sound to a player whenever their respawn time gets reduced
-			M.set_respawn_bonus("CORPSE_DISSOLVING", BIOREACTOR_RESPAWN_BONUS)
+#warn bad
+	// if(ishuman(object))
+	// 	var/mob/living/carbon/human/H = object
+	// 	for(var/obj/item/item in H.contents)
+	// 		//non robotic limbs will be consumed
+	// 		if(istype(item, /obj/item/organ))
+	// 			var/obj/item/organ/organ = item
+	// 			if(istype(organ, /obj/item/organ/external) && organ.nature == MODIFICATION_ORGANIC)
+	// 				continue
+	// 			var/obj/machinery/multistructure/bioreactor_part/platform/neighbor_platform = pick(MS_bioreactor.platforms)
+	// 			organ.forceMove(get_turf(neighbor_platform))
+	// 			organ.removed()
+	// 			continue
+	// if(istype(object, /obj/item/organ/internal/vital/brain))
+	// 	var/obj/item/organ/internal/vital/brain/B = object
+	// 	if(B.brainmob && B.brainmob.mind && B.brainmob.mind.key)
+	// 		var/mob/M = key2mob(B.brainmob.mind.key)
+	// 		to_chat(M, SPAN_NOTICE("Your remains have been dissolved and reused. Your crew respawn time is reduced by [(BIOREACTOR_RESPAWN_BONUS)/600] minutes."))
+	// 		M << 'sound/effects/magic/blind.ogg'  //Play this sound to a player whenever their respawn time gets reduced
+	// 		M.set_respawn_bonus("CORPSE_DISSOLVING", BIOREACTOR_RESPAWN_BONUS)
 
-	qdel(object)
-	//now let's add some dirt to the glass
-	for(var/obj/structure/window/reinforced/bioreactor/glass in loc)
-		if(glass.dir != MS_bioreactor.platform_enter_side && prob(10))
-			glass.apply_dirt(1)
-	if(prob(30))
-		playsound(loc, 'sound/effects/bubbles.ogg', 50, 1)
+	// qdel(object)
+	// //now let's add some dirt to the glass
+	// for(var/obj/structure/window/reinforced/bioreactor/glass in loc)
+	// 	if(glass.dir != MS_bioreactor.platform_enter_side && prob(10))
+	// 		glass.apply_dirt(1)
+	// if(prob(30))
+	// 	playsound(loc, 'sound/effects/bubbles.ogg', 50, 1)
 
 
 /obj/machinery/multistructure/bioreactor_part/platform/update_icon()

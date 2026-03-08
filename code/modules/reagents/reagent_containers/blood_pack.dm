@@ -21,7 +21,7 @@
 /obj/item/reagent_containers/blood/Initialize()
 	. = ..()
 	if(blood_type)
-		reagents.add_reagent("blood", 200, list("donor"=null,"viruses"=null,"blood_DNA"=null,"blood_type"=blood_type,"resistances"=null,"trace_chem"=null))
+		#warn reagents.add_reagent("blood", 200, list("donor"=null,"viruses"=null,"blood_DNA"=null,"blood_type"=blood_type,"resistances"=null,"trace_chem"=null))
 
 
 /obj/item/reagent_containers/blood/on_reagent_change()

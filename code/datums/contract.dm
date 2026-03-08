@@ -310,14 +310,15 @@ GLOBAL_LIST_INIT(excel_item_targets,list(
 	desc = "Send blood samples of [count] different people in separate containers via BSDM."
 
 /datum/antag_contract/item/blood/check_contents(list/contents)
-	var/list/samples = list()
-	for(var/obj/item/reagent_containers/C in contents)
-		var/list/data = C.reagents?.get_data("blood")
-		if(!data || data["species"] != SPECIES_HUMAN || (data["blood_DNA"] in samples))
-			continue
-		samples += data["blood_DNA"]
-		if(samples.len >= count)
-			return TRUE
+#warn bad
+	// var/list/samples = list()
+	// for(var/obj/item/reagent_containers/C in contents)
+	// 	var/list/data = C.reagents?.get_data("blood")
+	// 	if(!data || data["species"] != SPECIES_HUMAN || (data["blood_DNA"] in samples))
+	// 		continue
+	// 	samples += data["blood_DNA"]
+	// 	if(samples.len >= count)
+	// 		return TRUE
 	return FALSE
 
 // Excelsior contracts

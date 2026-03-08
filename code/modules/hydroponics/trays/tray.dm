@@ -147,9 +147,9 @@
 /obj/machinery/portable_atmospherics/hydroponics/Initialize(mapload, d)
 	. = ..()
 	temp_chem_holder = new()
-	temp_chem_holder.create_reagents(10)
+	#warn bad temp_chem_holder. // create reagents(10)
 	temp_chem_holder.reagent_flags |= OPENCONTAINER
-	create_reagents(200)
+	#warn bad // create reagents(200)
 	if(mechanical)
 		connect()
 	var/turf/T = get_turf(src)
@@ -624,7 +624,7 @@
 			extra_description += "\nThe tray's sensor suite is reporting [light_string] and a temperature of [environment.temperature]K."
 	else
 		extra_description += "[src] is empty."
-	
+
 	..(user, extra_description)
 
 

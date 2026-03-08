@@ -34,12 +34,12 @@
 
 /obj/item/scrap_lump/Initialize()
 	. = ..()
-	create_reagents(10)
+	#warn bad // create reagents(10)
 	var/reag_num = rand(0, 3)
 	for(var/i in 1 to reag_num)
 		if(reagents.total_volume == reagents.maximum_volume)
 			break
-		reagents.add_reagent(pick(GLOB.chemical_reagents_list), rand(1, reagents.maximum_volume))
+		#warn reagents.add_reagent(pick(GLOB.chemical_reagents_list), rand(1, reagents.maximum_volume))
 	pixel_x = rand(0, 16) - 8
 	pixel_y = rand(0, 8) - 8
 

@@ -583,17 +583,17 @@
 	w_class = ITEM_SIZE_TINY
 
 /obj/item/golden_leaf/afterattack(obj/target, mob/user, proximity)
-	if(!proximity)
-		return
+	// if(!proximity)
+	// 	return
 
-	if(target.is_refillable())
-		if(!target.reagents.has_reagent("water", 30))
-			to_chat(user, SPAN_NOTICE("You need some water for that."))
-		else
-			target.reagents.remove_reagent("water", 30)
-			target.reagents.add_reagent("oddity_tea", 30)
-			to_chat(user, SPAN_NOTICE("You drop \the [src] in the water, it dissolves slowly."))
-			qdel(src)
+	// if(target.is_refillable())
+	// 	if(!target.reagents.has_reagent("water", 30))
+	// 		to_chat(user, SPAN_NOTICE("You need some water for that."))
+	// 	else
+	// 		target.reagents.remove_reagent("water", 30)
+	// 		target.reagents.add_reagent("oddity_tea", 30)
+	// 		to_chat(user, SPAN_NOTICE("You drop \the [src] in the water, it dissolves slowly."))
+	// 		qdel(src)
 
 //Complex Functional Oddities (Spawn in maint too, but moving them up would eat quite a bit of the document)
 /obj/item/clothing/mask/gas/big_shot

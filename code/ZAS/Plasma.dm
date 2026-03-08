@@ -62,8 +62,8 @@ var/image/contamination_overlay = image('icons/effects/contamination.dmi')
 
 /mob/living/carbon/human/proc/burn_eyes()
 	//The proc that handles eye burning.
-	if(!species.has_process[OP_EYES])
-		return
+	// if(!species.has_process[OP_EYES])
+	// 	return
 	#warn burn_eyes()
 	// var/obj/item/organ/internal/eyes/E = random_organ_by_process(OP_EYES)
 	// if(E)

@@ -1222,8 +1222,9 @@
 		/obj/item/stack/medical/splint = 6
 		)
 	contraband = list(
-		/obj/item/reagent_containers/syringe/antitoxin = 2,
-		/obj/item/reagent_containers/syringe/spaceacillin = 2,
+		#warn bad
+		// /obj/item/reagent_containers/syringe/antitoxin = 2,
+		// /obj/item/reagent_containers/syringe/spaceacillin = 2,
 		/obj/item/reagent_containers/pill/tox = 1
 		)
 	prices = list(
@@ -1235,9 +1236,9 @@
 		/obj/item/reagent_containers/hypospray/autoinjector = 100,
 
 		/obj/item/stack/medical/splint = 200,
-
-		/obj/item/reagent_containers/syringe/antitoxin = 200,
-		/obj/item/reagent_containers/syringe/spaceacillin = 200,
+#warn bad
+		// /obj/item/reagent_containers/syringe/antitoxin = 200,
+		// /obj/item/reagent_containers/syringe/spaceacillin = 200,
 		/obj/item/reagent_containers/pill/tox = 100
 		)
 	auto_price = FALSE
@@ -1249,9 +1250,9 @@
 		/obj/item/stack/medical/bruise_pack = 2, /obj/item/stack/medical/ointment = 2,
 		/obj/item/stack/medical/advanced/bruise_pack = 1, /obj/item/stack/medical/advanced/ointment = 1,
 		/obj/item/stack/nanopaste = 1,
-
-		/obj/item/reagent_containers/hypospray/autoinjector/antitoxin = 5, /obj/item/reagent_containers/syringe/antitoxin = 5,
-		/obj/item/reagent_containers/hypospray/autoinjector/tricordrazine = 5, /obj/item/reagent_containers/syringe/tricordrazine = 5,
+#warn bad
+		// /obj/item/reagent_containers/hypospray/autoinjector/antitoxin = 5, /obj/item/reagent_containers/syringe/antitoxin = 5,
+		// /obj/item/reagent_containers/hypospray/autoinjector/tricordrazine = 5, /obj/item/reagent_containers/syringe/tricordrazine = 5,
 		/obj/item/reagent_containers/hypospray/autoinjector/spaceacillin = 1, /obj/item/reagent_containers/syringe/spaceacillin = 1,
 
 		/obj/item/implantcase/death_alarm = 2,
@@ -1926,21 +1927,23 @@
 		/obj/item/gym_ticket = 200,
 		/obj/item/tool/hammer/dumbbell = 90,
 		/obj/item/reagent_containers/food/drinks/protein_shake = 150,//a total ripoff
-		/obj/item/reagent_containers/food/drinks/energy = 200,
-		/obj/item/reagent_containers/syringe/paracetamol = 300,
-		/obj/item/reagent_containers/syringe/adrenaline = 350,
-		/obj/item/reagent_containers/syringe/stim/steady = 400,
-		/obj/item/reagent_containers/syringe/stim/bouncer = 400,
-		/obj/item/reagent_containers/syringe/stim/violence = 400
+		#warn bad
+		// /obj/item/reagent_containers/food/drinks/energy = 200,
+		// /obj/item/reagent_containers/syringe/paracetamol = 300,
+		// /obj/item/reagent_containers/syringe/adrenaline = 350,
+		// /obj/item/reagent_containers/syringe/stim/steady = 400,
+		// /obj/item/reagent_containers/syringe/stim/bouncer = 400,
+		// /obj/item/reagent_containers/syringe/stim/violence = 400
 		)
 
 	contraband = list(
-		/obj/item/reagent_containers/food/drinks/energy = 10,
-		/obj/item/reagent_containers/syringe/paracetamol = 10,
-		/obj/item/reagent_containers/syringe/adrenaline = 10,
-		/obj/item/reagent_containers/syringe/stim/steady = 5,
-		/obj/item/reagent_containers/syringe/stim/bouncer = 5,
-		/obj/item/reagent_containers/syringe/stim/violence = 5
+		#warn bad
+		// /obj/item/reagent_containers/food/drinks/energy = 10,
+		// /obj/item/reagent_containers/syringe/paracetamol = 10,
+		// /obj/item/reagent_containers/syringe/adrenaline = 10,
+		// /obj/item/reagent_containers/syringe/stim/steady = 5,
+		// /obj/item/reagent_containers/syringe/stim/bouncer = 5,
+		// /obj/item/reagent_containers/syringe/stim/violence = 5
 		)
 	vendor_department = DEPARTMENT_CIVILIAN
 

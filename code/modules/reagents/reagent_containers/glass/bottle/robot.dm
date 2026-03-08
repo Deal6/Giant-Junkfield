@@ -15,7 +15,7 @@
 
 	New()
 		..()
-		reagents.add_reagent("inaprovaline", 60)
+		#warn reagents.add_reagent("inaprovaline", 60)
 
 
 /obj/item/reagent_containers/glass/bottle/robot/antitoxin
@@ -25,4 +25,4 @@
 
 	New()
 		..()
-		reagents.add_reagent("anti_toxin", 60)
+		#warn reagents.add_reagent("anti_toxin", 60)

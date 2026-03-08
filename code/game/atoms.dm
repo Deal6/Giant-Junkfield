@@ -121,9 +121,9 @@
 			var/volume = 0
 			for(var/reagent in preloaded_reagents)
 				volume += preloaded_reagents[reagent]
-			create_reagents(volume)
+			#warn bad // create reagents(volume)
 		for(var/reagent in preloaded_reagents)
-			reagents.add_reagent(reagent, preloaded_reagents[reagent])
+			#warn reagents.add_reagent(reagent, preloaded_reagents[reagent])
 
 	return INITIALIZE_HINT_NORMAL
 

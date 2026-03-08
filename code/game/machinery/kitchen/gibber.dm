@@ -198,10 +198,11 @@
 		var/mob/living/simple_animal/A = occupant
 		meat_type = A.meat_type
 
-	for(var/i in 1 to meat_amount)
-		var/obj/item/reagent_containers/food/snacks/meat/new_meat = new meat_type(src)
-		if(occupant.reagents)
-			occupant.reagents.trans_to_obj(new_meat, round(occupant.reagents.total_volume / meat_amount, 1))
+#warn bad
+	// for(var/i in 1 to meat_amount)
+	// 	var/obj/item/reagent_containers/food/snacks/meat/new_meat = new meat_type(src)
+	// 	if(occupant.reagents)
+	// 		occupant.reagents.trans_to_obj(new_meat, round(occupant.reagents.total_volume / meat_amount, 1))
 
 	occupant.attack_log += "\[[time_stamp()]\] Was gibbed by <b>[user]/[user.ckey]</b>" //One shall not simply gib a mob unnoticed!
 	user.attack_log += "\[[time_stamp()]\] Gibbed <b>[occupant]/[occupant.ckey]</b>"

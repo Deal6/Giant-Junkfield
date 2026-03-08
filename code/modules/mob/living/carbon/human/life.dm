@@ -443,11 +443,11 @@
 // 	if(breath.gas["sleeping_agent"])
 // 		var/SA_pp = (breath.gas["sleeping_agent"] / breath.total_moles) * breath_pressure
 // 		if(SA_pp > SA_para_min)		// Enough to make us paralysed for a bit
-// 			reagents.add_reagent("sagent", 2)
+// 			#warn reagents.add_reagent("sagent", 2)
 // 			if(SA_pp > SA_sleep_min)	// Enough to make us sleep as well
-// 				reagents.add_reagent("sagent", 5)
+// 				#warn reagents.add_reagent("sagent", 5)
 // 		else if(SA_pp > 0.15)	// There is sleeping gas in their lungs, but only a little, so give them a bit of a warning
-// 			reagents.add_reagent("sagent", 1)
+// 			#warn reagents.add_reagent("sagent", 1)
 
 // 		breath.adjust_gas("sleeping_agent", -breath.gas["sleeping_agent"]/6, update = 0) //update after
 

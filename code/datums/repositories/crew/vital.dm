@@ -3,29 +3,29 @@
 	crew_data["true_pulse"] = -1
 	crew_data["pulse"] = "N/A"
 	crew_data["pulse_span"] = "neutral"
-
-	if(!H.isSynthetic() && H.should_have_process(OP_HEART))
-		if(/obj/item/organ/internal/vital/heart/) // Organic check
-			crew_data["true_pulse"] = H.pulse()
-			crew_data["pulse"] = H.get_pulse(1)
-			switch(crew_data["true_pulse"])
-				if(PULSE_NONE)
-					crew_data["alert"] = TRUE
-					crew_data["pulse_span"] = "bad"
-				if(PULSE_SLOW)
-					crew_data["pulse_span"] = "average"
-				if(PULSE_NORM)
-					crew_data["pulse_span"] = "good"
-				if(PULSE_FAST)
-					crew_data["pulse_span"] = "highlight"
-				if(PULSE_2FAST)
-					crew_data["pulse_span"] = "average"
-				if(PULSE_THREADY)
-					crew_data["alert"] = TRUE
-					crew_data["pulse_span"] = "bad"
-	else
-		crew_data["pulse_span"] = "highlight"
-		crew_data["pulse"] = "synthetic"
+#warn bad
+	// if(!H.isSynthetic() && H.should_have_process(OP_HEART))
+	// 	if(/obj/item/organ/internal/vital/heart/) // Organic check
+	// 		crew_data["true_pulse"] = H.pulse()
+	// 		crew_data["pulse"] = H.get_pulse(1)
+	// 		switch(crew_data["true_pulse"])
+	// 			if(PULSE_NONE)
+	// 				crew_data["alert"] = TRUE
+	// 				crew_data["pulse_span"] = "bad"
+	// 			if(PULSE_SLOW)
+	// 				crew_data["pulse_span"] = "average"
+	// 			if(PULSE_NORM)
+	// 				crew_data["pulse_span"] = "good"
+	// 			if(PULSE_FAST)
+	// 				crew_data["pulse_span"] = "highlight"
+	// 			if(PULSE_2FAST)
+	// 				crew_data["pulse_span"] = "average"
+	// 			if(PULSE_THREADY)
+	// 				crew_data["alert"] = TRUE
+	// 				crew_data["pulse_span"] = "bad"
+	// else
+	// 	crew_data["pulse_span"] = "highlight"
+	// 	crew_data["pulse"] = "synthetic"
 
 	if(!H.isSynthetic() && H.should_have_process(OP_HEART))
 //		crew_data["pressure"] = H.get_blood_pressure()

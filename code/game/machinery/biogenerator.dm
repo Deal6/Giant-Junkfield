@@ -47,7 +47,8 @@
 
 /obj/machinery/biogenerator/New()
 	..()
-	create_reagents(1000)
+	#warn bad
+	#warn bad #warn bad // create reagents(1000)
 	beaker = new /obj/item/reagent_containers/glass/beaker/large(src)
 
 
@@ -220,7 +221,7 @@
 	var/creating = recipe["path"]
 	var/reagent = recipe["reagent"]
 	if(reagent) //For reagents like milk
-		beaker.reagents.add_reagent(reagent, 30)
+		beaker.#warn reagents.add_reagent(reagent, 30)
 	else
 		for(var/i in 1 to amount)
 			new creating(loc)

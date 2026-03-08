@@ -17,6 +17,8 @@
 
 /obj/item/implanter/installer
 
+/datum/reagents/proc/add_reagent(id, amount, data = null, safety = 0)
+
 #warn Return robotic external organs some day
 
 //carrion spooders
@@ -44,7 +46,10 @@
 /proc/remove_nsa()
 
 /datum/reagents/metabolism
+/datum/reagents
+    var/total_volume = 0
 /datum/reagent/
+
 	var/name
 /obj/item/mech_equipment/auto_mender
 

@@ -735,8 +735,8 @@
 	H.damage_through_armor(0.5 * damage, BRUTE, BP_R_LEG, ARMOR_MELEE)
 	H.damage_through_armor(0.5 * damage, BRUTE, BP_L_ARM, ARMOR_MELEE)
 	H.damage_through_armor(0.5 * damage, BRUTE, BP_R_ARM, ARMOR_MELEE)
-
-	blood_splatter(src,H,1)
+#warn bad
+	// blood_splatter(src,H,1)
 	bloodiness += 4
 
 // player on mulebot attempted to move

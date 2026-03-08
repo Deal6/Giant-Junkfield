@@ -54,18 +54,18 @@
 //For the mod_overlay, go to the cybernetic in question, and add:
 //	mod_overlay = "installer_CYBERNETIC"
 //Then add the sprites to the items.dmi, named "installer_CYBERNETIC"
+#warn bad
+// /datum/uplink_item/item/implants/energy_blade
+// 	name = "Internal Energy Armblade Cybernetic"
+// 	item_cost = 6
+// 	path = /obj/item/implanter/installer/disposable/energy_blade
 
-/datum/uplink_item/item/implants/energy_blade
-	name = "Internal Energy Armblade Cybernetic"
-	item_cost = 6
-	path = /obj/item/implanter/installer/disposable/energy_blade
+// /datum/uplink_item/item/implants/subdermal_armor
+// 	name = "Subdermal Armor Cybernetic"
+// 	item_cost = 3
+// 	path = /obj/item/implanter/installer/disposable/armor
 
-/datum/uplink_item/item/implants/subdermal_armor
-	name = "Subdermal Armor Cybernetic"
-	item_cost = 3
-	path = /obj/item/implanter/installer/disposable/armor
-
-/datum/uplink_item/item/implants/leg_muscle
-	name = "Leg Muscle Cybernetic"
-	item_cost = 3
-	path = /obj/item/implanter/installer/disposable/muscle
+// /datum/uplink_item/item/implants/leg_muscle
+// 	name = "Leg Muscle Cybernetic"
+// 	item_cost = 3
+// 	path = /obj/item/implanter/installer/disposable/muscle

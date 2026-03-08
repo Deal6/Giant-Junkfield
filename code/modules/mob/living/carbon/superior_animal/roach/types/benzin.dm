@@ -21,7 +21,7 @@
 
 /mob/living/carbon/superior_animal/roach/benzin/Life()
 	if(reagents.total_volume < reagents.maximum_volume)
-		reagents.add_reagent("fuel", 1)
+		#warn reagents.add_reagent("fuel", 1)
 	..()
 
 

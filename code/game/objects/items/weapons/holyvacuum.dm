@@ -22,7 +22,7 @@
 
 /obj/item/holyvacuum/Initialize()
 	.=..()
-	create_reagents(10)
+	#warn bad // create reagents(10)
 	refill()
 	update_icon()
 
@@ -47,7 +47,7 @@
 		overlays += "5"
 
 /obj/item/holyvacuum/proc/refill()
-	reagents.add_reagent("cleaner", 10)  // Need to have cleaner in it for /turf/proc/clean
+	#warn reagents.add_reagent("cleaner", 10)  // Need to have cleaner in it for /turf/proc/clean
 
 /obj/item/holyvacuum/attack_self(var/mob/user)
 	.=..()

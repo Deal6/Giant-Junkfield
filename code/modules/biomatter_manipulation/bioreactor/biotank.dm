@@ -59,12 +59,12 @@
 	if(pipes_cleanness <= 90)
 		overlays += "[icon_state]-dirty_[get_dirtiness_level()]"
 
-
+#warn bad
 /obj/machinery/multistructure/bioreactor_part/biotank_platform/Process()
 	if(!MS)
 		return
 	if(biotank.canister)
-		biotank.reagents.trans_to_holder(biotank.canister.reagents, 100)
+		// biotank.reagents.trans_to_holder(biotank.canister.reagents, 100)
 
 
 /obj/machinery/multistructure/bioreactor_part/biotank_platform/attackby(var/obj/item/I, var/mob/user)
@@ -87,7 +87,8 @@
 
 
 /obj/machinery/multistructure/bioreactor_part/biotank_platform/proc/take_amount(new_amount)
-	biotank.reagents.add_reagent("biomatter", new_amount)
+#warn bad
+	// biotank.#warn reagents.add_reagent("biomatter", new_amount)
 	GLOB.biomatter_neothecnology_amt += new_amount
 
 
@@ -129,7 +130,8 @@
 
 /obj/structure/biomatter_tank/Initialize()
 	. = ..()
-	create_reagents(max_capacity)
+	#warn bad
+	#warn bad #warn bad // create reagents(max_capacity)
 
 
 /obj/structure/biomatter_tank/Destroy()
@@ -193,9 +195,10 @@
 			if(!set_canister)
 				to_chat(user, SPAN_WARNING("Ugh. You done something wrong!"))
 				shake_animation()
-				if(reagents.total_volume)
-					toxin_attack(user, rand(15, 25))
-					spill_biomass(user_interaction_loc)
+				#warn bad
+				// if(reagents.total_volume)
+				// 	toxin_attack(user, rand(15, 25))
+				// 	spill_biomass(user_interaction_loc)
 			update_icon()
 
 /obj/structure/biomatter_tank/proc/set_canister(obj/target_tank)
