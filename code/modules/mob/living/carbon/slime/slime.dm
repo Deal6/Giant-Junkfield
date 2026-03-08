@@ -256,8 +256,8 @@
 			var/obj/item/grab/G = new /obj/item/grab(M, src)
 
 			M.put_in_active_hand(G)
-
-			G.synch()
+#warn grab sync was here
+			// G.synch()
 
 			LAssailant = M
 

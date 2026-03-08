@@ -50,7 +50,7 @@
 /mob/living/carbon/human/proc/leap(mob/living/carbon/human/T)
 	if(last_special > world.time)
 		return
-	if(!T || !src || src.stat) 
+	if(!T || !src || src.stat)
 		return
 	if(stat || paralysis || stunned || weakened || lying || restrained() || buckled)
 		to_chat(src, "You cannot lunge in your current state.")
@@ -73,7 +73,8 @@
 	var/obj/item/grab/G = new(src,T)
 	src.put_in_hands(G)
 	G.state = GRAB_PASSIVE
-	G.synch()
+	#warn grab sync was here
+	// G.synch()
 	G.Process()
 
 /mob/living/carbon/human/proc/gut()

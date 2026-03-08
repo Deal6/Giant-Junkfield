@@ -371,7 +371,8 @@
 
 			M.put_in_active_hand(G)
 
-			G.synch()
+#warn grab sync was here
+			//G.synch()
 			G.affecting = src
 			LAssailant = M
 
