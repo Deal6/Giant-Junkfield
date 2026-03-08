@@ -24,7 +24,6 @@
 
 
 
-#warn Return robotic external organs some day
 
 //carrion spooders
 /obj/item/implant/carrion_spider
