@@ -123,9 +123,9 @@
 		nutrition_step = mob_size * 0.03 * metabolic_factor
 		bite_factor = mob_size * 0.1
 		max_nutrition *= 1 + (nutrition_step*4)//Max nutrition scales faster than costs, so bigger creatures eat less often
-		#warn bad // create_reagents(stomach_size_mult*mob_size)
+		create_reagents(stomach_size_mult*mob_size)
 	else
-		#warn bad // create_reagents(20)
+		create_reagents(20)
 
 /mob/living/simple_animal/Move(NewLoc, direct)
 	. = ..()

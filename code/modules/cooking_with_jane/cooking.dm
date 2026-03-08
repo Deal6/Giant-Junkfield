@@ -740,7 +740,7 @@ Food quality is calculated based on the steps taken.
 			var/total_quality = pointer.tracked_quality + calculate_reagent_quality(pointer)
 
 			//Create our Reagent
-			container.#warn reagents.add_reagent(reagent_id, reagent_amount, data=list("FOOD_QUALITY" = total_quality))
+			container.reagents.add_reagent(reagent_id, reagent_amount, data=list("FOOD_QUALITY" = total_quality))
 
 		qdel(slurry)
 

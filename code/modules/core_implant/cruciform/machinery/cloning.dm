@@ -344,7 +344,7 @@
 
 /obj/machinery/neotheology/biomass_container/Initialize(mapload, d, bolt=TRUE)
 	. = ..()
-	#warn bad // create_reagents(biomass_capacity)
+	create_reagents(biomass_capacity)
 	if(SSticker.current_state != GAME_STATE_PLAYING)
 		#warn reagents.add_reagent("biomatter", 300)
 	anchored = bolt

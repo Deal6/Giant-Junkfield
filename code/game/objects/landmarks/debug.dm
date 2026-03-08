@@ -6,7 +6,7 @@
 		var/datum/reagent/R = GLOB.chemical_reagents_list[id]
 		var/obj/item/reagent_containers/glass/beaker/large/B = new /obj/item/reagent_containers/glass/beaker/large(src.loc)
 		B.name = R.name
-		B.#warn reagents.add_reagent(id, B.volume, null, TRUE)
+		B.reagents.add_reagent(id, B.volume, null, TRUE)
 
 /obj/landmark/debug/all_containers/New()
 	for(var/type in typesof(/obj/item/reagent_containers) - typesof(/obj/item/reagent_containers/food))

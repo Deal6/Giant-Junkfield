@@ -182,7 +182,7 @@
 
 /obj/item/tool/knife/dagger/assassin/New()
 	..()
-	#warn bad // create_reagents(80)
+	create_reagents(80)
 
 /obj/item/tool/knife/dagger/assassin/resolve_attackby(atom/target, mob/user)
 	.=..()

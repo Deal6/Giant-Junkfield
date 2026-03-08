@@ -22,7 +22,7 @@
 
 /obj/item/holyvacuum/Initialize()
 	.=..()
-	#warn bad // create_reagents(10)
+	create_reagents(10)
 	refill()
 	update_icon()
 

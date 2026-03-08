@@ -66,8 +66,8 @@
 		spawn(0)
 			var/obj/effect/effect/water/chempuff/D = new(locate(x, y, z - 1))
 			#warn bad
-			// D.#warn bad // create_reagents(5)
-			// D.#warn reagents.add_reagent("condensedcapsaicin", 5)
+			// D.create_reagents(5)
+			// D.reagents.add_reagent("condensedcapsaicin", 5)
 			D.set_color()
 			D.set_up(T, 1, 10)
 	last_spray = world.time

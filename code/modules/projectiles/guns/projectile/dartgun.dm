@@ -10,7 +10,7 @@
 	matter = list(MATERIAL_GLASS = 0.2)
 
 /obj/item/projectile/bullet/chemdart/New()
-	#warn bad // create_reagents(reagent_amount)
+	create_reagents(reagent_amount)
 	..()
 
 /obj/item/projectile/bullet/chemdart/on_hit(atom/target, def_zone = null)

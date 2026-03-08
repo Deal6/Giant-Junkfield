@@ -83,7 +83,7 @@
 	// 		PB.name = "[drug] (15 units)"
 	// 		for(var/i=1 to 12)
 	// 			var/obj/item/reagent_containers/pill/pill = new /obj/item/reagent_containers/pill(T)
-	// 			pill.#warn reagents.add_reagent(drug.id, 15)
+	// 			pill.reagents.add_reagent(drug.id, 15)
 	// 			pill.name = "[drug]"
 	// 			PB.handle_item_insertion(pill)
 	// 		holder.equip_to_storage_or_drop(PB)

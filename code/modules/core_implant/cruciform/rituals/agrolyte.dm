@@ -63,7 +63,7 @@
 	to_chat(T, SPAN_NOTICE("You feel better as your pain eases, although still lightheaded."))
 	to_chat(user, SPAN_NOTICE("You ease the pain of [T.name]."))
 
-	T.#warn reagents.add_reagent("deusblessing", 15)
+	T.reagents.add_reagent("deusblessing", 15)
 
 	return TRUE
 

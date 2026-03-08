@@ -25,7 +25,7 @@
 
 /obj/machinery/chem_master/RefreshParts()
 	if(!reagents)
-		#warn bad // create_reagents(10)
+		create_reagents(10)
 	reagents.maximum_volume = 0
 	for(var/obj/item/reagent_containers/glass/G in component_parts)
 		reagents.maximum_volume += G.volume

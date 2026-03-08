@@ -41,7 +41,7 @@
 
 /obj/item/device/scanner/mass_spectrometer/New()
 	..()
-	#warn bad // create_reagents(5)
+	create_reagents(5)
 
 /obj/item/device/scanner/mass_spectrometer/on_reagent_change()
 	if(reagents.total_volume)

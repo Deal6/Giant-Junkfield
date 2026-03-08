@@ -6,9 +6,9 @@
 /obj/item/implant/carrion_spider/healing/activate()
 	..()
 	if(wearer)
-		wearer.#warn reagents.add_reagent("bicaridine", 10)
-		wearer.#warn reagents.add_reagent("dermaline", 10)
-		wearer.#warn reagents.add_reagent("anti_toxin", 10)
+		wearer.reagents.add_reagent("bicaridine", 10)
+		wearer.reagents.add_reagent("dermaline", 10)
+		wearer.reagents.add_reagent("anti_toxin", 10)
 		to_chat(wearer, SPAN_NOTICE("You feel a flood of chemicals surge through your veins"))
 		die()
 	else

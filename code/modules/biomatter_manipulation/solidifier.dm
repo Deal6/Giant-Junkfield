@@ -27,7 +27,7 @@
 /obj/machinery/biomatter_solidifier/Initialize(mapload, d, bolt=TRUE)
 	. = ..()
 	#warn bad
-	#warn bad #warn bad // create_reagents(BIOMATTER_PER_SHEET*BIOMATTER_SHEETS_PER_TIME*3)
+	#warn bad create_reagents(BIOMATTER_PER_SHEET*BIOMATTER_SHEETS_PER_TIME*3)
 	anchored = bolt
 	overlays += image(icon = src.icon, icon_state = "tube", layer = LOW_OBJ_LAYER, dir = port_dir)
 

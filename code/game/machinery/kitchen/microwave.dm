@@ -32,7 +32,7 @@
 /obj/machinery/microwave/New()
 	..()
 	#warn bad
-	#warn bad #warn bad // create_reagents(100)
+	#warn bad create_reagents(100)
 	if(!available_recipes)
 		available_recipes = new
 		for (var/type in (typesof(/datum/recipe)-/datum/recipe))
@@ -384,8 +384,8 @@
 				amount+=O.reagents.get_reagent_amount(id)
 		qdel(O)
 	src.reagents.clear_reagents()
-	ffuu.#warn reagents.add_reagent("carbon", amount)
-	ffuu.#warn reagents.add_reagent("toxin", amount/10)
+	ffuu.reagents.add_reagent("carbon", amount)
+	ffuu.reagents.add_reagent("toxin", amount/10)
 	return ffuu
 
 /obj/machinery/microwave/Topic(href, href_list)

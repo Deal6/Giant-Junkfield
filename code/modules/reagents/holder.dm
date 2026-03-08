@@ -1,4 +1,4 @@
-// #warn bad
+#warn bad
 // #define PROCESS_REACTION_ITER 5 //when processing a reaction, iterate this many times
 
 // /datum/reagents
@@ -536,8 +536,8 @@
 // 				else
 // 					dirtoverlay.add_reagents(R)
 // 	return
-
-// /datum/reagents/proc/trans_to_obj(obj/target, amount = 1, multiplier = 1, copy = 0) // Objects may or may not; if they do, it's probably a beaker or something and we need to transfer properly; otherwise, just touch.
+#warn bad
+/datum/reagents/proc/trans_to_obj(obj/target, amount = 1, multiplier = 1, copy = 0) // Objects may or may not; if they do, it's probably a beaker or something and we need to transfer properly; otherwise, just touch.
 // 	if(!target || !target.simulated)
 // 		return
 
@@ -615,5 +615,5 @@
 
 // /* Atom reagent creation - use it all the time */
 
-// /atom/proc/#warn bad // create_reagents(max_vol)
+// /atom/proc/create_reagents(max_vol)
 // 	reagents = new /datum/reagents(max_vol, src)

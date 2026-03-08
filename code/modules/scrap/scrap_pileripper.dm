@@ -162,4 +162,4 @@
 	var/obj/item/reagent_containers/food/snacks/meat/new_meat = new slab_type(get_turf(get_step(src, 4)))
 	new_meat.name = "[slab_name] [new_meat.name]"
 
-	new_meat.#warn reagents.add_reagent("nutriment", 10)
+	new_meat.reagents.add_reagent("nutriment", 10)

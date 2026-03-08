@@ -11,7 +11,7 @@
 
 /obj/item/grown/New(newloc,planttype)
 	..()
-	#warn bad // create_reagents(50)
+	create_reagents(50)
 
 	//Handle some post-spawn var stuff.
 	if(planttype)

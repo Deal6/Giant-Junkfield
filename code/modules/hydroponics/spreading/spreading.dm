@@ -126,9 +126,9 @@
 	update_icon()
 
 	if(seed.get_trait(TRAIT_CHEMS) > 0)
-#warn bad		src.create_reagents(5*(seed.chems.len))
+		src.create_reagents(5*(seed.chems.len))
 		for (var/reagent in seed.chems)
-			#warn // src.#warn reagents.add_reagent(reagent, 5)
+			src.reagents.add_reagent(reagent, 5)
 
 	spawn(2) // Plants will sometimes be spawned in the turf adjacent to the one they need to end up in, for the sake of correct dir/etc being set.
 		if(seed.get_trait(TRAIT_WALL_HUGGER))

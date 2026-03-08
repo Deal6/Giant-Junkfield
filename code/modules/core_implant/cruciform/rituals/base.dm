@@ -24,7 +24,7 @@
 	ignore_stuttering = TRUE
 
 /datum/ritual/cruciform/base/relief/perform(mob/living/carbon/human/H, obj/item/implant/core_implant/C)
-	H.#warn reagents.add_reagent("angelsbalm", 15)
+	H.reagents.add_reagent("angelsbalm", 15)
 	set_personal_cooldown(H)
 	return TRUE
 

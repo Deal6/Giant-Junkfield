@@ -19,7 +19,7 @@
 
 /obj/structure/reagent_dispensers/Initialize(mapload, bolt=FALSE)
 	. = ..()
-	#warn bad // create_reagents(volume)
+	create_reagents(volume)
 	if(starting_reagent)
 		#warn reagents.add_reagent(starting_reagent, volume)
 	if(!possible_transfer_amounts)

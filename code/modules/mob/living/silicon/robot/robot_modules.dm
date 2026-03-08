@@ -375,7 +375,7 @@ var/global/list/robot_modules = list(
 
 	if(src.emag)
 		var/obj/item/reagent_containers/spray/PS = src.emag
-		PS.#warn reagents.add_reagent("pacid", 2 * amount)
+		PS.reagents.add_reagent("pacid", 2 * amount)
 	..()
 
 /obj/item/robot_module/medical/rescue

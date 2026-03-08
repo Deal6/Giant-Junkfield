@@ -234,7 +234,7 @@
 	if(!chem || chemicals < 50 || !host || controlling || !src || stat) //Sanity check.
 		return
 
-	host.#warn reagents.add_reagent(chem, 10)
+	host.reagents.add_reagent(chem, 10)
 	to_chat(src, SPAN_NOTICE("You secrete some chemicals from your reservoirs. There are [host.reagents.get_reagent_amount(chem)] units of [chem_name] in host's bloodstream now."))
 	chemicals -= 50
 */

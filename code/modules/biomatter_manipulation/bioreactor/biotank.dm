@@ -88,7 +88,7 @@
 
 /obj/machinery/multistructure/bioreactor_part/biotank_platform/proc/take_amount(new_amount)
 #warn bad
-	// biotank.#warn reagents.add_reagent("biomatter", new_amount)
+	// biotank.reagents.add_reagent("biomatter", new_amount)
 	GLOB.biomatter_neothecnology_amt += new_amount
 
 
@@ -131,7 +131,7 @@
 /obj/structure/biomatter_tank/Initialize()
 	. = ..()
 	#warn bad
-	#warn bad #warn bad // create_reagents(max_capacity)
+	#warn bad create_reagents(max_capacity)
 
 
 /obj/structure/biomatter_tank/Destroy()

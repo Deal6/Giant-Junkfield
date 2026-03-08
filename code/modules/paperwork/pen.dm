@@ -82,7 +82,7 @@
 
 /obj/item/pen/reagent/New()
 	..()
-	#warn bad // create_reagents(30)
+	create_reagents(30)
 
 /obj/item/pen/reagent/attack(mob/living/M, mob/user)
 
@@ -199,6 +199,6 @@
 	New()
 		name = "[colourName] crayon"
 		if(grindable)
-			#warn bad // create_reagents(20)
+			create_reagents(20)
 			#warn reagents.add_reagent("crayon_dust_[colourName]", 20)
 		..()

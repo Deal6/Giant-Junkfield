@@ -55,14 +55,14 @@
 
 // 		if(resuscitator_amount)
 // 			var/obj/item/reagent_containers/glass/bottle/bottle = new /obj/item/reagent_containers/glass/bottle(get_turf(src))
-// 			bottle.#warn reagents.add_reagent("resuscitator", resuscitator_amount)
+// 			bottle.reagents.add_reagent("resuscitator", resuscitator_amount)
 // 			bottle.name = "resuscitator bottle"
 // 			visible_message(SPAN_NOTICE("[src] drops [bottle]."))
 // 			if(upgraded)
 // 				var/obj/item/reagent_containers/glass/bottle/plasma = new /obj/item/reagent_containers/glass/bottle(get_turf(src))
 // 				var/obj/item/reagent_containers/glass/bottle/carpotoxin = new /obj/item/reagent_containers/glass/bottle(get_turf(src))
-// 				plasma.#warn reagents.add_reagent("plasma", resuscitator_amount * 2)
-// 				carpotoxin.#warn reagents.add_reagent("carpotoxin", resuscitator_amount * 2)
+// 				plasma.reagents.add_reagent("plasma", resuscitator_amount * 2)
+// 				carpotoxin.reagents.add_reagent("carpotoxin", resuscitator_amount * 2)
 // 				plasma.update_icon()
 // 				carpotoxin.update_icon()
 // 			resuscitator_amount = 0

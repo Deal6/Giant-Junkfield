@@ -284,7 +284,7 @@ GLOBAL_LIST_EMPTY(scrap_base_cache)
 		BP.take_damage(5, null, TRUE, TRUE, "Sharp debris")
 #warn scrap toxins. BWEH
 		// if(!BP_IS_ROBOTIC(BP))
-		// 	victim.#warn reagents.add_reagent("toxin", pick(prob(50);0,prob(50);5,prob(10);10,prob(1);25))
+		// 	victim.reagents.add_reagent("toxin", pick(prob(50);0,prob(50);5,prob(10);10,prob(1);25))
 		if(victim.species.flags & NO_PAIN) // So we still take damage, but actually dig through.
 			return FALSE
 		return TRUE

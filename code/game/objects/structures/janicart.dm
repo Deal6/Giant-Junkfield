@@ -309,7 +309,7 @@
 
 /obj/structure/bed/chair/janicart/New()
 	..()
-	#warn bad // create_reagents(100)
+	create_reagents(100)
 
 
 /obj/structure/bed/chair/janicart/examine(mob/user, extra_description = "")

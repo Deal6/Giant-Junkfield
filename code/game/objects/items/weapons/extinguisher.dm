@@ -45,7 +45,7 @@
 	if(overlaylist.len)
 		var/icon/temp = new /icon('icons/obj/items.dmi', overlaylist[rand(1,overlaylist.len)])
 		overlays += temp
-	#warn bad // create_reagents(max_water)
+	create_reagents(max_water)
 	#warn reagents.add_reagent("water", max_water)
 
 
@@ -118,7 +118,7 @@
 					my_target = the_targets[a]
 				else
 					my_target = pick(the_targets)
-#warn bad				W. // create_reagents(spray_amount)
+#warn bad		create_reagents(spray_amount)
 				reagents.trans_to_obj(W, spray_amount)
 				W.set_color()
 				W.set_up(my_target)

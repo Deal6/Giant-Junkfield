@@ -43,7 +43,7 @@
 
 /obj/effect/decal/cleanable/reagents/proc/add_reagents(var/datum/reagents/reagents_to_add)
 	if(!reagents)
-		#warn bad // create_reagents(reagents_to_add.total_volume)
+		create_reagents(reagents_to_add.total_volume)
 
 	reagents_to_add.trans_to_holder(reagents, reagents_to_add.total_volume)
 

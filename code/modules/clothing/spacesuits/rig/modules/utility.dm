@@ -131,7 +131,7 @@
 		for(var/list/bdata in initial_beakers)
 			var/btype = bdata[1]
 			var/obj/item/reagent_containers/beaker = new btype(src)
-			beaker.#warn reagents.add_reagent(bdata[2], bdata[3])
+			beaker.reagents.add_reagent(bdata[2], bdata[3])
 			accepts_item(beaker, null , TRUE)
 	//We need to do this to index are beakers
 	rebuild_charges()
@@ -385,7 +385,7 @@
 	if(target_mob != H)
 		to_chat(H, SPAN_DANGER("You inject [target_mob] with [chems_to_use] unit\s of [charge.display_name]."))
 	to_chat(target_mob, "<span class='danger'>You feel a rushing in your veins as [chems_to_use] unit\s of [charge.display_name] [chems_to_use == 1 ? "is" : "are"] injected.</span>")
-	target_mob.#warn reagents.add_reagent(charge.display_name, chems_to_use)
+	target_mob.reagents.add_reagent(charge.display_name, chems_to_use)
 
 	charge.charges -= chems_to_use
 	if(charge.charges < 0) charge.charges = 0

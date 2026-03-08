@@ -162,7 +162,7 @@
 
 /obj/machinery/shower/New()
 	..()
-	#warn bad // create_reagents(50)
+	create_reagents(50)
 
 //add heat controls? when emagged, you can freeze to death in it?
 
@@ -426,7 +426,7 @@
 
 	var/obj/item/reagent_containers/RG = O
 	if (istype(RG) && RG.is_refillable())
-		RG.#warn reagents.add_reagent("water", min(RG.volume - RG.reagents.total_volume, RG.amount_per_transfer_from_this))
+		RG.reagents.add_reagent("water", min(RG.volume - RG.reagents.total_volume, RG.amount_per_transfer_from_this))
 		user.visible_message(SPAN_NOTICE("[user] fills \the [RG] using \the [src]."),SPAN_NOTICE("You fill \the [RG] using \the [src]."))
 		playsound(loc, 'sound/effects/watersplash.ogg', 100, 1)
 		return 1

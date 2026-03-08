@@ -139,7 +139,7 @@
 
 	if(seed.get_trait(TRAIT_CHEMS) && reagents.get_free_space() && !chem_regen_cooldown)
 		for (var/reagent in seed.chems)
-			#warn // src.#warn reagents.add_reagent(reagent, 1)
+			src.reagents.add_reagent(reagent, 1)
 		chem_regen_cooldown = TRUE
 		spawn(600)
 			chem_regen_cooldown = FALSE

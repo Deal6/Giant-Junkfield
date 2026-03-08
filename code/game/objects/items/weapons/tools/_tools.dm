@@ -87,7 +87,7 @@
 		cell = new suitable_cell(src)
 
 	if(use_fuel_cost)
-		#warn bad // create_reagents(max_fuel)
+		create_reagents(max_fuel)
 		#warn reagents.add_reagent("fuel", max_fuel)
 
 	if(use_stock_cost)
@@ -977,68 +977,70 @@
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		var/obj/item/organ/internal/eyes/E = H.random_organ_by_process(OP_EYES)
-		if(!E)
-			return
-		var/safety = H.eyecheck()
-		switch(safety)
-			if(FLASH_PROTECTION_MODERATE)
-				to_chat(H, SPAN_WARNING("Your eyes sting a little."))
-				E.take_damage(3, BURN)
-				if(E.damage > 12)
-					H.eye_blurry += rand(3,6)
-			if(FLASH_PROTECTION_MINOR)
-				to_chat(H, SPAN_WARNING("The searing light burns your eyes through your insufficient protection."))
-				E.take_damage(rand(6, 9), BURN)
-				if(E.damage > 11)
-					E.take_damage(rand(4, 6), BURN)
-			if(FLASH_PROTECTION_NONE)
-				to_chat(H, SPAN_WARNING("Your eyes burn."))
-				E.take_damage(rand(8, 12), BURN)
-				if(E.damage > 10)
-					E.take_damage(rand(4, 12))
-			if(FLASH_PROTECTION_REDUCED)
-				to_chat(H, SPAN_DANGER("Your equipment intensify the welder's glow. Your eyes itch and burn severely."))
-				H.eye_blurry += rand(12,20)
-				E.take_damage(rand(16, 20))
-		if(safety<FLASH_PROTECTION_MAJOR)
-			if(E.damage > 10)
-				to_chat(user, SPAN_WARNING("Your eyes are really starting to hurt. This can't be good for you!"))
+		#warn bad
+		// if(!E)
+		// 	return
+		// var/safety = H.eyecheck()
+		// switch(safety)
+		// 	if(FLASH_PROTECTION_MODERATE)
+		// 		to_chat(H, SPAN_WARNING("Your eyes sting a little."))
+		// 		E.take_damage(3, BURN)
+		// 		if(E.damage > 12)
+		// 			H.eye_blurry += rand(3,6)
+		// 	if(FLASH_PROTECTION_MINOR)
+		// 		to_chat(H, SPAN_WARNING("The searing light burns your eyes through your insufficient protection."))
+		// 		E.take_damage(rand(6, 9), BURN)
+		// 		if(E.damage > 11)
+		// 			E.take_damage(rand(4, 6), BURN)
+		// 	if(FLASH_PROTECTION_NONE)
+		// 		to_chat(H, SPAN_WARNING("Your eyes burn."))
+		// 		E.take_damage(rand(8, 12), BURN)
+		// 		if(E.damage > 10)
+		// 			E.take_damage(rand(4, 12))
+		// 	if(FLASH_PROTECTION_REDUCED)
+		// 		to_chat(H, SPAN_DANGER("Your equipment intensify the welder's glow. Your eyes itch and burn severely."))
+		// 		H.eye_blurry += rand(12,20)
+		// 		E.take_damage(rand(16, 20))
+		// if(safety<FLASH_PROTECTION_MAJOR)
+		// 	if(E.damage > 10)
+		// 		to_chat(user, SPAN_WARNING("Your eyes are really starting to hurt. This can't be good for you!"))
 
 
 /obj/item/tool/attack(mob/living/M, mob/living/user, target_zone)
-	if(isBroken)
-		to_chat(user, SPAN_WARNING("\The [src] is broken."))
-		return
-	if((user.a_intent == I_HELP) && ishuman(M))
-		var/mob/living/carbon/human/H = M
-		var/obj/item/organ/external/S = H.organs_by_name[user.targeted_organ]
+#warn bad
+	// if(isBroken)
+	// 	to_chat(user, SPAN_WARNING("\The [src] is broken."))
+	// 	return
+	// if((user.a_intent == I_HELP) && ishuman(M))
+	// 	var/mob/living/carbon/human/H = M
+	// 	var/obj/item/organ/external/S = H.organs_by_name[user.targeted_organ]
 
-		if(!istype(S) || !BP_IS_ROBOTIC(S))
-			return ..()
+	// 	if(!istype(S) || !BP_IS_ROBOTIC(S))
+	// 		return ..()
 
-		if(get_tool_type(user, list(QUALITY_WELDING), H)) //Prosthetic repair
-			if(S.brute_dam)
-				if(S.brute_dam < ROBOLIMB_SELF_REPAIR_CAP)
-					for(var/datum/wound/W in S.wounds)
-						if(W.internal)
-							return
-						if(W.damtype_sanitize() != BRUTE)
-							continue
-						if(!use_tool(user, M, W.damage/5, QUALITY_WELDING, FAILCHANCE_NORMAL, required_stat = STAT_MEC))
-							to_chat(user, SPAN_NOTICE("You must stand still to repair \the [S]."))
-							break
-						W.heal_damage(CLAMP(user.stats.getStat(STAT_MEC)/2.5, 5, 15))
-						to_chat(user, SPAN_NOTICE("You patch some wounds on \the [S]."))
-					S.update_damages()
-					if(S.brute_dam)
-						to_chat(user, SPAN_WARNING("\The [S] still needs further repair."))
-					return
-				else if(S.open != 2)
-					to_chat(user, SPAN_DANGER("The damage is far too severe to patch over externally."))
-					return 1
-			else if(S.open != 2) // For surgery.
-				to_chat(user, SPAN_NOTICE("Nothing to fix!"))
-				return 1
+	// 	if(get_tool_type(user, list(QUALITY_WELDING), H)) //Prosthetic repair
+	// 		if(S.brute_dam)
+	// 			if(S.brute_dam < ROBOLIMB_SELF_REPAIR_CAP)
+	// 				for(var/datum/wound/W in S.wounds)
+	// 					if(W.internal)
+	// 						return
+	// 					if(W.damtype_sanitize() != BRUTE)
+	// 						continue
+	// 					if(!use_tool(user, M, W.damage/5, QUALITY_WELDING, FAILCHANCE_NORMAL, required_stat = STAT_MEC))
+	// 						to_chat(user, SPAN_NOTICE("You must stand still to repair \the [S]."))
+	// 						break
+	// 					W.heal_damage(CLAMP(user.stats.getStat(STAT_MEC)/2.5, 5, 15))
+	// 					to_chat(user, SPAN_NOTICE("You patch some wounds on \the [S]."))
+	// 				S.update_damages()
+	// 				if(S.brute_dam)
+	// 					to_chat(user, SPAN_WARNING("\The [S] still needs further repair."))
+	// 				return
+	// 			else if(S.open != 2)
+	// 				to_chat(user, SPAN_DANGER("The damage is far too severe to patch over externally."))
+	// 				return 1
+	// 		else if(S.open != 2) // For surgery.
+	// 			to_chat(user, SPAN_NOTICE("Nothing to fix!"))
+	// 			return 1
 
 	return ..()
 

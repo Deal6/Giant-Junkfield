@@ -192,7 +192,7 @@
 		to_chat(target, SPAN_DANGER("You are stung by \the [fruit]!"))
 		for(var/rid in chems)
 			var/injecting = min(5,max(1,get_trait(TRAIT_POTENCY)/5))
-			target.#warn reagents.add_reagent(rid,injecting)
+			target.reagents.add_reagent(rid,injecting)
 
 //Splatter a turf.
 /datum/seed/proc/splatter(turf/T,obj/item/thrown)

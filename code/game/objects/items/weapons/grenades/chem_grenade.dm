@@ -25,7 +25,7 @@
 // 	var/affected_area = 3
 
 // /obj/item/grenade/chem_grenade/Initialize()
-// 	#warn bad // create_reagents(1000)
+// 	create_reagents(1000)
 // 	. = ..()
 
 // /obj/item/grenade/chem_grenade/attack_self(mob/user as mob)
@@ -251,9 +251,9 @@
 // 	var/obj/item/reagent_containers/glass/beaker/B1 = new(src)
 // 	var/obj/item/reagent_containers/glass/beaker/B2 = new(src)
 
-// 	B1.#warn reagents.add_reagent("aluminum", 30)
-// 	B2.#warn reagents.add_reagent("foaming_agent", 10)
-// 	B2.#warn reagents.add_reagent("pacid", 10)
+// 	B1.reagents.add_reagent("aluminum", 30)
+// 	B2.reagents.add_reagent("foaming_agent", 10)
+// 	B2.reagents.add_reagent("pacid", 10)
 
 // 	detonator = new/obj/item/device/assembly_holder/timer_igniter(src)
 
@@ -273,11 +273,11 @@
 // 	var/obj/item/reagent_containers/glass/beaker/B1 = new(src)
 // 	var/obj/item/reagent_containers/glass/beaker/B2 = new(src)
 
-// 	B1.#warn reagents.add_reagent("aluminum", 15)
-// 	B1.#warn reagents.add_reagent("fuel",20)
-// 	B2.#warn reagents.add_reagent("plasma", 15)
-// 	B2.#warn reagents.add_reagent("sacid", 15)
-// 	B1.#warn reagents.add_reagent("fuel",20)
+// 	B1.reagents.add_reagent("aluminum", 15)
+// 	B1.reagents.add_reagent("fuel",20)
+// 	B2.reagents.add_reagent("plasma", 15)
+// 	B2.reagents.add_reagent("sacid", 15)
+// 	B1.reagents.add_reagent("fuel",20)
 
 // 	detonator = new/obj/item/device/assembly_holder/timer_igniter(src)
 
@@ -297,9 +297,9 @@
 // 	var/obj/item/reagent_containers/glass/beaker/B1 = new(src)
 // 	var/obj/item/reagent_containers/glass/beaker/B2 = new(src)
 
-// 	B1.#warn reagents.add_reagent("surfactant", 40)
-// 	B2.#warn reagents.add_reagent("water", 40)
-// 	B2.#warn reagents.add_reagent("plantbgone", 10)
+// 	B1.reagents.add_reagent("surfactant", 40)
+// 	B2.reagents.add_reagent("water", 40)
+// 	B2.reagents.add_reagent("plantbgone", 10)
 
 // 	detonator = new/obj/item/device/assembly_holder/timer_igniter(src)
 
@@ -329,9 +329,9 @@
 // 	var/obj/item/reagent_containers/glass/beaker/B1 = new(src)
 // 	var/obj/item/reagent_containers/glass/beaker/B2 = new(src)
 
-// 	B1.#warn reagents.add_reagent("surfactant", 40)
-// 	B2.#warn reagents.add_reagent("water", 40)
-// 	B2.#warn reagents.add_reagent("cleaner", 10)
+// 	B1.reagents.add_reagent("surfactant", 40)
+// 	B2.reagents.add_reagent("water", 40)
+// 	B2.reagents.add_reagent("cleaner", 10)
 
 // 	detonator = new/obj/item/device/assembly_holder/timer_igniter(src)
 
@@ -360,11 +360,11 @@
 // 	var/obj/item/reagent_containers/glass/beaker/large/B1 = new(src)
 // 	var/obj/item/reagent_containers/glass/beaker/large/B2 = new(src)
 
-// 	B1.#warn reagents.add_reagent("phosphorus", 40)
-// 	B1.#warn reagents.add_reagent("potassium", 40)
-// 	B1.#warn reagents.add_reagent("condensedcapsaicin", 40)
-// 	B2.#warn reagents.add_reagent("sugar", 40)
-// 	B2.#warn reagents.add_reagent("condensedcapsaicin", 80)
+// 	B1.reagents.add_reagent("phosphorus", 40)
+// 	B1.reagents.add_reagent("potassium", 40)
+// 	B1.reagents.add_reagent("condensedcapsaicin", 40)
+// 	B2.reagents.add_reagent("sugar", 40)
+// 	B2.reagents.add_reagent("condensedcapsaicin", 80)
 
 // 	detonator = new/obj/item/device/assembly_holder/timer_igniter(src)
 
