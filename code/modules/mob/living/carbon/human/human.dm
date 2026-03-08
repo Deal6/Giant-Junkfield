@@ -698,11 +698,11 @@ var/list/rank_prefix = list(\
 	if(wear_suit && wear_suit.flags_inv & HIDEJUMPSUIT && ((head && head.flags_inv & HIDEMASK) || wear_mask))
 		return NEUTER
 	return gender
-
+#warn wtf is fixblood and why wouldn't you fix yourself instead?
 /mob/living/carbon/human/revive()
 	if(species && !(species.flags & NO_BLOOD))
 		vessel.add_reagent("blood",species.blood_volume-vessel.total_volume)
-		fixblood()
+		// fixblood()
 
 	if(!client || !key) //Don't boot out anyone already in the mob.
 		for(var/obj/item/organ/internal/vital/brain/H in world)
@@ -892,7 +892,7 @@ var/list/rank_prefix = list(\
 		else if(vessel.total_volume > species.blood_volume)
 			vessel.remove_reagent("blood", vessel.total_volume - species.blood_volume)
 			vessel.maximum_volume = species.blood_volume
-		fixblood()
+		// fixblood()
 
 
 	// Rebuild the HUD. If they aren't logged in then login() should reinstantiate it for them.
