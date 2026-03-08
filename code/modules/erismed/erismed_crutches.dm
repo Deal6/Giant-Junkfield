@@ -4,6 +4,8 @@
 /obj/item/reagent_containers/syringe
 	var/mode = 0
 
+/obj/item/grenade/chem_grenade
+
 // # FUCKING ELSE
 /obj/item/organ/external
 	var/brute_dam = 0

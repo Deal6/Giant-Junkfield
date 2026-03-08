@@ -89,8 +89,9 @@
 	if(holder)
 		holder.update_icon()
 	if(holder && istype(holder.loc,/obj/item/grenade/chem_grenade))
-		var/obj/item/grenade/chem_grenade/grenade = holder.loc
-		grenade.primed(scanning)
+		// var/obj/item/grenade/chem_grenade/grenade = holder.loc
+		// grenade.primed(scanning)
+		#warn chem granader
 
 
 /obj/item/device/assembly/prox_sensor/Move(NewLoc, Dir = 0, step_x = 0, step_y = 0, var/glide_size_override = 0)
