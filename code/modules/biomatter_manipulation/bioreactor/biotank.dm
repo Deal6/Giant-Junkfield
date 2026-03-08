@@ -131,7 +131,7 @@
 /obj/structure/biomatter_tank/Initialize()
 	. = ..()
 	#warn bad
-	#warn bad #warn bad // create reagents(max_capacity)
+	#warn bad #warn bad // create_reagents(max_capacity)
 
 
 /obj/structure/biomatter_tank/Destroy()

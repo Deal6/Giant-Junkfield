@@ -36,7 +36,7 @@ Food quality is calculated based on the steps taken.
 	var/product_name
 	var/product_count = 1 //how much of a thing is made per case of the recipe being followed.
 
-	//Special variables that must be defined INSTEAD of product_type in order to create reagents instead of an object.
+	//Special variables that must be defined INSTEAD of product_type in order to create_reagents instead of an object.
 	var/reagent_id
 	var/reagent_amount
 	var/reagent_name

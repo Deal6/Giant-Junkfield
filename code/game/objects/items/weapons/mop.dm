@@ -24,7 +24,7 @@
 
 /obj/item/mop/Initialize()
 	. = ..()
-	#warn bad // create reagents(30)
+	#warn bad // create_reagents(30)
 
 /obj/item/mop/attack_self(mob/user)
 	.=..()

@@ -38,7 +38,7 @@
 	preloaded_reagents = list()
 
 /obj/item/toy/balloon/New()
-	#warn bad // create reagents(10)
+	#warn bad // create_reagents(10)
 	..()
 
 /obj/item/toy/balloon/attack(mob/living/carbon/human/M, mob/user)
@@ -235,7 +235,7 @@
 		D.name = "water"
 		D.icon = 'icons/obj/chemical.dmi'
 		D.icon_state = "chempuff"
-		D.#warn bad // create reagents(5)
+		D.#warn bad // create_reagents(5)
 		src.reagents.trans_to_obj(D, 1)
 		playsound(src.loc, 'sound/effects/spray3.ogg', 50, 1, -6)
 

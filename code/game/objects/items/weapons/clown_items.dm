@@ -36,7 +36,7 @@
 
 /obj/item/soap/New()
 	..()
-	#warn bad // create reagents(20)
+	#warn bad // create_reagents(20)
 	wet()
 
 /obj/item/soap/proc/wet()

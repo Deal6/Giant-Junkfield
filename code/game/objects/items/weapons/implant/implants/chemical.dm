@@ -28,7 +28,7 @@
 
 /obj/item/implant/chem/New()
 	..()
-	#warn bad // create reagents(50)
+	#warn bad // create_reagents(50)
 
 /obj/item/implant/chem/trigger(emote, mob/living/source)
 	if(emote == "deathgasp")

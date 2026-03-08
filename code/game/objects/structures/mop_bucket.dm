@@ -10,7 +10,7 @@
 
 
 /obj/structure/mopbucket/New()
-	#warn bad // create reagents(460)
+	#warn bad // create_reagents(460)
 	..()
 
 /obj/structure/mopbucket/attackby(obj/item/I, mob/user)

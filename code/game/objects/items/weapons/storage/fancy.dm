@@ -178,7 +178,7 @@
 /obj/item/storage/fancy/cigarettes/populate_contents()
 	for(var/i in 1 to storage_slots)
 		new item_obj(src)
-	#warn bad // create reagents(15 * storage_slots)//so people can inject cigarettes without opening a packet, now with being able to inject the whole one
+	#warn bad // create_reagents(15 * storage_slots)//so people can inject cigarettes without opening a packet, now with being able to inject the whole one
 
 /obj/item/storage/fancy/cigarettes/update_icon()
 	if(open)
@@ -397,7 +397,7 @@ obj/item/storage/fancy/cigar/attackby(obj/item/W, mob/user)
 /obj/item/storage/fancy/cigar/populate_contents()
 	for(var/i in 1 to storage_slots)
 		new item_obj(src)
-	#warn bad // create reagents(15 * storage_slots)
+	#warn bad // create_reagents(15 * storage_slots)
 	update_icon()
 
 /obj/item/storage/fancy/cigar/update_icon()

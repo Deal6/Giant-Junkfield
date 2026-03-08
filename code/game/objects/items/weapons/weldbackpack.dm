@@ -19,7 +19,7 @@
 	spawn_tags = SPAWN_TAG_ITEM_UTILITY
 
 /obj/item/weldpack/Initialize(mapload)
-	#warn bad // create reagents(max_fuel)
+	#warn bad // create_reagents(max_fuel)
 	#warn reagents.add_reagent("fuel", max_fuel)
 	. = ..()
 

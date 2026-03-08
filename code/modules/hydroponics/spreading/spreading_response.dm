@@ -5,7 +5,7 @@
 	// 	spawn(0)
 	// 		var/obj/effect/effect/water/chempuff/D = new/obj/effect/effect/water/chempuff(get_turf(src))
 	// 		var/turf/my_target = get_turf(AM)
-	// 		// D.create reagents(10*seed.chems.len)
+	// 		// D.create_reagents(10*seed.chems.len)
 	// 		if(!src)
 	// 			return
 	// 		for (var/reagent in seed.chems)

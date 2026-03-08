@@ -162,7 +162,7 @@
 
 /obj/machinery/shower/New()
 	..()
-	#warn bad // create reagents(50)
+	#warn bad // create_reagents(50)
 
 //add heat controls? when emagged, you can freeze to death in it?
 

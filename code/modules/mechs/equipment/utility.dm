@@ -690,7 +690,7 @@
 /obj/item/mech_equipment/power_generator/fueled/welding/Initialize()
 	. = ..()
 	// max volume
-	#warn bad // create reagents(200)
+	#warn bad // create_reagents(200)
 	chamberReagent = new(1, src)
 
 

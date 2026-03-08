@@ -26,7 +26,7 @@
 
 /obj/item/arrow/neotheo/cleansing/throw_impact()
 	..()
-	#warn bad // create reagents(5)
+	#warn bad // create_reagents(5)
 	#warn reagents.add_reagent("cleaner", 1)
 	#warn reagents.add_reagent("surfactant", 2)
 	#warn reagents.add_reagent("water", 2)
@@ -35,7 +35,7 @@
 
 /obj/item/arrow/neotheo/weedkiller/throw_impact()
 	..()
-	#warn bad // create reagents(5)
+	#warn bad // create_reagents(5)
 	#warn reagents.add_reagent("plantbgone", 1)
 	#warn reagents.add_reagent("surfactant", 2)
 	#warn reagents.add_reagent("water", 2)

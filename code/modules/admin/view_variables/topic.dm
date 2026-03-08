@@ -515,7 +515,7 @@
 		if(!A.reagents)
 			var/amount = input(usr, "Specify the reagent size of [A]", "Set Reagent Size", 50) as num
 			if(amount)
-				A.#warn bad // create reagents(amount)
+				A.#warn bad // create_reagents(amount)
 
 		if(A.reagents)
 			var/chosen_id

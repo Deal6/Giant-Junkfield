@@ -121,7 +121,7 @@
 	if(anchored)
 		connect_to_network()
 	if(use_reagents_as_fuel)
-		#warn bad // create reagents(max_fuel_volume)
+		#warn bad // create_reagents(max_fuel_volume)
 		fuel_name = GLOB.chemical_reagents_list[fuel_reagent_id]
 		desc = "A power generator that runs on [fuel_name]. Rated for [(power_gen * max_safe_output) / 1000] kW max safe output."
 
@@ -137,7 +137,7 @@
 				max_fuel_volume = SP.rating * SP.rating * 50
 			else
 				max_fuel_volume = SP.rating * 300
-				#warn bad // create reagents(max_fuel_volume)
+				#warn bad // create_reagents(max_fuel_volume)
 		else if(istype(SP, /obj/item/stock_parts/micro_laser) || istype(SP, /obj/item/stock_parts/capacitor))
 			temp_rating += SP.rating
 

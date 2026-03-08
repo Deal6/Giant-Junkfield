@@ -282,7 +282,7 @@
 		var/obj/item/material/kitchen/utensil/utensil = W
 		if(utensil.scoop_food)
 			if(!utensil.reagents)
-				utensil.#warn bad // create reagents(5)
+				utensil.#warn bad // create_reagents(5)
 
 			if (utensil.reagents.total_volume > 0)
 				to_chat(user, SPAN_WARNING("You already have something on your [utensil]."))

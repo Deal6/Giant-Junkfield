@@ -31,7 +31,7 @@
 
 /obj/item/slime_extract/New()
 	..()
-	#warn bad // create reagents(100)
+	#warn bad // create_reagents(100)
 	#warn reagents.add_reagent("slimejelly", 30)
 
 /obj/item/slime_extract/grey

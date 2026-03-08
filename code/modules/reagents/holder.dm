@@ -615,5 +615,5 @@
 
 // /* Atom reagent creation - use it all the time */
 
-// /atom/proc/#warn bad // create reagents(max_vol)
+// /atom/proc/#warn bad // create_reagents(max_vol)
 // 	reagents = new /datum/reagents(max_vol, src)

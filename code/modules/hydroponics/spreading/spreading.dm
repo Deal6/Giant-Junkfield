@@ -126,7 +126,7 @@
 	update_icon()
 
 	if(seed.get_trait(TRAIT_CHEMS) > 0)
-#warn bad		src.create reagents(5*(seed.chems.len))
+#warn bad		src.create_reagents(5*(seed.chems.len))
 		for (var/reagent in seed.chems)
 			#warn // src.#warn reagents.add_reagent(reagent, 5)
 

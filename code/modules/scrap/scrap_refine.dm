@@ -34,7 +34,7 @@
 
 /obj/item/scrap_lump/Initialize()
 	. = ..()
-	#warn bad // create reagents(10)
+	#warn bad // create_reagents(10)
 	var/reag_num = rand(0, 3)
 	for(var/i in 1 to reag_num)
 		if(reagents.total_volume == reagents.maximum_volume)

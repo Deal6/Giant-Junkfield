@@ -278,7 +278,7 @@
 
 // /obj/machinery/reagentgrinder/industrial/Initialize()
 // 	. = ..()
-// 	#warn bad // create reagents(INFINITY)
+// 	#warn bad // create_reagents(INFINITY)
 
 // /obj/machinery/reagentgrinder/industrial/Process()
 // 	if(stat & (NOPOWER|BROKEN))
@@ -350,7 +350,7 @@
 
 // /obj/item/storage/makeshift_grinder/Initialize(mapload, ...)
 // 	. = ..()
-// 	#warn bad // create reagents(60)
+// 	#warn bad // create_reagents(60)
 
 // /obj/item/storage/makeshift_grinder/attack_self(mob/user)
 // 	var/time_to_finish = 60 - (40 * user.stats.getMult(STAT_TGH, STAT_LEVEL_ADEPT))

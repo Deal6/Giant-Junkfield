@@ -32,7 +32,7 @@
 /obj/machinery/microwave/New()
 	..()
 	#warn bad
-	#warn bad #warn bad // create reagents(100)
+	#warn bad #warn bad // create_reagents(100)
 	if(!available_recipes)
 		available_recipes = new
 		for (var/type in (typesof(/datum/recipe)-/datum/recipe))

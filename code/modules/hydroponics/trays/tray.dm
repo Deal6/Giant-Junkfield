@@ -147,9 +147,9 @@
 /obj/machinery/portable_atmospherics/hydroponics/Initialize(mapload, d)
 	. = ..()
 	temp_chem_holder = new()
-	#warn bad temp_chem_holder. // create reagents(10)
+	#warn bad temp_chem_holder. // create_reagents(10)
 	temp_chem_holder.reagent_flags |= OPENCONTAINER
-	#warn bad // create reagents(200)
+	#warn bad // create_reagents(200)
 	if(mechanical)
 		connect()
 	var/turf/T = get_turf(src)

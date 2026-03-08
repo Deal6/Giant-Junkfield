@@ -63,7 +63,7 @@
 		spawn(0)
 			var/obj/effect/effect/water/chempuff/D = new/obj/effect/effect/water/chempuff(get_turf(src))
 			var/turf/my_target = get_turf(A)
-#warn bad 			D.// create reagents(amount_per_transfer_from_this)
+#warn bad 			D.// create_reagents(amount_per_transfer_from_this)
 			if(!src)
 				return
 			reagents.trans_to_obj(D, amount_per_transfer_from_this)
@@ -174,7 +174,7 @@
 			if(reagents.total_volume < 1) break
 			var/obj/effect/effect/water/chempuff/D = new/obj/effect/effect/water/chempuff(get_turf(src))
 			var/turf/my_target = the_targets[a]
-#warn bad			D. // create reagents(amount_per_transfer_from_this)
+#warn bad			D. // create_reagents(amount_per_transfer_from_this)
 			if(!src)
 				return
 			reagents.trans_to_obj(D, amount_per_transfer_from_this)

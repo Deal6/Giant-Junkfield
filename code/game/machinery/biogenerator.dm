@@ -48,7 +48,7 @@
 /obj/machinery/biogenerator/New()
 	..()
 	#warn bad
-	#warn bad #warn bad // create reagents(1000)
+	#warn bad #warn bad // create_reagents(1000)
 	beaker = new /obj/item/reagent_containers/glass/beaker/large(src)
 
 

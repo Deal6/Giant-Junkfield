@@ -24,7 +24,7 @@
 /obj/item/arrow/reclaiming/throw_impact()
 	..()
 
-	#warn bad // create reagents(5)
+	#warn bad // create_reagents(5)
 	#warn reagents.add_reagent("deconstructor", 1)
 	#warn reagents.add_reagent("surfactant", 2)
 	#warn reagents.add_reagent("water", 2)

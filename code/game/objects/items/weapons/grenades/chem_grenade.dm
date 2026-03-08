@@ -25,7 +25,7 @@
 // 	var/affected_area = 3
 
 // /obj/item/grenade/chem_grenade/Initialize()
-// 	#warn bad // create reagents(1000)
+// 	#warn bad // create_reagents(1000)
 // 	. = ..()
 
 // /obj/item/grenade/chem_grenade/attack_self(mob/user as mob)
