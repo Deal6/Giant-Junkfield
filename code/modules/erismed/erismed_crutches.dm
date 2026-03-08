@@ -1,6 +1,9 @@
 // # ITEMS
 /obj/item/electronics/circuitboard/reagentgrinder
 
+/obj/item/reagent_containers/syringe
+	var/mode = 0
+
 // # FUCKING ELSE
 /obj/item/organ/external
 	var/brute_dam = 0
