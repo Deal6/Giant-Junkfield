@@ -225,55 +225,55 @@
 		msg += "[T.He] [T.is] covered in some liquid.\n"
 	if(on_fire)
 		msg += "<span class='warning'>[T.He] [T.is] on fire!.</span>\n"
+#warn examine
+	// if(species.show_ssd && (!species.has_process[BP_BRAIN] || has_brain()) && stat != DEAD)
+	// 	if(!key)
+	// 		msg += "<span class='deadsay'>[T.He] [T.is] [species.show_ssd]. It doesn't look like [T.he] [T.is] waking up anytime soon.</span>\n"
+	// 	else if(!client)
+	// 		msg += "<span class='deadsay'>[T.He] [T.is] [species.show_ssd].</span>\n"
 
-	if(species.show_ssd && (!species.has_process[BP_BRAIN] || has_brain()) && stat != DEAD)
-		if(!key)
-			msg += "<span class='deadsay'>[T.He] [T.is] [species.show_ssd]. It doesn't look like [T.he] [T.is] waking up anytime soon.</span>\n"
-		else if(!client)
-			msg += "<span class='deadsay'>[T.He] [T.is] [species.show_ssd].</span>\n"
+	// var/list/wound_flavor_text = list()
+	// var/list/is_bleeding = list()
 
-	var/list/wound_flavor_text = list()
-	var/list/is_bleeding = list()
+	// for(var/organ_tag in species.has_limbs)
 
-	for(var/organ_tag in species.has_limbs)
+	// 	var/datum/organ_description/OD = species.has_limbs[organ_tag]
+	// 	var/organ_descriptor = OD.name
 
-		var/datum/organ_description/OD = species.has_limbs[organ_tag]
-		var/organ_descriptor = OD.name
+	// 	var/obj/item/organ/external/E = organs_by_name[organ_tag]
+	// 	if(!E)
+	// 		wound_flavor_text["[organ_descriptor]"] = "<span class='warning'><b>[T.He] [T.is] missing [T.his] [organ_descriptor].</b></span>\n"
+	// 	else if(E.is_stump())
+	// 		wound_flavor_text["[organ_descriptor]"] = "<span class='warning'><b>[T.He] [T.has] a stump where [T.his] [organ_descriptor] should be.</b></span>\n"
+	// 	else
+	// 		continue
 
-		var/obj/item/organ/external/E = organs_by_name[organ_tag]
-		if(!E)
-			wound_flavor_text["[organ_descriptor]"] = "<span class='warning'><b>[T.He] [T.is] missing [T.his] [organ_descriptor].</b></span>\n"
-		else if(E.is_stump())
-			wound_flavor_text["[organ_descriptor]"] = "<span class='warning'><b>[T.He] [T.has] a stump where [T.his] [organ_descriptor] should be.</b></span>\n"
-		else
-			continue
+	// for(var/obj/item/organ/external/temp in organs)
+	// 	if(BP_IS_SILICON(temp))
+	// 		var/part_display_name
+	// 		if(copytext(temp.name, 1, 6) == "robot")
+	// 			part_display_name = "\a [temp]"
+	// 		else
+	// 			part_display_name = "a robot [temp.name]"
 
-	for(var/obj/item/organ/external/temp in organs)
-		if(BP_IS_SILICON(temp))
-			var/part_display_name
-			if(copytext(temp.name, 1, 6) == "robot")
-				part_display_name = "\a [temp]"
-			else
-				part_display_name = "a robot [temp.name]"
-
-			if(!(temp.brute_dam + temp.burn_dam))
-				wound_flavor_text["[temp.name]"] = "<span class='warning'>[T.He] [T.has] [part_display_name]!</span>\n"
-			else
-				wound_flavor_text["[temp.name]"] = "<span class='warning'>[T.He] [T.has] [part_display_name]. It has [temp.get_wounds_desc()]!</span>\n"
-			continue
-		else if(temp.wounds.len > 0 || temp.open)
-			if(temp.is_stump() && temp.parent)
-				wound_flavor_text["[temp.name]"] = "<span class='warning'>[T.He] [T.has] [temp.get_wounds_desc()] on [T.his] [temp.parent.name].</span><br>"
-			else
-				wound_flavor_text["[temp.name]"] = "<span class='warning'>[T.He] [T.has] [temp.get_wounds_desc()] on [T.his] [temp.name].</span><br>"
-			if(temp.status & ORGAN_BLEEDING)
-				is_bleeding["[temp.name]"] = "<span class='danger'>[T.His] [temp.name] is bleeding!</span><br>"
-		else
-			wound_flavor_text["[temp.name]"] = ""
-		if(temp.nerve_struck == 2)
-			wound_flavor_text["[temp.name]"] += "<span class='warning'>[T.His] [temp.joint] is dangling uselessly!</span><br>"
-		if(((temp.status & ORGAN_BROKEN) && temp.brute_dam > temp.min_broken_damage) || (temp.status & ORGAN_MUTATED))
-			wound_flavor_text["[temp.name]"] += "<span class='warning'>[T.His] [temp.name] is dented and swollen!</span><br>"
+	// 		if(!(temp.brute_dam + temp.burn_dam))
+	// 			wound_flavor_text["[temp.name]"] = "<span class='warning'>[T.He] [T.has] [part_display_name]!</span>\n"
+	// 		else
+	// 			wound_flavor_text["[temp.name]"] = "<span class='warning'>[T.He] [T.has] [part_display_name]. It has [temp.get_wounds_desc()]!</span>\n"
+	// 		continue
+	// 	else if(temp.wounds.len > 0 || temp.open)
+	// 		if(temp.is_stump() && temp.parent)
+	// 			wound_flavor_text["[temp.name]"] = "<span class='warning'>[T.He] [T.has] [temp.get_wounds_desc()] on [T.his] [temp.parent.name].</span><br>"
+	// 		else
+	// 			wound_flavor_text["[temp.name]"] = "<span class='warning'>[T.He] [T.has] [temp.get_wounds_desc()] on [T.his] [temp.name].</span><br>"
+	// 		if(temp.status & ORGAN_BLEEDING)
+	// 			is_bleeding["[temp.name]"] = "<span class='danger'>[T.His] [temp.name] is bleeding!</span><br>"
+	// 	else
+	// 		wound_flavor_text["[temp.name]"] = ""
+	// 	if(temp.nerve_struck == 2)
+	// 		wound_flavor_text["[temp.name]"] += "<span class='warning'>[T.His] [temp.joint] is dangling uselessly!</span><br>"
+	// 	if(((temp.status & ORGAN_BROKEN) && temp.brute_dam > temp.min_broken_damage) || (temp.status & ORGAN_MUTATED))
+	// 		wound_flavor_text["[temp.name]"] += "<span class='warning'>[T.His] [temp.name] is dented and swollen!</span><br>"
 
 	for(var/limb in wound_flavor_text)
 		msg += wound_flavor_text[limb]

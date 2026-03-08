@@ -137,8 +137,9 @@
 
 //	if((LASER in mutations) && a_intent == I_HURT)
 //		LaserEyes(A) // moved into a proc below
-	if(get_active_mutation(src, MUTATION_TELEKINESIS))
-		A.attack_tk(src)
+#warn bad
+	// if(get_active_mutation(src, MUTATION_TELEKINESIS))
+	// 	A.attack_tk(src)
 
 /mob/living/RestrainedClickOn(var/atom/A)
 	return

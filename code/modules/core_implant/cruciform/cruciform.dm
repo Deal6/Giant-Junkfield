@@ -46,11 +46,12 @@ var/list/lost_cruciforms = list()
 	UnregisterSignal(wearer, COMSIG_GROUP_RITUAL)
 
 /obj/item/implant/core_implant/cruciform/proc/on_happy(datum/reagent/happy, signal)
-	SIGNAL_HANDLER
-	if(istype(happy, /datum/reagent/ethanol) && happy.id != "ntcahors")
-		righteous_life = max(righteous_life - 0.1, 0)
-	else if(istype(happy, /datum/reagent/drug))
-		righteous_life = max(righteous_life - 0.5, 0)
+#warn bad
+// 	SIGNAL_HANDLER
+// 	if(istype(happy, /datum/reagent/ethanol) && happy.id != "ntcahors")
+// 		righteous_life = max(righteous_life - 0.1, 0)
+// 	else if(istype(happy, /datum/reagent/drug))
+// 		righteous_life = max(righteous_life - 0.5, 0)
 
 /obj/item/implant/core_implant/cruciform/proc/on_ritual()
 	SIGNAL_HANDLER
@@ -97,19 +98,20 @@ var/list/lost_cruciforms = list()
 	var/observation_points = 200
 	if(!wearer || active)
 		return
-	if(get_active_mutation(wearer, MUTATION_GODBLOOD))
-		spawn(2 MINUTES)
-		for(var/mob/living/carbon/human/H in (disciples - wearer))
-			to_chat(H, SPAN_WARNING("A distant scream pierced your mind. You feel that a vile mutant sneaked among the faithful."))
-			playsound(wearer.loc, 'sound/hallucinations/veryfar_noise.ogg', 55, 1)
-	else if(wearer.get_species() != SPECIES_HUMAN || is_carrion(wearer))
-		if(wearer.get_species() == SPECIES_MONKEY)
-			observation_points /= 20
-		playsound(wearer.loc, 'sound/hallucinations/wail.ogg', 55, 1)
-		wearer.gib()
-		if(eotp)  // le mutants reward
-			eotp.addObservation(observation_points)
-		return
+#warn bad
+	// if(get_active_mutation(wearer, MUTATION_GODBLOOD))
+	// 	spawn(2 MINUTES)
+	// 	for(var/mob/living/carbon/human/H in (disciples - wearer))
+	// 		to_chat(H, SPAN_WARNING("A distant scream pierced your mind. You feel that a vile mutant sneaked among the faithful."))
+	// 		playsound(wearer.loc, 'sound/hallucinations/veryfar_noise.ogg', 55, 1)
+	// else if(wearer.get_species() != SPECIES_HUMAN || is_carrion(wearer))
+	// 	if(wearer.get_species() == SPECIES_MONKEY)
+	// 		observation_points /= 20
+	// 	playsound(wearer.loc, 'sound/hallucinations/wail.ogg', 55, 1)
+	// 	wearer.gib()
+	// 	if(eotp)  // le mutants reward
+	// 		eotp.addObservation(observation_points)
+	// 	return
 	..()
 	add_module(new CRUCIFORM_COMMON)
 	update_data()
@@ -145,12 +147,13 @@ var/list/lost_cruciforms = list()
 
 /obj/item/implant/core_implant/cruciform/Process()
 	..()
-	if(active && round(world.time) % 5 == 0 && !get_active_mutation(wearer, MUTATION_GODBLOOD))
-		remove_cyber()
-		if(wearer.mutation_index)
-			var/datum/mutation/M = pick(wearer.active_mutations)
-			M.cleanse(wearer)
-			wearer.adjustFireLoss(rand(5,25))
+	#warn bad
+	// if(active && round(world.time) % 5 == 0 && !get_active_mutation(wearer, MUTATION_GODBLOOD))
+	// 	remove_cyber()
+	// 	if(wearer.mutation_index)
+	// 		var/datum/mutation/M = pick(wearer.active_mutations)
+	// 		M.cleanse(wearer)
+	// 		wearer.adjustFireLoss(rand(5,25))
 
 	if(wearer.stat == DEAD)
 		deactivate()

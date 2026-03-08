@@ -13,17 +13,18 @@
 	SEND_SIGNAL_OLD(src, COMSIG_HUMAN_HEALTH, health)
 
 /mob/living/carbon/human/adjustBrainLoss(var/amount)
-	if(status_flags & GODMODE)
-		return FALSE	//godmode
+#warn bad
+	// if(status_flags & GODMODE)
+	// 	return FALSE	//godmode
 
-	if(species && species.has_process[BP_BRAIN])
-		var/obj/item/organ/internal/vital/brain/sponge = random_organ_by_process(BP_BRAIN)
-		if(sponge)
-			sponge.take_damage(amount)
-			brainloss = (sponge.damage / sponge.max_damage) * 200
-		else
-			setBrainLoss(200)
-	else
+	// if(species && species.has_process[BP_BRAIN])
+	// 	var/obj/item/organ/internal/vital/brain/sponge = random_organ_by_process(BP_BRAIN)
+	// 	if(sponge)
+	// 		sponge.take_damage(amount)
+	// 		brainloss = (sponge.damage / sponge.max_damage) * 200
+	// 	else
+	// 		setBrainLoss(200)
+	// else
 		setBrainLoss(0)
 
 /mob/living/carbon/human/setBrainLoss(amount)

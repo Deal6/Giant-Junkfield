@@ -229,8 +229,9 @@
 		return
 //	if((LASER in mutations) && a_intent == I_HURT)
 //		LaserEyes(A) // moved into a proc below
-	if(get_active_mutation(src, MUTATION_TELEKINESIS) && get_dist(src, A) <= tk_maxrange)
-		A.attack_tk(src)
+#warn bad below 2 lines
+	// if(get_active_mutation(src, MUTATION_TELEKINESIS) && get_dist(src, A) <= tk_maxrange)
+	// 	A.attack_tk(src)
 
 /*
 	Restrained ClickOn

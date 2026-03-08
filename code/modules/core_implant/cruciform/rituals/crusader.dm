@@ -65,14 +65,15 @@
 		to_chat(user, SPAN_NOTICE("The flux of psy-energy washed your mind, but you managed to keep focused!"))
 	playsound(user.loc, 'sound/effects/cascade.ogg', 65, 1)
 	log_and_message_admins("performed a searing revelation litany")
-	for(var/mob/living/carbon/human/victim in view(user))
-		if(!victim.get_core_implant(/obj/item/implant/core_implant/cruciform))
-			if(get_active_mutation(victim, MUTATION_ATHEIST))
-				to_chat(victim, SPAN_NOTICE("You don't even flinch as the flux of psy-energy passes through you!"))
-			else if(prob(100 - victim.stats.getStat(STAT_VIG)))
-				to_chat(victim, SPAN_WARNING("You feel that your knees bends!"))
-				victim.Weaken(5)
-			else
-				to_chat(victim, SPAN_NOTICE("Your legs feel numb, but you managed to stay on your feet!"))
+#warn bad
+	// for(var/mob/living/carbon/human/victim in view(user))
+	// 	if(!victim.get_core_implant(/obj/item/implant/core_implant/cruciform))
+	// 		if(get_active_mutation(victim, MUTATION_ATHEIST))
+	// 			to_chat(victim, SPAN_NOTICE("You don't even flinch as the flux of psy-energy passes through you!"))
+	// 		else if(prob(100 - victim.stats.getStat(STAT_VIG)))
+	// 			to_chat(victim, SPAN_WARNING("You feel that your knees bends!"))
+	// 			victim.Weaken(5)
+	// 		else
+	// 			to_chat(victim, SPAN_NOTICE("Your legs feel numb, but you managed to stay on your feet!"))
 	set_personal_cooldown(user)
 	return TRUE

@@ -55,12 +55,12 @@
 				to_chat(src, "<span class='warning'>[pick("This subject is incompatable", "This subject does not have a life energy", "This subject is empty", "I am not satisified", "I can not feed from this subject", "I do not feel nourished", "This subject is not food")]...</span>")
 				Feedstop()
 				break
-
-			if(prob(15) && M.client && iscarbon(M))
-				var/painMes = pick("You can feel your body becoming weak!", "You feel like you're about to die!", "You feel every part of your body screaming in agony!", "A low, rolling pain passes through your body!", "Your body feels as if it's falling apart!", "You feel extremely weak!", "A sharp, deep pain bathes every inch of your body!")
-				if (ishuman(M))
-					var/mob/living/carbon/human/H = M
-					H.custom_pain(painMes)
+#warn bad
+			// if(prob(15) && M.client && iscarbon(M))
+			// 	var/painMes = pick("You can feel your body becoming weak!", "You feel like you're about to die!", "You feel every part of your body screaming in agony!", "A low, rolling pain passes through your body!", "Your body feels as if it's falling apart!", "You feel extremely weak!", "A sharp, deep pain bathes every inch of your body!")
+			// 	if (ishuman(M))
+			// 		var/mob/living/carbon/human/H = M
+			// 		H.custom_pain(painMes)
 				else if (iscarbon(M))
 					var/mob/living/carbon/C = M
 					if (!(C.species && (C.species.flags & NO_PAIN)))

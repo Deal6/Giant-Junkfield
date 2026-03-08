@@ -729,8 +729,9 @@ var/list/rank_prefix = list(\
 	return 1 //we applied blood to the item
 
 /mob/living/carbon/human/proc/get_full_print()
-	if(!fingers_trace || get_active_mutation(src, MUTATION_NOPRINTS))
-		return
+#warn bad no print
+	// if(!fingers_trace || get_active_mutation(src, MUTATION_NOPRINTS))
+	// 	return
 	if(chem_effects[CE_DYNAMICFINGERS])
 		return md5(chem_effects[CE_DYNAMICFINGERS])
 	return fingers_trace

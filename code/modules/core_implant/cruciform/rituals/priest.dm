@@ -113,9 +113,10 @@
 
 /datum/ritual/cruciform/priest/acolyte/short_boost/perform(mob/living/carbon/human/user, obj/item/implant/core_implant/C)
 	var/list/people_around = list()
-	for(var/mob/living/carbon/human/H in view(user))
-		if(H != user && !isdeaf(H) && !get_active_mutation(H, MUTATION_ATHEIST))
-			people_around.Add(H)
+#warn bad mutation
+	// for(var/mob/living/carbon/human/H in view(user))
+		// if(H != user && !isdeaf(H) && !get_active_mutation(H, MUTATION_ATHEIST))
+		// 	people_around.Add(H)
 
 	if(people_around.len > 0)
 		to_chat(user, SPAN_NOTICE("You feel the air thrum with an inaudible vibration."))
@@ -185,10 +186,10 @@
 	if(!CI.active || !CI.wearer)
 		fail("Cruciform not found.", user, C)
 		return FALSE
-
-	if(get_active_mutation(CI.wearer, MUTATION_GODBLOOD))
-		fail("[CI.wearer]\'s mutated flesh rejects your will.", user, C)
-		return FALSE
+#warn bad
+	// if(get_active_mutation(CI.wearer, MUTATION_GODBLOOD))
+	// 	fail("[CI.wearer]\'s mutated flesh rejects your will.", user, C)
+	// 	return FALSE
 
 	var/mob/living/M = CI.wearer
 	log_and_message_admins("inflicted pain on [C] with atonement litany")
@@ -440,10 +441,10 @@
 	if(CI.get_module(CRUCIFORM_INQUISITOR))
 		fail("You don\'t have the authority for this.", user, C)
 		return FALSE
-
-	if(get_active_mutation(CI.wearer, MUTATION_GODBLOOD))
-		fail("[CI.wearer]\'s mutated flesh rejects your will.", user, C)
-		return FALSE
+#warn bad
+	// if(get_active_mutation(CI.wearer, MUTATION_GODBLOOD))
+	// 	fail("[CI.wearer]\'s mutated flesh rejects your will.", user, C)
+	// 	return FALSE
 
 	CI.security_clearance = CLEARANCE_NONE
 	return TRUE
@@ -471,10 +472,10 @@
 	if(CI.get_module(CRUCIFORM_INQUISITOR))
 		fail("You don't have the authority for this.", user, C)
 		return FALSE
-
-	if(get_active_mutation(CI.wearer, MUTATION_GODBLOOD))
-		fail("[CI.wearer]\'s mutated flesh rejects your will.", user, C)
-		return FALSE
+#warn bad
+	// if(get_active_mutation(CI.wearer, MUTATION_GODBLOOD))
+	// 	fail("[CI.wearer]\'s mutated flesh rejects your will.", user, C)
+	// 	return FALSE
 
 	CI.remove_specialization()
 	CI.security_clearance = CLEARANCE_NONE

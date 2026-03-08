@@ -84,9 +84,10 @@
 		return
 
 	// Mutant with resistance to mind control still can use an implant, albeit not fully
-	if(get_active_mutation(target, MUTATION_GODBLOOD))
-		target.verbs.Add(/datum/faction/excelsior/proc/communicate_verb)
-		return
+#warn bad
+	// if(get_active_mutation(target, MUTATION_GODBLOOD))
+	// 	target.verbs.Add(/datum/faction/excelsior/proc/communicate_verb)
+	// 	return
 
 	if(!F)
 		to_chat(target, SPAN_WARNING("You feel nothing."))
@@ -99,20 +100,21 @@
 
 
 /obj/item/implant/excelsior/on_uninstall()
-	if(!istype(wearer) || !wearer.mind)
-		return
+	#warn bad
+	// if(!istype(wearer) || !wearer.mind)
+	// 	return
 
-	for(var/datum/antagonist/A in wearer.mind.antagonist)
-		if(A.id == antag_id)
-			A.remove_antagonist()
-	wearer.visible_message(SPAN_DANGER("As \the [src] is removed from \the [wearer]..."))
-	if(prob(66) && !get_active_mutation(wearer, MUTATION_GODBLOOD))
-		wearer.visible_message(SPAN_DANGER("\The [wearer]'s [part.name] violently explodes from within!"))
-		wearer.adjustBrainLoss(200)
-		part.droplimb(FALSE, DROPLIMB_BLUNT)
-	else
-		wearer.visible_message(SPAN_NOTICE("Something fizzles in \the [wearer]'s [part.name], but nothing interesting happens."))
-		wearer.verbs.Remove(/datum/faction/excelsior/proc/communicate_verb)
+	// for(var/datum/antagonist/A in wearer.mind.antagonist)
+	// 	if(A.id == antag_id)
+	// 		A.remove_antagonist()
+	// wearer.visible_message(SPAN_DANGER("As \the [src] is removed from \the [wearer]..."))
+	// if(prob(66) && !get_active_mutation(wearer, MUTATION_GODBLOOD))
+	// 	wearer.visible_message(SPAN_DANGER("\The [wearer]'s [part.name] violently explodes from within!"))
+	// 	wearer.adjustBrainLoss(200)
+	// 	part.droplimb(FALSE, DROPLIMB_BLUNT)
+	// else
+	// 	wearer.visible_message(SPAN_NOTICE("Something fizzles in \the [wearer]'s [part.name], but nothing interesting happens."))
+	// 	wearer.verbs.Remove(/datum/faction/excelsior/proc/communicate_verb)
 
 /// Remote execution from failure to defend
 /obj/item/implant/excelsior/proc/execute()

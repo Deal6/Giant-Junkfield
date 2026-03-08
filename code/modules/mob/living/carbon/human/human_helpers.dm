@@ -81,13 +81,14 @@
 		binos.zoom(src)
 	if(istype(using_scope,/obj/item/gun))
 		process_scope(using_scope)
-	if(get_active_mutation(src, MUTATION_NIGHT_VISION))
-		equipment_darkness_modifier += 7
-		equipment_overlays |= global_hud.nvg
-		if(HUDtech.Find("glassesoverlay"))
-			var/obj/screen/glasses_overlay/GO = HUDtech["glassesoverlay"]
-			GO.update_icon()
-		equipment_see_invis = SEE_INVISIBLE_NOLIGHTING
+#warn bad
+	// if(get_active_mutation(src, MUTATION_NIGHT_VISION))
+	// 	equipment_darkness_modifier += 7
+	// 	equipment_overlays |= global_hud.nvg
+	// 	if(HUDtech.Find("glassesoverlay"))
+	// 		var/obj/screen/glasses_overlay/GO = HUDtech["glassesoverlay"]
+	// 		GO.update_icon()
+	// 	equipment_see_invis = SEE_INVISIBLE_NOLIGHTING
 
 
 /mob/living/carbon/human/proc/process_glasses(obj/item/clothing/glasses/G, forceactive)

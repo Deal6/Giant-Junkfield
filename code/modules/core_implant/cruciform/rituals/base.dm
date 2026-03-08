@@ -163,10 +163,10 @@
 	if(!T)
 		fail("No target.", H, C)
 		return FALSE
-
-	if(get_active_mutation(T, MUTATION_ATHEIST))
-		fail("[T.name]\'s mutated flesh rejects your will.", H, C)
-		return FALSE
+#warn bad
+	// if(get_active_mutation(T, MUTATION_ATHEIST))
+	// 	fail("[T.name]\'s mutated flesh rejects your will.", H, C)
+	// 	return FALSE
 
 	eotp.scanned -= T
 	T.hallucination(50,100)

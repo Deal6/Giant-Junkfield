@@ -123,7 +123,8 @@
 				volume += preloaded_reagents[reagent]
 			create_reagents(volume)
 		for(var/reagent in preloaded_reagents)
-			#warn reagents.add_reagent(reagent, preloaded_reagents[reagent])
+		#warn bad
+			// reagents.add_reagent(reagent, preloaded_reagents[reagent])
 
 	return INITIALIZE_HINT_NORMAL
 
@@ -488,11 +489,12 @@ its easier to just keep the beam vertical.
 		add_fibers(M)
 
 		//He has no prints!
-		if(get_active_mutation(M, MUTATION_NOPRINTS))
-			if(fingerprintslast != M.key)
-				fingerprintshidden += "(Has no fingerprints) Real name: [M.real_name], Key: [M.key]"
-				fingerprintslast = M.key
-			return FALSE		//Now, lets get to the dirty work.
+		#warn bad
+		// if(get_active_mutation(M, MUTATION_NOPRINTS))
+		// 	if(fingerprintslast != M.key)
+		// 		fingerprintshidden += "(Has no fingerprints) Real name: [M.real_name], Key: [M.key]"
+		// 		fingerprintslast = M.key
+		// 	return FALSE		//Now, lets get to the dirty work.
 		//First, make sure their DNA makes sense.
 		var/mob/living/carbon/human/H = M
 		if(!H.fingers_trace)

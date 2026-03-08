@@ -93,16 +93,16 @@ Has ability of every roach.
 /mob/living/carbon/superior_animal/roach/kaiser/proc/gas_attack()
 	if (!gas_sac.has_reagent("blattedin", 20) || stat != CONSCIOUS)
 		return
+#warn bad
+	// var/location = get_turf(src)
+	// var/datum/effect/effect/system/smoke_spread/chem/roach/S = new
 
-	var/location = get_turf(src)
-	var/datum/effect/effect/system/smoke_spread/chem/roach/S = new
+	// S.attach(location)
+	// S.set_up(gas_sac, gas_sac.total_volume, 0, location)
+	// src.visible_message(SPAN_DANGER("\the [src] secretes strange vapors!"))
 
-	S.attach(location)
-	S.set_up(gas_sac, gas_sac.total_volume, 0, location)
-	src.visible_message(SPAN_DANGER("\the [src] secretes strange vapors!"))
-
-	spawn(0)
-		S.start()
+	// spawn(0)
+	// 	S.start()
 
 	gas_sac.clear_reagents()
 	return TRUE

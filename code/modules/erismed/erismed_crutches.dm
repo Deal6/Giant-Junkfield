@@ -5,15 +5,18 @@
 	var/mode = 0
 
 /obj/item/grenade/chem_grenade
-
-// # FUCKING ELSE
-/mob/living/carbon/proc/handle_chemical_smoke(datum/gas_mixture/environment)
-/obj/item/device/proc/transfer_identity(var/mob/living/carbon/H)
-
+/obj/item/organ/internal/carrion
 /obj/item/organ/external
 	var/brute_dam = 0
 	var/burn_dam = 0
 	var/status
+// # FUCKING ELSE
+/proc/get_active_mutation(mob/user, mutation_type)
+
+/mob/living/carbon/proc/handle_chemical_smoke(datum/gas_mixture/environment)
+/obj/item/device/proc/transfer_identity(var/mob/living/carbon/H)
+
+
 
 /obj/item/organ/external/proc/droplimb() //Fully rework and maybe change name too
 
@@ -121,6 +124,8 @@
 /datum/reagents/proc/get_free_space() // Returns free space.
 
 // # REAGENT
+
+
 /proc/get_reagent_name_by_id(id)
 /proc/get_reagent_type_by_id(id)
 /proc/is_reagent_with_id_exist(id)
@@ -178,6 +183,7 @@
 
 //blatteding only??
 /datum/reagent/proc/on_mob_add(mob/living/L)
+
 
 	// return maximum_volume - total_volume
 

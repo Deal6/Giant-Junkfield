@@ -188,7 +188,8 @@
 		return
 
 	// Can use ability multiple times in a row if necessary, but there is a price
-	vessel.remove_reagent("blood", 50)
+	#warn bad
+	// vessel.remove_reagent("blood", 50)
 
 	var/new_facial = input("Please select facial hair color.", "Character Generation",facial_color) as color
 	if(new_facial)
@@ -199,9 +200,10 @@
 		hair_color = new_hair
 
 	var/new_eyes = input("Please select eye color.", "Character Generation",eyes_color) as color
-	if(new_eyes)
-		eyes_color = new_eyes
-		update_eyes()
+#warn uhm
+	// if(new_eyes)
+	// 	eyes_color = new_eyes
+	// 	update_eyes()
 
 	var/new_tone = input("Please select skin tone level: 1-220 (1=albino, 35=caucasian, 150=black, 220='very' black)", "Character Generation", "[35-s_tone]")  as text
 
@@ -327,29 +329,29 @@
 /mob/living/carbon/human/proc/remotesay()
 	set name = "Project mind"
 	set category = "Abilities"
+#warn bad
+	// if(stat)
+	// 	reset_view(0)
+	// 	remoteview_target = null
+	// 	return
 
-	if(stat)
-		reset_view(0)
-		remoteview_target = null
-		return
+	// var/list/mobs = list()
+	// for(var/mob/living/carbon/C in SSmobs.mob_list | SShumans.mob_list)
+	// 	mobs += C
 
-	var/list/mobs = list()
-	for(var/mob/living/carbon/C in SSmobs.mob_list | SShumans.mob_list)
-		mobs += C
+	// var/mob/target = input("Who do you want to project your mind to ?") as null|anything in mobs
+	// if(isnull(target))
+	// 	return
 
-	var/mob/target = input("Who do you want to project your mind to ?") as null|anything in mobs
-	if(isnull(target))
-		return
-
-	var/say = sanitize(input("What do you wish to say"))
-	if(get_active_mutation(target, MUTATION_REMOTESAY))
-		target.show_message("\blue You hear [real_name]'s voice: [say]")
-	else
-		target.show_message("\blue You hear a voice that seems to echo around the room: [say]")
-	show_message("\blue You project your mind into [target.real_name]: [say]")
-	log_say("[key_name(usr)] sent a telepathic message to [key_name(target)]: [say]")
-	for(var/mob/observer/ghost/G in world)
-		G.show_message("<i>Telepathic message from <b>[src]</b> to <b>[target]</b>: [say]</i>")
+	// var/say = sanitize(input("What do you wish to say"))
+	// if(get_active_mutation(target, MUTATION_REMOTESAY))
+	// 	target.show_message("\blue You hear [real_name]'s voice: [say]")
+	// else
+	// 	target.show_message("\blue You hear a voice that seems to echo around the room: [say]")
+	// show_message("\blue You project your mind into [target.real_name]: [say]")
+	// log_say("[key_name(usr)] sent a telepathic message to [key_name(target)]: [say]")
+	// for(var/mob/observer/ghost/G in world)
+	// 	G.show_message("<i>Telepathic message from <b>[src]</b> to <b>[target]</b>: [say]</i>")
 
 /mob/living/carbon/human/proc/remoteobserve()
 	set name = "Remote View"

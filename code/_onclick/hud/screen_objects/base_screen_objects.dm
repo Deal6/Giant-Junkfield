@@ -1547,9 +1547,9 @@ obj/screen/fire/DEADelize()
 		var/obj/item/clothing/glasses/G = H.wearing_rig.getCurrentGlasses()
 		if(G && H.wearing_rig.visor.active)
 			overlays |= G.overlay
-
-	if(get_active_mutation(H, MUTATION_NIGHT_VISION))
-		overlays |= global_hud.nvg
+#warn bad
+	// if(get_active_mutation(H, MUTATION_NIGHT_VISION))
+	// 	overlays |= global_hud.nvg
 
 
 //-----------------------toggle_invetory------------------------------

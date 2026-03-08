@@ -227,20 +227,22 @@
 
 /datum/perk/fate/oborin_syndrome/assign(mob/living/carbon/human/H)
 	if(..())
-		holder.sanity.max_level += 20
-		if(!get_active_mutation(holder, MUTATION_OBORIN))
-			var/datum/mutation/M = new MUTATION_OBORIN
-			M.imprint(holder)
+	#warn bad oborin
+		// holder.sanity.max_level += 20
+		// if(!get_active_mutation(holder, MUTATION_OBORIN))
+		// 	var/datum/mutation/M = new MUTATION_OBORIN
+		// 	M.imprint(holder)
 		spawn(1)
 			holder?.update_client_colour() //Handle the activation of the colourblindness on the mob.
 
+#warn bad oborin
 /datum/perk/fate/oborin_syndrome/remove()
-	if(holder)
-		holder.sanity.max_level -= 20
-		var/datum/mutation/M = get_active_mutation(holder, MUTATION_OBORIN)
-		M?.cleanse(holder)
-		spawn(1)
-			holder?.update_client_colour()
+	// if(holder)
+	// 	holder.sanity.max_level -= 20
+	// 	var/datum/mutation/M = get_active_mutation(holder, MUTATION_OBORIN)
+	// 	M?.cleanse(holder)
+	// 	spawn(1)
+	// 		holder?.update_client_colour()
 	..()
 
 /datum/perk/fate/lowborn

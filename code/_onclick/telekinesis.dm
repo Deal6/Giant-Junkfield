@@ -99,10 +99,10 @@ var/const/tk_maxrange = 15
 
 	if(isobj(target) && !isturf(target.loc))
 		return
-
-	if(!host || host != user || !get_active_mutation(user, MUTATION_TELEKINESIS))
-		qdel(src)
-		return
+#warn bad telekinesis
+	// if(!host || host != user || !get_active_mutation(user, MUTATION_TELEKINESIS))
+	// 	qdel(src)
+	// 	return
 
 	var/d = get_dist(user, target)
 	if(focus)

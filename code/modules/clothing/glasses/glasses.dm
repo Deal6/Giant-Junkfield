@@ -52,8 +52,9 @@
 
 /obj/item/clothing/glasses/equipped(mob/user, slot)
 	..()
-	if(((toggleable || hud) && prescription) && (get_active_mutation(user, MUTATION_NEARSIGHTED)) && (slot == slot_glasses))
-		to_chat(user, SPAN_NOTICE("[src] optical matrix automatically adjust to your poor prescription."))
+	#warn bad
+	// if(((toggleable || hud) && prescription) && (get_active_mutation(user, MUTATION_NEARSIGHTED)) && (slot == slot_glasses))
+	// 	to_chat(user, SPAN_NOTICE("[src] optical matrix automatically adjust to your poor prescription."))
 
 /obj/item/clothing/glasses/attackby(obj/item/Z, mob/user)
 	if(istype(Z,/obj/item/clothing/glasses/attachable_lenses))
