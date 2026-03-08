@@ -18,7 +18,7 @@
 
 /obj/item/implanter/installer
 
-/datum/reagents/proc/add_reagent(id, amount, data = null, safety = 0)
+
 
 #warn Return robotic external organs some day
 
@@ -46,7 +46,7 @@
 
 /proc/remove_nsa()
 
-/datum/reagents/metabolism
+
 
 /obj/item/mech_equipment/auto_mender
 
@@ -66,6 +66,9 @@
 /datum/design/research/item/exosuit/sleeper
 /datum/design/research/item/exosuit/sleeper/upgraded
 
+
+
+/obj/item/organ/proc/removed()
 
 /datum/reagents
 	var/list/datum/reagent/reagent_list = list()
@@ -126,6 +129,7 @@
 	var/reagent_type = "FIX DAT SHIT IMIDIATLY"
 	var/price_per_unit = 0.125
 
+
 /atom/proc/create_reagents(max_vol)	//untoched
 	reagents = new /datum/reagents(max_vol, src)
 
@@ -138,7 +142,19 @@
 				return 0
 	return 0
 
+/datum/reagents/proc/trans_to_holder(datum/reagents/target, amount = 1, multiplier = 1, copy = 0)
+/datum/reagents/proc/trans_to(datum/target, amount = 1, multiplier = 1, copy = 0, ignore_isinjectable = FALSE)
+/datum/reagents/proc/trans_to_mob(mob/target, amount = 1, type = CHEM_BLOOD, multiplier = 1, copy = 0) // Transfer after checking into which holder...
+/datum/reagents/proc/trans_to_turf(turf/target, amount = 1, multiplier = 1, copy = 0) // Turfs don't have any reagents (at least, for now). Just touch it.
+/datum/reagents/proc/trans_to_obj(obj/target, amount = 1, multiplier = 1, copy = 0) // Objects may or may not; if they do, it's probably a beaker or something and we need to transfer properly; otherwise, just touch.
 /datum/reagents/proc/trans_to_mob(mob/target, amount = 1, type = CHEM_BLOOD, multiplier = 1, copy = 0) // Transfer after checking into which holder...
 
 /datum/reagents/proc/get_free_space() // Returns free space.
 	return maximum_volume - total_volume
+
+/datum/reagents/proc/splash(atom/target, amount = 1, multiplier = 1, copy = 0, min_spill=0, max_spill=60)
+
+/datum/reagents/proc/add_reagent(id, amount, data = null, safety = 0)
+/datum/reagents/proc/remove_any(amount = 1)
+/datum/reagents/metabolism
+/datum/reagents/proc/clear_reagents()
