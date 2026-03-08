@@ -122,11 +122,11 @@
 		for(var/rid in chems)
 			var/injecting = min(5,max(1,get_trait(TRAIT_POTENCY)/3))
 			R.add_reagent(rid,injecting)
-
-	var/datum/effect/effect/system/smoke_spread/chem/spores/S = new(name)
-	S.attach(T)
-	S.set_up(R, round(get_trait(TRAIT_POTENCY)/4), 0, T)
-	S.start()
+#warn bad
+	// var/datum/effect/effect/system/smoke_spread/chem/spores/S = new(name)
+	// S.attach(T)
+	// S.set_up(R, round(get_trait(TRAIT_POTENCY)/4), 0, T)
+	// S.start()
 
 // Does brute damage to a target.
 /datum/seed/proc/do_thorns(mob/living/carbon/human/target, obj/item/fruit, target_limb)

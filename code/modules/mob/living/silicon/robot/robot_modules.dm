@@ -775,7 +775,7 @@ var/global/list/robot_modules = list(
 	LR.Charge(R, amount)
 	if(src.emag)
 		var/obj/item/reagent_containers/spray/S = src.emag
-#warn 		S.reagents.add_reagent("lube", 2 * amount)
+		S.reagents.add_reagent("lube", 2 * amount)
 
 
 /obj/item/robot_module/service

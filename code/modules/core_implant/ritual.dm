@@ -164,8 +164,9 @@
 			continue
 		if(!allow_dead && L.stat == DEAD)
 			continue
-		if(get_active_mutation(L, MUTATION_ATHEIST))
-			continue
+#warn bad
+		// if(get_active_mutation(L, MUTATION_ATHEIST))
+		// 	continue
 		candidates += L
 
 	return input(user, "Who do you wish to target?", "Select a disciple") as null|mob in candidates

@@ -736,8 +736,9 @@
 			// refund if none of it gets turned into power for qol reasons (its never exact returnal due to float errors)
 			if(amountUsed < generation_rate * 0.1)
 				chamberReagent.trans_to_holder(reagents, 1, 1, FALSE)
-			if(fuel > fuel_usage_per_tick)
-				chamberReagent.trans_id_to(reagents, "fuel", chamberReagent.total_volume - fuel_usage_per_tick, TRUE)
+#warn bad
+			// if(fuel > fuel_usage_per_tick)
+				// chamberReagent.trans_id_to(reagents, "fuel", chamberReagent.total_volume - fuel_usage_per_tick, TRUE)
 			if(internal_cell && owner)
 				var/obj/item/cell/batt = owner.get_cell(TRUE)
 				if(batt && batt != internal_cell)

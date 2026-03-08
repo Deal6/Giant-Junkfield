@@ -92,9 +92,6 @@
 	reagents = new /datum/reagents(max_vol, src)
 
 
-/proc/get_reagent_name_by_id(id)
-/proc/get_reagent_type_by_id(id)
-/proc/is_reagent_with_id_exist(id)
 // # REAGENT(S)
 /datum/reagents/proc/has_reagent(id, amount = 0)	//untoched
 	for(var/datum/reagent/current in reagent_list)
@@ -122,6 +119,9 @@
 /datum/reagents/proc/get_free_space() // Returns free space.
 
 // # REAGENT
+/proc/get_reagent_name_by_id(id)
+/proc/get_reagent_type_by_id(id)
+/proc/is_reagent_with_id_exist(id)
 /datum/reagent
 	var/name = ""
 	var/id = "reagent"
@@ -177,7 +177,7 @@
 //blatteding only??
 /datum/reagent/proc/on_mob_add(mob/living/L)
 
-	return maximum_volume - total_volume
+	// return maximum_volume - total_volume
 
 
 /datum/reagents/metabolism
