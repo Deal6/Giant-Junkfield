@@ -123,8 +123,8 @@
 				volume += preloaded_reagents[reagent]
 			create_reagents(volume)
 		for(var/reagent in preloaded_reagents)
-		#warn bad
-			// reagents.add_reagent(reagent, preloaded_reagents[reagent])
+			reagents.add_reagent(reagent, preloaded_reagents[reagent])
+
 
 	return INITIALIZE_HINT_NORMAL
 
@@ -488,8 +488,10 @@ its easier to just keep the beam vertical.
 		//Fibers~
 		add_fibers(M)
 
-		//He has no prints!
-		#warn bad
+
+		// //He has no prints!
+		#warn And I have no mutations in game!
+
 		// if(get_active_mutation(M, MUTATION_NOPRINTS))
 		// 	if(fingerprintslast != M.key)
 		// 		fingerprintshidden += "(Has no fingerprints) Real name: [M.real_name], Key: [M.key]"

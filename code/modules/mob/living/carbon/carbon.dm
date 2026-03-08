@@ -411,9 +411,9 @@
 	var/datum/browser/panel = new(user, "mob[name]", "Mob", 325, 400)
 	panel.set_content(dat)
 	panel.open()
-
-/mob/living/carbon/proc/should_have_process(var/organ_check)
-	return 0
+#warn shouldn't have process
+// /mob/living/carbon/proc/should_have_process(var/organ_check)
+// 	return 0
 
 /mob/living/carbon/proc/has_appendage(var/limb_check)
 	return 0

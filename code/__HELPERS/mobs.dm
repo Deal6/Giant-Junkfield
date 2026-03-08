@@ -406,8 +406,9 @@ Proc for attack log creation, because really why not
 			//They need a brain!
 			if(ishuman(M))
 				var/mob/living/carbon/human/H = M
-				if(H.should_have_process(BP_BRAIN) && !H.has_brain())
-					continue
+				#warn YOU need a brain!
+				// if(H.should_have_process(BP_BRAIN) && !H.has_brain())
+				// 	continue
 			if(M.ckey == find_key)
 				selected = M
 				break

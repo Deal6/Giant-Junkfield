@@ -40,7 +40,8 @@
 
 
 	sync_organ_dna()
-	make_blood()
+	#warn No I won't make you blood do it yourself
+	// make_blood()
 	generate_dna()
 
 	sanity = new(src)
@@ -358,9 +359,10 @@ var/list/rank_prefix = list(\
 
 //Returns "Unknown" if facially disfigured and real_name if not. Useful for setting name when polyacided or when updating a human's name variable
 /mob/living/carbon/human/get_face_name()
-	var/obj/item/organ/external/head = get_organ(BP_HEAD)
-	if(!head || head.is_stump() || !real_name) // || (HUSK in mutations) || head.disfigured	//disfigured. use id-name if possible
-		return "Unknown"
+#warn there's a stump in your face
+	// var/obj/item/organ/external/head = get_organ(BP_HEAD)
+	// if(!head || head.is_stump() || !real_name) // || (HUSK in mutations) || head.disfigured	//disfigured. use id-name if possible
+	// 	return "Unknown"
 	return real_name
 
 //gets name from ID or PDA itself, ID inside PDA doesn't matter
@@ -602,24 +604,25 @@ var/list/rank_prefix = list(\
 //Used by various things that knock people out by applying blunt trauma to the head.
 //Checks that the species has a "head" (brain containing organ) and that hit_zone refers to it.
 /mob/living/carbon/human/proc/headcheck(target_zone, brain_tag = BP_BRAIN)
-	if(!species.has_process[brain_tag])
-		return 0
+#warn Wheeeere is my mind
+	// if(!species.has_process[brain_tag])
+	// 	return 0
 
-	var/obj/item/organ/affecting = random_organ_by_process(brain_tag)
+	// var/obj/item/organ/affecting = random_organ_by_process(brain_tag)
 
-	target_zone = check_zone(target_zone)
-	if(!affecting || affecting.parent != target_zone)
-		return 0
+	// target_zone = check_zone(target_zone)
+	// if(!affecting || affecting.parent != target_zone)
+	// 	return 0
 
-	//if the parent organ is significantly larger than the brain organ, then hitting it is not guaranteed
-	var/obj/item/organ/parent = get_organ(target_zone)
-	if(!parent)
-		return 0
+	// //if the parent organ is significantly larger than the brain organ, then hitting it is not guaranteed
+	// var/obj/item/organ/parent = get_organ(target_zone)
+	// if(!parent)
+	// 	return 0
 
-	if(parent.w_class > affecting.w_class + 1)
-		return prob(100 / 2**(parent.w_class - affecting.w_class - 1))
+	// if(parent.w_class > affecting.w_class + 1)
+	// 	return prob(100 / 2**(parent.w_class - affecting.w_class - 1))
 
-	return 1
+	// return 1
 
 /mob/living/carbon/human/IsAdvancedToolUser(silent)
 	if(species.has_fine_manipulation)
@@ -653,11 +656,12 @@ var/list/rank_prefix = list(\
 	return
 
 /mob/living/carbon/human/proc/check_has_mouth()
-	// Todo, check stomach organ when implemented.
-	var/obj/item/organ/external/H = get_organ(BP_HEAD)
-	if(!H || !(H.functions & BODYPART_REAGENT_INTAKE))
-		return FALSE
-	return TRUE
+	#warn I must scream
+	// // Todo, check stomach organ when implemented.
+	// var/obj/item/organ/external/H = get_organ(BP_HEAD)
+	// if(!H || !(H.functions & BODYPART_REAGENT_INTAKE))
+	// 	return FALSE
+	// return TRUE
 
 /mob/living/carbon/human/vomit(var/forced = 0)
 
@@ -700,21 +704,21 @@ var/list/rank_prefix = list(\
 	return gender
 #warn wtf is fixblood and why wouldn't you fix yourself instead?
 /mob/living/carbon/human/revive()
-	if(species && !(species.flags & NO_BLOOD))
-		vessel.add_reagent("blood",species.blood_volume-vessel.total_volume)
-		// fixblood()
+	// if(species && !(species.flags & NO_BLOOD))
+	// 	vessel.add_reagent("blood",species.blood_volume-vessel.total_volume)
+	// 	// fixblood()
 
-	if(!client || !key) //Don't boot out anyone already in the mob.
-		for(var/obj/item/organ/internal/vital/brain/H in world)
-			if(H.brainmob)
-				if(H.brainmob.real_name == src.real_name)
-					if(H.brainmob.mind)
-						H.brainmob.mind.transfer_to(src)
-						qdel(H)
+	// if(!client || !key) //Don't boot out anyone already in the mob.
+	// 	for(var/obj/item/organ/internal/vital/brain/H in world)
+	// 		if(H.brainmob)
+	// 			if(H.brainmob.real_name == src.real_name)
+	// 				if(H.brainmob.mind)
+	// 					H.brainmob.mind.transfer_to(src)
+	// 					qdel(H)
 
-	losebreath = 0
+	// losebreath = 0
 
-	..()
+	// ..()
 
 /mob/living/carbon/human/add_blood(mob/living/carbon/human/M)
 	if(!..())
@@ -729,12 +733,12 @@ var/list/rank_prefix = list(\
 	return 1 //we applied blood to the item
 
 /mob/living/carbon/human/proc/get_full_print()
-#warn bad no print
 	// if(!fingers_trace || get_active_mutation(src, MUTATION_NOPRINTS))
 	// 	return
-	if(chem_effects[CE_DYNAMICFINGERS])
-		return md5(chem_effects[CE_DYNAMICFINGERS])
-	return fingers_trace
+	// if(chem_effects[CE_DYNAMICFINGERS])
+	// 	return md5(chem_effects[CE_DYNAMICFINGERS])
+	// return fingers_trace
+	#warn have you looked at your fingers? I mean REALLY looked at them
 
 /mob/living/carbon/human/clean_blood(clean_feet)
 	.=..()
@@ -762,41 +766,43 @@ var/list/rank_prefix = list(\
 	return
 
 /mob/living/carbon/human/get_visible_implants()
-	var/list/visible_implants = list()
+#warn Phantom pains incoming
+	// var/list/visible_implants = list()
 
-	for(var/obj/item/organ/external/organ in organs)
-		for(var/obj/item/I in (organ.implants & organ.embedded))
-			visible_implants += I
+	// for(var/obj/item/organ/external/organ in organs)
+	// 	for(var/obj/item/I in (organ.implants & organ.embedded))
+	// 		visible_implants += I
 
-	return visible_implants
+	// return visible_implants
 
 /mob/living/carbon/human/embedded_needs_process()
-	for(var/obj/item/organ/external/organ in organs)
-		for(var/obj/item/O in organ.implants)
-			if(is_sharp(O))	// Only sharp items can cause issues
-				return TRUE
-	return FALSE
+#warn whatever
+	// for(var/obj/item/organ/external/organ in organs)
+	// 	for(var/obj/item/O in organ.implants)
+	// 		if(is_sharp(O))	// Only sharp items can cause issues
+	// 			return TRUE
+	// return FALSE
 
 /mob/living/carbon/human/proc/handle_embedded_objects()
+#warn Ehm... No. Please
+	// for(var/obj/item/organ/external/organ in organs)
+	// 	if(organ.status & ORGAN_SPLINTED) //Splints prevent movement.
+	// 		continue
 
-	for(var/obj/item/organ/external/organ in organs)
-		if(organ.status & ORGAN_SPLINTED) //Splints prevent movement.
-			continue
-
-		for(var/obj/item/O in organ.implants)
-			var/mob/living/carbon/human/H = organ.owner
-			// Shrapnel hurts when you move, and implanting knives is a bad idea
-			if(prob(5) && is_sharp(O) && !MOVING_DELIBERATELY(H))
-				if(!organ.can_feel_pain())
-					to_chat(src, SPAN_WARNING("You feel [O] moving inside your [organ.name]."))
-				else
-					var/msg = pick( \
-						SPAN_WARNING("A spike of pain jolts your [organ.name] as you bump [O] inside."), \
-						SPAN_WARNING("Your hasty movement jostles [O] in your [organ.name] painfully."))
-					to_chat(src, msg)
-				organ.take_damage(3, BRUTE, organ.max_damage, 6.7, TRUE, TRUE)	// When the limb is at 60% of max health, internal organs start taking damage.
-				if(organ.setBleeding())
-					organ.take_damage(3, TOX)
+	// 	for(var/obj/item/O in organ.implants)
+	// 		var/mob/living/carbon/human/H = organ.owner
+	// 		// Shrapnel hurts when you move, and implanting knives is a bad idea
+	// 		if(prob(5) && is_sharp(O) && !MOVING_DELIBERATELY(H))
+	// 			if(!organ.can_feel_pain())
+	// 				to_chat(src, SPAN_WARNING("You feel [O] moving inside your [organ.name]."))
+	// 			else
+	// 				var/msg = pick( \
+	// 					SPAN_WARNING("A spike of pain jolts your [organ.name] as you bump [O] inside."), \
+	// 					SPAN_WARNING("Your hasty movement jostles [O] in your [organ.name] painfully."))
+	// 				to_chat(src, msg)
+	// 			organ.take_damage(3, BRUTE, organ.max_damage, 6.7, TRUE, TRUE)	// When the limb is at 60% of max health, internal organs start taking damage.
+	// 			if(organ.setBleeding())
+	// 				organ.take_damage(3, TOX)
 
 /mob/living/carbon/human/verb/browse_sanity()
 	set name		= "Show sanity"
@@ -836,189 +842,191 @@ var/list/rank_prefix = list(\
 		to_chat(usr, SPAN_WARNING("You failed to check the pulse. Try again."))
 
 /mob/living/carbon/human/proc/set_species(new_species, default_colour)
-	// No more invisible screaming wheelchairs because of set_species() typos.
-	if(!all_species[new_species])
-		new_species = SPECIES_HUMAN
+	#warn it's still used for skeletons, slimes and shit so we'll have to bring it back
+	// // No more invisible screaming wheelchairs because of set_species() typos.
+	// if(!all_species[new_species])
+	// 	new_species = SPECIES_HUMAN
 
-	if(species)
+	// if(species)
 
-		if(species.name && species.name == new_species)
-			return
-		if(species.language)
-			remove_language(species.language)
-		if(species.default_language)
-			remove_language(species.default_language)
-		// Clear out their species abilities.
-		species.remove_inherent_verbs(src)
-		holder_type = null
+	// 	if(species.name && species.name == new_species)
+	// 		return
+	// 	if(species.language)
+	// 		remove_language(species.language)
+	// 	if(species.default_language)
+	// 		remove_language(species.default_language)
+	// 	// Clear out their species abilities.
+	// 	species.remove_inherent_verbs(src)
+	// 	holder_type = null
 
-	species = all_species[new_species]
+	// species = all_species[new_species]
 
-	if(species.language)
-		add_language(species.language)
+	// if(species.language)
+	// 	add_language(species.language)
 
-	if(species.default_language)
-		add_language(species.default_language)
+	// if(species.default_language)
+	// 	add_language(species.default_language)
 
-	if(species.base_color && default_colour)
-		//Apply colour.
-		skin_color = species.base_color
-	else
-		skin_color = "#000000"
+	// if(species.base_color && default_colour)
+	// 	//Apply colour.
+	// 	skin_color = species.base_color
+	// else
+	// 	skin_color = "#000000"
 
-	if(species.holder_type)
-		holder_type = species.holder_type
+	// if(species.holder_type)
+	// 	holder_type = species.holder_type
 
-	icon_state = lowertext(species.name)
+	// icon_state = lowertext(species.name)
 
-	if(species.has_process.len)
-		for(var/process in species.has_process)
-			internal_organs_by_efficiency[process] = list()
+	// if(species.has_process.len)
+	// 	for(var/process in species.has_process)
+	// 		internal_organs_by_efficiency[process] = list()
 
-	rebuild_organs()
-	src.sync_organ_dna()
-	species.handle_post_spawn(src)
+	// rebuild_organs()
+	// src.sync_organ_dna()
+	// species.handle_post_spawn(src)
 
-	maxHealth = species.total_health
+	// maxHealth = species.total_health
 
-	update_client_colour(0)
+	// update_client_colour(0)
 
-	spawn(0)
-		if(QDELETED(src))	// Needed because mannequins will continue this proc and runtime after being qdel'd
-			return
-		regenerate_icons()
-		if(vessel.total_volume < species.blood_volume)
-			vessel.maximum_volume = species.blood_volume
-			vessel.add_reagent("blood", species.blood_volume - vessel.total_volume)
-		else if(vessel.total_volume > species.blood_volume)
-			vessel.remove_reagent("blood", vessel.total_volume - species.blood_volume)
-			vessel.maximum_volume = species.blood_volume
-		// fixblood()
+	// spawn(0)
+	// 	if(QDELETED(src))	// Needed because mannequins will continue this proc and runtime after being qdel'd
+	// 		return
+	// 	regenerate_icons()
+	// 	if(vessel.total_volume < species.blood_volume)
+	// 		vessel.maximum_volume = species.blood_volume
+	// 		vessel.add_reagent("blood", species.blood_volume - vessel.total_volume)
+	// 	else if(vessel.total_volume > species.blood_volume)
+	// 		vessel.remove_reagent("blood", vessel.total_volume - species.blood_volume)
+	// 		vessel.maximum_volume = species.blood_volume
+	// 	// fixblood()
 
 
-	// Rebuild the HUD. If they aren't logged in then login() should reinstantiate it for them.
-	check_HUD()
-	/*
-	if(client && client.screen)//HUD HERE!!!!!!!!!!
-		client.screen.Cut()
-		if(hud_used)
-			qdel(hud_used)
-		hud_used = new /datum/hud(src)
-		update_hud()
-	*/
-	if(species)
-		return 1
-	else
-		return 0
+	// // Rebuild the HUD. If they aren't logged in then login() should reinstantiate it for them.
+	// check_HUD()
+	// /*
+	// if(client && client.screen)//HUD HERE!!!!!!!!!!
+	// 	client.screen.Cut()
+	// 	if(hud_used)
+	// 		qdel(hud_used)
+	// 	hud_used = new /datum/hud(src)
+	// 	update_hud()
+	// */
+	// if(species)
+	// 	return 1
+	// else
+	// 	return 0
 
 //Needed for augmentation
 /mob/living/carbon/human/proc/rebuild_organs(from_preference)
-	if(!species)
-		return FALSE
+#warn RECONSTRUCT WHAT?! THERE'S NOTHING LEFT
+// 	if(!species)
+// 		return FALSE
 
-	status_flags |= REBUILDING_ORGANS
+// 	status_flags |= REBUILDING_ORGANS
 
-	var/obj/item/organ/internal/carrion/core = random_organ_by_process(BP_SPCORE)
-	var/list/organs_to_readd = list()
-	if(core) //kinda wack, this whole proc should be remade
-		for(var/obj/item/organ/internal/carrion/C in internal_organs)
-			C.removed_mob()
-			organs_to_readd += C
+// 	var/obj/item/organ/internal/carrion/core = random_organ_by_process(BP_SPCORE)
+// 	var/list/organs_to_readd = list()
+// 	if(core) //kinda wack, this whole proc should be remade
+// 		for(var/obj/item/organ/internal/carrion/C in internal_organs)
+// 			C.removed_mob()
+// 			organs_to_readd += C
 
-	var/obj/item/implant/core_implant/CI = get_core_implant()
-	var/checkprefcruciform = FALSE	// To reset the cruciform to original form
-	if(CI)
-		checkprefcruciform = TRUE
-		qdel(CI)
+// 	var/obj/item/implant/core_implant/CI = get_core_implant()
+// 	var/checkprefcruciform = FALSE	// To reset the cruciform to original form
+// 	if(CI)
+// 		checkprefcruciform = TRUE
+// 		qdel(CI)
 
 
-	if(from_preference)
-		for(var/obj/item/organ/organ in (organs|internal_organs))
-			qdel(organ)
+// 	if(from_preference)
+// 		for(var/obj/item/organ/organ in (organs|internal_organs))
+// 			qdel(organ)
 
-		if(organs.len)
-			organs.Cut()
-		if(internal_organs.len)
-			internal_organs.Cut()
-		if(organs_by_name.len)
-			organs_by_name.Cut()
-		var/datum/preferences/Pref
-		if(istype(from_preference, /datum/preferences))
-			Pref = from_preference
-		else if(client)
-			Pref = client.prefs
-		else
-			return
+// 		if(organs.len)
+// 			organs.Cut()
+// 		if(internal_organs.len)
+// 			internal_organs.Cut()
+// 		if(organs_by_name.len)
+// 			organs_by_name.Cut()
+// 		var/datum/preferences/Pref
+// 		if(istype(from_preference, /datum/preferences))
+// 			Pref = from_preference
+// 		else if(client)
+// 			Pref = client.prefs
+// 		else
+// 			return
 
-		var/datum/body_modification/BM
+// 		var/datum/body_modification/BM
 
-		for(var/tag in species.has_limbs)
-			BM = Pref.get_modification(tag)
-			var/datum/organ_description/OD = species.has_limbs[tag]
-//			var/datum/body_modification/PBM = Pref.get_modification(OD.parent_organ_base)
-//			if(PBM && (PBM.nature == MODIFICATION_SILICON || PBM.nature == MODIFICATION_REMOVED))
-//				BM = PBM
-			if(BM.is_allowed(tag, Pref, src))
-				BM.create_organ(src, OD, Pref.modifications_colors[tag])
-			else
-				OD.create_organ(src)
+// 		for(var/tag in species.has_limbs)
+// 			BM = Pref.get_modification(tag)
+// 			var/datum/organ_description/OD = species.has_limbs[tag]
+// //			var/datum/body_modification/PBM = Pref.get_modification(OD.parent_organ_base)
+// //			if(PBM && (PBM.nature == MODIFICATION_SILICON || PBM.nature == MODIFICATION_REMOVED))
+// //				BM = PBM
+// 			if(BM.is_allowed(tag, Pref, src))
+// 				BM.create_organ(src, OD, Pref.modifications_colors[tag])
+// 			else
+// 				OD.create_organ(src)
 
-		for(var/tag in species.has_process)
-			BM = Pref.get_modification(tag)
-			if(BM.is_allowed(tag, Pref, src))
-				BM.create_organ(src, species.has_process[tag], Pref.modifications_colors[tag])
-			else
-				var/organ_type = species.has_process[tag]
-				new organ_type(src)
+// 		for(var/tag in species.has_process)
+// 			BM = Pref.get_modification(tag)
+// 			if(BM.is_allowed(tag, Pref, src))
+// 				BM.create_organ(src, species.has_process[tag], Pref.modifications_colors[tag])
+// 			else
+// 				var/organ_type = species.has_process[tag]
+// 				new organ_type(src)
 
-		var/datum/category_item/setup_option/core_implant/I = Pref.get_option("Core implant")
-		if(I.implant_type && (!mind || mind.assigned_role != "Robot"))
-			var/obj/item/implant/core_implant/C = new I.implant_type
-			C.install(src)
-			C.activate()
-			if(mind)
-				C.install_default_modules_by_job(mind.assigned_job)
-				C.access.Add(mind.assigned_job.cruciform_access)
-				C.security_clearance = mind.assigned_job.security_clearance
+// 		var/datum/category_item/setup_option/core_implant/I = Pref.get_option("Core implant")
+// 		if(I.implant_type && (!mind || mind.assigned_role != "Robot"))
+// 			var/obj/item/implant/core_implant/C = new I.implant_type
+// 			C.install(src)
+// 			C.activate()
+// 			if(mind)
+// 				C.install_default_modules_by_job(mind.assigned_job)
+// 				C.access.Add(mind.assigned_job.cruciform_access)
+// 				C.security_clearance = mind.assigned_job.security_clearance
 
-	else
-		var/organ_type
+// 	else
+// 		var/organ_type
 
-		for(var/limb_tag in species.has_limbs)
-			var/datum/organ_description/OD = species.has_limbs[limb_tag]
-			var/obj/item/I = organs_by_name[limb_tag]
-			if(I && I.type == OD.default_type)
-				continue
-			else if(I)
-				qdel(I)
-			OD.create_organ(src)
+// 		for(var/limb_tag in species.has_limbs)
+// 			var/datum/organ_description/OD = species.has_limbs[limb_tag]
+// 			var/obj/item/I = organs_by_name[limb_tag]
+// 			if(I && I.type == OD.default_type)
+// 				continue
+// 			else if(I)
+// 				qdel(I)
+// 			OD.create_organ(src)
 
-		for(var/organ_tag in species.has_process)
-			organ_type = species.has_process[organ_tag]
-			var/obj/item/I = random_organ_by_process(organ_tag)
-			if(I && I.type == organ_type)
-				continue
-			else if(I)
-				qdel(I)
-			new organ_type(src)
+// 		for(var/organ_tag in species.has_process)
+// 			organ_type = species.has_process[organ_tag]
+// 			var/obj/item/I = random_organ_by_process(organ_tag)
+// 			if(I && I.type == organ_type)
+// 				continue
+// 			else if(I)
+// 				qdel(I)
+// 			new organ_type(src)
 
-		if(checkprefcruciform && client)
-			var/datum/category_item/setup_option/core_implant/I = client.prefs.get_option("Core implant")
-			if(I.implant_type)
-				var/obj/item/implant/core_implant/C = new I.implant_type
-				C.install(src)
-				C.activate()
-				C.install_default_modules_by_job(mind.assigned_job)
-				C.access.Add(mind.assigned_job.cruciform_access)
-				C.security_clearance = mind.assigned_job.security_clearance
+// 		if(checkprefcruciform && client)
+// 			var/datum/category_item/setup_option/core_implant/I = client.prefs.get_option("Core implant")
+// 			if(I.implant_type)
+// 				var/obj/item/implant/core_implant/C = new I.implant_type
+// 				C.install(src)
+// 				C.activate()
+// 				C.install_default_modules_by_job(mind.assigned_job)
+// 				C.access.Add(mind.assigned_job.cruciform_access)
+// 				C.security_clearance = mind.assigned_job.security_clearance
 
-	for(var/obj/item/organ/internal/carrion/C in organs_to_readd)
-		C.replaced(get_organ(C.parent_organ_base))
+// 	for(var/obj/item/organ/internal/carrion/C in organs_to_readd)
+// 		C.replaced(get_organ(C.parent_organ_base))
 
-	status_flags &= ~REBUILDING_ORGANS
-	species.organs_spawned(src)
+// 	status_flags &= ~REBUILDING_ORGANS
+// 	species.organs_spawned(src)
 
-	update_body()
+// 	update_body()
 
 /mob/living/carbon/human/proc/post_prefinit()
 	var/obj/item/implant/core_implant/C = locate() in src
@@ -1146,12 +1154,13 @@ var/list/rank_prefix = list(\
 	return FALSE
 
 /mob/living/carbon/human/has_eyes()
-	if(organ_list_by_process(BP_EYES).len)
-		for(var/obj/item/organ/internal/eyes in organ_list_by_process(OP_EYES))
-			if(!(eyes && istype(eyes) && !(eyes.status & ORGAN_CUT_AWAY)))
-				return FALSE
-			return TRUE
-	return FALSE
+	#warn see no shitcode - do no shitcode
+	// if(organ_list_by_process(BP_EYES).len)
+	// 	for(var/obj/item/organ/internal/eyes in organ_list_by_process(OP_EYES))
+	// 		if(!(eyes && istype(eyes) && !(eyes.status & ORGAN_CUT_AWAY)))
+	// 			return FALSE
+	// 		return TRUE
+	// return FALSE
 
 /mob/living/carbon/human/slip(var/slipped_on, stun_duration=8)
 	if((species.flags & NO_SLIP) || (shoes && (shoes.item_flags & NOSLIP)))
@@ -1269,68 +1278,68 @@ var/list/rank_prefix = list(\
 	else
 		to_chat(src, SPAN_NOTICE("You can't do it right now."))
 	return
+#warn if you call something "should have process" you might already see where things got bad
+// /mob/living/carbon/human/should_have_process(organ_check)
 
-/mob/living/carbon/human/should_have_process(organ_check)
+// 	var/obj/item/organ/external/affecting
+// 	if(organ_check in list(OP_HEART, OP_LUNGS, OP_STOMACH))
+// 		affecting = organs_by_name[BP_CHEST]
+// 	else if(organ_check in list(OP_LIVER, OP_KIDNEYS, OP_KIDNEY_LEFT, OP_KIDNEY_RIGHT))
+// 		affecting = organs_by_name[BP_GROIN]
 
-	var/obj/item/organ/external/affecting
-	if(organ_check in list(OP_HEART, OP_LUNGS, OP_STOMACH))
-		affecting = organs_by_name[BP_CHEST]
-	else if(organ_check in list(OP_LIVER, OP_KIDNEYS, OP_KIDNEY_LEFT, OP_KIDNEY_RIGHT))
-		affecting = organs_by_name[BP_GROIN]
-
-	if(affecting && (BP_IS_ROBOTIC(affecting)))
-		return FALSE
-	return (species && species.has_process[organ_check])
-
+// 	if(affecting && (BP_IS_ROBOTIC(affecting)))
+// 		return FALSE
+// 	return (species && species.has_process[organ_check])
+#warn this can be WAY more readable
 /mob/living/carbon/human/proc/check_self_for_injuries()
-	if(stat)
-		return
+	// if(stat)
+	// 	return
 
-	to_chat(src, SPAN_NOTICE("You check yourself for injuries."))
+	// to_chat(src, SPAN_NOTICE("You check yourself for injuries."))
 
-	for(var/obj/item/organ/external/org in organs)
-		var/list/status = list()
-		var/brutedamage = org.brute_dam
-		var/burndamage = org.burn_dam
-		if(halloss > 0)
-			if(prob(30))
-				brutedamage += halloss
-			if(prob(30))
-				burndamage += halloss
-		switch(brutedamage)
-			if(1 to 20)
-				status += "bruised"
-			if(20 to 40)
-				status += "wounded"
-			if(40 to INFINITY)
-				status += "mangled"
+	// for(var/obj/item/organ/external/org in organs)
+	// 	var/list/status = list()
+	// 	var/brutedamage = org.brute_dam
+	// 	var/burndamage = org.burn_dam
+	// 	if(halloss > 0)
+	// 		if(prob(30))
+	// 			brutedamage += halloss
+	// 		if(prob(30))
+	// 			burndamage += halloss
+	// 	switch(brutedamage)
+	// 		if(1 to 20)
+	// 			status += "bruised"
+	// 		if(20 to 40)
+	// 			status += "wounded"
+	// 		if(40 to INFINITY)
+	// 			status += "mangled"
 
-		switch(burndamage)
-			if(1 to 10)
-				status += "numb"
-			if(10 to 40)
-				status += "blistered"
-			if(40 to INFINITY)
-				status += "peeling away"
+	// 	switch(burndamage)
+	// 		if(1 to 10)
+	// 			status += "numb"
+	// 		if(10 to 40)
+	// 			status += "blistered"
+	// 		if(40 to INFINITY)
+	// 			status += "peeling away"
 
-		if(org.is_stump())
-			status += "MISSING"
-		if(org.status & ORGAN_MUTATED)
-			status += "weirdly shapen"
-		if(org.nerve_struck == 2)
-			status += "torpid"
-		if(org.status & ORGAN_BROKEN)
-			status += "hurts when touched"
-		if(org.status & ORGAN_DEAD)
-			status += "is bruised and necrotic"
-		if(!org.is_usable())
-			status += "dangling uselessly"
+	// 	if(org.is_stump())
+	// 		status += "MISSING"
+	// 	if(org.status & ORGAN_MUTATED)
+	// 		status += "weirdly shapen"
+	// 	if(org.nerve_struck == 2)
+	// 		status += "torpid"
+	// 	if(org.status & ORGAN_BROKEN)
+	// 		status += "hurts when touched"
+	// 	if(org.status & ORGAN_DEAD)
+	// 		status += "is bruised and necrotic"
+	// 	if(!org.is_usable())
+	// 		status += "dangling uselessly"
 
-		var/status_text = SPAN_NOTICE("OK")
-		if(status.len)
-			status_text = SPAN_WARNING(english_list(status))
+	// 	var/status_text = SPAN_NOTICE("OK")
+	// 	if(status.len)
+	// 		status_text = SPAN_WARNING(english_list(status))
 
-		src.show_message("My [org.name] is [status_text].",1)
+	// 	src.show_message("My [org.name] is [status_text].",1)
 
 /mob/living/carbon/human/need_breathe()
 //	if(!(mNobreath in mutations))
@@ -1343,57 +1352,57 @@ var/list/rank_prefix = list(\
 	reset_view(A)
 
 /mob/living/carbon/human/proc/resuscitate()
+#warn i did what I could...
+	// var/obj/item/organ/internal/vital/heart_organ = random_organ_by_process(OP_HEART)
+	// var/obj/item/organ/internal/vital/brain_organ = random_organ_by_process(BP_BRAIN)
 
-	var/obj/item/organ/internal/vital/heart_organ = random_organ_by_process(OP_HEART)
-	var/obj/item/organ/internal/vital/brain_organ = random_organ_by_process(BP_BRAIN)
+	// if((!heart_organ || heart_organ.is_broken()) && (!brain_organ || brain_organ.is_broken()))
+	// 	resuscitate_notify(1)
+	// 	return 0
 
-	if((!heart_organ || heart_organ.is_broken()) && (!brain_organ || brain_organ.is_broken()))
-		resuscitate_notify(1)
-		return 0
+	// if(!heart_organ || heart_organ.is_broken())
+	// 	resuscitate_notify(2)
+	// 	return 0
 
-	if(!heart_organ || heart_organ.is_broken())
-		resuscitate_notify(2)
-		return 0
+	// if(!brain_organ || brain_organ.is_broken())
+	// 	resuscitate_notify(3)
+	// 	return 0
 
-	if(!brain_organ || brain_organ.is_broken())
-		resuscitate_notify(3)
-		return 0
+	// if(world.time >= (timeofdeath + NECROZTIME))
+	// 	resuscitate_notify(4)
+	// 	return 0
 
-	if(world.time >= (timeofdeath + NECROZTIME))
-		resuscitate_notify(4)
-		return 0
+	// var/oxyLoss = getOxyLoss()
+	// if(oxyLoss > 20)
+	// 	setOxyLoss(20)
 
-	var/oxyLoss = getOxyLoss()
-	if(oxyLoss > 20)
-		setOxyLoss(20)
+	// if(getBruteLoss() + getFireLoss() >= abs(HEALTH_THRESHOLD_DEAD))
+	// 	resuscitate_notify(5)
+	// 	timeofdeath = 0
+	// 	return 0
 
-	if(getBruteLoss() + getFireLoss() >= abs(HEALTH_THRESHOLD_DEAD))
-		resuscitate_notify(5)
-		timeofdeath = 0
-		return 0
+	// visible_message(SPAN_NOTICE("\The [src] twitches a bit as their heart restarts!"))
+	// pulse = PULSE_NORM
+	// handle_pulse()
+	// timeofdeath = 0
+	// stat = UNCONSCIOUS
+	// jitteriness += 3 SECONDS
+	// updatehealth()
+	// switch_from_dead_to_living_mob_list()
 
-	visible_message(SPAN_NOTICE("\The [src] twitches a bit as their heart restarts!"))
-	pulse = PULSE_NORM
-	handle_pulse()
-	timeofdeath = 0
-	stat = UNCONSCIOUS
-	jitteriness += 3 SECONDS
-	updatehealth()
-	switch_from_dead_to_living_mob_list()
+	// var/obj/item/implant/core_implant/cruciform/CI = get_core_implant(/obj/item/implant/core_implant/cruciform, req_activated = FALSE)
+	// if(CI && CI.active)
+	// 	lost_cruciforms -= CI
 
-	var/obj/item/implant/core_implant/cruciform/CI = get_core_implant(/obj/item/implant/core_implant/cruciform, req_activated = FALSE)
-	if(CI && CI.active)
-		lost_cruciforms -= CI
-
-	if(mind)
-		for(var/mob/observer/ghost/G in GLOB.player_list)
-			if(G.can_reenter_corpse && G.mind == mind)
-				if(alert("Do you want to enter your body?","Resuscitate","OH YES","No, I'm autist") == "OH YES")
-					G.reenter_corpse()
-					break
-				else
-					break
-	return 1
+	// if(mind)
+	// 	for(var/mob/observer/ghost/G in GLOB.player_list)
+	// 		if(G.can_reenter_corpse && G.mind == mind)
+	// 			if(alert("Do you want to enter your body?","Resuscitate","OH YES","No, I'm autist") == "OH YES")
+	// 				G.reenter_corpse()
+	// 				break
+	// 			else
+	// 				break
+	// return 1
 
 /mob/living/carbon/human/proc/resuscitate_notify(type)
 	visible_message(SPAN_WARNING("\The [src] twitches and twists intensely!"))
@@ -1424,18 +1433,19 @@ var/list/rank_prefix = list(\
 			to_chat(O, "<font color='red'>You're too unskilled to understand what's happening...</font>")
 
 /mob/living/carbon/human/proc/generate_dna()
-	if(!b_type)
-		b_type = pick(GLOB.blood_types)
+#warn fuck it go back to monkey
+	// if(!b_type)
+	// 	b_type = pick(GLOB.blood_types)
 
-	if(!isMonkey(src))
-		while(dormant_mutations.len < STARTING_MUTATIONS)
-			var/datum/mutation/M = pickweight(list(
-				pick(subtypesof(/datum/mutation/t0)) = 45,
-				pick(subtypesof(/datum/mutation/t1)) = 25,
-				pick(subtypesof(/datum/mutation/t2)) = 15,
-				pick(subtypesof(/datum/mutation/t3)) = 10,
-				pick(subtypesof(/datum/mutation/t4)) = 5))
-			dormant_mutations |= new M
+	// if(!isMonkey(src))
+	// 	while(dormant_mutations.len < STARTING_MUTATIONS)
+	// 		var/datum/mutation/M = pickweight(list(
+	// 			pick(subtypesof(/datum/mutation/t0)) = 45,
+	// 			pick(subtypesof(/datum/mutation/t1)) = 25,
+	// 			pick(subtypesof(/datum/mutation/t2)) = 15,
+	// 			pick(subtypesof(/datum/mutation/t3)) = 10,
+	// 			pick(subtypesof(/datum/mutation/t4)) = 5))
+	// 		dormant_mutations |= new M
 
 /mob/living/carbon/human/verb/blocking()
 	set name = "Blocking"
