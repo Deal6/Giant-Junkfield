@@ -2,6 +2,9 @@
 /obj/item/electronics/circuitboard/reagentgrinder
 
 // # FUCKING ELSE
+/mob/living/carbon/proc/handle_chemical_smoke(datum/gas_mixture/environment)
+/obj/item/device/proc/transfer_identity(var/mob/living/carbon/H)
+
 /obj/item/organ/external
 	var/brute_dam = 0
 	var/burn_dam = 0
@@ -44,7 +47,7 @@
 
 /datum/metabolism_effects
 
-/datum/reagent/toxin/mutagen/moeball
+
 
 /proc/adjust_nsa()
 
@@ -63,7 +66,7 @@
 /obj/item/implanter/(var/insert)
 	var/obj/item/implant/implant = TRUE
 
-/obj/item/device/proc/transfer_identity(var/mob/living/carbon/H)
+
 
 /obj/item/device/scanner/health
 
@@ -80,6 +83,43 @@
 	var/chem_temp = T20C
 	var/atom/my_atom
 
+
+
+
+/atom/proc/create_reagents(max_vol)
+	reagents = new /datum/reagents(max_vol, src)
+
+
+/proc/get_reagent_name_by_id(id)
+/proc/get_reagent_type_by_id(id)
+/proc/is_reagent_with_id_exist(id)
+// # REAGENT(S)
+/datum/reagents/proc/has_reagent(id, amount = 0)	//untoched
+	for(var/datum/reagent/current in reagent_list)
+		if(current.id == id)
+			if(current.volume >= amount)
+				return 1
+			else
+				return 0
+	return 0
+/datum/reagents/proc/log_list()
+/datum/reagents/proc/expose_temperature(temperature, coeff=0.02)
+/datum/reagents/proc/trans_to_holder(datum/reagents/target, amount = 1, multiplier = 1, copy = 0)
+/datum/reagents/proc/trans_to(datum/target, amount = 1, multiplier = 1, copy = 0, ignore_isinjectable = FALSE)
+/datum/reagents/proc/trans_to_mob(mob/target, amount = 1, type = CHEM_BLOOD, multiplier = 1, copy = 0) // Transfer after checking into which holder...
+/datum/reagents/proc/trans_to_turf(turf/target, amount = 1, multiplier = 1, copy = 0) // Turfs don't have any reagents (at least, for now). Just touch it.
+/datum/reagents/proc/trans_to_obj(obj/target, amount = 1, multiplier = 1, copy = 0) // Objects may or may not; if they do, it's probably a beaker or something and we need to transfer properly; otherwise, just touch.
+/datum/reagents/proc/remove_reagent(id, amount, safety = FALSE)
+/datum/reagents/proc/splash(atom/target, amount = 1, multiplier = 1, copy = 0, min_spill=0, max_spill=60)
+/datum/reagents/proc/update_total()
+/datum/reagents/proc/add_reagent(id, amount, data = null, safety = 0)
+/datum/reagents/proc/remove_any(amount = 1)
+/datum/reagents/proc/clear_reagents()
+/datum/reagents/proc/get_reagent_amount(id)
+
+/datum/reagents/proc/get_free_space() // Returns free space.
+
+// # REAGENT
 /datum/reagent
 	var/name = ""
 	var/id = "reagent"
@@ -130,40 +170,11 @@
 	// Catalog stuff
 	var/appear_in_default_catalog = TRUE
 
+/datum/reagent/toxin/mutagen/moeball
 
-/atom/proc/create_reagents(max_vol)
-	reagents = new /datum/reagents(max_vol, src)
+//blatteding only??
+/datum/reagent/proc/on_mob_add(mob/living/L)
 
-/datum/reagents/proc/has_reagent(id, amount = 0)	//untoched
-	for(var/datum/reagent/current in reagent_list)
-		if(current.id == id)
-			if(current.volume >= amount)
-				return 1
-			else
-				return 0
-	return 0
-
-/proc/get_reagent_name_by_id(id)
-/proc/get_reagent_type_by_id(id)
-/proc/is_reagent_with_id_exist(id)
-
-/datum/reagents/proc/log_list()
-
-/datum/reagents/proc/expose_temperature(temperature, coeff=0.02)
-/datum/reagents/proc/trans_to_holder(datum/reagents/target, amount = 1, multiplier = 1, copy = 0)
-/datum/reagents/proc/trans_to(datum/target, amount = 1, multiplier = 1, copy = 0, ignore_isinjectable = FALSE)
-/datum/reagents/proc/trans_to_mob(mob/target, amount = 1, type = CHEM_BLOOD, multiplier = 1, copy = 0) // Transfer after checking into which holder...
-/datum/reagents/proc/trans_to_turf(turf/target, amount = 1, multiplier = 1, copy = 0) // Turfs don't have any reagents (at least, for now). Just touch it.
-/datum/reagents/proc/trans_to_obj(obj/target, amount = 1, multiplier = 1, copy = 0) // Objects may or may not; if they do, it's probably a beaker or something and we need to transfer properly; otherwise, just touch.
-/datum/reagents/proc/remove_reagent(id, amount, safety = FALSE)
-/datum/reagents/proc/splash(atom/target, amount = 1, multiplier = 1, copy = 0, min_spill=0, max_spill=60)
-/datum/reagents/proc/update_total()
-/datum/reagents/proc/add_reagent(id, amount, data = null, safety = 0)
-/datum/reagents/proc/remove_any(amount = 1)
-/datum/reagents/proc/clear_reagents()
-/datum/reagents/proc/get_reagent_amount(id)
-
-/datum/reagents/proc/get_free_space() // Returns free space.
 	return maximum_volume - total_volume
 
 
