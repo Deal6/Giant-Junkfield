@@ -4,6 +4,8 @@
 /obj/item/reagent_containers/syringe
 	var/mode = 0
 
+/obj/item/grenade/chem_grenade
+
 // # FUCKING ELSE
 /mob/living/carbon/proc/handle_chemical_smoke(datum/gas_mixture/environment)
 /obj/item/device/proc/transfer_identity(var/mob/living/carbon/H)
