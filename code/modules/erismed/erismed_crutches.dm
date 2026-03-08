@@ -66,9 +66,6 @@
 /datum/design/research/item/exosuit/sleeper
 /datum/design/research/item/exosuit/sleeper/upgraded
 
-
-/datum/reagents/proc/add_reagent(id, amount, data = null, safety = 0)
-
 /datum/reagents
 	var/list/datum/reagent/reagent_list = list()
 	var/total_volume = 0
