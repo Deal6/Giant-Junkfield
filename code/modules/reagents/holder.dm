@@ -537,8 +537,8 @@
 // 					dirtoverlay.add_reagents(R)
 // 	return
 #warn bad
-/datum/reagents/proc/trans_to_obj(obj/target, amount = 1, multiplier = 1, copy = 0) // Objects may or may not; if they do, it's probably a beaker or something and we need to transfer properly; otherwise, just touch.
-// 	if(!target || !target.simulated)
+// /datum/reagents/proc/trans_to_obj(obj/target, amount = 1, multiplier = 1, copy = 0) // Objects may or may not; if they do, it's probably a beaker or something and we need to transfer properly; otherwise, just touch.
+// // 	if(!target || !target.simulated)
 // 		return
 
 // 	if(!target.reagents)
