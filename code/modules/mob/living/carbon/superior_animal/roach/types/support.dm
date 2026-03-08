@@ -60,14 +60,15 @@
 
 	if(!target_mob)
 		return
-
-	if(prob(7) && !(/obj/effect/effect/smoke/chem/roach in loc)) // don't stack it passively
-		gas_attack()
+#warn chem snoke
+	// if(prob(7) && !(/obj/effect/effect/smoke/chem/roach in loc)) // don't stack it passively
+	// 	gas_attack()
 
 /mob/living/carbon/superior_animal/roach/support/findTarget()
 	. = ..()
-	if(. && !((/obj/effect/effect/smoke/chem/roach in get_turf(.)) && (/obj/effect/effect/smoke/chem/roach in loc)) && gas_attack())// if you aren't clouding your/their area, attempt to gas
-		visible_emote("charges at [.] in clouds of poison!")
+#warn chem snoke
+	// if(. && !((/obj/effect/effect/smoke/chem/roach in get_turf(.)) && (/obj/effect/effect/smoke/chem/roach in loc)) && gas_attack())// if you aren't clouding your/their area, attempt to gas
+	// 	visible_emote("charges at [.] in clouds of poison!")
 
 /mob/living/carbon/superior_animal/roach/support/joinOvermind(datum/overmind/roachmind/jointhis)
 	jointhis.addHealer(src) // Seuche is Healer

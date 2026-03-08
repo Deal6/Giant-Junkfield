@@ -392,11 +392,12 @@
 
 //Some acid and there's no problem
 /obj/effect/plant/hivemind/proc/chem_handler()
-	for(var/obj/effect/effect/smoke/chem/smoke in loc)
-		for(var/lethal in killer_reagents)
-			if(smoke.reagents.has_reagent(lethal))
-				die_off()
-				return
+#warn chem snoke
+	// for(var/obj/effect/effect/smoke/chem/smoke in loc)
+	// 	for(var/lethal in killer_reagents)
+	// 		if(smoke.reagents.has_reagent(lethal))
+	// 			die_off()
+	// 			return
 
 
 

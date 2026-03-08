@@ -1,3 +1,7 @@
+// # ITEMS
+/obj/item/electronics/circuitboard/reagentgrinder
+
+// # FUCKING ELSE
 /obj/item/organ/external
 	var/brute_dam = 0
 	var/burn_dam = 0

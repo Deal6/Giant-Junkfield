@@ -71,8 +71,9 @@ Has ability of every roach.
 		distress_call()
 
 	gas_sac.add_reagent("blattedin", 2)
-	if(prob(7) && !(/obj/effect/effect/smoke/chem/roach in loc)) // even kaiser shouldn't overdo it passively
-		gas_attack()
+	#warn chem snoke
+	// if(prob(7) && !(/obj/effect/effect/smoke/chem/roach in loc)) // even kaiser shouldn't overdo it passively
+	// 	gas_attack()
 
 
 // TOXIC ABILITIES

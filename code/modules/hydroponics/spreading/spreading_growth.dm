@@ -95,10 +95,11 @@
 		die_off()
 		return PROCESS_KILL
 
-	for(var/obj/effect/effect/smoke/chem/smoke in view(1, src))
-		if(smoke.reagents.has_reagent("plantbgone"))
-			die_off()
-			return
+#warn chem snoke
+	// for(var/obj/effect/effect/smoke/chem/smoke in view(1, src))
+	// 	if(smoke.reagents.has_reagent("plantbgone"))
+	// 		die_off()
+	// 		return
 
 	// Handle life.
 	life()
