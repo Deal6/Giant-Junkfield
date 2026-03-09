@@ -752,48 +752,49 @@
 
 	rarity_value = 50
 
+#warn oddity bad
 /obj/item/oddity/common/anomazon_card/attack_self(mob/living/carbon/human/user)
-	if(istype(user))
-		if(alert(user, "There is a small button at the back of the card, annotated with a request to press it in order to renew your membership. Press it?", "You have a bad feeling about this", "Yes", "No") == "Yes")
-			if(alert(user, "Are you sure?", "Please, don't", "Yes", "No") == "Yes")
-				var/tries = 32
-				var/found_limbs = 0
-				var/list/limbs_to_remove = list()
-				while(tries > 0)
-					var/obj/item/organ/external/E = user.get_organ(pick(list(BP_L_ARM, BP_L_LEG, BP_R_ARM, BP_R_LEG)))
-					if(E && !(E in limbs_to_remove) && !E.is_stump())
-						limbs_to_remove += E
-						found_limbs++
-					tries--
-				if(found_limbs >= 2)
-					var/limb_count = 2
-					while(limb_count > 0)
-						limb_count--
-						var/obj/item/organ/external/E = pick(limbs_to_remove)
-						limbs_to_remove -= E
-						E.droplimb(TRUE, DROPLIMB_BLUNT)
+	// if(istype(user))
+	// 	if(alert(user, "There is a small button at the back of the card, annotated with a request to press it in order to renew your membership. Press it?", "You have a bad feeling about this", "Yes", "No") == "Yes")
+	// 		if(alert(user, "Are you sure?", "Please, don't", "Yes", "No") == "Yes")
+	// 			var/tries = 32
+	// 			var/found_limbs = 0
+	// 			var/list/limbs_to_remove = list()
+	// 			while(tries > 0)
+	// 				var/obj/item/organ/external/E = user.get_organ(pick(list(BP_L_ARM, BP_L_LEG, BP_R_ARM, BP_R_LEG)))
+	// 				if(E && !(E in limbs_to_remove) && !E.is_stump())
+	// 					limbs_to_remove += E
+	// 					found_limbs++
+	// 				tries--
+	// 			if(found_limbs >= 2)
+	// 				var/limb_count = 2
+	// 				while(limb_count > 0)
+	// 					limb_count--
+	// 					var/obj/item/organ/external/E = pick(limbs_to_remove)
+	// 					limbs_to_remove -= E
+	// 					E.droplimb(TRUE, DROPLIMB_BLUNT)
 
 
-				else //nice try, asshole
-					var/obj/item/organ/external/head/head = user.get_organ(BP_HEAD)
-					if(head && !head.is_stump())
-						head.droplimb(TRUE, DROPLIMB_BLUNT)
-					else
-						user.gib()
+	// 			else //nice try, asshole
+	// 				var/obj/item/organ/external/head/head = user.get_organ(BP_HEAD)
+	// 				if(head && !head.is_stump())
+	// 					head.droplimb(TRUE, DROPLIMB_BLUNT)
+	// 				else
+	// 					user.gib()
 
-				new /obj/spawner/oddities(get_turf(pick(oview(2, user))))
-				new /obj/spawner/oddities(get_turf(pick(oview(2, user))))
-				new /obj/spawner/oddities(get_turf(pick(oview(2, user))))
-				new /obj/spawner/oddities(get_turf(pick(oview(2, user))))
+	// 			new /obj/spawner/oddities(get_turf(pick(oview(2, user))))
+	// 			new /obj/spawner/oddities(get_turf(pick(oview(2, user))))
+	// 			new /obj/spawner/oddities(get_turf(pick(oview(2, user))))
+	// 			new /obj/spawner/oddities(get_turf(pick(oview(2, user))))
 
 
-				new /obj/item/stack/material/gold/full(get_turf(pick(oview(2, user))))
-				new /obj/item/stack/material/silver/full(get_turf(pick(oview(2, user))))
-				new /obj/item/stack/material/platinum/random(get_turf(pick(oview(2, user))))
+	// 			new /obj/item/stack/material/gold/full(get_turf(pick(oview(2, user))))
+	// 			new /obj/item/stack/material/silver/full(get_turf(pick(oview(2, user))))
+	// 			new /obj/item/stack/material/platinum/random(get_turf(pick(oview(2, user))))
 
-				var/datum/effect/effect/system/spark_spread/sparks = new /datum/effect/effect/system/spark_spread()
-				sparks.set_up(3, 0, get_turf(user.loc))
-				sparks.start()
-				user.visible_message(SPAN_WARNING("A collection of strange items appears out of nowhere!"), SPAN_DANGER("The card disintegrates, leaving behind several strange objects!"))
-				qdel(src)
+	// 			var/datum/effect/effect/system/spark_spread/sparks = new /datum/effect/effect/system/spark_spread()
+	// 			sparks.set_up(3, 0, get_turf(user.loc))
+	// 			sparks.start()
+	// 			user.visible_message(SPAN_WARNING("A collection of strange items appears out of nowhere!"), SPAN_DANGER("The card disintegrates, leaving behind several strange objects!"))
+	// 			qdel(src)
 

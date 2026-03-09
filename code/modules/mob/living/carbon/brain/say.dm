@@ -30,9 +30,9 @@
 		if(speaking && speaking.flags & HIVEMIND)
 			speaking.broadcast(src,trim(message))
 			return
-
-		if(istype(container, /obj/item/device/mmi/radio_enabled))
-			var/obj/item/device/mmi/radio_enabled/R = container
-			if(R.radio)
-				spawn(0) R.radio.hear_talk(src, sanitize(message), verb, speaking, getSpeechVolume())
+#warn mimimi
+		// if(istype(container, /obj/item/device/mmi/radio_enabled))
+		// 	var/obj/item/device/mmi/radio_enabled/R = container
+		// 	if(R.radio)
+		// 		spawn(0) R.radio.hear_talk(src, sanitize(message), verb, speaking, getSpeechVolume())
 		..(trim(message), speaking, verb)

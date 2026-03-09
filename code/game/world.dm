@@ -18,9 +18,9 @@ var/global/datum/global_init/init = new ()
 	generate_gameid()
 	load_configuration()
 	makeDatumRefLists()
-
-	initialize_chemical_reagents()
-	initialize_chemical_reactions()
+#warn bad
+	// initialize_chemical_reagents()
+	// initialize_chemical_reactions()
 
 
 	// Set up roundstart seed list.
@@ -105,8 +105,8 @@ var/game_id
 	//Emergency Fix
 	load_mods()
 	//end-emergency fix
-
-	generate_body_modification_lists()
+#warn bad
+	// generate_body_modification_lists()
 
 	update_status()
 

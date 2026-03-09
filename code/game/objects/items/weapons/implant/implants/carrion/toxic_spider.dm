@@ -20,12 +20,13 @@
 	spawn(det_time)
 		src?.prime()
 
+#warn bad
 /obj/item/implant/carrion_spider/toxicbomb/proc/prime()
-	var/location = get_turf(src)
-	gas_storage = new /datum/reagents(100, src)
-	gas_storage.add_reagent("lexorin", 100)
-	var/datum/effect/effect/system/smoke_spread/chem/S = new
-	S.attach(location)
-	S.set_up(gas_storage, 10, 100, location)
-	S.start()
-	die()
+	// var/location = get_turf(src)
+	// gas_storage = new /datum/reagents(100, src)
+	// gas_storage.add_reagent("lexorin", 100)
+	// var/datum/effect/effect/system/smoke_spread/chem/S = new
+	// S.attach(location)
+	// S.set_up(gas_storage, 10, 100, location)
+	// S.start()
+	// die()

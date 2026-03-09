@@ -1,5 +1,29 @@
 // # ITEMS
+/obj/item/stack/medical/advanced/bruise_pack/nt
+/obj/item/stack/medical/advanced/ointment/nt
+/obj/item/stack/medical/advanced/ointment/nt
+/obj/item/stack/medical/advanced/bruise_pack
+/obj/item/stack/medical/bruise_pack
+/obj/item/grenade/chem_grenade/cleaner
+/obj/item/reagent_containers/syringe/stim
+/obj/item/grenade/chem_grenade/teargas
+/obj/item/grenade/chem_grenade/antiweed
+/obj/item/grenade/chem_grenade/metalfoam
+/obj/item/grenade/chem_grenade/large/moebius
+/obj/item/grenade/chem_grenade/antiweed/nt_antiweed
+/obj/item/grenade/chem_grenade/cleaner/nt_cleaner
+/obj/item/grenade/chem_grenade/incendiary
+/obj/item/organ_module/active/simple/armblade/energy_blade
+
+/obj/item/reagent_containers/syringe/large/antitoxin
+/obj/item/reagent_containers/syringe/large/dexalin_plus
+/obj/item/reagent_containers/syringe/inaprovaline
+/obj/item/reagent_containers/hypospray/autoinjector/spaceacillin
+/obj/item/reagent_containers/syringe/spaceacillin
+/obj/item/reagent_containers/syringe/tricordrazine
+/obj/item/reagent_containers/syringe/antitoxin
 /obj/item/electronics/circuitboard/reagentgrinder
+
 
 /obj/item/reagent_containers/syringe
 	var/mode = 0
@@ -11,11 +35,14 @@
 	var/burn_dam = 0
 	var/status
 // # FUCKING ELSE
+/datum/reagents/proc/get_master_reagent_id()
+/datum/effect/effect/smoke_spread/chem
+/datum/reagents/proc/handle_reactions()
 /proc/get_active_mutation(mob/user, mutation_type)
-
+/mob/living/carbon/human/proc/update_eyes()
 /mob/living/carbon/proc/handle_chemical_smoke(datum/gas_mixture/environment)
 /obj/item/device/proc/transfer_identity(var/mob/living/carbon/H)
-
+/mob/living/carbon/human/proc/handle_organs()
 
 
 /obj/item/organ/external/proc/droplimb() //Fully rework and maybe change name too
@@ -44,8 +71,6 @@
 /obj/item/implant/carrion_spider/proc/die()
 	to_chat(src, "prank ultrakill")
 
-/obj/item/stack/medical/advanced/bruise_pack
-/obj/item/stack/medical/bruise_pack
 
 /obj/item/stack/medical/splint
 
@@ -79,7 +104,6 @@
 
 /datum/design/research/item/exosuit/sleeper
 /datum/design/research/item/exosuit/sleeper/upgraded
-/
 
 /obj/item/organ/proc/removed()
 
@@ -192,3 +216,7 @@
 
 	// get_free_space() // Returns free space.
 	// return maximum_volume - total_volume
+
+
+
+

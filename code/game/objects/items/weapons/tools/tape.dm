@@ -53,68 +53,69 @@
 	matter = list(MATERIAL_PLASTIC = 20)
 	worksound = NO_WORKSOUND
 
-/obj/item/tool/tape_roll/attack(mob/living/carbon/human/H, mob/user)
-	if(istype(H))
-		if(user.targeted_organ == BP_EYES)
+#warn nope
+// /obj/item/tool/tape_roll/attack(mob/living/carbon/human/H, mob/user)
+// 	if(istype(H))
+// 		if(user.targeted_organ == BP_EYES)
 
-			if(!H.organs_by_name[BP_HEAD])
-				to_chat(user, SPAN_WARNING("\The [H] doesn't have a head."))
-				return
-			if(!H.has_eyes())
-				to_chat(user, SPAN_WARNING("\The [H] doesn't have any eyes."))
-				return
-			if(H.glasses)
-				to_chat(user, SPAN_WARNING("\The [H] is already wearing somethign on their eyes."))
-				return
-			if(H.head && (H.head.body_parts_covered & FACE))
-				to_chat(user, SPAN_WARNING("Remove their [H.head] first."))
-				return
-			user.visible_message(SPAN_DANGER("\The [user] begins taping over \the [H]'s eyes!"))
+// 			if(!H.organs_by_name[BP_HEAD])
+// 				to_chat(user, SPAN_WARNING("\The [H] doesn't have a head."))
+// 				return
+// 			if(!H.has_eyes())
+// 				to_chat(user, SPAN_WARNING("\The [H] doesn't have any eyes."))
+// 				return
+// 			if(H.glasses)
+// 				to_chat(user, SPAN_WARNING("\The [H] is already wearing somethign on their eyes."))
+// 				return
+// 			if(H.head && (H.head.body_parts_covered & FACE))
+// 				to_chat(user, SPAN_WARNING("Remove their [H.head] first."))
+// 				return
+// 			user.visible_message(SPAN_DANGER("\The [user] begins taping over \the [H]'s eyes!"))
 
-			if(!use_tool(user, H, 70, QUALITY_ADHESIVE))
-				return
+// 			if(!use_tool(user, H, 70, QUALITY_ADHESIVE))
+// 				return
 
-			// Repeat failure checks.
-			if(!H || !src || !H.organs_by_name[BP_HEAD] || !H.has_eyes() || H.glasses || (H.head && (H.head.body_parts_covered & FACE)))
-				return
+// 			// Repeat failure checks.
+// 			if(!H || !src || !H.organs_by_name[BP_HEAD] || !H.has_eyes() || H.glasses || (H.head && (H.head.body_parts_covered & FACE)))
+// 				return
 
-			user.visible_message(SPAN_DANGER("\The [user] has taped up \the [H]'s eyes!"))
-			H.equip_to_slot_or_del(new /obj/item/clothing/glasses/sunglasses/blindfold/tape(H), slot_glasses)
+// 			user.visible_message(SPAN_DANGER("\The [user] has taped up \the [H]'s eyes!"))
+// 			H.equip_to_slot_or_del(new /obj/item/clothing/glasses/sunglasses/blindfold/tape(H), slot_glasses)
 
-		else if(user.targeted_organ == BP_MOUTH || user.targeted_organ == BP_HEAD)
-			if(!H.organs_by_name[BP_HEAD])
-				to_chat(user, SPAN_WARNING("\The [H] doesn't have a head."))
-				return
-			if(!H.check_has_mouth())
-				to_chat(user, SPAN_WARNING("\The [H] doesn't have a mouth."))
-				return
-			if(H.wear_mask)
-				to_chat(user, SPAN_WARNING("\The [H] is already wearing a mask."))
-				return
-			if(H.head && (H.head.body_parts_covered & FACE))
-				to_chat(user, SPAN_WARNING("Remove their [H.head] first."))
-				return
-			user.visible_message(SPAN_DANGER("\The [user] begins taping up \the [H]'s mouth!"))
+// 		else if(user.targeted_organ == BP_MOUTH || user.targeted_organ == BP_HEAD)
+// 			if(!H.organs_by_name[BP_HEAD])
+// 				to_chat(user, SPAN_WARNING("\The [H] doesn't have a head."))
+// 				return
+// 			if(!H.check_has_mouth())
+// 				to_chat(user, SPAN_WARNING("\The [H] doesn't have a mouth."))
+// 				return
+// 			if(H.wear_mask)
+// 				to_chat(user, SPAN_WARNING("\The [H] is already wearing a mask."))
+// 				return
+// 			if(H.head && (H.head.body_parts_covered & FACE))
+// 				to_chat(user, SPAN_WARNING("Remove their [H.head] first."))
+// 				return
+// 			user.visible_message(SPAN_DANGER("\The [user] begins taping up \the [H]'s mouth!"))
 
-			if(!use_tool(user, H, 70, QUALITY_ADHESIVE))
-				return
+// 			if(!use_tool(user, H, 70, QUALITY_ADHESIVE))
+// 				return
 
-			// Repeat failure checks.
-			if(!H || !src || !H.organs_by_name[BP_HEAD] || !H.check_has_mouth() || H.wear_mask || (H.head && (H.head.body_parts_covered & FACE)))
-				return
+// 			// Repeat failure checks.
+// 			if(!H || !src || !H.organs_by_name[BP_HEAD] || !H.check_has_mouth() || H.wear_mask || (H.head && (H.head.body_parts_covered & FACE)))
+// 				return
 
-			user.visible_message(SPAN_DANGER("\The [user] has taped up \the [H]'s mouth!"))
-			H.equip_to_slot_or_del(new /obj/item/clothing/mask/muzzle/tape(H), slot_wear_mask)
+// 			user.visible_message(SPAN_DANGER("\The [user] has taped up \the [H]'s mouth!"))
+// 			H.equip_to_slot_or_del(new /obj/item/clothing/mask/muzzle/tape(H), slot_wear_mask)
 
-		else if(user.targeted_organ == BP_R_ARM || user.targeted_organ == BP_L_ARM)
-			if(use_tool(user, H, 90, QUALITY_ADHESIVE))
-				var/obj/item/handcuffs/cable/tape/T = new(user)
-				if(!T.place_handcuffs(H, user))
-					user.unEquip(T)
-					qdel(T)
-		else
-			return ..()
-		return 1
+// 		else if(user.targeted_organ == BP_R_ARM || user.targeted_organ == BP_L_ARM)
+// 			if(use_tool(user, H, 90, QUALITY_ADHESIVE))
+// 				var/obj/item/handcuffs/cable/tape/T = new(user)
+// 				if(!T.place_handcuffs(H, user))
+// 					user.unEquip(T)
+// 					qdel(T)
+// 		else
+// 			return ..()
+// 		return 1
 
 /obj/item/tool/tape_roll/stick(obj/item/target, mob/user)
 	if (!istype(target) || target.anchored)

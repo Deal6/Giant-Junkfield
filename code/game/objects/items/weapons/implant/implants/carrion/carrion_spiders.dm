@@ -120,4 +120,4 @@
 // 	if(assigned_groups & group)
 // 		return TRUE
 // 	else
-		return FALSE
+		// return FALSE

@@ -14,10 +14,8 @@ var/global/list/image/splatter_cache=list()
 	icon_state = "mfloor1"
 	random_icon_states = list("mfloor1", "mfloor2", "mfloor3", "mfloor4", "mfloor5", "mfloor6", "mfloor7")
 	var/base_icon = 'icons/effects/blood.dmi'
-	var/list/viruses = list()
 	blood_DNA = list()
 	var/basecolor="#A10808" // Color when wet.
-	var/list/datum/disease2/disease/virus2 = list()
 	var/amount = 5
 	var/drytime
 	sanity_damage = 1
@@ -66,14 +64,12 @@ var/global/list/image/splatter_cache=list()
 	if(basecolor == "rainbow") basecolor = get_random_colour(1)
 	color = basecolor
 
-#warn Inside: no is_stump() (Deal comment: I feel doubts about erismed rework at the moment, there's TOO MUCH SHIT, I'm afraid something we will forget to reemplement, I carefully inspect every file)
+#warn Inside: no is_stump()
 /obj/effect/decal/cleanable/blood/Crossed(mob/living/carbon/human/perp)
 	if (!istype(perp))
 		return
 	if(amount < 1)
 		return
-
-#warn mhm
 	// var/obj/item/organ/external/l_leg = perp.get_organ(BP_L_LEG)
 	// var/obj/item/organ/external/r_leg = perp.get_organ(BP_R_LEG)
 	var/hasfeet = 1

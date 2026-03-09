@@ -3,7 +3,8 @@
 	desc = "A spider bloated with ebony gasses, it looks ready to burst!"
 	icon_state = "spiderling_smoke"
 	spider_price = 5
-	gibs_color = "#401122"
+#warn bad
+	// gibs_color = "#401122"
 	var/datum/effect/effect/system/smoke_spread/smoke
 	var/charges = 1
 

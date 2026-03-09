@@ -324,10 +324,11 @@
 			D.take_damage(100)
 			//Blob eats through doors VERY quickly
 			return
-	var/obj/structure/foamedmetal/F = locate() in T
-	if(F)
-		qdel(F)
-		return
+#warn AHAHAHHHAHAHHAHHAHAHHAHAHA
+	// var/obj/structure/foamedmetal/F = locate() in T
+	// if(F)
+	// 	qdel(F)
+	// 	return
 	var/obj/structure/inflatable/I = locate() in T
 	if(I)
 		I.deflate(1)

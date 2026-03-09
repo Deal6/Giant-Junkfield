@@ -6,8 +6,8 @@
 /datum/individual_objective/upgrade/can_assign(mob/living/carbon/human/H)
 	if(!..())
 		return FALSE
-	for(var/obj/item/organ/external/Ex in H.organs)
-#warn Breakdown wants to know if your limb is chrome
+		#warn Breakdown wants to know if your limb is chrome
+	// for(var/obj/item/organ/external/Ex in H.organs)
 		// if(!BP_IS_ROBOTIC(Ex))
 		// 	return TRUE
 	return FALSE

@@ -267,9 +267,10 @@
 	if(!istype(target))
 		to_chat(user, SPAN_WARNING("\The [target] not compatible with machine."))
 		return
-	if(!target.organs_by_name[BP_HEAD])
-		to_chat(user, SPAN_WARNING("\The [target] doesn't have a head."))
-		return
+#warn no head...
+	// if(!target.organs_by_name[BP_HEAD])
+	// 	to_chat(user, SPAN_WARNING("\The [target] doesn't have a head."))
+	// 	return
 	if(!target.check_has_mouth())
 		to_chat(user, SPAN_WARNING("\The [target] doesn't have a mouth."))
 		return
@@ -424,14 +425,15 @@
 //				return
 			if(H.species.flags & NO_BLOOD)
 				return
-			if(!H.should_have_process(OP_HEART))
-				return
+#warn bad
+			// if(!H.should_have_process(OP_HEART))
+			// 	return
 
-			// If the human is losing too much blood, beep.
-			if(H.get_blood_volume() < (H.total_blood_req + BLOOD_VOLUME_SAFE_MODIFIER) * 1.05)
-				visible_message("\The [src] beeps loudly.")
+			// // If the human is losing too much blood, beep.
+			// if(H.get_blood_volume() < (H.total_blood_req + BLOOD_VOLUME_SAFE_MODIFIER) * 1.05)
+			// 	visible_message("\The [src] beeps loudly.")
 
-			var/datum/reagent/B = H.take_blood(beaker,amount)
+			// var/datum/reagent/B = H.take_blood(beaker,amount)
 			if (B)
 				beaker.reagents.reagent_list |= B
 				beaker.reagents.update_total()

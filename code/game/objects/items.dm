@@ -478,81 +478,82 @@ var/global/list/items_blood_overlay_by_type = list()
 	if(I && !I.abstract)
 		I.showoff(src)
 
+#warn bad
 /mob/living/carbon/verb/spin_in_hand()
 	set name = "Spin Held Item"
 	set category = "Object"
 
-	var/obj/item/I = get_active_hand()
-	if (istype(I, /obj/item/grab)) // a grab signifies that it's another mob that should be spun
-		var/obj/item/grab/inhand_grab = I
-		var/mob/living/grabbed = inhand_grab.throw_held()
-		if (grabbed)
-			if (grabbed.stats.getPerk(PERK_ASS_OF_CONCRETE))
-				visible_message(SPAN_WARNING("[src] tries to pick up [grabbed], and fails!"))
+	// var/obj/item/I = get_active_hand()
+	// if (istype(I, /obj/item/grab)) // a grab signifies that it's another mob that should be spun
+	// 	var/obj/item/grab/inhand_grab = I
+	// 	var/mob/living/grabbed = inhand_grab.throw_held()
+	// 	if (grabbed)
+	// 		if (grabbed.stats.getPerk(PERK_ASS_OF_CONCRETE))
+	// 			visible_message(SPAN_WARNING("[src] tries to pick up [grabbed], and fails!"))
 
-			else
-				if(ishuman(grabbed)) // irish whip if human(grab special), else spin and force rest
-					grabbed.external_recoil(40)
-					var/whip_dir = (get_dir(grabbed, src))
-					var/moves = 0
-					//force move the victim on the attacker's tile so that the whip can be executed
-					grabbed.loc = src.loc
-					//yeet
-					src.set_dir(whip_dir)
-					visible_message(SPAN_WARNING("[src] spins and hurls [grabbed] away!"), SPAN_WARNING("You spin and hurl [grabbed] away!"))
-					grabbed.update_lying_buckled_and_verb_status()
-					unEquip(inhand_grab)
-					//move grabbed for three tiles, if glass window/wall/railing encountered, proc interactions and break
-					for(moves, moves<=3, ++moves)
-						//low damage for walls, medium for windows, fall over for railings
-						if(istype(get_step(grabbed, whip_dir), /turf/wall))
-							visible_message(SPAN_WARNING("[grabbed] slams into the wall!"))
-							grabbed.damage_through_armor(15, BRUTE, BP_CHEST, ARMOR_MELEE)
-							break
+	// 		else
+	// 			if(ishuman(grabbed)) // irish whip if human(grab special), else spin and force rest
+	// 				grabbed.external_recoil(40)
+	// 				var/whip_dir = (get_dir(grabbed, src))
+	// 				var/moves = 0
+	// 				//force move the victim on the attacker's tile so that the whip can be executed
+	// 				grabbed.loc = src.loc
+	// 				//yeet
+	// 				src.set_dir(whip_dir)
+	// 				visible_message(SPAN_WARNING("[src] spins and hurls [grabbed] away!"), SPAN_WARNING("You spin and hurl [grabbed] away!"))
+	// 				grabbed.update_lying_buckled_and_verb_status()
+	// 				unEquip(inhand_grab)
+	// 				//move grabbed for three tiles, if glass window/wall/railing encountered, proc interactions and break
+	// 				for(moves, moves<=3, ++moves)
+	// 					//low damage for walls, medium for windows, fall over for railings
+	// 					if(istype(get_step(grabbed, whip_dir), /turf/wall))
+	// 						visible_message(SPAN_WARNING("[grabbed] slams into the wall!"))
+	// 						grabbed.damage_through_armor(15, BRUTE, BP_CHEST, ARMOR_MELEE)
+	// 						break
 
-						for(var/obj/structure/S in get_step(grabbed, whip_dir))
-							if(istype(S, /obj/structure/window))
-								visible_message(SPAN_WARNING("[grabbed] slams into \the [S]!"))
-								grabbed.damage_through_armor(25, BRUTE, BP_CHEST, ARMOR_MELEE)
+	// 					for(var/obj/structure/S in get_step(grabbed, whip_dir))
+	// 						if(istype(S, /obj/structure/window))
+	// 							visible_message(SPAN_WARNING("[grabbed] slams into \the [S]!"))
+	// 							grabbed.damage_through_armor(25, BRUTE, BP_CHEST, ARMOR_MELEE)
 
-								moves = 3
-								break
-							if(istype(S, /obj/structure/railing))
-								visible_message(SPAN_WARNING("[grabbed] falls over \the [S]!"))
-								grabbed.forceMove(get_step(grabbed, whip_dir))
+	// 							moves = 3
+	// 							break
+	// 						if(istype(S, /obj/structure/railing))
+	// 							visible_message(SPAN_WARNING("[grabbed] falls over \the [S]!"))
+	// 							grabbed.forceMove(get_step(grabbed, whip_dir))
 
-								moves = 3
-								break
-							if(istype(S, /obj/structure/table))
-								visible_message(SPAN_WARNING("[grabbed] falls on \the [S]!"))
-								grabbed.forceMove(get_step(grabbed, whip_dir))
-								grabbed.Weaken(5)
+	// 							moves = 3
+	// 							break
+	// 						if(istype(S, /obj/structure/table))
+	// 							visible_message(SPAN_WARNING("[grabbed] falls on \the [S]!"))
+	// 							grabbed.forceMove(get_step(grabbed, whip_dir))
+	// 							grabbed.Weaken(5)
 
-								moves = 3
-								break
-						step_glide(grabbed, whip_dir,(DELAY2GLIDESIZE(0.2 SECONDS)))//very fast
+	// 							moves = 3
+	// 							break
+	// 					step_glide(grabbed, whip_dir,(DELAY2GLIDESIZE(0.2 SECONDS)))//very fast
 
-					//admin messaging
-					src.attack_log += text("\[[time_stamp()]\] <font color='red'>Irish-whipped [grabbed.name] ([grabbed.ckey])</font>")
-					grabbed.attack_log += text("\[[time_stamp()]\] <font color='orange'>Irish-whipped by [src.name] ([src.ckey])</font>")
-				else
-					visible_message(SPAN_WARNING("[src] picks up, spins, and drops [grabbed]."), SPAN_WARNING("You pick up, spin, and drop [grabbed]."))
-					grabbed.Weaken(1)
-					grabbed.resting = TRUE
-					grabbed.update_lying_buckled_and_verb_status()
-					unEquip(inhand_grab)
-		else
-			to_chat(src, SPAN_WARNING("You do not have a firm enough grip to forcibly spin [inhand_grab.affecting]."))
+	// 				//admin messaging
+	// 				src.attack_log += text("\[[time_stamp()]\] <font color='red'>Irish-whipped [grabbed.name] ([grabbed.ckey])</font>")
+	// 				grabbed.attack_log += text("\[[time_stamp()]\] <font color='orange'>Irish-whipped by [src.name] ([src.ckey])</font>")
+	// 			else
+	// 				visible_message(SPAN_WARNING("[src] picks up, spins, and drops [grabbed]."), SPAN_WARNING("You pick up, spin, and drop [grabbed]."))
+	// 				grabbed.Weaken(1)
+	// 				grabbed.resting = TRUE
+	// 				grabbed.update_lying_buckled_and_verb_status()
+	// 				unEquip(inhand_grab)
+	// 	else
+	// 		to_chat(src, SPAN_WARNING("You do not have a firm enough grip to forcibly spin [inhand_grab.affecting]."))
 
-	else if (I && !I.abstract && I.mob_can_unequip(src, get_active_hand_slot())) // being unable to unequip normally means
-		I.SpinAnimation(5,1) // that the item is stuck on or in, and so cannot spin
-		external_recoil(50)
-		visible_message("[src] spins [I.name] in \his hand.") // had to mess with the macros a bit to get
-		if (recoil > 60) // the text to work, which is why "a" is not included
-			visible_message(SPAN_WARNING("[I] flies out of [src]\'s hand!"))
-			unEquip(I)
-			return
-		I.hand_spin(src)
+	// else if (I && !I.abstract && I.mob_can_unequip(src, get_active_hand_slot())) // being unable to unequip normally means
+	// 	I.SpinAnimation(5,1) // that the item is stuck on or in, and so cannot spin
+	// 	external_recoil(50)
+	// 	visible_message("[src] spins [I.name] in \his hand.") // had to mess with the macros a bit to get
+	// 	if (recoil > 60) // the text to work, which is why "a" is not included
+	// 		visible_message(SPAN_WARNING("[I] flies out of [src]\'s hand!"))
+	// 		unEquip(I)
+	// 		return
+	// 	I.hand_spin(src)
 
 /obj/item/proc/hand_spin(mob/living/carbon/caller) // used for custom behaviour on the above proc
 	return

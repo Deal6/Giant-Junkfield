@@ -33,23 +33,24 @@
 /obj/structure/extinguisher_cabinet/attack_hand(mob/user)
 	if(isrobot(user))
 		return
-	if (ishuman(user))
-		var/mob/living/carbon/human/H = user
-		var/obj/item/organ/external/temp = H.organs_by_name[BP_R_ARM]
-		if (user.hand)
-			temp = H.organs_by_name[BP_L_ARM]
-		if(temp && !temp.is_usable())
-			to_chat(user, SPAN_NOTICE("You try to move your [temp.name], but cannot!"))
-			return
-	if(has_extinguisher)
-		user.put_in_hands(has_extinguisher)
-		to_chat(user, SPAN_NOTICE("You take [has_extinguisher] from [src]."))
-		playsound(src.loc, 'sound/machines/Custom_extout.ogg', 50, 0)
-		has_extinguisher = null
-		opened = 1
-	else
-		opened = !opened
-	update_icon()
+#warn bad
+	// if (ishuman(user))
+	// 	var/mob/living/carbon/human/H = user
+	// 	var/obj/item/organ/external/temp = H.organs_by_name[BP_R_ARM]
+	// 	if (user.hand)
+	// 		temp = H.organs_by_name[BP_L_ARM]
+	// 	if(temp && !temp.is_usable())
+	// 		to_chat(user, SPAN_NOTICE("You try to move your [temp.name], but cannot!"))
+	// 		return
+	// if(has_extinguisher)
+	// 	user.put_in_hands(has_extinguisher)
+	// 	to_chat(user, SPAN_NOTICE("You take [has_extinguisher] from [src]."))
+	// 	playsound(src.loc, 'sound/machines/Custom_extout.ogg', 50, 0)
+	// 	has_extinguisher = null
+	// 	opened = 1
+	// else
+	// 	opened = !opened
+	// update_icon()
 
 /obj/structure/extinguisher_cabinet/proc/toggle_open(mob/user)
 	if(isrobot(user))

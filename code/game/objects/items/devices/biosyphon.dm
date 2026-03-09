@@ -31,11 +31,12 @@
 		/obj/item/reagent_containers/food/snacks/donut/stat_buff/bio,
 		/obj/item/reagent_containers/food/snacks/donut/stat_buff/vig)
 	var/touched_by_resus = FALSE
+#warn bad
 	var/special_chems = list(
-		/obj/item/reagent_containers/syringe/polystem,
-		/obj/item/reagent_containers/syringe/meralyne,
-		/obj/item/reagent_containers/syringe/dermaline,
-		/obj/item/reagent_containers/syringe/tramadol
+		// /obj/item/reagent_containers/syringe/polystem,
+		// /obj/item/reagent_containers/syringe/meralyne,
+		// /obj/item/reagent_containers/syringe/dermaline,
+		// /obj/item/reagent_containers/syringe/tramadol
 	)
 
 /obj/item/biosyphon/Initialize()

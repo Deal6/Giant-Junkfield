@@ -21,19 +21,20 @@ var/global/list/sparring_attack_cache = list()
 		return sparring_attack_cache[sparring_variant_type]
 
 /datum/unarmed_attack/proc/is_usable(var/mob/living/carbon/human/user, var/mob/living/carbon/human/target, var/zone)
-	if(user.restrained())
-		return 0
+#warn
+	// if(user.restrained())
+	// 	return 0
 
-	// Check if they have a functioning hand.
-	var/obj/item/organ/external/E = user.organs_by_name[BP_L_ARM]
-	if(E && !E.is_stump())
-		return 1
+	// // Check if they have a functioning hand.
+	// var/obj/item/organ/external/E = user.organs_by_name[BP_L_ARM]
+	// if(E && !E.is_stump())
+	// 	return 1
 
-	E = user.organs_by_name[BP_R_ARM]
-	if(E && !E.is_stump())
-		return 1
+	// E = user.organs_by_name[BP_R_ARM]
+	// if(E && !E.is_stump())
+	// 	return 1
 
-	return 0
+	// return 0
 
 /datum/unarmed_attack/proc/get_unarmed_damage()
 	return damage
@@ -105,11 +106,11 @@ var/global/list/sparring_attack_cache = list()
 	playsound(user.loc, attack_sound, 25, 1, -1)
 
 /datum/unarmed_attack/proc/handle_eye_attack(var/mob/living/carbon/human/user, var/mob/living/carbon/human/target)
-	var/obj/item/organ/internal/eyes/eyes = target.random_organ_by_process(OP_EYES)
-	eyes.take_damage(rand(6,10), BRUTE)
+	// var/obj/item/organ/internal/eyes/eyes = target.random_organ_by_process(OP_EYES)
+	// eyes.take_damage(rand(6,10), BRUTE)
 
-	user.visible_message(SPAN_DANGER("[user] presses \his fingers into [target]'s [eyes.name]!")) //no need to check for claws because only humans(monkeys?) can grab(no, humans and monkeys don't have claws)
-	to_chat(target, SPAN_DANGER("You experience[(target.species.flags & NO_PAIN)? "" : " immense pain as you feel" ] digits being pressed into your [eyes.name][(target.species.flags & NO_PAIN)? "." : "!"]"))
+	// user.visible_message(SPAN_DANGER("[user] presses \his fingers into [target]'s [eyes.name]!")) //no need to check for claws because only humans(monkeys?) can grab(no, humans and monkeys don't have claws)
+	// to_chat(target, SPAN_DANGER("You experience[(target.species.flags & NO_PAIN)? "" : " immense pain as you feel" ] digits being pressed into your [eyes.name][(target.species.flags & NO_PAIN)? "." : "!"]"))
 
 /datum/unarmed_attack/bite
 	attack_verb = list("bit")
@@ -182,23 +183,23 @@ var/global/list/sparring_attack_cache = list()
 	attack_noun = list("kick", "kick", "kick", "knee strike")
 	attack_sound = "swing_hit"
 	damage = 0
-
+#warn
 /datum/unarmed_attack/kick/is_usable(var/mob/living/carbon/human/user, var/mob/living/carbon/human/target, var/zone)
-	if (user.legcuffed)
-		return 0
+	// if (user.legcuffed)
+	// 	return 0
 
-	if(!(zone in (BP_LEGS + BP_GROIN)))
-		return 0
+	// if(!(zone in (BP_LEGS + BP_GROIN)))
+	// 	return 0
 
-	var/obj/item/organ/external/E = user.organs_by_name[BP_L_LEG]
-	if(E && !E.is_stump())
-		return 1
+	// var/obj/item/organ/external/E = user.organs_by_name[BP_L_LEG]
+	// if(E && !E.is_stump())
+	// 	return 1
 
-	E = user.organs_by_name[BP_R_LEG]
-	if(E && !E.is_stump())
-		return 1
+	// E = user.organs_by_name[BP_R_LEG]
+	// if(E && !E.is_stump())
+	// 	return 1
 
-	return 0
+	// return 0
 
 /datum/unarmed_attack/kick/get_unarmed_damage(var/mob/living/carbon/human/user)
 	var/obj/item/clothing/shoes = user.shoes
@@ -224,25 +225,25 @@ var/global/list/sparring_attack_cache = list()
 	damage = 0
 
 /datum/unarmed_attack/stomp/is_usable(var/mob/living/carbon/human/user, var/mob/living/carbon/human/target, var/zone)
+#warn
+	// if (user.legcuffed)
+	// 	return 0
 
-	if (user.legcuffed)
-		return 0
+	// if(!istype(target))
+	// 	return 0
 
-	if(!istype(target))
-		return 0
+	// if (!user.lying && (target.lying || (zone in list(BP_L_LEG, BP_R_LEG))))
+	// 	if(target.grabbed_by == user && target.lying)
+	// 		return 0
+	// 	var/obj/item/organ/external/E = user.organs_by_name[BP_L_LEG]
+	// 	if(E && !E.is_stump())
+	// 		return 1
 
-	if (!user.lying && (target.lying || (zone in list(BP_L_LEG, BP_R_LEG))))
-		if(target.grabbed_by == user && target.lying)
-			return 0
-		var/obj/item/organ/external/E = user.organs_by_name[BP_L_LEG]
-		if(E && !E.is_stump())
-			return 1
+	// 	E = user.organs_by_name[BP_R_LEG]
+	// 	if(E && !E.is_stump())
+	// 		return 1
 
-		E = user.organs_by_name[BP_R_LEG]
-		if(E && !E.is_stump())
-			return 1
-
-		return 0
+	// 	return 0
 
 /datum/unarmed_attack/stomp/get_unarmed_damage(var/mob/living/carbon/human/user)
 	var/obj/item/clothing/shoes = user.shoes

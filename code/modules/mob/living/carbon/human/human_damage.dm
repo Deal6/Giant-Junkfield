@@ -1,3 +1,4 @@
+#warn this whole file
 //Updates the mob's health from organs and mob damage variables
 /mob/living/carbon/human/updatehealth()
 	if(status_flags & GODMODE)
@@ -28,45 +29,45 @@
 		setBrainLoss(0)
 
 /mob/living/carbon/human/setBrainLoss(amount)
-	if(status_flags & GODMODE)
-		return FALSE	//godmode
+	// if(status_flags & GODMODE)
+	// 	return FALSE	//godmode
 
-	if(species && species.has_process[BP_BRAIN])
-		var/obj/item/organ/internal/vital/brain/sponge = random_organ_by_process(BP_BRAIN)
-		if(sponge)
-			sponge.take_damage(amount)
-			brainloss = (sponge.damage / sponge.max_damage) * 200
-		else
-			brainloss = 200
-	else
-		brainloss = 0
+	// if(species && species.has_process[BP_BRAIN])
+	// 	var/obj/item/organ/internal/vital/brain/sponge = random_organ_by_process(BP_BRAIN)
+	// 	if(sponge)
+	// 		sponge.take_damage(amount)
+	// 		brainloss = (sponge.damage / sponge.max_damage) * 200
+	// 	else
+	// 		brainloss = 200
+	// else
+	// 	brainloss = 0
 
 /mob/living/carbon/human/getBrainLoss()
-	if(status_flags & GODMODE)
-		return FALSE	//godmode
+	// if(status_flags & GODMODE)
+	// 	return FALSE	//godmode
 
-	if(species && species.has_process[BP_BRAIN])
-		var/obj/item/organ/internal/vital/brain/sponge = random_organ_by_process(BP_BRAIN)
-		if(sponge)
-			brainloss = (sponge.damage / sponge.max_damage) * 200
-		else
-			brainloss = 200
-	else
-		brainloss = 0
-	return brainloss
+	// if(species && species.has_process[BP_BRAIN])
+	// 	var/obj/item/organ/internal/vital/brain/sponge = random_organ_by_process(BP_BRAIN)
+	// 	if(sponge)
+	// 		brainloss = (sponge.damage / sponge.max_damage) * 200
+	// 	else
+	// 		brainloss = 200
+	// else
+	// 	brainloss = 0
+	// return brainloss
 
 //These procs fetch a cumulative total damage from all organs
 /mob/living/carbon/human/getBruteLoss()
-	var/amount = 0
-	for(var/obj/item/organ/external/O in organs)
-		amount += O.brute_dam
-	return amount
+	// var/amount = 0
+	// for(var/obj/item/organ/external/O in organs)
+	// 	amount += O.brute_dam
+	// return amount
 
 /mob/living/carbon/human/getFireLoss()
-	var/amount = 0
-	for(var/obj/item/organ/external/O in organs)
-		amount += O.burn_dam
-	return amount
+	// var/amount = 0
+	// for(var/obj/item/organ/external/O in organs)
+	// 	amount += O.burn_dam
+	// return amount
 
 
 /mob/living/carbon/human/adjustBruteLoss(var/amount)
@@ -86,30 +87,30 @@
 	BITSET(hud_updateflag, HEALTH_HUD)
 
 /mob/living/carbon/human/proc/adjustBruteLossByPart(amount, organ_name, obj/damage_source)
-	amount = amount*species.brute_mod
-	if (organ_name in organs_by_name)
-		var/obj/item/organ/external/O = get_organ(organ_name)
+	// amount = amount*species.brute_mod
+	// if (organ_name in organs_by_name)
+	// 	var/obj/item/organ/external/O = get_organ(organ_name)
 
-		if(amount > 0)
-			O.take_damage(amount, 0, sharp=is_sharp(damage_source), edge=has_edge(damage_source), used_weapon=damage_source)
-		else
-			//if you don't want to heal robot organs, they you will have to check that yourself before using this proc.
-			O.heal_damage(-amount, 0, robo_repair=(BP_IS_ROBOTIC(O)))
+	// 	if(amount > 0)
+	// 		O.take_damage(amount, 0, sharp=is_sharp(damage_source), edge=has_edge(damage_source), used_weapon=damage_source)
+	// 	else
+	// 		//if you don't want to heal robot organs, they you will have to check that yourself before using this proc.
+	// 		O.heal_damage(-amount, 0, robo_repair=(BP_IS_ROBOTIC(O)))
 
-	BITSET(hud_updateflag, HEALTH_HUD)
+	// BITSET(hud_updateflag, HEALTH_HUD)
 
 /mob/living/carbon/human/proc/adjustFireLossByPart(var/amount, var/organ_name, var/obj/damage_source)
-	amount = amount*species.burn_mod
-	if (organ_name in organs_by_name)
-		var/obj/item/organ/external/O = get_organ(organ_name)
+	// amount = amount*species.burn_mod
+	// if (organ_name in organs_by_name)
+	// 	var/obj/item/organ/external/O = get_organ(organ_name)
 
-		if(amount > 0)
-			O.take_damage(0, amount, sharp=is_sharp(damage_source), edge=has_edge(damage_source), used_weapon=damage_source)
-		else
-			//if you don't want to heal robot organs, they you will have to check that yourself before using this proc.
-			O.heal_damage(0, -amount, robo_repair=(BP_IS_ROBOTIC(O)))
+	// 	if(amount > 0)
+	// 		O.take_damage(0, amount, sharp=is_sharp(damage_source), edge=has_edge(damage_source), used_weapon=damage_source)
+	// 	else
+	// 		//if you don't want to heal robot organs, they you will have to check that yourself before using this proc.
+	// 		O.heal_damage(0, -amount, robo_repair=(BP_IS_ROBOTIC(O)))
 
-	BITSET(hud_updateflag, HEALTH_HUD)
+	// BITSET(hud_updateflag, HEALTH_HUD)
 
 /mob/living/carbon/human/Stun(amount)
 //	if(HULK in mutations)	return
@@ -133,22 +134,22 @@
 	adjustCloneLoss(amount)
 
 /mob/living/carbon/human/adjustCloneLoss(amount)
-	if(species.flags & (NO_SCAN))
-		cloneloss = 0
-		return
+	// if(species.flags & (NO_SCAN))
+	// 	cloneloss = 0
+	// 	return
 
-	var/mut_prob = min(80, amount+10)
-	if (amount > 0)
-		if (prob(mut_prob))
-			var/list/obj/item/organ/external/candidates = list()
-			for (var/obj/item/organ/external/O in organs)
-				if(!(O.status & ORGAN_MUTATED))
-					candidates |= O
-			if (candidates.len)
-				var/obj/item/organ/external/O = pick(candidates)
-				O.mutate()
-				to_chat(src, "<span class = 'notice'>Something is not right with your [O.name]...</span>")
-				return
+	// var/mut_prob = min(80, amount+10)
+	// if (amount > 0)
+	// 	if (prob(mut_prob))
+	// 		var/list/obj/item/organ/external/candidates = list()
+	// 		for (var/obj/item/organ/external/O in organs)
+	// 			if(!(O.status & ORGAN_MUTATED))
+	// 				candidates |= O
+	// 		if (candidates.len)
+	// 			var/obj/item/organ/external/O = pick(candidates)
+	// 			O.mutate()
+	// 			to_chat(src, "<span class = 'notice'>Something is not right with your [O.name]...</span>")
+	// 			return
 
 	BITSET(hud_updateflag, HEALTH_HUD)
 
@@ -188,19 +189,19 @@
 
 //Returns a list of damaged organs
 /mob/living/carbon/human/proc/get_damaged_organs(var/brute, var/burn)
-	var/list/obj/item/organ/external/parts = list()
-	for(var/obj/item/organ/external/O in organs)
-		if((brute && O.brute_dam) || (burn && O.burn_dam))
-			parts += O
-	return parts
+	// var/list/obj/item/organ/external/parts = list()
+	// for(var/obj/item/organ/external/O in organs)
+	// 	if((brute && O.brute_dam) || (burn && O.burn_dam))
+	// 		parts += O
+	// return parts
 
 //Returns a list of damageable organs
 /mob/living/carbon/human/proc/get_damageable_organs()
-	var/list/obj/item/organ/external/parts = list()
-	for(var/obj/item/organ/external/O in organs)
-		if(O.is_damageable())
-			parts += O
-	return parts
+	// var/list/obj/item/organ/external/parts = list()
+	// for(var/obj/item/organ/external/O in organs)
+	// 	if(O.is_damageable())
+	// 		parts += O
+	// return parts
 
 //Heals ONE external organ, organ gets randomly selected from damaged ones.
 //It automatically updates damage overlays if necesary
@@ -234,47 +235,47 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 
 //Heal MANY external organs, in random order
 /mob/living/carbon/human/heal_overall_damage(var/brute, var/burn)
-	var/list/obj/item/organ/external/parts = get_damaged_organs(brute,burn)
+// 	var/list/obj/item/organ/external/parts = get_damaged_organs(brute,burn)
 
-	var/update = 0
-	while(parts.len && (brute>0 || burn>0) )
-		var/obj/item/organ/external/picked = pick(parts)
+// 	var/update = 0
+// 	while(parts.len && (brute>0 || burn>0) )
+// 		var/obj/item/organ/external/picked = pick(parts)
 
-		var/brute_was = picked.brute_dam
-		var/burn_was = picked.burn_dam
+// 		var/brute_was = picked.brute_dam
+// 		var/burn_was = picked.burn_dam
 
-		update |= picked.heal_damage(brute,burn)
+// 		update |= picked.heal_damage(brute,burn)
 
-		brute -= (brute_was-picked.brute_dam)
-		burn -= (burn_was-picked.burn_dam)
+// 		brute -= (brute_was-picked.brute_dam)
+// 		burn -= (burn_was-picked.burn_dam)
 
-		parts -= picked
-	updatehealth()
-	BITSET(hud_updateflag, HEALTH_HUD)
-	speech_problem_flag = 1
-	if(update)	UpdateDamageIcon()
+// 		parts -= picked
+// 	updatehealth()
+// 	BITSET(hud_updateflag, HEALTH_HUD)
+// 	speech_problem_flag = 1
+// 	if(update)	UpdateDamageIcon()
 
-// damage MANY external organs, in random order
-/mob/living/carbon/human/take_overall_damage(brute, burn, sharp = FALSE, edge = FALSE, used_weapon)
-	if(status_flags & GODMODE)	return	//godmode
-	var/list/obj/item/organ/external/parts = get_damageable_organs()
-	var/update = 0
-	while(parts.len && (brute>0 || burn>0) )
-		var/obj/item/organ/external/picked = pick(parts)
+// // damage MANY external organs, in random order
+// /mob/living/carbon/human/take_overall_damage(brute, burn, sharp = FALSE, edge = FALSE, used_weapon)
+// 	if(status_flags & GODMODE)	return	//godmode
+// 	var/list/obj/item/organ/external/parts = get_damageable_organs()
+// 	var/update = 0
+// 	while(parts.len && (brute>0 || burn>0) )
+// 		var/obj/item/organ/external/picked = pick(parts)
 
-		var/brute_was = picked.brute_dam
-		var/burn_was = picked.burn_dam
+// 		var/brute_was = picked.brute_dam
+// 		var/burn_was = picked.burn_dam
 
-		update |= picked.take_damage(brute, BRUTE, sharp = sharp, edge = edge, used_weapon = used_weapon)
-		update |= picked.take_damage(burn, BURN, sharp = sharp, edge = edge, used_weapon = used_weapon)
-		brute	-= (picked.brute_dam - brute_was)
-		burn	-= (picked.burn_dam - burn_was)
+// 		update |= picked.take_damage(brute, BRUTE, sharp = sharp, edge = edge, used_weapon = used_weapon)
+// 		update |= picked.take_damage(burn, BURN, sharp = sharp, edge = edge, used_weapon = used_weapon)
+// 		brute	-= (picked.brute_dam - brute_was)
+// 		burn	-= (picked.burn_dam - burn_was)
 
-		parts -= picked
-	updatehealth()
-	BITSET(hud_updateflag, HEALTH_HUD)
-	if(update)
-		UpdateDamageIcon()
+// 		parts -= picked
+// 	updatehealth()
+// 	BITSET(hud_updateflag, HEALTH_HUD)
+// 	if(update)
+// 		UpdateDamageIcon()
 
 
 ////////////////////////////////////////////
@@ -283,90 +284,90 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 This function restores the subjects blood to max.
 */
 /mob/living/carbon/human/proc/restore_blood()
-	if(species.flags & NO_BLOOD)
-		return
-	if(vessel.total_volume < species.blood_volume)
-		vessel.add_reagent("blood", species.blood_volume - vessel.total_volume)
+	// if(species.flags & NO_BLOOD)
+	// 	return
+	// if(vessel.total_volume < species.blood_volume)
+	// 	vessel.add_reagent("blood", species.blood_volume - vessel.total_volume)
 
 /*
 This function restores all organs.
 */
 /mob/living/carbon/human/restore_all_organs()
-	for(var/obj/item/organ/external/current_organ in organs)
-		current_organ.rejuvenate()
+// 	for(var/obj/item/organ/external/current_organ in organs)
+// 		current_organ.rejuvenate()
 
-/mob/living/carbon/human/proc/HealDamage(zone, brute, burn)
-	var/obj/item/organ/external/E = get_organ(zone)
-	if(istype(E, /obj/item/organ/external))
-		if (E.heal_damage(brute, burn))
-			UpdateDamageIcon()
-			BITSET(hud_updateflag, HEALTH_HUD)
-	else
-		return 0
-	return
+// /mob/living/carbon/human/proc/HealDamage(zone, brute, burn)
+// 	var/obj/item/organ/external/E = get_organ(zone)
+// 	if(istype(E, /obj/item/organ/external))
+// 		if (E.heal_damage(brute, burn))
+// 			UpdateDamageIcon()
+// 			BITSET(hud_updateflag, HEALTH_HUD)
+// 	else
+// 		return 0
+// 	return
 
 
 /mob/living/carbon/human/proc/get_organ(zone)
-	RETURN_TYPE(/obj/item/organ/external)
-	if(!zone)
-		zone = BP_CHEST
-	else if(zone in list(BP_EYES, BP_MOUTH))
-		zone = BP_HEAD
-	return organs_by_name[zone]
+	// RETURN_TYPE(/obj/item/organ/external)
+	// if(!zone)
+	// 	zone = BP_CHEST
+	// else if(zone in list(BP_EYES, BP_MOUTH))
+	// 	zone = BP_HEAD
+	// return organs_by_name[zone]
 
 /mob/living/carbon/human/apply_damage(damage = 0, damagetype = BRUTE, def_zone, armor_divisor = 1, wounding_multiplier = 1, sharp = FALSE, edge = FALSE, obj/used_weapon, armor_divisor)
-	//visible_message("Hit debug. [damage] | [damagetype] | [def_zone] | [blocked] | [sharp] | [used_weapon]")
+	// //visible_message("Hit debug. [damage] | [damagetype] | [def_zone] | [blocked] | [sharp] | [used_weapon]")
 
-	//Handle other types of damage
-	if(damagetype != BRUTE && damagetype != BURN)
-		if(damagetype == HALLOSS && !(species && (species.flags & NO_PAIN)))
-			if(!stat && (damage > 25 && prob(20)) || (damage > 50 && prob(60)))
-				emote("scream")
+	// //Handle other types of damage
+	// if(damagetype != BRUTE && damagetype != BURN)
+	// 	if(damagetype == HALLOSS && !(species && (species.flags & NO_PAIN)))
+	// 		if(!stat && (damage > 25 && prob(20)) || (damage > 50 && prob(60)))
+	// 			emote("scream")
 
-		if(damagetype == PSY)
-			sanity.onPsyDamage(damage)
-			var/obj/item/organ/brain = random_organ_by_process(BP_BRAIN)
-			brain.take_damage(damage, PSY, armor_divisor, wounding_multiplier)
-			return TRUE
+	// 	if(damagetype == PSY)
+	// 		sanity.onPsyDamage(damage)
+	// 		var/obj/item/organ/brain = random_organ_by_process(BP_BRAIN)
+	// 		brain.take_damage(damage, PSY, armor_divisor, wounding_multiplier)
+	// 		return TRUE
 
-		if(damagetype == TOX && stats.getPerk(PERK_BLOOD_OF_LEAD))
-			damage /= 2
+	// 	if(damagetype == TOX && stats.getPerk(PERK_BLOOD_OF_LEAD))
+	// 		damage /= 2
 
-		. = ..(damage, damagetype, def_zone)
-	else	//Handle BRUTE and BURN damage
-		handle_suit_punctures(damagetype, damage, def_zone)
+	// 	. = ..(damage, damagetype, def_zone)
+	// else	//Handle BRUTE and BURN damage
+	// 	handle_suit_punctures(damagetype, damage, def_zone)
 
-		switch(damagetype)
-			if(BRUTE)
-				damage = damage*species.brute_mod
-			if(BURN)
-				damage = damage*species.burn_mod
-	var/obj/item/organ/external/organ
-	if(isorgan(def_zone))
-		organ = def_zone
-	else
-		if(!def_zone)
-			if(!(damagetype == TOX)) // global application
-				def_zone = ran_zone(def_zone)
-		organ = get_organ(check_zone(def_zone))
+	// 	switch(damagetype)
+	// 		if(BRUTE)
+	// 			damage = damage*species.brute_mod
+	// 		if(BURN)
+	// 			damage = damage*species.burn_mod
+	// var/obj/item/organ/external/organ
+	// if(isorgan(def_zone))
+	// 	organ = def_zone
+	// else
+	// 	if(!def_zone)
+	// 		if(!(damagetype == TOX)) // global application
+	// 			def_zone = ran_zone(def_zone)
+	// 	organ = get_organ(check_zone(def_zone))
 
-	if(!organ)
-		return FALSE
+	// if(!organ)
+	// 	return FALSE
 
-	//Wounding multiplier is handled in the organ itself
-	damageoverlaytemp = 20
-	if(!def_zone) // only Tox should be able to do this
-		for(var/obj/item/organ/internal/tohit in internal_organs)
-			tohit.take_damage(damage, damagetype, armor_divisor, wounding_multiplier, sharp, edge, used_weapon)
-		UpdateDamageIcon()
-	else if(organ.take_damage(damage, damagetype, armor_divisor, wounding_multiplier, sharp, edge, used_weapon))
-		UpdateDamageIcon()
-	sanity.onDamage(damage)
+	// //Wounding multiplier is handled in the organ itself
+	// damageoverlaytemp = 20
+	// if(!def_zone) // only Tox should be able to do this
+	// 	for(var/obj/item/organ/internal/tohit in internal_organs)
+	// 		tohit.take_damage(damage, damagetype, armor_divisor, wounding_multiplier, sharp, edge, used_weapon)
+	// 	UpdateDamageIcon()
+	// else if(organ.take_damage(damage, damagetype, armor_divisor, wounding_multiplier, sharp, edge, used_weapon))
+	// 	UpdateDamageIcon()
+	// sanity.onDamage(damage)
 
-	// Will set our damageoverlay icon to the next level, which will then be set back to the normal level the next mob.Life().
-	updatehealth()
-	BITSET(hud_updateflag, HEALTH_HUD)
-	return TRUE
+	// // Will set our damageoverlay icon to the next level, which will then be set back to the normal level the next mob.Life().
+	// updatehealth()
+	// BITSET(hud_updateflag, HEALTH_HUD)
+	// return TRUE
 
 
 //Falling procs

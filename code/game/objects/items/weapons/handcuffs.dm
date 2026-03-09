@@ -111,17 +111,17 @@ var/last_chew = 0
 	if (H.targeted_organ != BP_MOUTH) return
 	if (H.wear_mask) return
 	if (istype(H.wear_suit, /obj/item/clothing/suit/straight_jacket)) return
+#warn handcuffs
+	// var/obj/item/organ/external/O = H.organs_by_name[H.hand ? BP_L_ARM : BP_R_ARM]
+	// if (!O) return
 
-	var/obj/item/organ/external/O = H.organs_by_name[H.hand ? BP_L_ARM : BP_R_ARM]
-	if (!O) return
+	// var/s = SPAN_WARNING("[H.name] chews on \his [O.name]!")
+	// H.visible_message(s, SPAN_WARNING("You chew on your [O.name]!"))
+	// H.attack_log += text("\[[time_stamp()]\] <font color='red'>[s] ([H.ckey])</font>")
+	// log_attack("[s] ([H.ckey])")
 
-	var/s = SPAN_WARNING("[H.name] chews on \his [O.name]!")
-	H.visible_message(s, SPAN_WARNING("You chew on your [O.name]!"))
-	H.attack_log += text("\[[time_stamp()]\] <font color='red'>[s] ([H.ckey])</font>")
-	log_attack("[s] ([H.ckey])")
-
-	if(O.take_damage(3,0,1,1,"teeth marks"))
-		H:UpdateDamageIcon()
+	// if(O.take_damage(3,0,1,1,"teeth marks"))
+	// 	H:UpdateDamageIcon()
 
 	last_chew = world.time
 

@@ -45,18 +45,18 @@
 	hazard_low_pressure = -1
 
 	injury_type =  INJURY_TYPE_UNLIVING
+#warn WHAT THE FUCK!?!??!
+	// has_process = list()
 
-	has_process = list()
-
-	has_limbs = list(
-		BP_CHEST =  new /datum/organ_description/chest/skeletal,
-		BP_GROIN =  new /datum/organ_description/groin/skeletal,
-		BP_HEAD =   new /datum/organ_description/head/skeletal,
-		BP_L_ARM =  new /datum/organ_description/arm/left/skeletal,
-		BP_R_ARM =  new /datum/organ_description/arm/right/skeletal,
-		BP_L_LEG =  new /datum/organ_description/leg/left/skeletal,
-		BP_R_LEG =  new /datum/organ_description/leg/right/skeletal
-		)
+	// has_limbs = list(
+	// 	BP_CHEST =  new /datum/organ_description/chest/skeletal,
+	// 	BP_GROIN =  new /datum/organ_description/groin/skeletal,
+	// 	BP_HEAD =   new /datum/organ_description/head/skeletal,
+	// 	BP_L_ARM =  new /datum/organ_description/arm/left/skeletal,
+	// 	BP_R_ARM =  new /datum/organ_description/arm/right/skeletal,
+	// 	BP_L_LEG =  new /datum/organ_description/leg/left/skeletal,
+	// 	BP_R_LEG =  new /datum/organ_description/leg/right/skeletal
+	// 	)
 
 	spawn_flags = IS_RESTRICTED
 

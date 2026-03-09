@@ -15,8 +15,8 @@ meteor_act
 /mob/living/carbon/human/stun_effect_act(var/stun_amount, var/agony_amount, var/def_zone)
 
 
-/mob/living/carbon/human/getarmor(var/def_zone, var/type)
-	return armorval
+// /mob/living/carbon/human/getarmor(var/def_zone, var/type)
+// 	return armorval
 
 /mob/living/carbon/human/getarmorablative(var/def_zone, var/type)
 
@@ -45,7 +45,7 @@ meteor_act
 
 /mob/living/carbon/human/resolve_item_attack(obj/item/I, mob/living/user, var/target_zone)
 
-	return hit_zone
+	// return hit_zone
 
 /mob/living/carbon/human/hit_with_weapon(obj/item/I, mob/living/user, var/effective_force, var/hit_zone)
 

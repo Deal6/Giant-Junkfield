@@ -128,9 +128,8 @@
 							// 		sound = "[pick("odd noises in","weak")] heartbeat"
 							// 	else
 							// 		sound = "healthy heartbeat"
-
-							if(!(M.organ_list_by_process(OP_LUNGS).len) || M.losebreath)
-								sound += " and no respiration"
+							// if(!(M.organ_list_by_process(OP_LUNGS).len) || M.losebreath)
+							// 	sound += " and no respiration"
 							else if(M.getOxyLoss() > 50)
 								sound += " and [pick("wheezing","gurgling")] sounds"
 							else

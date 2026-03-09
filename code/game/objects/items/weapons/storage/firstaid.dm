@@ -60,7 +60,8 @@
 	item_state = "firstaid-toxin"
 	rarity_value = 15
 	prespawned_content_amount = 3
-	prespawned_content_type = /obj/item/reagent_containers/syringe/antitoxin
+#warn bad
+	// prespawned_content_type = /obj/item/reagent_containers/syringe/antitoxin
 
 /obj/item/storage/firstaid/toxin/populate_contents()
 	icon_state = pick("antitoxin","antitoxfirstaid2","antitoxfirstaid3")
@@ -88,8 +89,9 @@
 /obj/item/storage/firstaid/o2/populate_contents()
 	for(var/i in 1 to prespawned_content_amount)
 		new prespawned_content_type(src)
+#warn bad
 	new /obj/item/reagent_containers/hypospray/autoinjector(src)
-	new /obj/item/reagent_containers/syringe/inaprovaline(src)
+	// new /obj/item/reagent_containers/syringe/inaprovaline(src)
 	new /obj/item/device/scanner/health(src)
 
 
@@ -106,7 +108,8 @@
 	for(var/i in 1 to prespawned_content_amount)
 		new prespawned_content_type(src)
 	new /obj/item/stack/medical/advanced/ointment(src)
-	new /obj/item/stack/medical/advanced/ointment(src)
+#warn bad
+	// new /obj/item/stack/medical/advanced/ointment(src)
 	new /obj/item/stack/medical/splint(src)
 	new /obj/item/reagent_containers/syringe/inaprovaline(src)
 	new /obj/item/device/scanner/health(src)
@@ -331,7 +334,8 @@
 	item_state = "medicalpack"
 	max_w_class = ITEM_SIZE_NORMAL
 	matter = list(MATERIAL_STEEL = 1, MATERIAL_PLASTIC = 2)
-	can_hold = list(/obj/item/organ, /obj/item/modification/organ, /obj/item/reagent_containers/food, /obj/item/reagent_containers/glass)
+#warn bad
+	// can_hold = list(/obj/item/organ, /obj/item/modification/organ, /obj/item/reagent_containers/food, /obj/item/reagent_containers/glass)
 	max_storage_space = DEFAULT_NORMAL_STORAGE
 	use_to_pickup = TRUE
 

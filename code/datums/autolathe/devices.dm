@@ -65,16 +65,16 @@
 /datum/design/autolathe/device/excelsiormine
 	name = "excelsior mine"
 	build_path = /obj/item/mine/excelsior
-
+#warn bad 2 objs
 /datum/design/autolathe/device/grenade/nt_cleaner
-	name = "NT \"Cleanse Capsule\""
-	build_path = /obj/item/grenade/chem_grenade/cleaner/nt_cleaner
-	factions = list(FACTION_NEOTHEOLOGY)
+	// name = "NT \"Cleanse Capsule\""
+	// build_path = /obj/item/grenade/chem_grenade/cleaner/nt_cleaner
+	// factions = list(FACTION_NEOTHEOLOGY)
 
 /datum/design/autolathe/device/grenade/nt_weedkiller
-	name = "NT \"Kudzu Killer\""
-	build_path = /obj/item/grenade/chem_grenade/antiweed/nt_antiweed
-	factions = list(FACTION_NEOTHEOLOGY)
+	// name = "NT \"Kudzu Killer\""
+	// build_path = /obj/item/grenade/chem_grenade/antiweed/nt_antiweed
+	// factions = list(FACTION_NEOTHEOLOGY)
 
 /datum/design/autolathe/device/floorpainter
 	name = "floor painter"

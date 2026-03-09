@@ -174,8 +174,9 @@
 		hud = new()
 
 	//If the species has eyes, they are the default vision organ
-	if(!vision_organ && has_process[OP_EYES])
-		vision_organ = BP_EYES
+#warn bad
+	// if(!vision_organ && has_process[OP_EYES])
+	// 	vision_organ = BP_EYES
 
 	unarmed_attacks = list()
 	for(var/u_type in unarmed_types)

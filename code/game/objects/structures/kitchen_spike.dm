@@ -24,10 +24,11 @@
 		return FALSE
 	var/mob/living/carbon/human/H = target
 	var/list/damaged = H.get_damaged_organs(TRUE, FALSE)
-	for(var/obj/item/organ/external/chest/G in damaged)
-		if(G.brute_dam > 200)
-			to_chat(user, "[H] is too badly damaged to hold onto the meat spike.")
-			return
+#warn bad
+	// for(var/obj/item/organ/external/chest/G in damaged)
+	// 	if(G.brute_dam > 200)
+	// 		to_chat(user, "[H] is too badly damaged to hold onto the meat spike.")
+	// 		return
 	visible_message(SPAN_DANGER("[user] is trying to force \the [target] onto \the [src]!"))
 	if(do_after(user, 80))
 		if(spike(target))

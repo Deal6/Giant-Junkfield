@@ -400,37 +400,37 @@
 		if(!M)
 			to_chat(usr, "Mob doesn't exist anymore")
 			return
-
-		if(locate(new_organ) in M.internal_organs)
-			to_chat(usr, "Mob already has that organ.")
-			return
+#warn bad
+		// if(locate(new_organ) in M.internal_organs)
+		// 	to_chat(usr, "Mob already has that organ.")
+		// 	return
 
 		new new_organ(M)
 
 
-	else if(href_list["remorgan"])
-		if(!check_rights(R_FUN))
-			return
+	// else if(href_list["remorgan"])
+	// 	if(!check_rights(R_FUN))
+	// 		return
 
-		var/mob/living/carbon/M = locate(href_list["remorgan"])
-		if(!istype(M))
-			to_chat(usr, "This can only be done to instances of type /mob/living/carbon")
-			return
+	// 	var/mob/living/carbon/M = locate(href_list["remorgan"])
+		// if(!istype(M))
+		// 	to_chat(usr, "This can only be done to instances of type /mob/living/carbon")
+		// 	return
 
-		var/obj/item/organ/rem_organ = input("Please choose an organ to remove.","Organ",null) as null|anything in M.internal_organs
+		// var/obj/item/organ/rem_organ = input("Please choose an organ to remove.","Organ",null) as null|anything in M.internal_organs
 
-		if(!M)
-			to_chat(usr, "Mob doesn't exist anymore")
-			return
+		// if(!M)
+		// 	to_chat(usr, "Mob doesn't exist anymore")
+		// 	return
 
-		if(!(locate(rem_organ) in M.internal_organs))
-			to_chat(usr, "Mob does not have that organ.")
-			return
+		// if(!(locate(rem_organ) in M.internal_organs))
+		// 	to_chat(usr, "Mob does not have that organ.")
+		// 	return
 
-		to_chat(usr, "Removed [rem_organ] from [M].")
-		rem_organ.removed()
-		qdel(rem_organ)
-
+		// to_chat(usr, "Removed [rem_organ] from [M].")
+		// rem_organ.removed()
+		// qdel(rem_organ)
+#warn bad
 	else if(href_list["fix_nano"])
 		to_chat(usr, "This is depricated with the new asset cache system. Do not use")
 
@@ -515,7 +515,7 @@
 		if(!A.reagents)
 			var/amount = input(usr, "Specify the reagent size of [A]", "Set Reagent Size", 50) as num
 			if(amount)
-				A.// create_reagents(amount)
+				A.create_reagents(amount)
 
 		if(A.reagents)
 			var/chosen_id

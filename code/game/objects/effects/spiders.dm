@@ -233,7 +233,7 @@
 		if(!amount_grown) amount_grown = 1
 		var/obj/item/organ/external/O = loc
 		//if(!O.owner || O.owner.stat == DEAD || amount_grown > 80)
-		if(!O.owner || amount_grown > 80)
+		// if(!O.owner || amount_grown > 80)
 
 #warn no implants
 	// 		// O.implants -= src

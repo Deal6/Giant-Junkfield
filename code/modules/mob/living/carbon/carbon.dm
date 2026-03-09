@@ -14,7 +14,7 @@
 	// QDEL_NULL(touching)
 	// QDEL_NULL(bloodstr)
 	// QDEL_NULL(vessel)
-	QDEL_LIST(internal_organs)
+	// QDEL_LIST(internal_organs)
 	QDEL_LIST(stomach_contents)
 	QDEL_LIST(hallucinations)
 	return ..()
@@ -75,15 +75,15 @@
 			if(N.client)
 				N.show_message(text("\red <B>[M] bursts out of [src]!</B>"), 2)
 	..()
-
+#warn
 /mob/living/carbon/attack_hand(mob/M as mob)
-	if (ishuman(M))
-		var/mob/living/carbon/human/H = M
-		var/obj/item/organ/external/temp = H.organs_by_name[BP_R_ARM]
-		if (H.hand)
-			temp = H.organs_by_name[BP_L_ARM]
-		if(temp && !temp.is_usable())
-			to_chat(H, "\red You can't use your [temp.name]")
+	// if (ishuman(M))
+	// 	var/mob/living/carbon/human/H = M
+	// 	var/obj/item/organ/external/temp = H.organs_by_name[BP_R_ARM]
+	// 	if (H.hand)
+	// 		temp = H.organs_by_name[BP_L_ARM]
+	// 	if(temp && !temp.is_usable())
+	// 		to_chat(H, "\red You can't use your [temp.name]")
 			return
 
 
@@ -272,7 +272,8 @@
 
 	if (istype(item, /obj/item/grab))
 		var/obj/item/grab/G = item
-		item = G.throw_held() //throw the person instead of the grab
+		#warn
+		// item = G.throw_held() //throw the person instead of the grab
 		if(!item) return
 		unEquip(G, loc)
 		if(ismob(item))

@@ -1,18 +1,18 @@
 /mob/living/carbon/human/gib(max_range=3, keep_only_robotics=FALSE)
 
 	var/on_turf = istype(loc, /turf)
+#warn bad
+	// for(var/obj/item/organ/I in internal_organs)
+	// 	if (!(keep_only_robotics && !(I.nature == MODIFICATION_SILICON)))
+	// 		I.removed()
+	// 		if(on_turf)
+	// 			I.throw_at(get_edge_target_turf(src,pick(alldirs)),rand(1,max_range),30)
 
-	for(var/obj/item/organ/I in internal_organs)
-		if (!(keep_only_robotics && !(I.nature == MODIFICATION_SILICON)))
-			I.removed()
-			if(on_turf)
-				I.throw_at(get_edge_target_turf(src,pick(alldirs)),rand(1,max_range),30)
-
-	for(var/obj/item/organ/external/E in src.organs)
-		if (!(keep_only_robotics && !(E.nature == MODIFICATION_SILICON)))
-			E.droplimb(TRUE, DROPLIMB_EDGE, 1)
-			if(on_turf)
-				E.throw_at(get_edge_target_turf(src,pick(alldirs)),rand(1,max_range),30)
+	// for(var/obj/item/organ/external/E in src.organs)
+	// 	if (!(keep_only_robotics && !(E.nature == MODIFICATION_SILICON)))
+	// 		E.droplimb(TRUE, DROPLIMB_EDGE, 1)
+	// 		if(on_turf)
+	// 			E.throw_at(get_edge_target_turf(src,pick(alldirs)),rand(1,max_range),30)
 
 	for(var/obj/item/D in src)
 		if (keep_only_robotics && istype(D, /obj/item/organ))
@@ -53,11 +53,13 @@
 	if(!gibbed)
 		dizziness = 0
 		jitteriness = 0
+#warn
 		handle_organs()
 		dead_HUD()
 		if(species.death_sound)
 			mob_playsound(loc, species.death_sound, 80, 1, 1)
-	handle_hud_list()
+#warn
+	// handle_hud_list()
 
 	var/obj/item/implant/core_implant/cruciform/C = get_core_implant(/obj/item/implant/core_implant/cruciform)
 	if(C && C.active)
@@ -72,9 +74,10 @@
 					var/mob/living/carbon/human/H = L
 					if(H in disciples)
 						continue
-					else if (H.random_organ_by_process(BP_SPCORE) || H.active_mutations.len)
-						burn_damage_done = (martyr.burn_damage / get_dist(src, H)) * 2
-						H.adjustFireLoss(burn_damage_done)
+#warn
+					// else if (H.random_organ_by_process(BP_SPCORE) || H.active_mutations.len)
+					// 	burn_damage_done = (martyr.burn_damage / get_dist(src, H)) * 2
+					// 	H.adjustFireLoss(burn_damage_done)
 					else
 						burn_damage_done = martyr.burn_damage / get_dist(src, H)
 						H.adjustFireLoss(burn_damage_done)

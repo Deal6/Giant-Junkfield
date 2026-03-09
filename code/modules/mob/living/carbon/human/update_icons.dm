@@ -173,46 +173,47 @@ var/global/list/damage_icon_parts = list()
 
 //DAMAGE OVERLAYS
 //constructs damage icon for each organ from mask * damage field and saves it in our overlays_ lists
+#warn
 /mob/living/carbon/human/UpdateDamageIcon(var/update_icons=1)
 	// first check whether something actually changed about damage appearance
-	var/damage_appearance = ""
+	// var/damage_appearance = ""
 
-	for(var/obj/item/organ/external/O in organs)
-		if(O.is_stump())
-			continue
-		damage_appearance += O.damage_state
+	// for(var/obj/item/organ/external/O in organs)
+	// 	if(O.is_stump())
+	// 		continue
+	// 	damage_appearance += O.damage_state
 
-	if(damage_appearance == previous_damage_appearance)
-		// nothing to do here
-		return
+	// if(damage_appearance == previous_damage_appearance)
+	// 	// nothing to do here
+	// 	return
 
-	previous_damage_appearance = damage_appearance
+	// previous_damage_appearance = damage_appearance
 
-	var/image/standing_image = image(species.damage_overlays, icon_state = "00")
+	// var/image/standing_image = image(species.damage_overlays, icon_state = "00")
 
-	// blend the individual damage states with our icons
-	if(species.blood_color)
-		for(var/obj/item/organ/external/O in organs)
-			if(O.is_stump())
-				continue
+	// // blend the individual damage states with our icons
+	// if(species.blood_color)
+	// 	for(var/obj/item/organ/external/O in organs)
+	// 		if(O.is_stump())
+	// 			continue
 
-			O.update_damstate()
-			if(O.damage_state == "00") continue
-			var/icon/DI
-			var/cache_index = "[O.damage_state]/[O.organ_tag]/[species.blood_color]/[species.get_bodytype()]"
-			if(damage_icon_parts[cache_index] == null)
-				DI = new /icon(species.damage_overlays, O.damage_state)			// the damage icon for whole human
-				DI.Blend(new /icon(species.damage_mask, O.organ_tag), ICON_MULTIPLY)	// mask with this organ's pixels
-				DI.Blend(species.blood_color, ICON_MULTIPLY)
-				damage_icon_parts[cache_index] = DI
-			else
-				DI = damage_icon_parts[cache_index]
+	// 		O.update_damstate()
+	// 		if(O.damage_state == "00") continue
+	// 		var/icon/DI
+	// 		var/cache_index = "[O.damage_state]/[O.organ_tag]/[species.blood_color]/[species.get_bodytype()]"
+	// 		if(damage_icon_parts[cache_index] == null)
+	// 			DI = new /icon(species.damage_overlays, O.damage_state)			// the damage icon for whole human
+	// 			DI.Blend(new /icon(species.damage_mask, O.organ_tag), ICON_MULTIPLY)	// mask with this organ's pixels
+	// 			DI.Blend(species.blood_color, ICON_MULTIPLY)
+	// 			damage_icon_parts[cache_index] = DI
+	// 		else
+	// 			DI = damage_icon_parts[cache_index]
 
-			standing_image.overlays += DI
+	// 		standing_image.overlays += DI
 
-	overlays_standing[DAMAGE_LAYER] = standing_image
+	// overlays_standing[DAMAGE_LAYER] = standing_image
 
-	if(update_icons)   update_icons()
+	// if(update_icons)   update_icons()
 
 //BASE MOB SPRITE
 /mob/living/carbon/human/proc/update_body(var/update_icons=1)
@@ -233,112 +234,112 @@ var/global/list/damage_icon_parts = list()
 	if(!appearance_test.build_body)
 		stand_icon = new('icons/mob/human.dmi', "human_[(gender == MALE) ? "m" : "f"]")
 		appearance_test.Log("Sprite generation is disabled.")
-	else
-		stand_icon = new('icons/mob/human.dmi',"blank")
-		var/icon_key = ""
-		if(appearance_test.cache_sprites)
-			icon_key = "[species.race_key]"
-			icon_key += "[husk ? 1 : 0][hulk ? 1 : 0][skeleton ? 1 : 0]"
-			if(lip_style)
-				icon_key += "[lip_style]"
-			else
-				icon_key += "nolips"
+// 	else
+// 		stand_icon = new('icons/mob/human.dmi',"blank")
+// 		var/icon_key = ""
+// 		if(appearance_test.cache_sprites)
+// 			icon_key = "[species.race_key]"
+// 			icon_key += "[husk ? 1 : 0][hulk ? 1 : 0][skeleton ? 1 : 0]"
+// 			if(lip_style)
+// 				icon_key += "[lip_style]"
+// 			else
+// 				icon_key += "nolips"
 
-			for(var/organ_tag in species.has_limbs)
-				var/obj/item/organ/external/part = organs_by_name[organ_tag]
-				if(isnull(part))
-					icon_key += "[organ_tag]Missed"
-					continue
-				icon_key += "[organ_tag][part.get_cache_key()]"
+// 			for(var/organ_tag in species.has_limbs)
+// 				var/obj/item/organ/external/part = organs_by_name[organ_tag]
+// 				if(isnull(part))
+// 					icon_key += "[organ_tag]Missed"
+// 					continue
+// 				icon_key += "[organ_tag][part.get_cache_key()]"
 
-			appearance_test.Log("Generated key: [icon_key]")
+// 			appearance_test.Log("Generated key: [icon_key]")
 
-		var/icon/base_icon
-		if(appearance_test.cache_sprites && human_icon_cache[icon_key])
-			appearance_test.Log("Cached icon found.")
-			base_icon = human_icon_cache[icon_key]
-		else
-			appearance_test.Log("New icon will be generated.")
+// 		var/icon/base_icon
+// 		if(appearance_test.cache_sprites && human_icon_cache[icon_key])
+// 			appearance_test.Log("Cached icon found.")
+// 			base_icon = human_icon_cache[icon_key]
+// 		else
+// 			appearance_test.Log("New icon will be generated.")
 
-			//BEGIN CACHED ICON GENERATION.
-			base_icon = new('icons/mob/human.dmi',"blank")
+// 			//BEGIN CACHED ICON GENERATION.
+// 			base_icon = new('icons/mob/human.dmi',"blank")
 
-			for(var/obj/item/organ/external/part in organs)
-				var/icon/temp = part.get_icon(skeleton)
-				if(!temp)
-					continue
+// 			for(var/obj/item/organ/external/part in organs)
+// 				var/icon/temp = part.get_icon(skeleton)
+// 				if(!temp)
+// 					continue
 
-				//That part makes left and right legs drawn topmost and lowermost when human looks WEST or EAST
-				//And no change in rendering for other parts (they icon_position is 0, so goes to 'else' part)
-				if(part.icon_position&(LEFT|RIGHT))
-					var/icon/temp2 = new('icons/mob/human.dmi',"blank")
-					temp2.Insert(new/icon(temp,dir=NORTH),dir=NORTH)
-					temp2.Insert(new/icon(temp,dir=SOUTH),dir=SOUTH)
-					if(!(part.icon_position & LEFT))
-						temp2.Insert(new/icon(temp,dir=EAST),dir=EAST)
-					if(!(part.icon_position & RIGHT))
-						temp2.Insert(new/icon(temp,dir=WEST),dir=WEST)
-					base_icon.Blend(temp2, ICON_OVERLAY)
-					if(part.icon_position & LEFT)
-						temp2.Insert(new/icon(temp,dir=EAST),dir=EAST)
-					if(part.icon_position & RIGHT)
-						temp2.Insert(new/icon(temp,dir=WEST),dir=WEST)
-					base_icon.Blend(temp2, ICON_UNDERLAY)
-				else
-					base_icon.Blend(temp, ICON_OVERLAY)
+// 				//That part makes left and right legs drawn topmost and lowermost when human looks WEST or EAST
+// 				//And no change in rendering for other parts (they icon_position is 0, so goes to 'else' part)
+// 				if(part.icon_position&(LEFT|RIGHT))
+// 					var/icon/temp2 = new('icons/mob/human.dmi',"blank")
+// 					temp2.Insert(new/icon(temp,dir=NORTH),dir=NORTH)
+// 					temp2.Insert(new/icon(temp,dir=SOUTH),dir=SOUTH)
+// 					if(!(part.icon_position & LEFT))
+// 						temp2.Insert(new/icon(temp,dir=EAST),dir=EAST)
+// 					if(!(part.icon_position & RIGHT))
+// 						temp2.Insert(new/icon(temp,dir=WEST),dir=WEST)
+// 					base_icon.Blend(temp2, ICON_OVERLAY)
+// 					if(part.icon_position & LEFT)
+// 						temp2.Insert(new/icon(temp,dir=EAST),dir=EAST)
+// 					if(part.icon_position & RIGHT)
+// 						temp2.Insert(new/icon(temp,dir=WEST),dir=WEST)
+// 					base_icon.Blend(temp2, ICON_UNDERLAY)
+// 				else
+// 					base_icon.Blend(temp, ICON_OVERLAY)
 
-			if(!skeleton)
-				if(husk)
-					base_icon.ColorTone(husk_color_mod)
-				else if(hulk)
-					var/list/tone = ReadRGB(hulk_color_mod)
-					base_icon.MapColors(rgb(tone[1],0,0),rgb(0,tone[2],0),rgb(0,0,tone[3]))
+// 			if(!skeleton)
+// 				if(husk)
+// 					base_icon.ColorTone(husk_color_mod)
+// 				else if(hulk)
+// 					var/list/tone = ReadRGB(hulk_color_mod)
+// 					base_icon.MapColors(rgb(tone[1],0,0),rgb(0,tone[2],0),rgb(0,0,tone[3]))
 
-			//Handle husk overlay.
-			if(husk && ("overlay_husk" in icon_states(species.icobase)))
-				var/icon/mask = new(base_icon)
-				var/icon/husk_over = new(species.icobase,"overlay_husk")
-				mask.MapColors(0,0,0,1, 0,0,0,1, 0,0,0,1, 0,0,0,1, 0,0,0,0)
-				husk_over.Blend(mask, ICON_ADD)
-				base_icon.Blend(husk_over, ICON_OVERLAY)
+// 			//Handle husk overlay.
+// 			if(husk && ("overlay_husk" in icon_states(species.icobase)))
+// 				var/icon/mask = new(base_icon)
+// 				var/icon/husk_over = new(species.icobase,"overlay_husk")
+// 				mask.MapColors(0,0,0,1, 0,0,0,1, 0,0,0,1, 0,0,0,1, 0,0,0,0)
+// 				husk_over.Blend(mask, ICON_ADD)
+// 				base_icon.Blend(husk_over, ICON_OVERLAY)
 
-		if(appearance_test.cache_sprites)
-			human_icon_cache[icon_key] = base_icon
+// 		if(appearance_test.cache_sprites)
+// 			human_icon_cache[icon_key] = base_icon
 
-		//END CACHED ICON GENERATION.
-		stand_icon.Blend(base_icon,ICON_OVERLAY)
+// 		//END CACHED ICON GENERATION.
+// 		stand_icon.Blend(base_icon,ICON_OVERLAY)
 
-	appearance_test.Log("EXIT update_body()")
-	if(update_icons)
-		update_icons()
+// 	appearance_test.Log("EXIT update_body()")
+// 	if(update_icons)
+// 		update_icons()
 
-//UNDERWEAR OVERLAY
+// //UNDERWEAR OVERLAY
 
-/mob/living/carbon/human/proc/update_underwear(var/update_icons=1)
-	overlays_standing[UNDERWEAR_LAYER] = null
+// /mob/living/carbon/human/proc/update_underwear(var/update_icons=1)
+// 	overlays_standing[UNDERWEAR_LAYER] = null
 
-	if(species.appearance_flags & HAS_UNDERWEAR)
-		var/icon/underwear = new/icon(get_gender_icon(gender, "underwear"), "blank")
-		for(var/entry in worn_underwear)
-			var/obj/item/underwear/UW = entry
-			var/icon/I = new /icon(get_gender_icon(gender, "underwear"), UW.icon_state)
-			if(UW.color)
-				I.Blend(UW.color, ICON_ADD)
-			underwear.Blend(I, ICON_OVERLAY)
-		overlays_standing[UNDERWEAR_LAYER] = image(underwear)
-	if(update_icons)
-		update_icons()
+// 	if(species.appearance_flags & HAS_UNDERWEAR)
+// 		var/icon/underwear = new/icon(get_gender_icon(gender, "underwear"), "blank")
+// 		for(var/entry in worn_underwear)
+// 			var/obj/item/underwear/UW = entry
+// 			var/icon/I = new /icon(get_gender_icon(gender, "underwear"), UW.icon_state)
+// 			if(UW.color)
+// 				I.Blend(UW.color, ICON_ADD)
+// 			underwear.Blend(I, ICON_OVERLAY)
+// 		overlays_standing[UNDERWEAR_LAYER] = image(underwear)
+// 	if(update_icons)
+// 		update_icons()
 
 //HAIR OVERLAY
 /mob/living/carbon/human/proc/update_hair(var/update_icons=1)
-	//Reset our hair
-	overlays_standing[HAIR_LAYER]	= null
+	// //Reset our hair
+	// overlays_standing[HAIR_LAYER]	= null
 
-	var/obj/item/organ/external/head/head_organ = get_organ(BP_HEAD)
-	if(!head_organ || head_organ.is_stump() )
-		if(update_icons)
-			update_icons()
-		return
+	// // var/obj/item/organ/external/head/head_organ = get_organ(BP_HEAD)
+	// if(!head_organ || head_organ.is_stump() )
+	// 	if(update_icons)
+	// 		update_icons()
+	// 	return
 
 	//masks and helmets can obscure our hair.
 	if( (head && (head.flags_inv & BLOCKHAIR)) || (wear_mask && (wear_mask.flags_inv & BLOCKHAIR)))
@@ -407,11 +408,11 @@ var/global/list/damage_icon_parts = list()
 /mob/living/carbon/human/regenerate_icons()
 	..()
 	if(HasMovementHandler(/datum/movement_handler/mob/transformation) || QDELETED(src))		return
-
 	update_mutations(0)
 	update_implants(0)
 	update_body(0)
-	update_underwear(0)
+	#warn
+	// update_underwear(0)
 	update_hair(0)
 	update_hud()//Hud Stuff
 	update_inv_w_uniform(0)
@@ -1136,16 +1137,16 @@ var/global/list/damage_icon_parts = list()
 		overlays_standing[BLOCKING_LAYER] = image("icon"='icons/mob/misc_overlays.dmi', "icon_state"="block", "layer"=BLOCKING_LAYER)
 
 	update_icons()
-
+#warn my sanity is going fucking downwards
 /mob/living/carbon/human/proc/update_surgery(var/update_icons=1)
-	overlays_standing[SURGERY_LAYER] = null
-	var/image/total = new
-	for(var/obj/item/organ/external/E in organs)
-		if(E.open)
-			var/image/I = image("icon"='icons/mob/surgery.dmi', "icon_state"="[E.name][round(E.open)]", "layer"=-SURGERY_LAYER)
-			total.overlays += I
-	overlays_standing[SURGERY_LAYER] = total
-	if(update_icons)   update_icons()
+	// overlays_standing[SURGERY_LAYER] = null
+	// var/image/total = new
+	// for(var/obj/item/organ/external/E in organs)
+	// 	if(E.open)
+	// 		var/image/I = image("icon"='icons/mob/surgery.dmi', "icon_state"="[E.name][round(E.open)]", "layer"=-SURGERY_LAYER)
+	// 		total.overlays += I
+	// overlays_standing[SURGERY_LAYER] = total
+	// if(update_icons)   update_icons()
 
 //Drawcheck functions
 //These functions check if an item should be drawn, or if its covered up by something else

@@ -93,11 +93,11 @@
 /obj/screen/grab
 	icon = 'icons/mob/grab_icons.dmi'
 	name = "grab"
-
+#warn I forgot we killed grab...
 /obj/screen/grab/Click()
 	if(master)
-		var/obj/item/grab/G = master
-		G.s_click(src)
+		// var/obj/item/grab/G = master
+		// G.s_click(src)
 		return TRUE
 
 /obj/screen/grab/attack_hand()

@@ -117,12 +117,13 @@
 
 	//would check is_broken() and is_malfunctioning() here too but is_malfunctioning()
 	//is probabilistic so we can't do that and it would be unfair to just check one.
-	if(ishuman(M))
-		var/mob/living/carbon/human/H = M
-		var/obj/item/organ/external/hand = H.organs_by_name[check_hand]
-		if(istype(hand) && hand.is_usable())
-			return TRUE
-	return FALSE
+#warn twohand wielding
+	// if(ishuman(M))
+	// 	var/mob/living/carbon/human/H = M
+	// 	var/obj/item/organ/external/hand = H.organs_by_name[check_hand]
+	// 	if(istype(hand) && hand.is_usable())
+	// 		return TRUE
+	// return FALSE
 
 
 /obj/item/twohanded

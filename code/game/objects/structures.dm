@@ -199,15 +199,15 @@
 					affecting = H.get_organ(pick(BP_L_ARM, BP_R_ARM))
 				if("head")
 					affecting = H.get_organ(BP_HEAD)
-
-			if(affecting)
-				to_chat(M, SPAN_DANGER("You land heavily on your [affecting.name]!"))
-				affecting.take_damage(damage, 0)
-				if(affecting.parent)
-					affecting.parent.add_autopsy_data("Misadventure", damage)
-			else
-				to_chat(H, SPAN_DANGER("You land heavily!"))
-				H.adjustBruteLoss(damage)
+#warn bad
+			// if(affecting)
+			// 	to_chat(M, SPAN_DANGER("You land heavily on your [affecting.name]!"))
+			// 	affecting.take_damage(damage, 0)
+			// 	if(affecting.parent)
+			// 		affecting.parent.add_autopsy_data("Misadventure", damage)
+			// else
+			// 	to_chat(H, SPAN_DANGER("You land heavily!"))
+			// 	H.adjustBruteLoss(damage)
 
 			H.UpdateDamageIcon()
 			H.updatehealth()

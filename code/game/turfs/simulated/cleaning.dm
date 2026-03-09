@@ -109,7 +109,8 @@
 			if(!B.blood_DNA[M.dna_trace])
 				B.blood_DNA[M.dna_trace] = M.b_type
 			return 1 //we bloodied the floor
-		blood_splatter(src,M.get_blood(),1)
+#warn bad
+		// blood_splatter(src,M.get_blood(),1)
 		return 1 //we bloodied the floor
 	return 0
 

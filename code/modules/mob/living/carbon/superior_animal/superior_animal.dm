@@ -309,13 +309,14 @@
 		return TRUE
 	return FALSE
 
+#warn bed
 /mob/living/carbon/superior_animal/proc/handle_cheap_chemicals_in_body()
-	if(reagents)
-		chem_effects.Cut()
-		if(touching)
-			touching.metabolize()
-		if(bloodstr)
-			bloodstr.metabolize()
+	// if(reagents)
+	// 	chem_effects.Cut()
+	// 	if(touching)
+	// 		touching.metabolize()
+	// 	if(bloodstr)
+	// 		bloodstr.metabolize()
 
 	/*
 	if(light_dam)

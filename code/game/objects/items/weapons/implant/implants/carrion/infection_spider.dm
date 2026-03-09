@@ -1,28 +1,31 @@
+
 /obj/item/implant/carrion_spider/infection
 	name = "infection spider"
 	icon_state = "spiderling_infection"
 	spider_price = 50
-	gene_price = 7
+	#warn bad
+	// gene_price = 7
 	var/active = FALSE
 
+#warn bad
 /obj/item/implant/carrion_spider/infection/activate()
 	..()
-	if(!wearer)
-		to_chat(owner_mob, SPAN_WARNING("[src] doesn't have a host"))
-		return
-	if(!istype(wearer)) //wearer type is automaticaly set to human
-		to_chat(owner_mob, SPAN_WARNING("[src] only works on humanoids"))
-		return
-	if(wearer.stat == DEAD)
-		to_chat(owner_mob, SPAN_WARNING("[wearer] is dead"))
-		return
-	if(is_neotheology_disciple(wearer))
-		to_chat(owner_mob, SPAN_WARNING("[wearer]'s cruciform prevents activation"))
-		return
-	var/obj/item/organ/external/affected = wearer.organs_by_name[BP_HEAD || BP_CHEST]
-	if(BP_IS_ROBOTIC(affected))
-		to_chat(owner_mob, SPAN_WARNING("[src] cannot be activated in a prosthetic limb."))
-		return
+	// if(!wearer)
+	// 	to_chat(owner_mob, SPAN_WARNING("[src] doesn't have a host"))
+	// 	return
+	// if(!istype(wearer)) //wearer type is automaticaly set to human
+	// 	to_chat(owner_mob, SPAN_WARNING("[src] only works on humanoids"))
+	// 	return
+	// if(wearer.stat == DEAD)
+	// 	to_chat(owner_mob, SPAN_WARNING("[wearer] is dead"))
+	// 	return
+	// if(is_neotheology_disciple(wearer))
+	// 	to_chat(owner_mob, SPAN_WARNING("[wearer]'s cruciform prevents activation"))
+	// 	return
+	// var/obj/item/organ/external/affected = wearer.organs_by_name[BP_HEAD || BP_CHEST]
+	// if(BP_IS_ROBOTIC(affected))
+	// 	to_chat(owner_mob, SPAN_WARNING("[src] cannot be activated in a prosthetic limb."))
+	// 	return
 
 	if(is_carrion(wearer))
 		to_chat(owner_mob, SPAN_WARNING("Another core inside prevents activation"))
@@ -35,15 +38,16 @@
 	active = TRUE
 	to_chat(owner_mob, SPAN_NOTICE("\The [src] is active"))
 
-	spawn(5 MINUTES)
-		if(wearer && istype(wearer) && !(wearer.stat == DEAD) && !is_neotheology_disciple(wearer) && active && !is_carrion(wearer))
-			to_chat(wearer, SPAN_DANGER("The transformation is complete, you are not human anymore, you are something more"))
-			to_chat(owner_mob, SPAN_NOTICE("\The [src] was succesfull"))
-			wearer.make_carrion()
-			die()
-		else
-			active = FALSE
-			to_chat(owner_mob, SPAN_WARNING("Conversion failed."))
+#warn bad
+	// spawn(5 MINUTES)
+	// 	if(wearer && istype(wearer) && !(wearer.stat == DEAD) && !is_neotheology_disciple(wearer) && active && !is_carrion(wearer))
+	// 		to_chat(wearer, SPAN_DANGER("The transformation is complete, you are not human anymore, you are something more"))
+	// 		to_chat(owner_mob, SPAN_NOTICE("\The [src] was succesfull"))
+	// 		wearer.make_carrion()
+	// 		die()
+	// 	else
+	// 		active = FALSE
+	// 		to_chat(owner_mob, SPAN_WARNING("Conversion failed."))
 
 /obj/item/implant/carrion_spider/infection/Process()
 	..()

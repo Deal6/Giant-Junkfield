@@ -108,6 +108,7 @@
 	spawn_blacklisted = TRUE	// So viscera has backups
 	license = -1
 	designs = list(
-		/datum/design/viscera/organ_fabricator,
-		/datum/design/viscera/disgorger
+#warn do we delete this?
+		// /datum/design/viscera/organ_fabricator,
+		// /datum/design/viscera/disgorger
 	)

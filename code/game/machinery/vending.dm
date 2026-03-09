@@ -1189,7 +1189,7 @@
 	idle_power_usage = 211 //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
 	auto_price = FALSE
 	custom_vendor = TRUE // Chemists can load it for MDs
-	can_stock = list(/obj/item/reagent_containers/glass, /obj/item/reagent_containers/syringe, /obj/item/reagent_containers/pill, /obj/item/stack/medical, /obj/item/bodybag, /obj/item/device/scanner/health, /obj/item/reagent_containers/hypospray, /obj/item/storage/pill_bottle, /obj/item/reagent_containers/food/snacks/moecube, /obj/item/organ/internal)
+	can_stock = list(/obj/item/reagent_containers/glass, /obj/item/reagent_containers/syringe, /obj/item/reagent_containers/pill, /obj/item/stack/medical, /obj/item/bodybag, /obj/item/device/scanner/health, /obj/item/reagent_containers/hypospray, /obj/item/storage/pill_bottle, /obj/item/organ/internal)
 	vendor_department = DEPARTMENT_MEDICAL
 	shut_up = TRUE
 
@@ -1211,7 +1211,7 @@
 	icon_deny = "wallmed-deny"
 	product_ads = "Self-medication can be healthy!;Natural chemicals!;This stuff saves lives.;Don't you want some?;Hook it up to your veins!"
 	custom_vendor = TRUE // Chemists can load it for customers
-	can_stock = list(/obj/item/reagent_containers/glass, /obj/item/reagent_containers/syringe, /obj/item/reagent_containers/pill, /obj/item/stack/medical, /obj/item/bodybag, /obj/item/device/scanner/health, /obj/item/reagent_containers/hypospray, /obj/item/storage/pill_bottle, /obj/item/reagent_containers/food/snacks/moecube, /obj/item/organ/internal)
+	can_stock = list(/obj/item/reagent_containers/glass, /obj/item/reagent_containers/syringe, /obj/item/reagent_containers/pill, /obj/item/stack/medical, /obj/item/bodybag, /obj/item/device/scanner/health, /obj/item/reagent_containers/hypospray, /obj/item/storage/pill_bottle, /obj/item/organ/internal)
 	vendor_department = DEPARTMENT_MEDICAL
 
 /obj/machinery/vending/wallmed/minor
@@ -1251,8 +1251,8 @@
 		/obj/item/stack/medical/advanced/bruise_pack = 1, /obj/item/stack/medical/advanced/ointment = 1,
 		/obj/item/stack/nanopaste = 1,
 #warn bad
-		// /obj/item/reagent_containers/hypospray/autoinjector/antitoxin = 5, /obj/item/reagent_containers/syringe/antitoxin = 5,
-		// /obj/item/reagent_containers/hypospray/autoinjector/tricordrazine = 5, /obj/item/reagent_containers/syringe/tricordrazine = 5,
+		/obj/item/reagent_containers/hypospray/autoinjector/antitoxin = 5, /obj/item/reagent_containers/syringe/antitoxin = 5,
+		/obj/item/reagent_containers/hypospray/autoinjector/tricordrazine = 5, /obj/item/reagent_containers/syringe/tricordrazine = 5,
 		/obj/item/reagent_containers/hypospray/autoinjector/spaceacillin = 1, /obj/item/reagent_containers/syringe/spaceacillin = 1,
 
 		/obj/item/implantcase/death_alarm = 2,
@@ -1273,7 +1273,7 @@
 		/obj/item/stack/medical/advanced/bruise_pack = 200, /obj/item/stack/medical/advanced/ointment = 200,
 		/obj/item/stack/nanopaste = 1000,
 		/obj/item/stack/medical/splint = 200,
-
+#warn bad
 		/obj/item/reagent_containers/hypospray/autoinjector/antitoxin = 100, /obj/item/reagent_containers/syringe/antitoxin = 200,
 		/obj/item/reagent_containers/hypospray/autoinjector/tricordrazine = 150, /obj/item/reagent_containers/syringe/tricordrazine = 300,
 		/obj/item/reagent_containers/hypospray/autoinjector/spaceacillin = 100, /obj/item/reagent_containers/syringe/spaceacillin = 200,

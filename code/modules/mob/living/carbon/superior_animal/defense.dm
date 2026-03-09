@@ -45,31 +45,32 @@
 			help_shake_act(M)
 
 		if (I_GRAB)
-			if(M == src || anchored)
-				return 0
-			for(var/obj/item/grab/G in src.grabbed_by)
-				if(G.assailant == M)
-					to_chat(M, SPAN_NOTICE("You already grabbed [src]."))
-					return
+#warn greb
+			// if(M == src || anchored)
+			// 	return 0
+			// for(var/obj/item/grab/G in src.grabbed_by)
+			// 	if(G.assailant == M)
+			// 		to_chat(M, SPAN_NOTICE("You already grabbed [src]."))
+			// 		return
 
-			var/obj/item/grab/G = new /obj/item/grab(M, src)
-			if(buckled)
-				to_chat(M, SPAN_NOTICE("You cannot grab [src], \he is buckled in!"))
-			if(!G) //the grab will delete itself in New if affecting is anchored
-				return
+			// var/obj/item/grab/G = new /obj/item/grab(M, src)
+			// if(buckled)
+			// 	to_chat(M, SPAN_NOTICE("You cannot grab [src], \he is buckled in!"))
+			// if(!G) //the grab will delete itself in New if affecting is anchored
+			// 	return
 
-			if (M in friends)
-				grabbed_by_friend = TRUE // disables AI for easier wrangling
-			M.put_in_active_hand(G)
-			#warn grab sync was here
-			// G.synch()
-			LAssailant = M
+			// if (M in friends)
+			// 	grabbed_by_friend = TRUE // disables AI for easier wrangling
+			// M.put_in_active_hand(G)
+			// #warn grab sync was here
+			// // G.synch()
+			// LAssailant = M
 
-			M.do_attack_animation(src)
-			playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
-			visible_message(SPAN_WARNING("[M] has grabbed [src] passively!"))
+			// M.do_attack_animation(src)
+			// playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
+			// visible_message(SPAN_WARNING("[M] has grabbed [src] passively!"))
 
-			return 1
+			// return 1
 
 		if (I_DISARM)
 			if (!weakened && prob(30))

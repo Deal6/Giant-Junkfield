@@ -58,7 +58,8 @@
 		return ..()
 /*	if((CLUMSY in user.mutations) && prob(50))
 		M = user	*/
-	return eyestab(M,user)
+#warn me when
+	// return eyestab(M,user)
 
 
 /obj/item/tool/screwdriver/combi_driver/onestar

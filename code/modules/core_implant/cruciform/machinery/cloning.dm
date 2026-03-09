@@ -212,7 +212,8 @@
 			occupant.change_skin_tone(R.s_tone)
 			occupant.gender = R.gender
 			occupant.tts_seed = R.tts_seed
-			occupant.sync_organ_dna()
+#warn bad
+			// occupant.sync_organ_dna()
 			occupant.flavor_text = R.flavor
 			R.stats.copyTo(occupant.stats)
 

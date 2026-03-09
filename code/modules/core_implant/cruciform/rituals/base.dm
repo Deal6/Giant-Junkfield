@@ -1,4 +1,3 @@
-#warn custom_pain("
 /datum/ritual/cruciform/base
 	name = "cruciform"
 	phrase = null
@@ -361,17 +360,17 @@
 	if(!CI.install(H, BP_CHEST, user) || CI.wearer != H)
 		fail("Commitment failed.", user, C)
 		return FALSE
-
-	if(ishuman(H))
-		var/mob/living/carbon/human/M = H
-		var/obj/item/organ/external/E = M.organs_by_name[BP_CHEST]
-		for (var/i = 0; i < 5;i++)
-			E.take_damage(5, BRUTE, sharp = FALSE)
-			//Deal 25 damage in five hits. Using multiple small hits mostly prevents internal damage
+#warn bad
+	// if(ishuman(H))
+	// 	var/mob/living/carbon/human/M = H
+		// var/obj/item/organ/external/E = M.organs_by_name[BP_CHEST]
+		// for (var/i = 0; i < 5;i++)
+		// 	E.take_damage(5, BRUTE, sharp = FALSE)
+		// 	//Deal 25 damage in five hits. Using multiple small hits mostly prevents internal damage
 
 		// M.custom_pain("You feel the nails of the cruciform drive into your ribs!",1)
-		M.update_implants()
-		M.updatehealth()
+		// M.update_implants()
+		// M.updatehealth()
 	set_personal_cooldown(user)
 
 	return TRUE
@@ -395,9 +394,10 @@
 	var/mob/M = CI.wearer
 
 	if(ishuman(M) && M.is_dead())
-		var/mob/living/carbon/human/H = M
-		var/obj/item/organ/external/E = H.organs_by_name[BP_CHEST]
-		E.take_damage(15)
+#warn bad
+		// var/mob/living/carbon/human/H = M
+		// var/obj/item/organ/external/E = H.organs_by_name[BP_CHEST]
+		// E.take_damage(15)
 		// H.custom_pain("You feel the cruciform ripping out of your chest!",1)
 		CI.uninstall()
 		return TRUE

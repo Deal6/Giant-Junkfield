@@ -55,22 +55,22 @@
 			S.master = src
 			effect += S
 	update_icon()
-
+#warn bad
 /obj/machinery/cellshower/proc/spray()
-	visible_message("<span class='warning'>[src] clicks and distributes some pain.")
-	playsound(src.loc, 'sound/effects/spray2.ogg', 50, 1)
-	var/obj/machinery/cellshower/targetshower = locate(x, y, z - 1)
-	for(var/turf/T in RANGE_TURFS(1, targetshower))
-		if(T.density)
-			continue
-		spawn(0)
-			var/obj/effect/effect/water/chempuff/D = new(locate(x, y, z - 1))
-			#warn bad
-			// D.create_reagents(5)
-			// D.reagents.add_reagent("condensedcapsaicin", 5)
-			D.set_color()
-			D.set_up(T, 1, 10)
-	last_spray = world.time
+	// visible_message("<span class='warning'>[src] clicks and distributes some pain.")
+	// playsound(src.loc, 'sound/effects/spray2.ogg', 50, 1)
+	// var/obj/machinery/cellshower/targetshower = locate(x, y, z - 1)
+	// for(var/turf/T in RANGE_TURFS(1, targetshower))
+	// 	if(T.density)
+	// 		continue
+	// 	spawn(0)
+	// 		var/obj/effect/effect/water/chempuff/D = new(locate(x, y, z - 1))
+	// 		#warn bad
+	// 		// D.create_reagents(5)
+	// 		// D.reagents.add_reagent("condensedcapsaicin", 5)
+	// 		D.set_color()
+	// 		D.set_up(T, 1, 10)
+	// last_spray = world.time
 
 /obj/effect/shower
 	anchored = TRUE

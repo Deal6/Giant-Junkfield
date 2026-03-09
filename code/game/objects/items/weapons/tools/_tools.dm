@@ -908,13 +908,14 @@
 			message_admins("[key_name_admin(user)] triggered an explosion with a welding tool.")
 			log_game("[key_name(user)] triggered an explosion with a welding tool.")
 			to_chat(user, SPAN_DANGER("You begin welding on the [O] and with a moment of lucidity you realize, this might not have been the smartest thing you've ever done."))
-			if(istype(O, /obj/structure/reagent_dispensers/fueltank))
-				var/obj/structure/reagent_dispensers/fueltank/T = O
-				T.explode()
-			else if(istype(O, /obj/item/weldpack))
-				var/obj/item/weldpack/P = O
-				P.explode()
-			return
+#warn weldpack reagent explode?
+			// if(istype(O, /obj/structure/reagent_dispensers/fueltank))
+			// 	var/obj/structure/reagent_dispensers/fueltank/T = O
+			// 	T.explode()
+			// else if(istype(O, /obj/item/weldpack))
+			// 	var/obj/item/weldpack/P = O
+			// 	P.explode()
+			// return
 /*
 		else if(istype(O, /mob/living/carbon/superior_animal/roach/benzin))
 			var/mob/living/carbon/superior_animal/roach/benzin/B = O
@@ -969,15 +970,16 @@
 	if(. && loc == user && (!(flags & NOBLUDGEON)) && (world.time - last_tooluse) > 2)
 		consume_resources(5,user)
 
+#warn comment suggests moving to mob
 //Decides whether or not to damage a player's eyes based on what they're wearing as protection
 //Note: This should probably be moved to mob
 /obj/item/tool/proc/eyecheck(var/mob/user)
 	if(!iscarbon(user))
 		return TRUE
-	if(ishuman(user))
-		var/mob/living/carbon/human/H = user
-		var/obj/item/organ/internal/eyes/E = H.random_organ_by_process(OP_EYES)
-		#warn bad
+#warn bad
+	// if(ishuman(user))
+	// 	var/mob/living/carbon/human/H = user
+	// 	var/obj/item/organ/internal/eyes/E = H.random_organ_by_process(OP_EYES)
 		// if(!E)
 		// 	return
 		// var/safety = H.eyecheck()

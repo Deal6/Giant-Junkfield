@@ -114,21 +114,21 @@
 	return TRUE
 
 // Also used by R&D console UI.
+	#warn bad autolathe
 /obj/machinery/autolathe/proc/materials_data()
 	var/list/data = list()
 
 	data["mat_efficiency"] = mat_efficiency
 	data["mat_capacity"] = storage_capacity
 
-	data["container"] = !!container
-	#warn bad
+	// data["container"] = !!container
 	// if(container && container.reagents)
 	// 	var/list/L = list()
 	// 	for(var/datum/reagent/R in container.reagents.reagent_list)
 	// 		var/list/LE = list("name" = R.name, "amount" = R.volume)
 	// 		L.Add(list(LE))
 
-		data["reagents"] = L
+		// data["reagents"] = L
 
 	var/list/M = list()
 	for(var/mtype in stored_material)

@@ -1114,7 +1114,8 @@
 		list(CWJ_ADD_PRODUCE_OPTIONAL, "cabbage"),
 		list(CWJ_ADD_PRODUCE_OPTIONAL, "tomato"),
 		list(CWJ_ADD_REAGENT_OPTIONAL, "ketchup", 1),
-		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/snacks/moecube/worm)
+#warn bad
+		// list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/snacks/moecube/worm)
 	)
 
 /datum/cooking_with_jane/recipe/geneburger
@@ -1128,7 +1129,8 @@
 		list(CWJ_ADD_PRODUCE_OPTIONAL, "cabbage"),
 		list(CWJ_ADD_PRODUCE_OPTIONAL, "tomato"),
 		list(CWJ_ADD_REAGENT_OPTIONAL, "ketchup", 1),
-		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/snacks/moecube)
+#warn bad
+		// list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/snacks/moecube)
 	)
 
 //**Pastas**//

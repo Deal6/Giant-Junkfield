@@ -148,7 +148,8 @@
 		var/list/processed_charges = list()
 		for(var/obj/item/reagent_containers/beaker in beakers)
 			var/datum/rig_charge/charge_dat = new
-			var/reag_name = beaker.reagents.get_master_reagent_name()
+#warn bad
+			// var/reag_name = beaker.reagents.get_master_reagent_name()
 			empties++;
 
 			charge_dat.short_name   = reag_name ? reag_name : "Empty[empties]"

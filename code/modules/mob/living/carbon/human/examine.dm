@@ -274,16 +274,15 @@
 	// 		wound_flavor_text["[temp.name]"] += "<span class='warning'>[T.His] [temp.joint] is dangling uselessly!</span><br>"
 	// 	if(((temp.status & ORGAN_BROKEN) && temp.brute_dam > temp.min_broken_damage) || (temp.status & ORGAN_MUTATED))
 	// 		wound_flavor_text["[temp.name]"] += "<span class='warning'>[T.His] [temp.name] is dented and swollen!</span><br>"
-
-	for(var/limb in wound_flavor_text)
-		msg += wound_flavor_text[limb]
-		is_bleeding[limb] = null
-	for(var/limb in is_bleeding)
-		msg += is_bleeding[limb]
-	for(var/implant in get_visible_implants())
-		msg += "<span class='danger'>[src] [T.has] \a [implant] sticking out of [T.his] flesh!</span>\n"
-	if(digitalcamo)
-		msg += "[T.He] [T.is] repulsively uncanny!\n"
+	// for(var/limb in wound_flavor_text)
+	// 	msg += wound_flavor_text[limb]
+	// 	is_bleeding[limb] = null
+	// for(var/limb in is_bleeding)
+	// 	msg += is_bleeding[limb]
+	// for(var/implant in get_visible_implants())
+	// 	msg += "<span class='danger'>[src] [T.has] \a [implant] sticking out of [T.his] flesh!</span>\n"
+	// if(digitalcamo)
+	// 	msg += "[T.He] [T.is] repulsively uncanny!\n"
 
 	if(hasHUD(user, "security"))
 		var/perpname = get_id_name(name)

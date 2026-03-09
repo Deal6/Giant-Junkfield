@@ -61,10 +61,10 @@
 			// 	if (ishuman(M))
 			// 		var/mob/living/carbon/human/H = M
 			// 		H.custom_pain(painMes)
-				else if (iscarbon(M))
-					var/mob/living/carbon/C = M
-					if (!(C.species && (C.species.flags & NO_PAIN)))
-						to_chat(M, SPAN_DANGER("[painMes]"))
+				// else if (iscarbon(M))
+				// 	var/mob/living/carbon/C = M
+				// 	if (!(C.species && (C.species.flags & NO_PAIN)))
+				// 		to_chat(M, SPAN_DANGER("[painMes]"))
 
 			gain_nutrition(rand(20,25))
 

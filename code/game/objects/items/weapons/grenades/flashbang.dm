@@ -117,24 +117,24 @@
 			M.adjustEarDamage(rand(0, 1))
 			M.ear_deaf = max(M.ear_deaf,5)
 			M.confused = max(M.confused,5)
-
+#warn dev comment below + commented lines
 	//This really should be in mob not every check
-	if(ishuman(M))
-		var/mob/living/carbon/human/H = M
-		var/obj/item/organ/internal/eyes/E = H.random_organ_by_process(OP_EYES)
-		if (E && E.damage >= E.min_bruised_damage)
-			to_chat(M, SPAN_DANGER("Your eyes start to burn badly!"))
-	if (M.ear_damage >= 15)
-		to_chat(M, SPAN_DANGER("Your ears start to ring badly!"))
-	else
-		if (M.ear_damage >= 5)
-			to_chat(M, SPAN_DANGER("Your ears start to ring!"))
-	if(stat_reduction)
-		M.stats.addTempStat(STAT_VIG, stat_def, 10 SECONDS, "flashbang")
-		M.stats.addTempStat(STAT_COG, stat_def, 10 SECONDS, "flashbang")
-		M.stats.addTempStat(STAT_BIO, stat_def, 10 SECONDS, "flashbang")
-		M.stats.addTempStat(STAT_MEC, stat_def, 10 SECONDS, "flashbang")
-	M.update_icons()
+	// if(ishuman(M))
+	// 	var/mob/living/carbon/human/H = M
+	// 	var/obj/item/organ/internal/eyes/E = H.random_organ_by_process(OP_EYES)
+	// 	if (E && E.damage >= E.min_bruised_damage)
+	// 		to_chat(M, SPAN_DANGER("Your eyes start to burn badly!"))
+	// if (M.ear_damage >= 15)
+	// 	to_chat(M, SPAN_DANGER("Your ears start to ring badly!"))
+	// else
+	// 	if (M.ear_damage >= 5)
+	// 		to_chat(M, SPAN_DANGER("Your ears start to ring!"))
+	// if(stat_reduction)
+	// 	M.stats.addTempStat(STAT_VIG, stat_def, 10 SECONDS, "flashbang")
+	// 	M.stats.addTempStat(STAT_COG, stat_def, 10 SECONDS, "flashbang")
+	// 	M.stats.addTempStat(STAT_BIO, stat_def, 10 SECONDS, "flashbang")
+	// 	M.stats.addTempStat(STAT_MEC, stat_def, 10 SECONDS, "flashbang")
+	// M.update_icons()
 
 /obj/item/grenade/flashbang/nt
 	name = "NT FBG \"Holy Light\""

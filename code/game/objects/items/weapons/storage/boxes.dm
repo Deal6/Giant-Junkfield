@@ -229,7 +229,8 @@
 	illustration = "flashbang"
 	rarity_value = 50
 	prespawned_content_amount = 6
-	prespawned_content_type = /obj/item/grenade/chem_grenade/teargas
+#warn bad
+	// prespawned_content_type = /obj/item/grenade/chem_grenade/teargas
 
 /obj/item/storage/box/emps
 	name = "box of emp grenades"
@@ -289,7 +290,8 @@
 	illustration = "flashbang"
 	rarity_value = 60
 	prespawned_content_amount = 5
-	prespawned_content_type = /obj/item/grenade/chem_grenade/incendiary
+#warn bad
+	// prespawned_content_type = /obj/item/grenade/chem_grenade/incendiary
 
 /obj/item/storage/box/sting_rounds
 	name = "box of sting rounds"

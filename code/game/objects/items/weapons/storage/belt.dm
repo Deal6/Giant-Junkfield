@@ -91,7 +91,7 @@
 	new /obj/item/tool/wirecutters/armature(src)
 	new /obj/item/tool/shovel/power(src)
 	new /obj/item/stack/cable_coil/random(src)
-	
+
 /obj/item/storage/belt/utility/roboticist
 	spawn_blacklisted = TRUE
 
@@ -103,7 +103,7 @@
 	new /obj/item/tool/wirecutters/pliers(src)
 	new /obj/item/stack/cable_coil/random(src)
 	new /obj/item/tool/multitool(src)
-	
+
 /obj/item/storage/belt/utility/neotheology
 	name = "neotheology utility belt"
 	desc = "Waist-held holy items."

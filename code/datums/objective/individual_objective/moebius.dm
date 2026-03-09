@@ -168,17 +168,17 @@
 		return FALSE
 	var/list/candidates = (GLOB.player_list & GLOB.living_mob_list & GLOB.human_mob_list) - L
 	return candidates.len
-
+#warn oh fuck no... who the FUCK made individual objective IN THE FUCKING NOTES anyways?!
 /datum/individual_objective/for_science/assign()
 	..()
-	var/list/valid_targets = (GLOB.player_list & GLOB.living_mob_list & GLOB.human_mob_list) - mind_holder
-	target = pick(valid_targets)
-	for(var/obj/item/organ/external/E in target.organs)
-		valid_organs += E
-	for(var/obj/item/organ/O in target.internal_organs)
-		valid_organs += O
-	desc = "[target] looks interesting. Put any of their organ in destructive analyzer."
-	RegisterSignal(mind_holder, COMSING_DESTRUCTIVE_ANALIZER, PROC_REF(task_completed))
+	// var/list/valid_targets = (GLOB.player_list & GLOB.living_mob_list & GLOB.human_mob_list) - mind_holder
+	// target = pick(valid_targets)
+	// for(var/obj/item/organ/external/E in target.organs)
+	// 	valid_organs += E
+	// for(var/obj/item/organ/O in target.internal_organs)
+	// 	valid_organs += O
+	// desc = "[target] looks interesting. Put any of their organ in destructive analyzer."
+	// RegisterSignal(mind_holder, COMSING_DESTRUCTIVE_ANALIZER, PROC_REF(task_completed))
 
 /datum/individual_objective/for_science/task_completed(obj/item/I)
 	if(I in valid_organs)

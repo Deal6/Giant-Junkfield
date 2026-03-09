@@ -101,11 +101,12 @@
 		if(cooldown_on || disabled)
 			return
 		else
-			new /obj/effect/effect/foam(src.loc)
-			src.uses--
-			cooldown_on = 1
-			cooldown_time = world.timeofday + 100
-			slip_process()
+#warn bad
+			// new /obj/effect/effect/foam(src.loc)
+			// src.uses--
+			// cooldown_on = 1
+			// cooldown_time = world.timeofday + 100
+			// slip_process()
 			return
 
 	src.attack_hand(usr)

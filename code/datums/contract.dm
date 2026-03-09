@@ -231,8 +231,9 @@ GLOBAL_LIST_INIT(excel_item_targets,list(
 			candidates -= target_mind
 			continue
 		target = H.get_core_implant(/obj/item/implant/core_implant/cruciform)
-		if(!target)
-			target = H.organs_by_name[BP_HEAD]
+	#warn bad
+		// if(!target)
+		// 	target = H.organs_by_name[BP_HEAD]
 		desc = "Assasinate [target_mind.current.real_name] and send [gender_datums[target_mind.current.gender].his] [target.name] via BSDM as a proof."
 		if(H.stats.getPerk(PERK_NOBLE))
 			reward *= 1.5

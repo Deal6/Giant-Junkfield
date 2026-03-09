@@ -50,12 +50,13 @@ true, and the mob is not yet deleted, so we need to check that as well*/
 	return TRUE
 
 // Attacking someone with a weapon while they are neck-grabbed
+#warn bad
 /mob/living/carbon/proc/check_attack_throat(obj/item/W, mob/user)
-	if(user.a_intent == I_HURT)
-		for(var/obj/item/grab/G in src.grabbed_by)
-			if(G.assailant == user && G.state >= GRAB_NECK)
-				if(attack_throat(W, G, user))
-					return 1
+	// if(user.a_intent == I_HURT)
+	// 	for(var/obj/item/grab/G in src.grabbed_by)
+	// 		if(G.assailant == user && G.state >= GRAB_NECK)
+	// 			if(attack_throat(W, G, user))
+	// 				return 1
 	return 0
 
 // Knifing
@@ -72,7 +73,7 @@ true, and the mob is not yet deleted, so we need to check that as well*/
 			return 0
 
 		damage_through_armor(W.force, W.damtype, BP_HEAD, wounding_multiplier = 2, sharp = W.sharp, edge = W.edge, used_weapon = W)
-		
+
 		user.visible_message(SPAN_DANGER("\The [user] cuts [src]'s neck with \the [W]!"), SPAN_DANGER("You cut [src]'s neck with \the [W]!"))
 
 		if(W.hitsound)

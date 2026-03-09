@@ -84,7 +84,7 @@
 		f_style = "Shaved"
 
 	update_hair()
-
+#warn
 /mob/living/carbon/human/proc/change_eye_color(var/color)
 	if(color == eyes_color)
 		return
@@ -170,8 +170,9 @@
 	return species.get_facial_hair_styles(gender)
 
 /mob/living/carbon/human/proc/force_update_limbs()
-	for(var/obj/item/organ/external/O in organs)
-		O.sync_colour_to_human(src)
+#warn
+	// for(var/obj/item/organ/external/O in organs)
+	// 	O.sync_colour_to_human(src)
 	update_body(0)
 
 /mob/living/carbon/human/proc/randomize_appearance()
@@ -185,7 +186,7 @@
 	var/gender = pick(MALE, FEMALE)
 	var/list/tts_voices = new()
 	if(gender == FEMALE) //defaults are MALE so check for FEMALE first, use MALE as default case
-		change_gender(gender) 
+		change_gender(gender)
 		tts_voices += TTS_SEED_DEFAULT_FEMALE //Failsafe voice
 	else
 		change_facial_hair(pick(GLOB.facial_hair_styles_list)) //pick a random facial hair

@@ -28,15 +28,16 @@
 	..()
 	toggle()
 
-/obj/item/implant/carrion_spider/holographic/toggle_attack(mob/user)
-	if(ready_to_attack)
-		ready_to_attack = FALSE
-		to_chat(user, SPAN_NOTICE("\The [src] wont attack nearby creatures anymore and can be used to scan creatures without attaching itself to them."))
-		scan_mobs = TRUE
-	else
-		ready_to_attack = TRUE
-		to_chat(user, SPAN_NOTICE("\The [src] is ready to attack nearby creatures or to be attached manually."))
-		scan_mobs = FALSE
+#warn carrion spooder
+// /obj/item/implant/carrion_spider/holographic/toggle_attack(mob/user)
+// 	if(ready_to_attack)
+// 		ready_to_attack = FALSE
+// 		to_chat(user, SPAN_NOTICE("\The [src] wont attack nearby creatures anymore and can be used to scan creatures without attaching itself to them."))
+// 		scan_mobs = TRUE
+// 	else
+// 		ready_to_attack = TRUE
+// 		to_chat(user, SPAN_NOTICE("\The [src] is ready to attack nearby creatures or to be attached manually."))
+// 		scan_mobs = FALSE
 
 /obj/item/implant/carrion_spider/holographic/attack(mob/living/M, mob/living/user)
 	if(!scan_mobs)

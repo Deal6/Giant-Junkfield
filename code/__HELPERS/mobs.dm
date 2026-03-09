@@ -315,10 +315,10 @@ Proc for attack log creation, because really why not
 	if(C && C.get_module(CRUCIFORM_INQUISITOR))
 		return TRUE
 	return FALSE
-
+#warn bad carrion
 /proc/is_carrion(mob/living/carbon/human/H)
-	if(istype(H) && (H.organ_list_by_process(BP_SPCORE)).len)
-		return TRUE
+	// if(istype(H) && (H.organ_list_by_process(BP_SPCORE)).len)
+	// 	return TRUE
 
 	return FALSE
 

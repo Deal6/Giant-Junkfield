@@ -38,8 +38,8 @@
 	. = ..()
 
 
-
-	sync_organ_dna()
+	#warn sync_organ_dna()
+	// sync_organ_dna()
 	#warn No I won't make you blood do it yourself
 	// make_blood()
 	generate_dna()
@@ -52,10 +52,11 @@
 	GLOB.human_mob_list -= src
 
 	// Prevent death from organ removal
-	status_flags |= REBUILDING_ORGANS
-	for(var/organ in organs)
-		qdel(organ)
-	organs.Cut()
+#warn bad also test if line below actually does something
+	// status_flags |= REBUILDING_ORGANS
+	// for(var/organ in organs)
+	// 	qdel(organ)
+	// organs.Cut()
 
 	QDEL_NULL(sanity)
 
@@ -1147,11 +1148,11 @@ var/list/rank_prefix = list(\
 		else
 			return "<font color='blue'>[copytext_preserve_html(msg, 1, 37)]... <a href='byond://?src=\ref[src];flavor_more=1'>More...</a></font>"
 	return ..()
-
+#warn bad
 /mob/living/carbon/human/has_brain()
-	if(organ_list_by_process(BP_BRAIN).len)
-		return TRUE
-	return FALSE
+	// if(organ_list_by_process(BP_BRAIN).len)
+	// 	return TRUE
+	// return FALSE
 
 /mob/living/carbon/human/has_eyes()
 	#warn see no shitcode - do no shitcode
@@ -1248,12 +1249,12 @@ var/list/rank_prefix = list(\
 			return method ? ">250" : "extremely weak and fast, patient's artery feels like a thread"
 	return "[method ? temp : temp + rand(-10, 10)]"
 //			output for machines^	^^^^^^^output for people^^^^^^^^^
-
+#warn bad
 /mob/living/carbon/human/proc/pulse()
-	if(stat == DEAD || !(organ_list_by_process(OP_HEART).len))
-		return PULSE_NONE
-	else
-		return pulse
+	// if(stat == DEAD || !(organ_list_by_process(OP_HEART).len))
+	// 	return PULSE_NONE
+	// else
+	// 	return pulse
 
 /mob/living/carbon/human/verb/lookup()
 	set name = "Look up"

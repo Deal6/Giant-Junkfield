@@ -210,47 +210,47 @@
 	return
 
 /obj/item/toy/waterflower/afterattack(atom/A as mob|obj, mob/user)
+#warn oh my fucking god
+	// if (istype(A, /obj/item/storage/backpack ))
+	// 	return
 
-	if (istype(A, /obj/item/storage/backpack ))
-		return
+	// else if (locate (/obj/structure/table, src.loc))
+	// 	return
 
-	else if (locate (/obj/structure/table, src.loc))
-		return
+	// else if (istype(A, /obj/structure/reagent_dispensers/watertank) && get_dist(src,A) <= 1)
+	// 	A.reagents.trans_to(src, 10)
+	// 	to_chat(user, SPAN_NOTICE("You refill your flower!"))
+	// 	return
 
-	else if (istype(A, /obj/structure/reagent_dispensers/watertank) && get_dist(src,A) <= 1)
-		A.reagents.trans_to(src, 10)
-		to_chat(user, SPAN_NOTICE("You refill your flower!"))
-		return
+	// else if (src.reagents.total_volume < 1)
+	// 	src.empty = 1
+	// 	to_chat(user, SPAN_NOTICE("Your flower has run dry!"))
+	// 	return
 
-	else if (src.reagents.total_volume < 1)
-		src.empty = 1
-		to_chat(user, SPAN_NOTICE("Your flower has run dry!"))
-		return
-
-	else
-		src.empty = 0
+	// else
+	// 	src.empty = 0
 
 
-		var/obj/effect/decal/D = new/obj/effect/decal/(get_turf(src))
-		D.name = "water"
-		D.icon = 'icons/obj/chemical.dmi'
-		D.icon_state = "chempuff"
-		D.create_reagents(5)
-		src.reagents.trans_to_obj(D, 1)
-		playsound(src.loc, 'sound/effects/spray3.ogg', 50, 1, -6)
+	// 	var/obj/effect/decal/D = new/obj/effect/decal/(get_turf(src))
+	// 	D.name = "water"
+	// 	D.icon = 'icons/obj/chemical.dmi'
+	// 	D.icon_state = "chempuff"
+	// 	D.create_reagents(5)
+	// 	src.reagents.trans_to_obj(D, 1)
+	// 	playsound(src.loc, 'sound/effects/spray3.ogg', 50, 1, -6)
 
-		spawn(0)
-			for(var/i=0, i<1, i++)
-				step_towards(D,A)
-				D.reagents.touch_turf(get_turf(D))
-				for(var/atom/T in get_turf(D))
-					D.reagents.touch(T)
-					if(ismob(T) && T:client)
-						to_chat(T:client, SPAN_WARNING("\The [user] has sprayed you with water!"))
-				sleep(4)
-			qdel(D)
+	// 	spawn(0)
+	// 		for(var/i=0, i<1, i++)
+	// 			step_towards(D,A)
+	// 			D.reagents.touch_turf(get_turf(D))
+	// 			for(var/atom/T in get_turf(D))
+	// 				D.reagents.touch(T)
+	// 				if(ismob(T) && T:client)
+	// 					to_chat(T:client, SPAN_WARNING("\The [user] has sprayed you with water!"))
+	// 			sleep(4)
+	// 		qdel(D)
 
-		return
+	// 	return
 
 /obj/item/toy/waterflower/examine(mob/user, extra_description = "")
 	if(get_dist(user, src) < 2)

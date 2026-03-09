@@ -25,15 +25,16 @@
 
 /mob/living/carbon/superior_animal/giant_spider/nurse/UnarmedAttack()
 	..()
-	if(ishuman(target_mob))
-		var/mob/living/carbon/human/H = target_mob
-		if(prob(egg_inject_chance))
-			var/obj/item/organ/external/O = safepick(H.organs)
-			if(O && !BP_IS_ROBOTIC(O))
-				src.visible_message(SPAN_DANGER("[src] injects something into the [O] of [H]!"))
-				var/obj/effect/spider/eggcluster/minor/S = new()
-				S.loc = O
-				O.implants += S
+#warn nurse spooder
+	// if(ishuman(target_mob))
+	// 	var/mob/living/carbon/human/H = target_mob
+	// 	if(prob(egg_inject_chance))
+	// 		var/obj/item/organ/external/O = safepick(H.organs)
+	// 		if(O && !BP_IS_ROBOTIC(O))
+	// 			src.visible_message(SPAN_DANGER("[src] injects something into the [O] of [H]!"))
+	// 			var/obj/effect/spider/eggcluster/minor/S = new()
+	// 			S.loc = O
+	// 			O.implants += S
 
 
 /mob/living/carbon/superior_animal/giant_spider/nurse/proc/GiveUp(var/C)

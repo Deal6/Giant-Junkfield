@@ -68,15 +68,15 @@ GLOBAL_LIST_INIT(default_uplink_source_priority, list(
 /decl/uplink_source/implant/setup_uplink_source(var/mob/living/carbon/human/H, var/amount)
 	if(!istype(H))
 		return SETUP_FAILED
-
-	var/obj/item/organ/external/head = H.organs_by_name[BP_HEAD]
-	if(!head)
-		return SETUP_FAILED
+#warn bad
+	// var/obj/item/organ/external/head = H.organs_by_name[BP_HEAD]
+	// if(!head)
+	// 	return SETUP_FAILED
 
 	var/obj/item/implant/uplink/U = new(H, IMPLANT_TELECRYSTAL_AMOUNT(amount))
 	U.wearer = H
 	U.implanted = TRUE
-	U.part = head
+	// U.part = head
 	#warn Traitor implant doesnt implant
 	// head.implants += U
 

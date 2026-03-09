@@ -426,14 +426,15 @@
 
 	new_character.name = real_name
 	new_character.b_type = client.prefs.b_type
-	new_character.sync_organ_dna()
-	if(client.prefs.disabilities)
-		if(client.prefs.disabilities & NEARSIGHTED)
-			new_character.add_mutation(MUTATION_NEARSIGHTED)
+#warn bad [5 lines except word comment]
+	// new_character.sync_organ_dna()
+	// if(client.prefs.disabilities)
+	// 	if(client.prefs.disabilities & NEARSIGHTED)
+	// 		new_character.add_mutation(MUTATION_NEARSIGHTED)
 
 	// Do the initial caching of the player's body icons.
 	new_character.force_update_limbs()
-	new_character.update_eyes()
+	// new_character.update_eyes()
 	new_character.regenerate_icons()
 	new_character.key = key//Manually transfer the key to log them in
 	new_character.client.init_verbs()

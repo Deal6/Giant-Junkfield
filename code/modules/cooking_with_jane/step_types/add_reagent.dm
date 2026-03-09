@@ -49,11 +49,12 @@
 
 //Reagents are calculated in two areas. Here and /datum/cooking_with_jane/recipe/proc/calculate_reagent_quality
 /datum/cooking_with_jane/recipe_step/add_reagent/calculate_quality(var/obj/used_item, var/datum/cooking_with_jane/recipe_tracker/tracker)
-	var/obj/item/container = tracker.holder_ref.resolve()
-	var/data = container.reagents.get_data(required_reagent_id)
+#warn this
+	// var/obj/item/container = tracker.holder_ref.resolve()
+	// var/data = container.reagents.get_data(required_reagent_id)
 	var/cooked_quality = 0
-	if(data && istype(data, /list) && data["FOOD_QUALITY"])
-		cooked_quality = data["FOOD_QUALITY"]
+	// if(data && istype(data, /list) && data["FOOD_QUALITY"])
+	// 	cooked_quality = data["FOOD_QUALITY"]
 	return cooked_quality
 
 

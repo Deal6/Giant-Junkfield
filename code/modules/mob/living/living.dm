@@ -130,10 +130,11 @@ default behaviour is:
 							now_pushing = FALSE
 							return
 					step_glide(AM, t, glide_size)
-					if(ishuman(AM) && AM:grabbed_by)
-						for(var/obj/item/grab/G in AM:grabbed_by)
-							step_glide(G:assailant, get_dir(G:assailant, AM), glide_size)
-							G.adjust_position()
+#warn bad
+					// if(ishuman(AM) && AM:grabbed_by)
+					// 	for(var/obj/item/grab/G in AM:grabbed_by)
+					// 		step_glide(G:assailant, get_dir(G:assailant, AM), glide_size)
+					// 		G.adjust_position()
 				now_pushing = FALSE
 			return
 	return
@@ -190,19 +191,20 @@ default behaviour is:
 //sort of a legacy burn method for /electrocute, /shock, and the e_chair
 /mob/living/proc/burn_skin(burn_amount)
 
+#warn bad
 /mob/living/carbon/human/burn_skin(burn_amount)
 	//world << "DEBUG: burn_skin(), mutations=[mutations]"
 //	if(mShock in mutations) //shockproof
 //		return FALSE
 //	if (COLD_RESISTANCE in mutations) //fireproof
 //		return FALSE
-	var/divided_damage = (burn_amount)/(organs.len)
-	var/extradam = 0	//added to when organ is at max dam
-	for(var/obj/item/organ/external/affecting in organs)
-		//TODO: fix the extradam stuff. Or, ebtter yet...rewrite this entire proc ~Carn
-		if(affecting.take_damage(divided_damage+extradam, BURN))
-			UpdateDamageIcon()
-	updatehealth()
+	// var/divided_damage = (burn_amount)/(organs.len)
+	// var/extradam = 0	//added to when organ is at max dam
+	// for(var/obj/item/organ/external/affecting in organs)
+	// 	//TODO: fix the extradam stuff. Or, ebtter yet...rewrite this entire proc ~Carn
+	// 	if(affecting.take_damage(divided_damage+extradam, BURN))
+	// 		UpdateDamageIcon()
+	// updatehealth()
 	return TRUE
 
 /mob/living/silicon/ai/burn_skin()
@@ -552,7 +554,8 @@ default behaviour is:
 						if (prob(75))
 							var/obj/item/grab/G = pick(M.grabbed_by)
 							if (istype(G, /obj/item/grab))
-								M.visible_message(SPAN_DANGER("[G.affecting] has been pulled from [G.assailant]'s grip by [src]."))
+#warn bad
+								// M.visible_message(SPAN_DANGER("[G.affecting] has been pulled from [G.assailant]'s grip by [src]."))
 								qdel(G)
 						else
 							ok = 0
@@ -579,13 +582,14 @@ default behaviour is:
 										M.adjustBruteLoss(2)
 										visible_message("<span class='danger'>\The [M]'s [M.isSynthetic() ? "state" : "wounds"] worsen terribly from being dragged!</span>")
 										var/turf/location = M.loc
-										if(istype(location, /turf))
-											if(ishuman(M))
-												var/mob/living/carbon/human/H = M
-												var/blood_volume = round(H.vessel.get_reagent_amount("blood"))
-												if(blood_volume > 0)
-													H.vessel.remove_reagent("blood", 0.5)
-													location.add_blood(M)
+#warn bad
+										// if(istype(location, /turf))
+										// 	if(ishuman(M))
+										// 		var/mob/living/carbon/human/H = M
+										// 		var/blood_volume = round(H.vessel.get_reagent_amount("blood"))
+										// 		if(blood_volume > 0)
+										// 			H.vessel.remove_reagent("blood", 0.5)
+										// 			location.add_blood(M)
 
 
 						step_glide(pulling, get_dir(pulling.loc, T), glide_size)
@@ -622,23 +626,23 @@ default behaviour is:
 		return FALSE
 
 	var/mob/living/carbon/human/H = ishuman(src) ? src : null
-
+#warn bad below
 	if(resting)
-		is_busy = TRUE
-		var/groinmult = 1
-		if(H)
-			var/obj/item/organ/external/groin = H.get_organ(BP_GROIN)
-			if(groin.limb_efficiency <= 0)
-				to_chat(src, SPAN_WARNING("You are too damaged to be able to get up."))
-				return FALSE
-			groinmult =  100 / groin.limb_efficiency // smaller mult the bigger the efficiency
+		// is_busy = TRUE
+		// var/groinmult = 1
+		// if(H)
+		// 	var/obj/item/organ/external/groin = H.get_organ(BP_GROIN)
+		// 	if(groin.limb_efficiency <= 0)
+		// 		to_chat(src, SPAN_WARNING("You are too damaged to be able to get up."))
+		// 		return FALSE
+		// 	groinmult =  100 / groin.limb_efficiency // smaller mult the bigger the efficiency
 
-		if(do_after(src, min((stats.getPerk(PERK_PARKOUR) ? 0.2 SECONDS : 0.4 SECONDS) * groinmult, 2 SECONDS), null, 0, 1, INCAPACITATION_DEFAULT, immobile = 0))
-			resting = FALSE
-			to_chat(src, SPAN_NOTICE("You are now getting up."))
-			update_lying_buckled_and_verb_status()
+		// if(do_after(src, min((stats.getPerk(PERK_PARKOUR) ? 0.2 SECONDS : 0.4 SECONDS) * groinmult, 2 SECONDS), null, 0, 1, INCAPACITATION_DEFAULT, immobile = 0))
+		// 	resting = FALSE
+		// 	to_chat(src, SPAN_NOTICE("You are now getting up."))
+		// 	update_lying_buckled_and_verb_status()
 
-		is_busy = FALSE
+		// is_busy = FALSE
 
 	else if(H && H.momentum_speed && !(istype(loc, /turf/space) || grabbed_by.len))
 		H.dive()

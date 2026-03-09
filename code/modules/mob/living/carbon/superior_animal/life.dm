@@ -1,5 +1,4 @@
-/
-mob/living/carbon/superior_animal/proc/check_AI_act()
+/mob/living/carbon/superior_animal/proc/check_AI_act()
 	if ((stat != CONSCIOUS) || !canmove || resting || lying || stasis || AI_inactive || client || grabbed_by_friend || !isturf(loc))
 		stance = HOSTILE_STANCE_IDLE
 		target_mob = null
