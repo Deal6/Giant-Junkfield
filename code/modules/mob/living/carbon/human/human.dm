@@ -1094,40 +1094,41 @@ var/list/rank_prefix = list(\
 		W.add_fingerprint(src)
 
 /mob/living/carbon/human/can_inject(mob/user, error_msg, target_zone)
-	. = 1
-	if(!target_zone)
-		if(user)
-			target_zone = user.targeted_organ
-		else
-			// Pick an existing non-robotic limb, if possible.
-			for(target_zone in BP_ALL_LIMBS)
-				var/obj/item/organ/external/affecting = get_organ(target_zone)
-				if(affecting && BP_IS_ORGANIC(affecting) || BP_IS_ASSISTED(affecting))
-					break
+#warn can inject
+	// . = 1
+	// if(!target_zone)
+	// 	if(user)
+	// 		target_zone = user.targeted_organ
+	// 	else
+	// 		// Pick an existing non-robotic limb, if possible.
+	// 		for(target_zone in BP_ALL_LIMBS)
+	// 			var/obj/item/organ/external/affecting = get_organ(target_zone)
+	// 			if(affecting && BP_IS_ORGANIC(affecting) || BP_IS_ASSISTED(affecting))
+	// 				break
 
 
-	var/obj/item/organ/external/affecting = get_organ(target_zone)
-	var/fail_msg
-	if(!affecting)
-		. = 0
-		fail_msg = "They are missing that limb."
-	else if(BP_IS_ROBOTIC(affecting))
-		. = 0
-		fail_msg = "That limb is robotic."
-	else
-		switch(target_zone)
-			if(BP_HEAD)
-				if(head && head.item_flags & THICKMATERIAL)
-					. = 0
-			else
-				if(wear_suit && wear_suit.item_flags & THICKMATERIAL)
-					. = 0
-	if(!. && error_msg && user)
-		if(BP_IS_LIFELIKE(affecting) && user.stats.getStat(STAT_BIO) < STAT_LEVEL_BASIC)
-			fail_msg = "Skin is tough and inelastic."
-		else if(!fail_msg)
-			fail_msg = "There is no exposed flesh or thin material [target_zone == BP_HEAD ? "on their head" : "on their body"] to inject into."
-		to_chat(user, SPAN_WARNING(fail_msg))
+	// var/obj/item/organ/external/affecting = get_organ(target_zone)
+	// var/fail_msg
+	// if(!affecting)
+	// 	. = 0
+	// 	fail_msg = "They are missing that limb."
+	// else if(BP_IS_ROBOTIC(affecting))
+	// 	. = 0
+	// 	fail_msg = "That limb is robotic."
+	// else
+	// 	switch(target_zone)
+	// 		if(BP_HEAD)
+	// 			if(head && head.item_flags & THICKMATERIAL)
+	// 				. = 0
+	// 		else
+	// 			if(wear_suit && wear_suit.item_flags & THICKMATERIAL)
+	// 				. = 0
+	// if(!. && error_msg && user)
+	// 	if(BP_IS_LIFELIKE(affecting) && user.stats.getStat(STAT_BIO) < STAT_LEVEL_BASIC)
+	// 		fail_msg = "Skin is tough and inelastic."
+	// 	else if(!fail_msg)
+	// 		fail_msg = "There is no exposed flesh or thin material [target_zone == BP_HEAD ? "on their head" : "on their body"] to inject into."
+	// 	to_chat(user, SPAN_WARNING(fail_msg))
 
 /mob/living/carbon/human/print_flavor_text(shrink = 1)
 	var/list/equipment = list(src.head,src.wear_mask,src.glasses,src.w_uniform,src.wear_suit,src.gloves,src.shoes)

@@ -148,12 +148,13 @@ other types of metals and chemistry for reagents).
 	category = "Medical"
 	sort_string = "VACBA"
 
-/datum/design/research/item/mmi_radio
-	name = "Radio-enabled man-machine interface"
-	build_type = PROTOLATHE | MECHFAB
-	build_path = /obj/item/device/mmi/radio_enabled
-	category = "Medical"
-	sort_string = "VACBB"
+#warn fuck you
+// /datum/design/research/item/mmi_radio
+// 	name = "Radio-enabled man-machine interface"
+// 	build_type = PROTOLATHE | MECHFAB
+// 	build_path = /obj/item/device/mmi/radio_enabled
+// 	category = "Medical"
+// 	sort_string = "VACBB"
 
 /datum/design/research/item/beacon
 	name = "Bluespace tracking beacon design"
@@ -215,7 +216,7 @@ other types of metals and chemistry for reagents).
 	name = "Moebius combat voidsuit"
 	build_path = /obj/item/clothing/suit/space/void/science
 	sort_string = "VASAC"
- 
+
 /datum/design/research/item/paramedic_armor
 	name = "Moebius paramedic armor"
 	build_path = /obj/item/clothing/suit/armor/paramedic
@@ -225,11 +226,11 @@ other types of metals and chemistry for reagents).
 	name = "Moebius paramedic helmet"
 	build_path = /obj/item/clothing/head/armor/faceshield/paramedic
 	sort_string = "VASAE"
-
-/datum/design/research/item/dna_scanner
-	name = "Portable dna sequencer"
-	build_path = /obj/item/dna_scanner
-	sort_string = "VASAF"
+#warn fuck you
+// /datum/design/research/item/dna_scanner
+// 	name = "Portable dna sequencer"
+// 	build_path = /obj/item/dna_scanner
+// 	sort_string = "VASAF"
 
 //Why is there a science design to craft a cardboard box full of things? That is not how this works
 /*

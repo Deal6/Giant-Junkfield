@@ -5,11 +5,12 @@
 	to_chat(owner, SPAN_DANGER(level < 20 ? "\icon['icons/effects/fabric_symbols_20.dmi'][pick_quote_20()]" : "\icon['icons/effects/fabric_symbols_40.dmi'][pick_quote_40()]"))
 
 /datum/sanity/proc/effect_sound()
-	var/sound/S = pick_sound()
-	if(islist(S))
-		to_chat(owner,SPAN_DANGER(S[2]))
-		S = S[1]
-	owner.playsound_local(owner, S, 50, 0, 8, null, 8)
+#warn I warn thee
+	// var/sound/S = pick_sound()
+	// if(islist(S))
+	// 	to_chat(owner,SPAN_DANGER(S[2]))
+	// 	S = S[1]
+	// owner.playsound_local(owner, S, 50, 0, 8, null, 8)
 
 /datum/sanity/proc/effect_whisper()
 	var/list/atom/candidates = owner.contents.Copy()

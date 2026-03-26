@@ -259,6 +259,7 @@
 	required_tech_levels = list()
 	cost = 1500
 
+#warn I warn thee
 	unlocks_designs = list(	/datum/design/research/circuit/dna_console,
 							/datum/design/research/circuit/cryo_slab,
 							/datum/design/research/circuit/moeballs_printer,

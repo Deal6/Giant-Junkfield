@@ -384,20 +384,21 @@
 		spawn(1) if(src) qdel(src)
 
 /obj/item/shield/hardsuit/Process()
-	if(!creator || loc != creator || (creator.l_hand != src && creator.r_hand != src))
-		// Tidy up a bit.
-		if(isliving(loc))
-			var/mob/living/carbon/human/host = loc
-			if(istype(host))
-				for(var/obj/item/organ/external/organ in host.organs)
-					for(var/obj/item/O in organ.implants)
-						if(O == src)
-							organ.implants -= src
-			host.pinned -= src
-			host.embedded -= src
-			host.drop_from_inventory(src)
-		if(cleanup)
-			spawn(1) if(src) qdel(src)
+#warn I warn thee
+	// if(!creator || loc != creator || (creator.l_hand != src && creator.r_hand != src))
+	// 	// Tidy up a bit.
+	// 	if(isliving(loc))
+	// 		var/mob/living/carbon/human/host = loc
+	// 		if(istype(host))
+	// 			for(var/obj/item/organ/external/organ in host.organs)
+	// 				for(var/obj/item/O in organ.implants)
+	// 					if(O == src)
+	// 						organ.implants -= src
+	// 		host.pinned -= src
+	// 		host.embedded -= src
+	// 		host.drop_from_inventory(src)
+	// 	if(cleanup)
+	// 		spawn(1) if(src) qdel(src)
 
 /*
  * Handmade shield

@@ -23,6 +23,8 @@
 /obj/item/reagent_containers/syringe/tricordrazine
 /obj/item/reagent_containers/syringe/antitoxin
 /obj/item/electronics/circuitboard/reagentgrinder
+/datum/design/research/item/mmi_radio
+/datum/design/research/item/dna_scanner
 
 /obj/item/organ/external/head
 
@@ -33,6 +35,7 @@
 /datum/design/research/circuit/dna_console
 /datum/design/research/circuit/cryo_slab
 /datum/design/research/circuit/moeballs_printer
+/datum/technology/freedom_implant
 
 /obj/item/electronics/circuitboard/industrial_grinder
 

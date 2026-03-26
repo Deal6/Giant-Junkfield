@@ -384,7 +384,8 @@ GLOBAL_VAR_INIT(GLOBAL_INSIGHT_MOD, 1)
 /datum/sanity/proc/onShock(amount)
 	changeLevel(-SANITY_DAMAGE_SHOCK(amount, owner.stats.getStat(STAT_VIG)))
 
-/datum/sanity/proc/onDrug(datum/reagent/drug/R, multiplier)
+#warn I warn thee
+// /datum/sanity/proc/onDrug(datum/reagent/drug/R, multiplier)
 	// changeLevel(R.sanity_gain * multiplier)
 	// if(resting)
 	// 	add_rest(INSIGHT_DESIRE_DRUGS, 4 * multiplier)

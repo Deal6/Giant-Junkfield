@@ -795,44 +795,45 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 			cell.use(charge_per_use)
 
 /obj/item/clothing/mask/vape/Process()
-	var/mob/living/M = loc
+#warn I warn thee
+	// var/mob/living/M = loc
 
-	if(isliving(loc))
-		M.IgniteMob()
+	// if(isliving(loc))
+	// 	M.IgniteMob()
 
-	vapetime++
+	// vapetime++
 
-	if(!reagents.total_volume)
-		if(ismob(loc))
-			to_chat(M, SPAN_WARNING("[src] is empty!"))
-			STOP_PROCESSING(SSobj, src)
-			//it's reusable so it won't unequip when empty
-		return
+	// if(!reagents.total_volume)
+	// 	if(ismob(loc))
+	// 		to_chat(M, SPAN_WARNING("[src] is empty!"))
+	// 		STOP_PROCESSING(SSobj, src)
+	// 		//it's reusable so it won't unequip when empty
+	// 	return
 
-	if(emagged && vapetime > 3)
-		var/datum/effect/effect/system/smoke_spread/chem/s = new /datum/effect/effect/system/smoke_spread/chem
-		s.set_up(reagents, 4, 24, loc)
-		s.start()
-		if(prob(5))//small chance for the vape to break and deal damage if it's emagged
-			playsound(get_turf(src), 'sound/effects/Explosion1.ogg', 50, FALSE)
-			M.apply_damage(20, BURN, BP_HEAD)
-			M.Stun(5)
-			var/datum/effect/effect/system/spark_spread/sp = new /datum/effect/effect/system/spark_spread //for effect
-			sp.set_up(5, 1, src)
-			sp.start()
-			to_chat(M, SPAN_WARNING("[src] suddenly explodes in your mouth!"))
-			qdel(src)
-			return
+	// if(emagged && vapetime > 3)
+	// 	var/datum/effect/effect/system/smoke_spread/chem/s = new /datum/effect/effect/system/smoke_spread/chem
+	// 	s.set_up(reagents, 4, 24, loc)
+	// 	s.start()
+	// 	if(prob(5))//small chance for the vape to break and deal damage if it's emagged
+	// 		playsound(get_turf(src), 'sound/effects/Explosion1.ogg', 50, FALSE)
+	// 		M.apply_damage(20, BURN, BP_HEAD)
+	// 		M.Stun(5)
+	// 		var/datum/effect/effect/system/spark_spread/sp = new /datum/effect/effect/system/spark_spread //for effect
+	// 		sp.set_up(5, 1, src)
+	// 		sp.start()
+	// 		to_chat(M, SPAN_WARNING("[src] suddenly explodes in your mouth!"))
+	// 		qdel(src)
+	// 		return
 
-	if(!cell || !cell.checked_use(charge_per_use))
-		to_chat(M, SPAN_WARNING("[src] battery is dead or missing."))
-		STOP_PROCESSING(SSobj, src)
-		return
+	// if(!cell || !cell.checked_use(charge_per_use))
+	// 	to_chat(M, SPAN_WARNING("[src] battery is dead or missing."))
+	// 	STOP_PROCESSING(SSobj, src)
+	// 	return
 
-	if(cell || cell.checked_use(charge_per_use))
-		if(reagents && reagents.total_volume)
-			if(vapetime > 4)
-				hand_reagents()
+	// if(cell || cell.checked_use(charge_per_use))
+	// 	if(reagents && reagents.total_volume)
+	// 		if(vapetime > 4)
+	// 			hand_reagents()
 
 /obj/item/clothing/mask/vape/better
 	name = "\improper Vapour mask"

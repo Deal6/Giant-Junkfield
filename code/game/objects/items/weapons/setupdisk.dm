@@ -57,10 +57,11 @@
 		/datum/computer_file/program/camera_monitor
 	)
 
+#warn I warn thee
 /obj/item/computer_hardware/hard_drive/portable/advanced/setup/genetics
-	name = "genetic setup disk"
-	desc = "A removable disk used to store large amounts of data.\nThis one contains all the files necessary to set up a genetics console."
-	default_files = list(/datum/computer_file/program/dna)
+	// name = "genetic setup disk"
+	// desc = "A removable disk used to store large amounts of data.\nThis one contains all the files necessary to set up a genetics console."
+	// default_files = list(/datum/computer_file/program/dna)
 
 /obj/item/computer_hardware/hard_drive/portable/advanced/setup/sysadmin
 	name = "sysadmins setup disk"

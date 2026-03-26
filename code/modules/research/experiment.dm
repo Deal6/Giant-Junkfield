@@ -225,29 +225,30 @@ GLOBAL_LIST_EMPTY(explosion_watcher_list)
 	return
 
 /obj/item/device/science_tool/afterattack(obj/O, mob/living/user)
-	var/scanneddata = 0
+#warn damn
+	// var/scanneddata = 0
 
-	if(istype(O,/obj/item/paper/autopsy_report))
-		var/obj/item/paper/autopsy_report/report = O
-		for(var/datum/autopsy_data/W in report.autopsy_data)
-			if(!(W.weapon in scanned_autopsy_weapons))
-				scanneddata += 1
-				scanned_autopsy_weapons += W.weapon
+	// if(istype(O,/obj/item/paper/autopsy_report))
+	// 	var/obj/item/paper/autopsy_report/report = O
+	// 	for(var/datum/autopsy_data/W in report.autopsy_data)
+	// 		if(!(W.weapon in scanned_autopsy_weapons))
+	// 			scanneddata += 1
+	// 			scanned_autopsy_weapons += W.weapon
 
-	if(istype(O, /obj/item/slime_extract))
-		if(!(O.type in scanned_slimecores))
-			scanned_slimecores += O.type
-			scanneddata += 1
+	// if(istype(O, /obj/item/slime_extract))
+	// 	if(!(O.type in scanned_slimecores))
+	// 		scanned_slimecores += O.type
+	// 		scanneddata += 1
 
-	if(scanneddata > 0)
-		datablocks += scanneddata
-		to_chat(user, SPAN_NOTICE("[src] received [scanneddata] data block[scanneddata>1?"s":""] from scanning [O]"))
-	else if(istype(O, /obj/item))
-		var/science_value = experiments.get_object_research_value(O)
-		if(science_value > 0)
-			to_chat(user, SPAN_NOTICE("Estimated research value of [O.name] is [science_value]"))
-		else
-			to_chat(user, SPAN_NOTICE("[O] has no research value"))
+	// if(scanneddata > 0)
+	// 	datablocks += scanneddata
+	// 	to_chat(user, SPAN_NOTICE("[src] received [scanneddata] data block[scanneddata>1?"s":""] from scanning [O]"))
+	// else if(istype(O, /obj/item))
+	// 	var/science_value = experiments.get_object_research_value(O)
+	// 	if(science_value > 0)
+	// 		to_chat(user, SPAN_NOTICE("Estimated research value of [O.name] is [science_value]"))
+	// 	else
+	// 		to_chat(user, SPAN_NOTICE("[O] has no research value"))
 
 /obj/item/device/science_tool/proc/clear_data()
 	scanned_autopsy_weapons = list()

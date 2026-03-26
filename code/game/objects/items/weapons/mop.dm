@@ -115,17 +115,18 @@
 		T.clean_partial(src, user, 1)
 
 /obj/item/mop/proc/makeWet(atom/A, mob/user)
-	if(A.is_open_container())
-		if(A.reagents)
-			if(A.reagents.total_volume < 1)
-				to_chat(user, SPAN_WARNING("\The [A] is out of water!"))
-				return
-			A.reagents.trans_to_obj(src, reagents.maximum_volume)
-		else
-			#warn reagents.add_reagent("water", reagents.maximum_volume)
+#warn I warn thee
+	// if(A.is_open_container())
+	// 	if(A.reagents)
+	// 		if(A.reagents.total_volume < 1)
+	// 			to_chat(user, SPAN_WARNING("\The [A] is out of water!"))
+	// 			return
+	// 		A.reagents.trans_to_obj(src, reagents.maximum_volume)
+	// 	else
+	// 		reagents.add_reagent("water", reagents.maximum_volume)
 
-		to_chat(user, SPAN_NOTICE("You wet \the [src] with \the [A]."))
-		playsound(loc, 'sound/effects/slosh.ogg', 25, 1)
+	// 	to_chat(user, SPAN_NOTICE("You wet \the [src] with \the [A]."))
+	// 	playsound(loc, 'sound/effects/slosh.ogg', 25, 1)
 
 
 

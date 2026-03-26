@@ -75,57 +75,57 @@
 		sleep(3)
 
 /obj/item/extinguisher/afterattack(var/atom/target, var/mob/user, var/flag)
-	//TODO; Add support for reagents in water.
+// 	//TODO; Add support for reagents in water.
 
-	if( istype(target, /obj/structure/reagent_dispensers/watertank) && flag)
-		var/obj/o = target
-		var/amount = o.reagents.trans_to_obj(src, 50)
-		to_chat(user, SPAN_NOTICE("You fill [src] with [amount] units of the contents of [target]."))
-		playsound(src.loc, 'sound/effects/refill.ogg', 50, 1, -6)
-		return
+// 	if( istype(target, /obj/structure/reagent_dispensers/watertank) && flag)
+// 		var/obj/o = target
+// 		var/amount = o.reagents.trans_to_obj(src, 50)
+// 		to_chat(user, SPAN_NOTICE("You fill [src] with [amount] units of the contents of [target]."))
+// 		playsound(src.loc, 'sound/effects/refill.ogg', 50, 1, -6)
+// 		return
 
-	if (!safety)
-		if (src.reagents.total_volume < 1)
-			to_chat(usr, SPAN_NOTICE("\The [src] is empty."))
-			return
+// 	if (!safety)
+// 		if (src.reagents.total_volume < 1)
+// 			to_chat(usr, SPAN_NOTICE("\The [src] is empty."))
+// 			return
 
-		if (world.time < src.last_use + 20)
-			return
+// 		if (world.time < src.last_use + 20)
+// 			return
 
-		src.last_use = world.time
+// 		src.last_use = world.time
 
-		playsound(src.loc, 'sound/effects/extinguish.ogg', 75, 1, -3)
+// 		playsound(src.loc, 'sound/effects/extinguish.ogg', 75, 1, -3)
 
-		var/direction = get_dir(src,target)
+// 		var/direction = get_dir(src,target)
 
-		if(user.buckled && isobj(user.buckled))
-			spawn(0)
-				propel_object(user.buckled, user, turn(direction,180))
+// 		if(user.buckled && isobj(user.buckled))
+// 			spawn(0)
+// 				propel_object(user.buckled, user, turn(direction,180))
 
-		var/turf/T = get_turf(target)
-		var/turf/T1 = get_step(T,turn(direction, 90))
-		var/turf/T2 = get_step(T,turn(direction, -90))
+// 		var/turf/T = get_turf(target)
+// 		var/turf/T1 = get_step(T,turn(direction, 90))
+// 		var/turf/T2 = get_step(T,turn(direction, -90))
 
-		var/list/the_targets = list(T,T1,T2)
+// 		var/list/the_targets = list(T,T1,T2)
 
-		for(var/a = 1 to spray_particles)
-			spawn(0)
-				if(!src || !reagents.total_volume) return
+// 		for(var/a = 1 to spray_particles)
+// 			spawn(0)
+// 				if(!src || !reagents.total_volume) return
 
-				var/obj/effect/effect/water/W = new(get_turf(src))
-				var/turf/my_target
-				if(a <= the_targets.len)
-					my_target = the_targets[a]
-				else
-					my_target = pick(the_targets)
-#warn bad		create_reagents(spray_amount)
-				reagents.trans_to_obj(W, spray_amount)
-				W.set_color()
-				W.set_up(my_target)
+// 				var/obj/effect/effect/water/W = new(get_turf(src))
+// 				var/turf/my_target
+// 				if(a <= the_targets.len)
+// 					my_target = the_targets[a]
+// 				else
+// 					my_target = pick(the_targets)
+// #warn bad		create_reagents(spray_amount)
+// 				reagents.trans_to_obj(W, spray_amount)
+// 				W.set_color()
+// 				W.set_up(my_target)
 
-		if((istype(usr.loc, /turf/space)) || (usr.lastarea.has_gravity == 0))
-			user.inertia_dir = get_dir(target, user)
-			step(user, user.inertia_dir)
-	else
-		return ..()
-	return
+// 		if((istype(usr.loc, /turf/space)) || (usr.lastarea.has_gravity == 0))
+// 			user.inertia_dir = get_dir(target, user)
+// 			step(user, user.inertia_dir)
+// 	else
+// 		return ..()
+// 	return
