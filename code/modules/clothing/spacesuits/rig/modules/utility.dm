@@ -143,24 +143,25 @@
 
 // Rebuilds charges , sad but necesarry due to how rig UI's get its data
 /obj/item/rig_module/modular_injector/proc/rebuild_charges()
-	empties = 0
-	if(beakers && beakers.len)
-		var/list/processed_charges = list()
-		for(var/obj/item/reagent_containers/beaker in beakers)
-			var/datum/rig_charge/charge_dat = new
 #warn bad
-			// var/reag_name = beaker.reagents.get_master_reagent_name()
-			empties++;
+	// empties = 0
+	// if(beakers && beakers.len)
+	// 	var/list/processed_charges = list()
+	// 	for(var/obj/item/reagent_containers/beaker in beakers)
+	// 		var/datum/rig_charge/charge_dat = new
 
-			charge_dat.short_name   = reag_name ? reag_name : "Empty[empties]"
-			charge_dat.display_name = reag_name ? reag_name : "Empty[empties]"
-			charge_dat.product_type = ref(beaker)
-			charge_dat.charges      = beaker.reagents.total_volume
+	// 		var/reag_name = beaker.reagents.get_master_reagent_name()
+	// 		empties++;
 
-			if(!charge_selected) charge_selected = charge_dat.short_name
-			processed_charges[charge_dat.short_name] = charge_dat
+	// 		charge_dat.short_name   = reag_name ? reag_name : "Empty[empties]"
+	// 		charge_dat.display_name = reag_name ? reag_name : "Empty[empties]"
+	// 		charge_dat.product_type = ref(beaker)
+	// 		charge_dat.charges      = beaker.reagents.total_volume
 
-		charges = processed_charges
+	// 		if(!charge_selected) charge_selected = charge_dat.short_name
+	// 		processed_charges[charge_dat.short_name] = charge_dat
+
+	// 	charges = processed_charges
 
 
 /obj/item/rig_module/modular_injector/accepts_item(obj/item/reagent_containers/item, mob/living/user, userless = FALSE)

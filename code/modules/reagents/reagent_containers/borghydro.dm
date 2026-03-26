@@ -51,24 +51,25 @@
 					reagent_volumes[T] = min(reagent_volumes[T] + 5, volume)
 	return TRUE
 
+#warn warn
 /obj/item/reagent_containers/borghypo/attack(var/mob/living/M, var/mob/user)
-	if(!istype(M))
-		return
+	// if(!istype(M))
+	// 	return
 
-	if(!reagent_volumes[reagent_ids[mode]])
-		to_chat(user, SPAN_WARNING("The injector is empty."))
-		return
+	// if(!reagent_volumes[reagent_ids[mode]])
+	// 	to_chat(user, SPAN_WARNING("The injector is empty."))
+	// 	return
 
-	if (M.can_inject(user, 1))
-		to_chat(user, SPAN_NOTICE("You inject [M] with the injector."))
-		to_chat(M, SPAN_NOTICE("You feel a tiny prick!"))
+	// if (M.can_inject(user, 1))
+	// 	to_chat(user, SPAN_NOTICE("You inject [M] with the injector."))
+	// 	to_chat(M, SPAN_NOTICE("You feel a tiny prick!"))
 
-		if(M.reagents)
-			var/t = min(amount_per_transfer_from_this, reagent_volumes[reagent_ids[mode]])
-#warn 			M.reagents.add_reagent(reagent_ids[mode], t)
-			reagent_volumes[reagent_ids[mode]] -= t
-			admin_inject_log(user, M, src, reagent_ids[mode], t)
-			to_chat(user, SPAN_NOTICE("[t] units injected. [reagent_volumes[reagent_ids[mode]]] units remaining."))
+	// 	if(M.reagents)
+	// 		var/t = min(amount_per_transfer_from_this, reagent_volumes[reagent_ids[mode]])
+	// 		M.reagents.add_reagent(reagent_ids[mode], t)
+	// 		reagent_volumes[reagent_ids[mode]] -= t
+	// 		admin_inject_log(user, M, src, reagent_ids[mode], t)
+	// 		to_chat(user, SPAN_NOTICE("[t] units injected. [reagent_volumes[reagent_ids[mode]]] units remaining."))
 	return
 
 /obj/item/reagent_containers/borghypo/attack_self(mob/user as mob) //Change the mode
@@ -114,23 +115,24 @@
 /obj/item/reagent_containers/borghypo/service/attack(var/mob/M, var/mob/user)
 	return
 
+#warn warn
 /obj/item/reagent_containers/borghypo/service/afterattack(var/obj/target, var/mob/user, var/proximity)
-	if(!proximity)
-		return
+	// if(!proximity)
+	// 	return
 
-	if(!target.is_refillable())
-		return
+	// if(!target.is_refillable())
+	// 	return
 
-	if(!reagent_volumes[reagent_ids[mode]])
-		to_chat(user, SPAN_NOTICE("[src] is out of this reagent, give it some time to refill."))
-		return
+	// if(!reagent_volumes[reagent_ids[mode]])
+	// 	to_chat(user, SPAN_NOTICE("[src] is out of this reagent, give it some time to refill."))
+	// 	return
 
-#warn 	if(!target.reagents.get_free_space())
-		// to_chat(user, SPAN_NOTICE("[target] is full."))
-		// return
+	// if(!target.reagents.get_free_space())
+	// 	// to_chat(user, SPAN_NOTICE("[target] is full."))
+	// 	// return
 
-	var/t = min(amount_per_transfer_from_this, reagent_volumes[reagent_ids[mode]])
-#warn 	target.reagents.add_reagent(reagent_ids[mode], t)
-	reagent_volumes[reagent_ids[mode]] -= t
-	to_chat(user, SPAN_NOTICE("You transfer [t] units of the solution to [target]."))
-	return
+	// var/t = min(amount_per_transfer_from_this, reagent_volumes[reagent_ids[mode]])
+	// target.reagents.add_reagent(reagent_ids[mode], t)
+	// reagent_volumes[reagent_ids[mode]] -= t
+	// to_chat(user, SPAN_NOTICE("You transfer [t] units of the solution to [target]."))
+	// return

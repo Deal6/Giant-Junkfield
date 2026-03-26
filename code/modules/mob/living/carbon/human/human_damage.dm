@@ -206,14 +206,15 @@
 //Heals ONE external organ, organ gets randomly selected from damaged ones.
 //It automatically updates damage overlays if necesary
 //It automatically updates health status
+#warn commented
 /mob/living/carbon/human/heal_organ_damage(var/brute, var/burn, var/additionally_brute_percent = 0, var/additionaly_burn_percent = 0)
-	var/list/obj/item/organ/external/parts = get_damaged_organs(brute,burn)
-	if(!parts.len)	return
-	var/obj/item/organ/external/picked = pick(parts)
-	if(picked.heal_damage(brute + (picked.brute_dam/100 * additionally_brute_percent),burn + (picked.burn_dam/100 * additionaly_burn_percent)))
-		UpdateDamageIcon()
-		BITSET(hud_updateflag, HEALTH_HUD)
-	updatehealth()
+	// var/list/obj/item/organ/external/parts = get_damaged_organs(brute,burn)
+	// if(!parts.len)	return
+	// var/obj/item/organ/external/picked = pick(parts)
+	// if(picked.heal_damage(brute + (picked.brute_dam/100 * additionally_brute_percent),burn + (picked.burn_dam/100 * additionaly_burn_percent)))
+	// 	UpdateDamageIcon()
+	// 	BITSET(hud_updateflag, HEALTH_HUD)
+	// updatehealth()
 
 
 /*

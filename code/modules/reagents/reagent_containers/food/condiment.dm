@@ -104,12 +104,13 @@
 					center_of_mass = list("x"=16, "y"=6)
 				else
 					name = "Misc Condiment Bottle"
-					if (reagents.reagent_list.len==1)
-						desc = "Looks like it is [reagents.get_master_reagent_name()], but you are not sure."
-					else
-						desc = "A mixture of various condiments. [reagents.get_master_reagent_name()] is one of them."
-					icon_state = "mixedcondiments"
-					center_of_mass = list("x"=16, "y"=6)
+					#warn warn
+					// if (reagents.reagent_list.len==1)
+					// 	desc = "Looks like it is [reagents.get_master_reagent_name()], but you are not sure."
+					// else
+					// 	desc = "A mixture of various condiments. [reagents.get_master_reagent_name()] is one of them."
+					// icon_state = "mixedcondiments"
+					// center_of_mass = list("x"=16, "y"=6)
 		else
 			icon_state = "emptycondiment"
 			name = "Condiment Bottle"

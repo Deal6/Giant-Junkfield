@@ -76,27 +76,27 @@
 	if(!user.unEquip(src))
 		return FALSE
 	return ForceEquipUnderwear(H)
-
+#warn bad 2 separated blocks
 /obj/item/underwear/proc/ForceEquipUnderwear(var/mob/living/carbon/human/H, var/update_icons = TRUE)
-	// No matter how forceful, we still don't allow multiples of the same underwear type
-	if(is_path_in_list(type, H.worn_underwear))
-		return FALSE
+	// // No matter how forceful, we still don't allow multiples of the same underwear type
+	// if(is_path_in_list(type, H.worn_underwear))
+	// 	return FALSE
 
-	H.worn_underwear += src
-	forceMove(H)
-	if(update_icons)
-		H.update_underwear()
+	// H.worn_underwear += src
+	// forceMove(H)
+	// if(update_icons)
+	// 	H.update_underwear()
 
 	return TRUE
 
 /obj/item/underwear/proc/RemoveUnderwear(var/mob/user, var/mob/living/carbon/human/H)
-	if(!CanRemoveUnderwear(user, H))
-		return FALSE
+	// if(!CanRemoveUnderwear(user, H))
+	// 	return FALSE
 
-	H.worn_underwear -= src
-	forceMove(H.loc)
-	user.put_in_hands(src)
-	H.update_underwear()
+	// H.worn_underwear -= src
+	// forceMove(H.loc)
+	// user.put_in_hands(src)
+	// H.update_underwear()
 
 	return TRUE
 

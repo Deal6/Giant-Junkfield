@@ -70,17 +70,18 @@
 		for(var/obj/effect/plant/SV in loc)
 			SV.die_off(1)
 
+#warn warn
 /mob/living/simple_animal/hostile/retaliate/goat/attackby(var/obj/item/O as obj, var/mob/user as mob)
-	var/obj/item/reagent_containers/G = O
-	if(stat == CONSCIOUS && istype(G) && G.is_refillable())
-		user.visible_message(SPAN_NOTICE("[user] milks [src] using \the [O]."))
-		var/transfered = udder.trans_id_to(G, "milk", rand(5,10))
-		if(G.reagents.total_volume >= G.volume)
-			to_chat(user, "\red The [O] is full.")
-		if(!transfered)
-			to_chat(user, "\red The udder is dry. Wait a bit longer...")
-	else
-		..()
+	// var/obj/item/reagent_containers/G = O
+	// if(stat == CONSCIOUS && istype(G) && G.is_refillable())
+	// 	user.visible_message(SPAN_NOTICE("[user] milks [src] using \the [O]."))
+	// 	var/transfered = udder.trans_id_to(G, "milk", rand(5,10))
+	// 	if(G.reagents.total_volume >= G.volume)
+	// 		to_chat(user, "\red The [O] is full.")
+	// 	if(!transfered)
+	// 		to_chat(user, "\red The udder is dry. Wait a bit longer...")
+	// else
+	// 	..()
 //cow
 /mob/living/simple_animal/cow
 	name = "cow"
@@ -108,17 +109,18 @@
 	udder.my_atom = src
 	..()
 
+#warn warn
 /mob/living/simple_animal/cow/attackby(var/obj/item/O as obj, var/mob/user as mob)
-	var/obj/item/reagent_containers/G = O
-	if(stat == CONSCIOUS && istype(G) && G.is_refillable())
-		user.visible_message(SPAN_NOTICE("[user] milks [src] using \the [O]."))
-		var/transfered = udder.trans_id_to(G, "milk", rand(5,10))
-		if(G.reagents.total_volume >= G.volume)
-			to_chat(user, "\red The [O] is full.")
-		if(!transfered)
-			to_chat(user, "\red The udder is dry. Wait a bit longer...")
-	else
-		..()
+	// var/obj/item/reagent_containers/G = O
+	// if(stat == CONSCIOUS && istype(G) && G.is_refillable())
+	// 	user.visible_message(SPAN_NOTICE("[user] milks [src] using \the [O]."))
+	// 	var/transfered = udder.trans_id_to(G, "milk", rand(5,10))
+	// 	if(G.reagents.total_volume >= G.volume)
+	// 		to_chat(user, "\red The [O] is full.")
+	// 	if(!transfered)
+	// 		to_chat(user, "\red The udder is dry. Wait a bit longer...")
+	// else
+	// 	..()
 
 /mob/living/simple_animal/cow/Life()
 	. = ..()

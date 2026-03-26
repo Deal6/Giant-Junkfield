@@ -189,17 +189,18 @@
 	if(istype(card.loc,/obj/item/rig_module))
 		to_chat(src, "There is no room to unfold inside this rig module. You're good and stuck.")
 		return 0
-	else if(ismob(card.loc))
-		var/mob/holder = card.loc
-		if(ishuman(holder))
-			var/mob/living/carbon/human/H = holder
-			for(var/obj/item/organ/external/affecting in H.organs)
-				if(card in affecting.implants)
-					affecting.take_damage(rand(30,50))
-					affecting.implants -= card
-					H.visible_message(SPAN_DANGER("\The [src] explodes out of \the [H]'s [affecting.name] in shower of gore!"))
-					break
-		holder.drop_from_inventory(card)
+#warn below
+	// else if(ismob(card.loc))
+	// 	var/mob/holder = card.loc
+	// 	if(ishuman(holder))
+	// 		var/mob/living/carbon/human/H = holder
+	// 		for(var/obj/item/organ/external/affecting in H.organs)
+	// 			if(card in affecting.implants)
+	// 				affecting.take_damage(rand(30,50))
+	// 				affecting.implants -= card
+	// 				H.visible_message(SPAN_DANGER("\The [src] explodes out of \the [H]'s [affecting.name] in shower of gore!"))
+	// 				break
+	// 	holder.drop_from_inventory(card)
 
 	src.client.perspective = EYE_PERSPECTIVE
 	src.client.eye = src

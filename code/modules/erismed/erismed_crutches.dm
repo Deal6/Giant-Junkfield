@@ -24,6 +24,17 @@
 /obj/item/reagent_containers/syringe/antitoxin
 /obj/item/electronics/circuitboard/reagentgrinder
 
+/obj/item/organ/external/head
+
+/datum/design/research/item/implant/chemical
+/datum/design/research/item/autodoc
+/datum/design/research/item/autodoc_commercial
+/datum/technology/top_biotech
+/datum/design/research/circuit/dna_console
+/datum/design/research/circuit/cryo_slab
+/datum/design/research/circuit/moeballs_printer
+
+/obj/item/electronics/circuitboard/industrial_grinder
 
 /obj/item/reagent_containers/syringe
 	var/mode = 0
@@ -34,6 +45,9 @@
 	var/brute_dam = 0
 	var/burn_dam = 0
 	var/status
+
+
+
 // # FUCKING ELSE
 /datum/reagents/proc/get_master_reagent_id()
 /datum/effect/effect/smoke_spread/chem

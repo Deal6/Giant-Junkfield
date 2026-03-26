@@ -228,7 +228,8 @@
 
 
 	character.update_body(0)
-	character.update_underwear(0)
+#warn the
+	// character.update_underwear(0)
 
 	character.update_hair(0)
 
@@ -239,7 +240,7 @@
 
 	for(var/lang in alternate_languages)
 		character.add_language(lang)
-	
+
 	character.exploit_record = exploit_record
 	if(!character.isSynthetic())
 		character.nutrition = rand(250, 450)

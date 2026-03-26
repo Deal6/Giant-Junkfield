@@ -215,7 +215,8 @@
 
 //Handles the effects of "stun" weapons
 /mob/living/proc/stun_effect_act(var/stun_amount, var/agony_amount, var/def_zone, var/used_weapon)
-	flash_pain()
+#warn warn
+	// flash_pain()
 
 	//For not bloating damage_through_armor here is simple armor calculation for stun time
 	var/armor_coefficient = max(0, 1 - getarmor(def_zone, ARMOR_ENERGY) / 100)

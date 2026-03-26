@@ -288,5 +288,6 @@
 					list("dexalinp" = 35, "cyanide" = 15) = 0.5,\
 					list("toxin" = 40, "cyanide" = 10) = 0.5))
 
+#warn warn
 	for(var/reagent in random_reagent)
-		#warn reagents.add_reagent(reagent, random_reagent[reagent])
+		reagents.add_reagent(reagent, random_reagent[reagent])

@@ -230,13 +230,14 @@
 				containers.Remove(C)
 				continue
 			var/amount = min(C.reagents.get_free_space(), min(amount_to_transfer, R.volume))
-#warn bad
 			if(!C.reagents.total_volume || C.reagents.has_reagent(R.id))
-#warn 				// C.reagents.add_reagent(R.id, amount, R.get_data())
+#warn bad
+				// C.reagents.add_reagent(R.id, amount, R.get_data())
 				reagents.remove_reagent(R.id, amount)
 				amount_to_transfer = max(0,amount_to_transfer - amount)
 	return TRUE
 
 /obj/item/reagent_containers/get_item_cost(export)
 	. = ..()
-	. += reagents?.get_price()
+	#warn warn
+	// . += reagents?.get_price()

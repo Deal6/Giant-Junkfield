@@ -90,7 +90,8 @@
 // Genetics
 /obj/item/modular_computer/console/preset/genetics/install_default_programs()
 	..()
-	hard_drive.store_file(new/datum/computer_file/program/dna())
+#warn warn
+	// hard_drive.store_file(new/datum/computer_file/program/dna())
 
 // TODO: enable after baymed AI
 // Research robotics (placeholder for future)

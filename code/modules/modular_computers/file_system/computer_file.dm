@@ -42,8 +42,9 @@ var/global/file_uid = 0
 	temp.size = size
 	temp.filetype = filetype
 	temp.filename = filename
-	temp.gene_type = gene_type
-	temp.gene_value = gene_value
+#warn warn
+	// temp.gene_type = gene_type
+	// temp.gene_value = gene_value
 
 	if(rename)
 		temp.filename += "(Copy)"

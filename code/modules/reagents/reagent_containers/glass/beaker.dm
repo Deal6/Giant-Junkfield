@@ -175,7 +175,8 @@
 
 	var/list/picked_reagents = pickweight(random_reagent_list)
 	for(var/reagent in picked_reagents)
-		#warn reagents.add_reagent(reagent, picked_reagents[reagent])
+#warn warn
+		// reagents.add_reagent(reagent, picked_reagents[reagent])
 
 	var/list/names = new
 	for(var/datum/reagent/R in reagents.reagent_list)

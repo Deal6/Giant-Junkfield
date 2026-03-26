@@ -161,13 +161,14 @@
 
 
 /obj/machinery/hivemind_machine/proc/finish_rebuild(var/new_machine_path)
-	var/obj/machinery/hivemind_machine/new_machine = new new_machine_path(get_turf(loc))
-	if(assimilated_machinery["path"])
-		new_machine.assimilated_machinery = assimilated_machinery
-	if(saved_circuit)
-		saved_circuit.loc = new_machine
-		new_machine.saved_circuit = saved_circuit
-	qdel(src)
+#warn weirdo
+	// var/obj/machinery/hivemind_machine/new_machine = new new_machine_path(get_turf(loc))
+	// if(assimilated_machinery["path"])
+	// 	new_machine.assimilated_machinery = assimilated_machinery
+	// if(saved_circuit)
+	// 	saved_circuit.loc = new_machine
+	// 	new_machine.saved_circuit = saved_circuit
+	// qdel(src)
 
 
 

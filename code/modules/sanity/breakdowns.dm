@@ -478,9 +478,10 @@
 
 
 /datum/breakdown/common/desire_for_chrome/can_occur()
-	for(var/obj/item/organ/external/Ex in holder.owner.organs)
-		if(!BP_IS_ROBOTIC(Ex))
-			return TRUE
+#warn warn
+	// for(var/obj/item/organ/external/Ex in holder.owner.organs)
+	// 	if(!BP_IS_ROBOTIC(Ex))
+	// 		return TRUE
 	return FALSE
 
 /datum/breakdown/common/desire_for_chrome/occur()

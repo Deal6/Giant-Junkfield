@@ -949,14 +949,15 @@
 		cooltime()
 
 	proc/cooltime()
-		if (src.warm)
-			spawn(4200)
-				if(src)
-					src.warm = 0
-					src.name = initial(name)
-					if(src.reagents)
-						for(var/reagent in heated_reagents)
-							src.reagents.del_reagent(reagent)
+#warn warn
+		// if (src.warm)
+		// 	spawn(4200)
+		// 		if(src)
+		// 			src.warm = 0
+		// 			src.name = initial(name)
+		// 			if(src.reagents)
+		// 				for(var/reagent in heated_reagents)
+		// 					src.reagents.del_reagent(reagent)
 
 /obj/item/reagent_containers/food/snacks/donkpocket/attack_self(mob/user)
 	if(has_been_heated)
@@ -2598,7 +2599,8 @@
 
 /obj/item/reagent_containers/food/snacks/mre/proc/heat()
 	for(var/reagent in heated_reagents)
-		#warn reagents.add_reagent(reagent, heated_reagents[reagent])
+#warn warn
+		reagents.add_reagent(reagent, heated_reagents[reagent])
 	bitesize = 6
 	name = "warm " + name
 	icon_state = "[initial(icon_state)]_hot"

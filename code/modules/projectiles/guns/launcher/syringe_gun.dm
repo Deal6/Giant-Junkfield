@@ -17,7 +17,8 @@
 	underlays.Cut()
 	if(syringe)
 		underlays += image(syringe.icon, src, syringe.icon_state)
-		underlays += syringe.filling
+#warn warn
+		// underlays += syringe.filling
 
 /obj/item/syringe_cartridge/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/reagent_containers/syringe))
@@ -56,7 +57,8 @@
 				syringe.reagents.trans_to_mob(L, 15, CHEM_BLOOD)
 				admin_inject_log(thrower, L, src, reagent_log, 15, violent=1)
 
-		syringe.break_syringe(iscarbon(hit_atom)? hit_atom : null)
+#warn bad
+		// syringe.break_syringe(iscarbon(hit_atom)? hit_atom : null)
 		syringe.update_icon()
 
 	icon_state = initial(icon_state) //reset icon state

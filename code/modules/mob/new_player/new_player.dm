@@ -426,7 +426,7 @@
 
 	new_character.name = real_name
 	new_character.b_type = client.prefs.b_type
-#warn bad [5 lines except word comment]
+#warn bad 5 lines except word comment
 	// new_character.sync_organ_dna()
 	// if(client.prefs.disabilities)
 	// 	if(client.prefs.disabilities & NEARSIGHTED)

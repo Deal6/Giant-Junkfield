@@ -200,5 +200,6 @@
 		name = "[colourName] crayon"
 		if(grindable)
 			create_reagents(20)
-			#warn reagents.add_reagent("crayon_dust_[colourName]", 20)
+			#warn warn
+			// reagents.add_reagent("crayon_dust_[colourName]", 20)
 		..()

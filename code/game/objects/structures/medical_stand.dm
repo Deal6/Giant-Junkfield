@@ -434,12 +434,12 @@
 			// 	visible_message("\The [src] beeps loudly.")
 
 			// var/datum/reagent/B = H.take_blood(beaker,amount)
-			if (B)
-				beaker.reagents.reagent_list |= B
-				beaker.reagents.update_total()
-				beaker.on_reagent_change()
-				beaker.reagents.handle_reactions()
-				update_icon()
+			// if (B)
+			// 	beaker.reagents.reagent_list |= B
+			// 	beaker.reagents.update_total()
+			// 	beaker.on_reagent_change()
+			// 	beaker.reagents.handle_reactions()
+			// 	update_icon()
 
 	if ((!valve_opened || tank.distribute_pressure == 0) && !breather && !attached)
 		return PROCESS_KILL

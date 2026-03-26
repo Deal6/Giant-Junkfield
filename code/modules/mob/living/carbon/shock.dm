@@ -44,14 +44,15 @@
 /mob/living/carbon/proc/get_limb_damage()
 	. = getFireLoss() + getBruteLoss()
 
+#warn below
 /mob/living/carbon/human/get_limb_damage()
-	for(var/obj/item/organ/external/organ in organs)
-		var/limb_damage = min(organ.burn_dam + organ.brute_dam, organ.max_damage)	// Limbs can be damaged beyond their max damage, but max pain is max damage
-		. += limb_damage
-		. += organ.internal_wound_hal_dam
-		if(organ && (organ.is_broken() || (!BP_IS_ROBOTIC(organ) && organ.open)))
-			. += 25
-		. *= max((get_specific_organ_efficiency(OP_NERVE, organ.organ_tag)/100), 0.5)
+	// for(var/obj/item/organ/external/organ in organs)
+	// 	var/limb_damage = min(organ.burn_dam + organ.brute_dam, organ.max_damage)	// Limbs can be damaged beyond their max damage, but max pain is max damage
+	// 	. += limb_damage
+	// 	. += organ.internal_wound_hal_dam
+	// 	if(organ && (organ.is_broken() || (!BP_IS_ROBOTIC(organ) && organ.open)))
+	// 		. += 25
+	// 	. *= max((get_specific_organ_efficiency(OP_NERVE, organ.organ_tag)/100), 0.5)
 
 /mob/living/carbon/proc/get_dynamic_pain()
 	. = 1.33 * halloss

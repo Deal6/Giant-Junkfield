@@ -56,19 +56,20 @@
 	return
 
 /obj/item/reagent_containers/spray/proc/Spray_at(atom/A as mob|obj, mob/user as mob, proximity)
-	if (A.density && proximity)
-		A.visible_message("[usr] sprays [A] with [src].")
-		reagents.splash(A, amount_per_transfer_from_this)
-	else
-		spawn(0)
-			var/obj/effect/effect/water/chempuff/D = new/obj/effect/effect/water/chempuff(get_turf(src))
-			var/turf/my_target = get_turf(A)
-#warn bad 			D.// create_reagents(amount_per_transfer_from_this)
-			if(!src)
-				return
-			reagents.trans_to_obj(D, amount_per_transfer_from_this)
-			D.set_color()
-			D.set_up(my_target, spray_size, 10)
+#warn warn
+	// if (A.density && proximity)
+	// 	A.visible_message("[usr] sprays [A] with [src].")
+	// 	reagents.splash(A, amount_per_transfer_from_this)
+	// else
+	// 	spawn(0)
+	// 		var/obj/effect/effect/water/chempuff/D = new/obj/effect/effect/water/chempuff(get_turf(src))
+	// 		var/turf/my_target = get_turf(A)
+	// 		create_reagents(amount_per_transfer_from_this)
+	// 		if(!src)
+	// 			return
+	// 		reagents.trans_to_obj(D, amount_per_transfer_from_this)
+	// 		D.set_color()
+	// 		D.set_up(my_target, spray_size, 10)
 	return
 
 /obj/item/reagent_containers/spray/attack_self(var/mob/user)
@@ -163,24 +164,24 @@
 	origin_tech = list(TECH_COMBAT = 3, TECH_MATERIAL = 3, TECH_ENGINEERING = 3)
 
 /obj/item/reagent_containers/spray/chemsprayer/Spray_at(atom/A as mob|obj)
-	var/direction = get_dir(src, A)
-	var/turf/T = get_turf(A)
-	var/turf/T1 = get_step(T,turn(direction, 90))
-	var/turf/T2 = get_step(T,turn(direction, -90))
-	var/list/the_targets = list(T, T1, T2)
+// 	var/direction = get_dir(src, A)
+// 	var/turf/T = get_turf(A)
+// 	var/turf/T1 = get_step(T,turn(direction, 90))
+// 	var/turf/T2 = get_step(T,turn(direction, -90))
+// 	var/list/the_targets = list(T, T1, T2)
 
-	for(var/a = 1 to 3)
-		spawn(0)
-			if(reagents.total_volume < 1) break
-			var/obj/effect/effect/water/chempuff/D = new/obj/effect/effect/water/chempuff(get_turf(src))
-			var/turf/my_target = the_targets[a]
-#warn bad			D. // create_reagents(amount_per_transfer_from_this)
-			if(!src)
-				return
-			reagents.trans_to_obj(D, amount_per_transfer_from_this)
-			D.set_color()
-			D.set_up(my_target, rand(6, 8), 2)
-	return
+// 	for(var/a = 1 to 3)
+// 		spawn(0)
+// 			if(reagents.total_volume < 1) break
+// 			var/obj/effect/effect/water/chempuff/D = new/obj/effect/effect/water/chempuff(get_turf(src))
+// 			var/turf/my_target = the_targets[a]
+// #warn bad			D. // create_reagents(amount_per_transfer_from_this)
+// 			if(!src)
+// 				return
+// 			reagents.trans_to_obj(D, amount_per_transfer_from_this)
+// 			D.set_color()
+// 			D.set_up(my_target, rand(6, 8), 2)
+// 	return
 
 /obj/item/reagent_containers/spray/plantbgone
 	name = "Plant-B-Gone"
