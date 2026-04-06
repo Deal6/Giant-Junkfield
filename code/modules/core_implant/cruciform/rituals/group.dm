@@ -32,22 +32,22 @@
 	var/aditional_value = 2
 	var/stat_message = "You feel like you're getting better."
 
-/datum/group_ritual_effect/cruciform/stat/trigger_success(var/mob/starter, var/list/participants)
+/datum/group_ritual_effect/cruciform/stat/trigger_success(mob/starter, list/participants)
 	. = ..()
 	GLOB.miracle_points--
 	if(eotp)
 		eotp.addObservation(25)
 
-/datum/group_ritual_effect/cruciform/stat/success(var/mob/living/M, var/cnt)
+/datum/group_ritual_effect/cruciform/stat/success(mob/living/M, cnt)
 	if(cnt < 3 || !stat_buff)
-		to_chat(M, SPAN_NOTICE("Insufficient participants."))
+		to_chat(M, span_notice("Insufficient participants."))
 		return FALSE
 	if(!get_active_mutation(M, MUTATION_ATHEIST))
 		if(M.stats.getPerk(PERK_CHANNELING))
 			M.stats.changeStat(stat_buff, buff_value + cnt + (cnt * aditional_value))
 		else
 			M.stats.changeStat(stat_buff, buff_value + (cnt * aditional_value))
-		to_chat(M, SPAN_NOTICE(stat_message))
+		to_chat(M, span_notice(stat_message))
 
 /datum/ritual/group/cruciform/stat/mechanical
 	name = "Pounding Whisper"
@@ -174,7 +174,7 @@
 
 /datum/ritual/group/cruciform/sanctify
 	name = "Sanctify"
-	desc = "Sanctify the land you tread. Available to anyone who know the words."
+	desc = "Sanctify the land you tread. Available to anyone who knows the words."
 	phrase = "Benedicite loco isto."
 	phrases = list(
 		"Benedicite loco isto.",
@@ -232,7 +232,7 @@
 	for(var/atom/movable/A in GLOB.all_faction_items)
 		A.crusade_activated()
 
-/datum/group_ritual_effect/cruciform/crusade/success(var/mob/living/M, var/cnt)
+/datum/group_ritual_effect/cruciform/crusade/success(mob/living/M, cnt)
 	if(cnt < 6)
 		return
 	var/obj/item/implant/core_implant/CI = M.get_core_implant(/obj/item/implant/core_implant/cruciform)

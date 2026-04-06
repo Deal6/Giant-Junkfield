@@ -69,7 +69,7 @@
 	var/port = 0
 	var/view = 0
 
-/obj/machinery/computer/arcade/orion_trail/proc/newgame(var/emag = 0)
+/obj/machinery/computer/arcade/orion_trail/proc/newgame(emag = 0)
 	name = "orion trail[emag ? ": Realism Edition" : ""]"
 	supplies = list("1" = 1, "2" = 1, "3" = 1, "4" = 60, "5" = 20, "6" = 5000)
 	emagged = emag
@@ -96,7 +96,7 @@
 		if(ORION_VIEW_MAIN)
 			if(event == ORION_TRAIL_START) //new game? New game.
 				dat = "<center><h1>Orion Trail[emagged ? ": Realism Edition" : ""]</h1><br>Learn how our ancestors got to Orion, and have fun in the process!</center><br><P ALIGN=Right><a href='byond://?src=\ref[src];continue=1'>Start New Game</a></P>"
-				user << browse(dat, "window=arcade")
+				user << browse(HTML_SKELETON_TITLE(src.name, dat), "window=arcade")
 				return
 			else
 				event_title = event
@@ -174,7 +174,7 @@
 	dat += "[view==ORION_VIEW_MAIN ? "" : "<a href='byond://?src=\ref[src];continue=1'>"]Main[view==ORION_VIEW_MAIN ? "" : "</a>"]<BR>"
 	dat += "[view==ORION_VIEW_SUPPLIES ? "" : "<a href='byond://?src=\ref[src];supplies=1'>"]Supplies[view==ORION_VIEW_SUPPLIES ? "" : "</a>"]<BR>"
 	dat += "[view==ORION_VIEW_CREW ? "" : "<a href='byond://?src=\ref[src];crew=1'>"]Crew[view==ORION_VIEW_CREW ? "" : "</a>"]</P>"
-	user << browse(dat, "window=arcade")
+	user << browse(HTML_SKELETON_TITLE(src.name, dat), "window=arcade")
 
 /obj/machinery/computer/arcade/orion_trail/Topic(href,href_list)
 	if(..())
@@ -275,7 +275,7 @@
 		event = ORION_TRAIL_SPACEPORT_RAIDED
 	src.updateUsrDialog()
 
-/obj/machinery/computer/arcade/orion_trail/proc/change_resource(var/specific = null, var/add = 1)
+/obj/machinery/computer/arcade/orion_trail/proc/change_resource(specific = null, add = 1)
 	if(!specific)
 		specific = rand(1,6)
 	var/cost = (specific < 4 ? rand(1,5) : rand(5,100)) * add
@@ -287,7 +287,7 @@
 	supplies["[specific]"] += cost
 	event_info += "You've [add > 0 ? "gained" : "lost"] [abs(cost)] [supply_name["[specific]"]]<BR>"
 
-/obj/machinery/computer/arcade/orion_trail/proc/remove_settler(var/specific = null, var/desc = null)
+/obj/machinery/computer/arcade/orion_trail/proc/remove_settler(specific = null, desc = null)
 	if(!settlers.len)
 		return
 	if(!specific)
@@ -298,7 +298,7 @@
 	if(num_contractors > 0 && prob(100/max(1,settlers.len-1)))
 		num_contractors--
 
-/obj/machinery/computer/arcade/orion_trail/proc/generate_event(var/specific = null)
+/obj/machinery/computer/arcade/orion_trail/proc/generate_event(specific = null)
 	if(!specific)
 		if(prob(20*num_contractors))
 			specific = ORION_TRAIL_MUTINY_ATTACK
@@ -396,28 +396,28 @@
 		emag_effect(specific)
 	event = specific
 
-/obj/machinery/computer/arcade/orion_trail/proc/emag_effect(var/event)
+/obj/machinery/computer/arcade/orion_trail/proc/emag_effect(event)
 	switch(event)
 		if(ORION_TRAIL_RAIDERS)
 			if(iscarbon(usr))
 				var/mob/living/carbon/M = usr
 				if(prob(50))
-					to_chat(usr, SPAN_WARNING("You hear battle shouts. The tramping of boots on cold metal. Screams of agony. The rush of venting air. Are you going insane?"))
+					to_chat(usr, span_warning("You hear battle shouts. The tramping of boots on cold metal. Screams of agony. The rush of venting air. Are you going insane?"))
 					M.hallucination(50, 50)
 				else
-					to_chat(usr, SPAN_DANGER("Something strikes you from behind! It hurts like hell and feel like a blunt weapon, but nothing is there..."))
+					to_chat(usr, span_danger("Something strikes you from behind! It hurts like hell and feel like a blunt weapon, but nothing is there..."))
 					M.take_organ_damage(10)
 			else
-				to_chat(usr, SPAN_WARNING("The sounds of battle fill your ears..."))
+				to_chat(usr, span_warning("The sounds of battle fill your ears..."))
 		if(ORION_TRAIL_ILLNESS)
 			if(ishuman(usr))
 				var/mob/living/carbon/human/M = usr
-				to_chat(M, SPAN_WARNING("An overpowering wave of nausea consumes over you. You hunch over, your stomach's contents preparing for a spectacular exit."))
+				to_chat(M, span_warning("An overpowering wave of nausea consumes over you. You hunch over, your stomach's contents preparing for a spectacular exit."))
 				M.vomit()
 			else
-				to_chat(usr, SPAN_WARNING("You feel ill."))
+				to_chat(usr, span_warning("You feel ill."))
 		if(ORION_TRAIL_CARP)
-			to_chat(usr, SPAN_DANGER(" Something bit you!"))
+			to_chat(usr, span_danger(" Something bit you!"))
 			var/mob/living/M = usr
 			M.adjustBruteLoss(10)
 		if(ORION_TRAIL_FLUX)
@@ -427,7 +427,7 @@
 				src.visible_message("A sudden gust of powerful wind slams \the [M] into the floor!", "You hear a large fwooshing sound, followed by a bang.")
 				M.take_organ_damage(10)
 			else
-				to_chat(usr, SPAN_WARNING("A violent gale blows past you, and you barely manage to stay standing!"))
+				to_chat(usr, span_warning("A violent gale blows past you, and you barely manage to stay standing!"))
 		if(ORION_TRAIL_MALFUNCTION)
 			if(supplies["3"])
 				return
@@ -438,11 +438,11 @@
 			if(prob(90) && !supplies["2"])
 				var/turf/floor/F = src.loc
 				F.ChangeTurf(/turf/space)
-				src.visible_message(SPAN_DANGER("Something slams into the floor around \the [src], exposing it to space!"), "You hear something crack and break.")
+				src.visible_message(span_danger("Something slams into the floor around \the [src], exposing it to space!"), "You hear something crack and break.")
 			else
 				src.visible_message("Something slams into the floor around \the [src] - luckily, it didn't get through!", "You hear something crack.")
 		if(ORION_TRAIL_GAMEOVER)
-			to_chat(usr, SPAN_DANGER("<font size=3>You're never going to make it to Orion...</font>"))
+			to_chat(usr, span_danger("<font size=3>You're never going to make it to Orion...</font>"))
 			var/mob/living/M = usr
 			M.visible_message("\The [M] starts rapidly deteriorating.")
 			M << browse (null,"window=arcade")
@@ -482,27 +482,27 @@
 /obj/item/orion_ship/examine(mob/user, extra_description = "")
 	if(get_dist(user, src) < 2)
 		if(active)
-			extra_description += SPAN_NOTICE("There's a little switch on the bottom. It's flipped up.")
+			extra_description += span_notice("There's a little switch on the bottom. It's flipped up.")
 		else
-			extra_description += SPAN_NOTICE("There's a little switch on the bottom. It's flipped down.")
+			extra_description += span_notice("There's a little switch on the bottom. It's flipped down.")
 	..(user, extra_description)
 
 /obj/item/orion_ship/attack_self(mob/user)
 	if(active)
 		return
 	message_admins("[key_name_admin(usr)] primed an explosive Orion ship for detonation.")
-	log_game("[key_name(usr)] primed an explosive Orion ship for detonation.")
-	to_chat(user, SPAN_WARNING("You flip the switch on the underside of [src]."))
+	log_bomber(user, "[key_name(usr)] primed an explosive Orion ship for detonation.", src)
+	to_chat(user, span_warning("You flip the switch on the underside of [src]."))
 	active = 1
-	src.visible_message(SPAN_NOTICE("[src] softly beeps and whirs to life!"))
+	src.visible_message(span_notice("[src] softly beeps and whirs to life!"))
 	src.audible_message("<b>\The [src]</b> says, 'This is ship ID #[rand(1,1000)] to Orion Port Authority. We're coming in for landing, over.'")
 	sleep(20)
-	src.visible_message(SPAN_WARNING("[src] begins to vibrate..."))
+	src.visible_message(span_warning("[src] begins to vibrate..."))
 	src.audible_message("<b>\The [src]</b> says, 'Uh, Port? Having some issues with our reactor, could you check it out? Over.'")
 	sleep(30)
 	src.audible_message("<b>\The [src]</b> says, 'Oh, God! Code Eight! CODE EIGHT! IT'S GONNA BL-'")
 	sleep(3.6)
-	src.visible_message(SPAN_DANGER("[src] explodes!"))
+	src.visible_message(span_danger("[src] explodes!"))
 	explosion(src.loc, 1,2,4)
 	qdel(src)
 

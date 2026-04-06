@@ -56,18 +56,20 @@
 /obj/machinery/door/can_prevent_fall(above)
 	return above ? density : null
 
-/obj/machinery/door/attack_generic(mob/user, var/damage)
+/obj/machinery/door/attack_generic(mob/user, damage)
 	if(damage >= resistance)
-		visible_message(SPAN_DANGER("\The [user] smashes into \the [src]!"))
+		visible_message(span_danger("\The [user] smashes into \the [src]!"))
 		take_damage(damage)
 	else
-		visible_message(SPAN_NOTICE("\The [user] bonks \the [src] harmlessly."))
+		visible_message(span_notice("\The [user] bonks \the [src] harmlessly."))
 		playsound(src, 'sound/weapons/Genhit.ogg', 15, 1,-1)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN*1.5)
 	attack_animation(user)
 
+/obj/machinery/door/New()
+	. = ..()
+	layer = density ? closed_layer : open_layer
 
-/obj/machinery/door/LateInitialize()
 	if(width > 1)
 		if(dir in list(EAST, WEST))
 			bound_width = width * world.icon_size
@@ -76,11 +78,10 @@
 			bound_width = world.icon_size
 			bound_height = width * world.icon_size
 
-	layer = density ? closed_layer : open_layer
 	health = maxHealth
-	update_nearby_tiles(need_rebuild = TRUE)
-	power_change()
 
+	update_nearby_tiles(need_rebuild=1)
+	return
 
 /obj/machinery/door/Destroy()
 	density = FALSE
@@ -171,7 +172,7 @@
 			do_animate("deny")
 	return TRUE
 
-/obj/machinery/door/bullet_act(var/obj/item/projectile/Proj)
+/obj/machinery/door/bullet_act(obj/item/projectile/Proj)
 	..()
 
 	var/damage = Proj.get_structure_damage()
@@ -182,7 +183,7 @@
 	if (damage > 90)
 		destroy_hits--
 		if (destroy_hits <= 0)
-			visible_message(SPAN_DANGER("\The [src.name] disintegrates!"))
+			visible_message(span_danger("\The [src.name] disintegrates!"))
 			if(Proj.damage_types[BRUTE] > Proj.damage_types[BURN])
 				new /obj/item/stack/material/steel(src.loc, 2)
 				new /obj/item/stack/rods(loc, 3)
@@ -199,15 +200,15 @@
 
 
 
-/obj/machinery/door/proc/hit_by_living(var/mob/living/M)
+/obj/machinery/door/proc/hit_by_living(mob/living/M)
 	var/body_part = pick(BP_HEAD, BP_CHEST, BP_GROIN)
-	visible_message(SPAN_DANGER("[M] slams against \the [src]!"))
+	visible_message(span_danger("[M] slams against \the [src]!"))
 	if(prob(30))
 		M.Weaken(1)
 	M.damage_through_armor(rand(5,8), BRUTE, body_part, ARMOR_MELEE)
 	take_damage(M.mob_size)
 
-/obj/machinery/door/hitby(AM as mob|obj, var/speed=5)
+/obj/machinery/door/hitby(AM as mob|obj, speed=5)
 
 	..()
 	var/damage = 5
@@ -255,7 +256,7 @@
 
 			if(QUALITY_WELDING)
 				if(I.use_tool(user, src, WORKTIME_FAST, tool_type, FAILCHANCE_EASY, required_stat = STAT_MEC))
-					to_chat(user, SPAN_NOTICE("You finish repairing the damage to \the [src]."))
+					to_chat(user, span_notice("You finish repairing the damage to \the [src]."))
 					health = between(health, health + repairing.amount*DOOR_REPAIR_AMOUNT, maxHealth)
 					update_icon()
 					qdel(repairing)
@@ -265,7 +266,7 @@
 
 			if(QUALITY_PRYING)
 				if(I.use_tool(user, src, WORKTIME_FAST, tool_type, FAILCHANCE_EASY,  required_stat = STAT_ROB))
-					to_chat(user, SPAN_NOTICE("You remove \the [repairing]."))
+					to_chat(user, span_notice("You remove \the [repairing]."))
 					repairing.loc = user.loc
 					repairing = null
 					return
@@ -276,13 +277,13 @@
 
 	if(istype(I, /obj/item/stack/material) && I.get_material_name() == src.get_material_name())
 		if(stat & BROKEN)
-			to_chat(user, SPAN_NOTICE("It looks like \the [src] is pretty busted. It's going to need more than just patching up now."))
+			to_chat(user, span_notice("It looks like \the [src] is pretty busted. It's going to need more than just patching up now."))
 			return
 		if(health >= maxHealth)
-			to_chat(user, SPAN_NOTICE("Nothing to fix!"))
+			to_chat(user, span_notice("Nothing to fix!"))
 			return
 		if(!density)
-			to_chat(user, SPAN_WARNING("\The [src] must be closed before you can repair it."))
+			to_chat(user, span_warning("\The [src] must be closed before you can repair it."))
 			return
 
 		//figure out how much metal we need
@@ -294,7 +295,7 @@
 		if (repairing)
 			transfer = stack.transfer_to(repairing, amount_needed - repairing.amount)
 			if (!transfer)
-				to_chat(user, SPAN_WARNING("You must weld or remove \the [repairing] from \the [src] before you can add anything else."))
+				to_chat(user, span_warning("You must weld or remove \the [repairing] from \the [src] before you can add anything else."))
 		else
 			repairing = stack.split(amount_needed)
 			if (repairing)
@@ -302,7 +303,7 @@
 				transfer = repairing.amount
 
 		if (transfer)
-			to_chat(user, SPAN_NOTICE("You fit [transfer] [stack.singular_name]\s to damaged and broken parts on \the [src]."))
+			to_chat(user, span_notice("You fit [transfer] [stack.singular_name]\s to damaged and broken parts on \the [src]."))
 
 		return
 
@@ -316,7 +317,7 @@
 		do_animate("deny")
 	return
 
-/obj/machinery/door/emag_act(var/remaining_charges)
+/obj/machinery/door/emag_act(remaining_charges)
 	if(density && operable())
 		do_animate("spark")
 		sleep(6)
@@ -326,7 +327,7 @@
 
 
 
-/obj/machinery/door/proc/hit(var/mob/user, var/obj/item/I, var/thrown = FALSE)
+/obj/machinery/door/proc/hit(mob/user, obj/item/I, thrown = FALSE)
 	var/obj/item/W = I
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN*1.5)
 	var/calc_damage
@@ -339,10 +340,10 @@
 	calc_damage -= resistance
 
 	if(calc_damage <= 0)
-		if (user)user.visible_message(SPAN_DANGER("\The [user] hits \the [src] with \the [W] with no visible effect."))
+		if (user)user.visible_message(span_danger("\The [user] hits \the [src] with \the [W] with no visible effect."))
 		playsound(src.loc, hitsound, 20, 1)
 	else
-		if (user)user.visible_message(SPAN_DANGER("\The [user] forcefully strikes \the [src] with \the [W]!"))
+		if (user)user.visible_message(span_danger("\The [user] forcefully strikes \the [src] with \the [W]!"))
 		playsound(src.loc, hitsound, calc_damage*2.5, 1, 3,3)
 		take_damage(W.force)
 
@@ -390,13 +391,13 @@
 	stat |= BROKEN
 
 	if (health <= 0 && open_on_break)
-		visible_message(SPAN_WARNING("\The [src.name] breaks open!"))
+		visible_message(span_warning("\The [src.name] breaks open!"))
 		open(TRUE)
 	else
-		visible_message(SPAN_WARNING("\The [src.name] breaks!"))
+		visible_message(span_warning("\The [src.name] breaks!"))
 	update_icon()
 
-/obj/machinery/door/explosion_act(target_power, explosion_handler/handler)
+/obj/machinery/door/explosion_act(target_power, datum/explosion_handler/handler)
 	var/absorbed = take_damage(target_power)
 	//message_admins("Door block absorbed [absorbed] damage , whilst having a health pool of [health] out of a maximum of [maxHealth]")
 	return absorbed
@@ -428,7 +429,7 @@
 	return
 
 
-/obj/machinery/door/proc/open(var/forced = 0)
+/obj/machinery/door/proc/open(forced = 0)
 	if(!can_open(forced))
 		return FALSE
 	operating = TRUE
@@ -454,7 +455,7 @@
 		addtimer(CALLBACK(src, PROC_REF(close)), wait)
 	return TRUE
 
-/obj/machinery/door/proc/close(var/forced = 0)
+/obj/machinery/door/proc/close(forced = 0)
 	set waitfor = FALSE
 	if(!can_close(forced))
 		return
@@ -505,7 +506,7 @@
 		else
 			source.thermal_conductivity = initial(source.thermal_conductivity)
 
-/obj/machinery/door/Move(NewLoc, Dir = 0, step_x = 0, step_y = 0, var/glide_size_override = 0)
+/obj/machinery/door/Move(NewLoc, Dir = 0, step_x = 0, step_y = 0, glide_size_override = 0)
 	//update_nearby_tiles()
 	. = ..()
 	if(width > 1)

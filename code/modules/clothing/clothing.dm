@@ -3,6 +3,10 @@
 	siemens_coefficient = 0.9
 	item_flags = DRAG_AND_DROP_UNEQUIP
 	bad_type = /obj/item/clothing
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/equipment/clothing_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/equipment/clothing_righthand.dmi',
+		)
 	rarity_value = 5
 	spawn_frequency = 10
 	spawn_tags = SPAWN_TAG_CLOTHING
@@ -79,7 +83,7 @@
 /obj/item/clothing/Initialize(mapload, ...)
 	. = ..()
 
-	var/obj/screen/item_action/action = new /obj/screen/item_action/top_bar/clothing_info
+	var/atom/movable/screen/item_action/action = new /atom/movable/screen/item_action/top_bar/clothing_info
 	action.owner = src
 	if(!hud_actions)
 		hud_actions = list()
@@ -119,16 +123,16 @@
 		//If its currently worn, we must be taking it off
 		if (is_worn())
 			user.visible_message(
-				SPAN_NOTICE("[user] starts taking off \the [src]..."),
-				SPAN_NOTICE("You start taking off \the [src]...")
+				span_notice("[user] starts taking off \the [src]..."),
+				span_notice("You start taking off \the [src]...")
 			)
 			if(!do_after(user,equip_delay,src))
 				return TRUE //A nonzero return value will cause the equipping operation to fail
 
-		else if (is_held() && !(slot in unworn_slots))
+		else if (is_held() && !(slot in GLOB.unworn_slots))
 			user.visible_message(
-				SPAN_NOTICE("[user] starts putting on \the [src]..."),
-				SPAN_NOTICE("You start putting on \the [src]...")
+				span_notice("[user] starts putting on \the [src]..."),
+				span_notice("You start putting on \the [src]...")
 			)
 			if(!do_after(user,equip_delay,src))
 				return TRUE //A nonzero return value will cause the equipping operation to fail
@@ -213,7 +217,7 @@
 		return TRUE
 	return ..()
 
-/obj/screen/item_action/top_bar/clothing_info
+/atom/movable/screen/item_action/top_bar/clothing_info
 	icon = 'icons/mob/screen/gun_actions.dmi'
 	screen_loc = "8,1:13"
 	minloc = "7,2:13"
@@ -297,7 +301,6 @@
 	slot_flags = SLOT_EARS
 	matter = list(MATERIAL_STEEL = 1, MATERIAL_PLASTIC = 1)
 
-
 ///////////////////////////////////////////////////////////////////////
 //Glasses
 /*
@@ -348,12 +351,12 @@ BLIND     // can't see anything
 /obj/item/clothing/gloves/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/tool/wirecutters) || istype(W, /obj/item/tool/scalpel))
 		if (clipped)
-			to_chat(user, SPAN_NOTICE("The [src] have already been clipped!"))
+			to_chat(user, span_notice("The [src] have already been clipped!"))
 			update_icon()
 			return
 
 		playsound(src.loc, 'sound/items/Wirecutter.ogg', 100, 1)
-		user.visible_message("\red [user] cuts the fingertips off of the [src].","\red You cut the fingertips off of the [src].")
+		user.visible_message(span_red("[user] cuts the fingertips off of the [src]."), span_red("You cut the fingertips off of the [src]."))
 
 		clipped = 1
 		name = "modified [name]"
@@ -366,8 +369,8 @@ BLIND     // can't see anything
 	name = "head"
 	icon = 'icons/inventory/head/icon.dmi'
 	item_icons = list(
-		slot_l_hand_str = 'icons/mob/items/lefthand_hats.dmi',
-		slot_r_hand_str = 'icons/mob/items/righthand_hats.dmi',
+		slot_l_hand_str = 'icons/mob/inhands/equipment/hats_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/equipment/hats_righthand.dmi',
 		)
 	body_parts_covered = HEAD
 	slot_flags = SLOT_HEAD
@@ -399,9 +402,9 @@ BLIND     // can't see anything
 	if(!success)
 		return 0
 	else if(success == 2)
-		to_chat(user, SPAN_WARNING("You are already wearing a hat."))
+		to_chat(user, span_warning("You are already wearing a hat."))
 	else if(success == 1)
-		to_chat(user, SPAN_NOTICE("You crawl under \the [src]."))
+		to_chat(user, span_notice("You crawl under \the [src]."))
 	return 1
 
 ///////////////////////////////////////////////////////////////////////
@@ -457,16 +460,16 @@ BLIND     // can't see anything
 		return
 
 	if(!holding)
-		to_chat(usr, SPAN_WARNING("\The [src] has no knife."))
+		to_chat(usr, span_warning("\The [src] has no knife."))
 		return
 
 	holding.forceMove(get_turf(usr))
 
 	if(usr.put_in_hands(holding))
-		usr.visible_message(SPAN_DANGER("\The [usr] pulls a knife out of their boot!"))
+		usr.visible_message(span_danger("\The [usr] pulls a knife out of their boot!"))
 		holding = null
 	else
-		to_chat(usr, SPAN_WARNING("You need an empty, unbroken hand to do that."))
+		to_chat(usr, span_warning("You need an empty, unbroken hand to do that."))
 		holding.forceMove(src)
 
 	if(!holding)
@@ -511,11 +514,11 @@ BLIND     // can't see anything
 		)
 	if(can_hold_knife && is_type_in_list(I, knifes))
 		if(holding)
-			to_chat(user, SPAN_WARNING("\The [src] is already holding \a [holding]."))
+			to_chat(user, span_warning("\The [src] is already holding \a [holding]."))
 			return
 		if(user.unEquip(I, src))
 			holding = I
-			user.visible_message(SPAN_NOTICE("\The [user] shoves \the [I] into \the [src]."))
+			user.visible_message(span_notice("\The [user] shoves \the [I] into \the [src]."))
 			verbs |= /obj/item/clothing/shoes/proc/draw_knife
 			update_icon()
 	else
@@ -537,7 +540,7 @@ BLIND     // can't see anything
 /obj/item/clothing/shoes/update_icon()
 	cut_overlays()
 	if(holding)
-		overlays += image(icon, "[icon_state]_knife")
+		overlays += image("[icon_state]_knife")
 	return ..()
 
 /obj/item/clothing/shoes/proc/handle_movement(turf/walking, running)
@@ -596,10 +599,6 @@ BLIND     // can't see anything
 //Under clothing
 /obj/item/clothing/under
 	icon = 'icons/inventory/uniform/icon.dmi'
-	item_icons = list(
-		slot_l_hand_str = 'icons/mob/items/lefthand_uniforms.dmi',
-		slot_r_hand_str = 'icons/mob/items/righthand_uniforms.dmi',
-		)
 	name = "jumpsuit"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	permeability_coefficient = 0.90
@@ -674,7 +673,7 @@ BLIND     // can't see anything
 		switch(sensor_mode)
 			if(0)
 				for(var/mob/V in viewers(usr, 1))
-					V.show_message("\red [usr] disables [src.loc]'s remote sensing equipment.", 1)
+					V.show_message(span_red("[usr] disables [src.loc]'s remote sensing equipment."), 1)
 			if(1)
 				for(var/mob/V in viewers(usr, 1))
 					V.show_message("[usr] turns [src.loc]'s remote sensors to binary.", 1)

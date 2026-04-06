@@ -48,7 +48,7 @@
 	else
 		..()
 
-/obj/item/device/spy_bug/hear_talk(mob/M, var/msg, verb, datum/language/speaking, speech_volume)
+/obj/item/device/spy_bug/hear_talk(mob/M, msg, verb, datum/language/speaking, speech_volume)
 	radio.hear_talk(M, msg, speaking, speech_volume = speech_volume)
 
 
@@ -98,12 +98,12 @@
 	else
 		return ..()
 
-/obj/item/device/spy_monitor/proc/pair(var/obj/item/device/spy_bug/SB, var/mob/living/user)
+/obj/item/device/spy_monitor/proc/pair(obj/item/device/spy_bug/SB, mob/living/user)
 	if(SB.camera in cameras)
-		to_chat(user, SPAN_NOTICE("\The [SB] has been unpaired from \the [src]."))
+		to_chat(user, span_notice("\The [SB] has been unpaired from \the [src]."))
 		cameras -= SB.camera
 	else
-		to_chat(user, SPAN_NOTICE("\The [SB] has been paired with \the [src]."))
+		to_chat(user, span_notice("\The [SB] has been paired with \the [src]."))
 		cameras += SB.camera
 
 /obj/item/device/spy_monitor/proc/view_cameras(mob/user)
@@ -123,15 +123,15 @@
 	spawn(0)
 		while(selected_camera && Adjacent(user))
 			var/turf/T = get_turf(selected_camera)
-			if(selected_camera.can_use() && T && ((T.z != user.z) || (IS_SHIP_LEVEL(T.z) && IS_SHIP_LEVEL(user.z)))) // Located on the main ship or same Z-level
-				user.set_machine(selected_camera)
-				user.reset_view(selected_camera)
-			else
+			if(!T || !is_on_same_plane_or_station(T.z, user.z) || !selected_camera.can_use())
 				user.unset_machine()
 				user.reset_view(null)
-				to_chat(user, SPAN_NOTICE("[selected_camera] unavailable."))
-				sleep(9 SECONDS)
-			sleep(1 SECOND)
+				to_chat(user, span_notice("[selected_camera] unavailable."))
+				sleep(90)
+			else
+				user.set_machine(selected_camera)
+				user.reset_view(selected_camera)
+			sleep(10)
 		user.unset_machine()
 		user.reset_view(null)
 
@@ -140,13 +140,13 @@
 		return
 
 	if(!cameras.len)
-		to_chat(user, SPAN_WARNING("No paired cameras detected!"))
-		to_chat(user, SPAN_WARNING("Bring a bug in contact with this device to pair the camera."))
+		to_chat(user, span_warning("No paired cameras detected!"))
+		to_chat(user, span_warning("Bring a bug in contact with this device to pair the camera."))
 		return
 
 	return 1
 
-/obj/item/device/spy_monitor/hear_talk(mob/M, var/msg, verb, datum/language/speaking, speech_volume)
+/obj/item/device/spy_monitor/hear_talk(mob/M, msg, verb, datum/language/speaking, speech_volume)
 	return radio.hear_talk(M, msg, speaking, speech_volume = speech_volume)
 
 

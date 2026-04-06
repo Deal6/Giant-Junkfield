@@ -6,7 +6,7 @@
 
 
 //Called by spawnpoint landmarks. A landmark creates a new /datum/spawnpoint, or adds its own data to an existing one
-/proc/landmark_create_spawn_point(var/obj/landmark/join/LM, late = FALSE, silenced = FALSE)
+/proc/landmark_create_spawn_point(obj/landmark/join/LM, late = FALSE, silenced = FALSE)
 	if (!istype(LM))
 		return
 
@@ -57,7 +57,7 @@
 		error("Trying to create existing spawnpoint.")
 	return SP
 
-/proc/get_datum_spawn_locations(name = SSmapping.default_spawn, free_only = TRUE, late = FALSE)
+/proc/get_datum_spawn_locations(name = GLOB.maps_data.default_spawn, free_only = TRUE, late = FALSE)
 	var/datum/spawnpoint/SP = get_spawn_point(name, late)
 	if (SP)
 		return SP.get_spawn_locations()

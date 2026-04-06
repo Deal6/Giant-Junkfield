@@ -49,7 +49,7 @@
 	return dat
 
 /datum/antagonist/proc/antagonist_panel()
-	usr << browse(get_panel_entry(),"window=\ref[src]antag")
+	usr << browse(HTML_SKELETON_TITLE("Antag datum viewer", get_panel_entry()),"window=\ref[src]antag")
 
 /datum/antagonist/Topic(href, href_list)
 	if(!check_rights(R_ADMIN))
@@ -65,7 +65,7 @@
 				MN["CANCEL"] = null
 
 				var/datum/mind/M = input("Select mind for role.","Add antagonist",null) in MN
-				if(M)
+				if(isdatum(M))
 					create_antagonist(M)
 			else
 				var/list/CD = list()
@@ -75,7 +75,7 @@
 				CD["CANCEL"] = null
 
 				var/mob/M = input("Select ghost for role.","Add antagonist",null) in CD
-				if(M)
+				if(ismob(M))
 					create_from_ghost(M)
 
 	else if(href_list["remove_antagonist"])
@@ -155,7 +155,7 @@
 	return
 
 /* !TODO: This should be implemented in storyteller_print.dm (GLOB.storyteller.antagonist_report())
-/datum/antagonist/proc/get_check_antag_output(var/datum/admins/caller)
+/datum/antagonist/proc/get_check_antag_output(datum/admins/requester)
 
 	if(!current_antagonists || !current_antagonists.len)
 		return ""
@@ -165,11 +165,11 @@
 		var/mob/M = player.current
 		dat += "<tr>"
 		if(M)
-			dat += "<td><a href='byond://?_src_=holder;adminplayeropts=\ref[M]'>[M.real_name]/([player.key])</a>"
+			dat += "<td><a href='byond://?_src_=holder;[HrefToken()];adminplayeropts=\ref[M]'>[M.real_name]/([player.key])</a>"
 			if(!M.client)      dat += " <i>(logged out)</i>"
 			if(M.stat == DEAD) dat += " <b><font color=red>(DEAD)</font></b>"
 			dat += "</td>"
-			dat += "<td>\[<a href='byond://?src=\ref[caller];priv_msg=\ref[M]'>PM</A>\]\[<a href='byond://?src=\ref[caller];contractor=\ref[M]'>TP</A>\]</td>"
+			dat += "<td>\[<A href='byond://?src=\ref[requester];priv_msg=\ref[M]'>PM</A>\]\[<A href='byond://?src=\ref[requester];contractor=\ref[M]'>TP</A>\]</td>"
 		else
 			dat += "<td><i>Mob not found/([player.key])!</i></td>"
 		dat += "</tr>"
@@ -183,17 +183,17 @@
 			while(!istype(disk_loc, /turf))
 				if(ismob(disk_loc))
 					var/mob/M = disk_loc
-					dat += "carried by <a href='byond://?src=\ref[caller];adminplayeropts=\ref[M]'>[M.real_name]</a> "
+					dat += "carried by <a href='byond://?src=\ref[requester];adminplayeropts=\ref[M]'>[M.real_name]</a> "
 				if(isobj(disk_loc))
 					var/obj/O = disk_loc
 					dat += "in \a [O.name] "
 				disk_loc = disk_loc.loc
 			dat += "in [disk_loc.loc] at ([disk_loc.x], [disk_loc.y], [disk_loc.z])</td></tr>"
 		dat += "</table>"
-	dat += get_additional_check_antag_output(caller)
+	dat += get_additional_check_antag_output(requester)
 	dat += "<hr>"
 	return dat
 */
 //Overridden elsewhere.
-/datum/antagonist/proc/get_additional_check_antag_output(var/datum/admins/caller)
+/datum/antagonist/proc/get_additional_check_antag_output(datum/admins/requester)
 	return ""

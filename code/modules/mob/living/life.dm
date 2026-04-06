@@ -4,7 +4,7 @@
 
 	. = FALSE
 	..()
-	if(config.enable_mob_sleep)
+	if(CONFIG_GET(flag/enable_mob_sleep))
 		if(stat != DEAD && !mind)	// Check for mind so player-driven, nonhuman mobs don't sleep
 			if(life_cycles_before_scan > 0)
 				life_cycles_before_scan--
@@ -113,7 +113,7 @@
 /mob/living/proc/handle_random_events()
 	return
 
-/mob/living/proc/handle_environment(var/datum/gas_mixture/environment)
+/mob/living/proc/handle_environment(datum/gas_mixture/environment)
 	return
 
 /mob/living/proc/update_pulling()
@@ -234,14 +234,14 @@
 			if (!H.HUDneed.len)
 				if (H.HUDprocess.len)
 					log_debug("[usr] have object in HUDprocess list, but HUDneed is empty.")
-					for(var/obj/screen/health/HUDobj in H.HUDprocess)
+					for(var/atom/movable/screen/health/HUDobj in H.HUDprocess)
 						H.HUDprocess -= HUDobj
 						qdel(HUDobj)
 				for(var/HUDname in HUDdatum.HUDneed)
 					if(!H.species.hud.ProcessHUD.Find(HUDname))
 						continue
 					var/HUDtype = HUDdatum.HUDneed[HUDname]
-					var/obj/screen/HUD = new HUDtype()
+					var/atom/movable/screen/HUD = new HUDtype()
 					to_chat(world, "[HUD] added")
 					H.HUDneed += HUD
 					if (HUD.type in HUDdatum.HUDprocess)

@@ -5,14 +5,13 @@
 	var/datum/computer/file/embedded_program/docking/airlock/docking_program
 	tag_secure = 1
 
-/obj/machinery/embedded_controller/radio/airlock/docking_port/LateInitialize()
-	..()
-	airlock_program = new /datum/computer/file/embedded_program/airlock/docking(src)
-	docking_program = new /datum/computer/file/embedded_program/docking/airlock(src, airlock_program)
-	docking_program.tag = id_tag
+/obj/machinery/embedded_controller/radio/airlock/docking_port/New()
+	. = ..()
+	airlock_program = new/datum/computer/file/embedded_program/airlock/docking(src)
+	docking_program = new/datum/computer/file/embedded_program/docking/airlock(src, airlock_program)
 	program = docking_program
 
-/obj/machinery/embedded_controller/radio/airlock/docking_port/nano_ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = NANOUI_FOCUS)
+/obj/machinery/embedded_controller/radio/airlock/docking_port/nano_ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = NANOUI_FOCUS)
 	var/data[0]
 
 	data = list(
@@ -56,7 +55,7 @@
 /datum/computer/file/embedded_program/docking/airlock
 	var/datum/computer/file/embedded_program/airlock/docking/airlock_program
 
-/datum/computer/file/embedded_program/docking/airlock/New(var/obj/machinery/embedded_controller/M, var/datum/computer/file/embedded_program/airlock/docking/A)
+/datum/computer/file/embedded_program/docking/airlock/New(obj/machinery/embedded_controller/M, datum/computer/file/embedded_program/airlock/docking/A)
 	..(M)
 	airlock_program = A
 	airlock_program.master_prog = src
@@ -131,7 +130,7 @@
 	toggleDoor(memory["interior_status"], tag_interior_door, memory["secure"], "open")
 	toggleDoor(memory["exterior_status"], tag_exterior_door, memory["secure"], "open")
 
-/datum/computer/file/embedded_program/airlock/docking/cycleDoors(var/target)
+/datum/computer/file/embedded_program/airlock/docking/cycleDoors(target)
 	if (master_prog.undocked() || master_prog.override_enabled)	//only allow the port to be used as an airlock if nothing is docked here or the override is enabled
 		..(target)
 
@@ -155,7 +154,7 @@
 	set src in view(1)
 	src.program:print_state()
 
-/obj/machinery/embedded_controller/radio/airlock/docking_port/verb/spoof_signal(var/command as text, var/sender as text)
+/obj/machinery/embedded_controller/radio/airlock/docking_port/verb/spoof_signal(command as text, sender as text)
 	set category = "Debug"
 	set src in view(1)
 	var/datum/signal/signal = new
@@ -165,7 +164,7 @@
 
 	src.program:receive_signal(signal)
 
-/obj/machinery/embedded_controller/radio/airlock/docking_port/verb/debug_init_dock(var/target as text)
+/obj/machinery/embedded_controller/radio/airlock/docking_port/verb/debug_init_dock(target as text)
 	set category = "Debug"
 	set src in view(1)
 	src.program:initiate_docking(target)

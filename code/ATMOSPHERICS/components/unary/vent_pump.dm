@@ -72,7 +72,7 @@
 	pressure_checks = 2
 	pressure_checks_default = 2
 
-/obj/machinery/atmospherics/unary/vent_pump/LateInitialize()
+/obj/machinery/atmospherics/unary/vent_pump/New()
 	..()
 	air_contents.volume = ATMOS_DEFAULT_VOLUME_PUMP * 2
 
@@ -91,7 +91,7 @@
 	power_channel = STATIC_EQUIP
 	power_rating = 15000	//15 kW ~ 20 HP
 
-/obj/machinery/atmospherics/unary/vent_pump/high_volume/LateInitialize()
+/obj/machinery/atmospherics/unary/vent_pump/high_volume/New()
 	..()
 	air_contents.volume = ATMOS_DEFAULT_VOLUME_PUMP + 800
 
@@ -100,7 +100,7 @@
 	power_channel = STATIC_ENVIRON
 	power_rating = 30000	//15 kW ~ 20 HP
 
-/obj/machinery/atmospherics/unary/vent_pump/engine/LateInitialize()
+/obj/machinery/atmospherics/unary/vent_pump/engine/New()
 	..()
 	air_contents.volume = ATMOS_DEFAULT_VOLUME_PUMP + 500 //meant to match air injector
 
@@ -169,7 +169,6 @@
 		return 0
 
 	var/power_draw = 0
-	var/transfer_happened = FALSE
 
 	for(var/e in environments)
 		var/datum/gas_mixture/environment = e
@@ -193,13 +192,12 @@
 				//limit flow rate from turfs
 				transfer_moles = min(transfer_moles, environment.total_moles*air_contents.volume/environment.volume)	//group_multiplier gets divided out here
 				power_draw = pump_gas(src, environment, air_contents, transfer_moles, power_rating)
-			transfer_happened = TRUE
 		else
 			if(pump_direction && pressure_checks == PRESSURE_CHECK_EXTERNAL) //99% of all vents
 				hibernate = world.time + (rand(100,200))
 
 
-	if(transfer_happened)
+	if(power_draw > 0)
 		last_power_draw = power_draw
 		use_power(power_draw)
 		if(network)
@@ -363,14 +361,14 @@
 	switch(tool_type)
 
 		if(QUALITY_WELDING)
-			to_chat(user, SPAN_NOTICE("Now welding the vent."))
+			to_chat(user, span_notice("Now welding the vent."))
 			if(I.use_tool(user, src, WORKTIME_NORMAL, tool_type, FAILCHANCE_VERY_EASY, required_stat = STAT_MEC))
 				if(!welded)
-					user.visible_message(SPAN_NOTICE("\The [user] welds the vent shut."), SPAN_NOTICE("You weld the vent shut."), "You hear welding.")
+					user.visible_message(span_notice("\The [user] welds the vent shut."), span_notice("You weld the vent shut."), "You hear welding.")
 					welded = 1
 					update_icon()
 				else
-					user.visible_message(SPAN_NOTICE("[user] unwelds the vent."), SPAN_NOTICE("You unweld the vent."), "You hear welding.")
+					user.visible_message(span_notice("[user] unwelds the vent."), span_notice("You unweld the vent."), "You hear welding.")
 					welded = 0
 					update_icon()
 					return
@@ -380,24 +378,24 @@
 
 		if(QUALITY_BOLT_TURNING)
 			if (!(stat & NOPOWER) && use_power)
-				to_chat(user, SPAN_WARNING("You cannot unwrench \the [src], turn it off first."))
+				to_chat(user, span_warning("You cannot unwrench \the [src], turn it off first."))
 				return 1
 			var/turf/T = src.loc
 			if (node1 && node1.level==1 && isturf(T) && !T.is_plating())
-				to_chat(user, SPAN_WARNING("You must remove the plating first."))
+				to_chat(user, span_warning("You must remove the plating first."))
 				return 1
 			var/datum/gas_mixture/int_air = return_air()
 			var/datum/gas_mixture/env_air = loc.return_air()
 			if ((int_air.return_pressure()-env_air.return_pressure()) > 2*ONE_ATMOSPHERE)
-				to_chat(user, SPAN_WARNING("You cannot unwrench \the [src], it is too exerted due to internal pressure."))
+				to_chat(user, span_warning("You cannot unwrench \the [src], it is too exerted due to internal pressure."))
 				add_fingerprint(user)
 				return 1
 
-			to_chat(user, SPAN_NOTICE("You begin to unfasten \the [src]..."))
+			to_chat(user, span_notice("You begin to unfasten \the [src]..."))
 			if(I.use_tool(user, src, WORKTIME_NEAR_INSTANT, tool_type, FAILCHANCE_VERY_EASY, required_stat = STAT_MEC))
 				user.visible_message( \
-					SPAN_NOTICE("\The [user] unfastens \the [src]."), \
-					SPAN_NOTICE("You have unfastened \the [src]."), \
+					span_notice("\The [user] unfastens \the [src]."), \
+					span_notice("You have unfastened \the [src]."), \
 					"You hear a ratchet.")
 				new /obj/item/pipe(loc, make_from=src)
 				qdel(src)

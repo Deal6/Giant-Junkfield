@@ -12,7 +12,7 @@
 	if (isliving(AM))
 		var/mob/living/M = AM
 		if((locate(/obj/structure/multiz/stairs) in get_turf(loc)) || (locate(/obj/structure/multiz/ladder) in get_turf(loc)))
-			visible_message(SPAN_DANGER("\The [M] carefully avoids stepping down on \the [src]."))
+			visible_message(span_danger("\The [M] carefully avoids stepping down on \the [src]."))
 			return
 		M.slip("the [src.name]",4)
 /*
@@ -26,6 +26,10 @@
 	description_antag = "Can throw it to delay IH if trying to escape, or to get rid of evidence"
 	icon = 'icons/obj/items.dmi'
 	icon_state = "soap"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/equipment/custodial_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/equipment/custodial_righthand.dmi',
+		)
 	w_class = ITEM_SIZE_SMALL
 	throwforce = 0
 	throw_speed = 4
@@ -47,7 +51,7 @@
 	if (isliving(AM))
 		var/mob/living/M = AM
 		if((locate(/obj/structure/multiz/stairs) in get_turf(loc)) || (locate(/obj/structure/multiz/ladder) in get_turf(loc)))
-			visible_message(SPAN_DANGER("\The [M] carefully avoids stepping down on \the [src]."))
+			visible_message(span_danger("\The [M] carefully avoids stepping down on \the [src]."))
 			return
 		M.slip("the [src.name]",3)
 
@@ -55,27 +59,27 @@
 	if(!proximity) return
 /*
 	else if(istype(target,/obj/effect/decal/cleanable))
-		to_chat(user, "<span class='notice'>You scrub \the [target.name] out.</span>")
+		to_chat(user, span_notice("You scrub \the [target.name] out."))
 		qdel(target)
 		return
 */
 	else if(istype(target,/turf))
 		to_chat(user, "You start scrubbing the [target.name]")
 		if(do_after(user, 50, target)) //Soap should be slower and worse than mop
-			to_chat(user, "<span class='notice'>You scrub \the [target.name] clean.</span>")
+			to_chat(user, span_notice("You scrub \the [target.name] clean."))
 			var/turf/T = target
 			T.clean(src, user)
 			return
 		else
-			to_chat(user, "<span class='notice'>You need to stand still to clean \the [target.name]!</span>")
+			to_chat(user, span_notice("You need to stand still to clean \the [target.name]!"))
 			return
 	else if(istype(target,/obj/structure/sink) || istype(target,/obj/structure/sink))
-		to_chat(user, "<span class='notice'>You wet \the [src] in the sink.</span>")
+		to_chat(user, span_notice("You wet \the [src] in the sink."))
 		wet()
 		return
 	else if (istype(target, /obj/structure/mopbucket) || istype(target, /obj/item/reagent_containers/glass) || istype(target, /obj/structure/reagent_dispensers/watertank))
 		if (target.reagents && target.reagents.total_volume)
-			to_chat(user, "<span class='notice'>You wet \the [src] in the [target].</span>")
+			to_chat(user, span_notice("You wet \the [src] in the [target]."))
 			wet()
 			return
 		else
@@ -83,21 +87,21 @@
 
 	//I couldn't feasibly  fix the overlay bugs caused by cleaning items we are wearing.
 	//So this is a workaround. This also makes more sense from an IC standpoint. ~Carn
-	if(user.client && (target in user.client.screen) && !(target == user.get_inactive_hand())) // being unable to clean an item because you're holding it is silly -vode
-		to_chat(user, "<span class='notice'>You need to take that [target.name] off before cleaning it.</span>")
+	if(user.client && (target in user.client.screen) && !(target == user.get_inactive_held_item())) // being unable to clean an item because you're holding it is silly -vode
+		to_chat(user, span_notice("You need to take that [target.name] off before cleaning it."))
 		return
 	else
-		to_chat(user, "<span class='notice'>You clean \the [target.name].</span>")
+		to_chat(user, span_notice("You clean \the [target.name]."))
 		target.clean_blood()
 		return
 
 
 
 //attack_as_weapon
-/obj/item/soap/attack(mob/living/target, mob/living/user, var/target_zone)
+/obj/item/soap/attack(mob/living/target, mob/living/user, target_zone)
 	if(ishuman(target) && ishuman(user) && !target.stat && user.targeted_organ == BP_MOUTH)
 		user.visible_message(
-			SPAN_DANGER("\The [user] washes \the [target]'s mouth out with soap!")
+			span_danger("\The [user] washes \the [target]'s mouth out with soap!")
 		)
 		user.setClickCooldown(DEFAULT_QUICK_COOLDOWN) //prevent spam
 		return

@@ -1,14 +1,15 @@
-/var/decl/overmap_event_handler/overmap_event_handler = new()
+var/decl/overmap_event_handler/overmap_event_handler = new()
 
 /decl/overmap_event_handler
 	var/list/event_turfs_by_z_level
 	var/last_tick = 0
+	var/obj/jtb_generator/jtb_gen  // jtb generator
 
 /decl/overmap_event_handler/New()
 	..()
 	event_turfs_by_z_level = list()
 
-/decl/overmap_event_handler/proc/create_events(var/z_level, var/overmap_size, var/number_of_events)
+/decl/overmap_event_handler/proc/create_events(z_level, overmap_size, number_of_events)
 	// Acquire the list of not-yet utilized overmap turfs on this Z-level
 	var/list/events_by_turf = get_event_turfs_by_z_level(z_level)
 	var/list/candidate_turfs = block(locate(OVERMAP_EDGE, OVERMAP_EDGE, z_level),locate(overmap_size - OVERMAP_EDGE, overmap_size - OVERMAP_EDGE,z_level))
@@ -50,29 +51,22 @@
 	spawn_points_of_interest(candidate_turfs)
 
 /decl/overmap_event_handler/proc/spawn_points_of_interest(list/candidate_turfs)
-	var/list/points_of_interest_to_spawn = list(
-		/obj/effect/overmap_event/poi/debris,
-		/obj/effect/overmap_event/poi/station,
-		/obj/effect/overmap_event/poi/map_spawner,
-		/obj/effect/overmap_event/poi/map_spawner/medium_blacksite,
-		/obj/effect/overmap_event/poi/map_spawner/spaceruins,
-		/obj/effect/overmap_event/poi/map_spawner/fortress)
-
-	for(var/poi_typepath in points_of_interest_to_spawn)
-		if(!LAZYLEN(candidate_turfs))
+	var/list/pois = list(/obj/effect/overmap_event/poi/debris, /obj/effect/overmap_event/poi/station)
+	for(var/path in pois)
+		if(!candidate_turfs.len)
 			break
 		var/turf/poi_turf = pick(candidate_turfs)
 		candidate_turfs -= poi_turf
-		new poi_typepath(poi_turf)
+		new path(poi_turf)
 
-/decl/overmap_event_handler/proc/get_event_turfs_by_z_level(var/z_level)
+/decl/overmap_event_handler/proc/get_event_turfs_by_z_level(z_level)
 	var/z_level_text = num2text(z_level)
 	. = event_turfs_by_z_level[z_level_text]
 	if(!.)
 		. = list()
 		event_turfs_by_z_level[z_level_text] = .
 
-/decl/overmap_event_handler/proc/acquire_event_turfs(var/number_of_turfs, var/distance_from_origin, var/list/candidate_turfs, var/continuous = TRUE)
+/decl/overmap_event_handler/proc/acquire_event_turfs(number_of_turfs, distance_from_origin, list/candidate_turfs, continuous = TRUE)
 	number_of_turfs = min(number_of_turfs, candidate_turfs.len)
 	candidate_turfs = candidate_turfs.Copy() // Not this proc's responsibility to adjust the given lists
 
@@ -95,7 +89,7 @@
 
 	return selected_turfs
 
-/decl/overmap_event_handler/proc/get_random_neighbour(var/turf/origin_turf, var/list/candidate_turfs, var/continuous = TRUE, var/range)
+/decl/overmap_event_handler/proc/get_random_neighbour(turf/origin_turf, list/candidate_turfs, continuous = TRUE, range)
 	var/fitting_turfs
 	if(continuous)
 		fitting_turfs = origin_turf.CardinalTurfs(FALSE)
@@ -106,7 +100,7 @@
 		if(T in candidate_turfs)
 			return T
 
-/decl/overmap_event_handler/proc/on_turf_exited(var/turf/old_loc, var/obj/effect/overmap/ship/entering_ship, var/new_loc)
+/decl/overmap_event_handler/proc/on_turf_exited(turf/old_loc, obj/effect/overmap/ship/entering_ship, new_loc)
 	if(!istype(entering_ship))
 		return
 	if(new_loc == old_loc)
@@ -123,7 +117,7 @@
 			return
 		old_event.leave(entering_ship)
 
-/decl/overmap_event_handler/proc/on_turf_entered(var/turf/new_loc, var/obj/effect/overmap/ship/entering_ship, var/old_loc)
+/decl/overmap_event_handler/proc/on_turf_entered(turf/new_loc, obj/effect/overmap/ship/entering_ship, old_loc)
 	if(!istype(entering_ship))
 		return
 	if(new_loc == old_loc)
@@ -140,7 +134,7 @@
 			return
 		new_event.enter(entering_ship)
 
-/decl/overmap_event_handler/proc/scan_loc(var/obj/effect/overmap/ship/S, var/turf/new_loc, var/can_scan, var/stage_2_width = 1)
+/decl/overmap_event_handler/proc/scan_loc(obj/effect/overmap/ship/S, turf/new_loc, can_scan, stage_2_width = 1)
 
 	if(!can_scan) // No active scanner
 		// Everything is stage 2 (too far for sensors)
@@ -171,7 +165,10 @@
 					E.icon_state = E.icon_stages[1] + "_g"  // Green outline
 			for(var/obj/effect/overmap/E in T)
 				E.name = E.name_stages[1]
-				E.icon_state = E.icon_stages[1] + "_g"  // Green outline
+				if((!passive_scan) || istype(E, /obj/effect/overmap/sector/exoplanet))
+					E.icon_state = E.icon_stages[1]  // No outline
+				else
+					E.icon_state = E.icon_stages[1] + "_g"  // Green outline
 
 		// Stage 1 (limit range)
 		for(var/turf/T in getcircle(new_loc, S.scan_range))
@@ -195,7 +192,7 @@
 	return
 
 // Reveal a point of interest if the ship is standing on it on the overmap
-/decl/overmap_event_handler/proc/scan_poi(var/obj/effect/overmap/ship/S, var/turf/my_loc)
+/decl/overmap_event_handler/proc/scan_poi(obj/effect/overmap/ship/S, turf/my_loc)
 	for(var/obj/effect/overmap_event/poi/E in get_turf(my_loc))
 		E.reveal()
 	return
@@ -229,16 +226,16 @@
 	var/list/event_icon_stage1 = list("object")
 	var/list/event_name_stages = list("name_stage0", "name_stage1", "name_stage2")
 
-/datum/overmap_event/proc/enter(var/obj/effect/overmap/ship/victim)
+/datum/overmap_event/proc/enter(obj/effect/overmap/ship/victim)
 //	world << "Ship [victim] encountered [name]"
 	if(!SSevent)
-		admin_notice("<span class='danger'>Event manager not setup.</span>")
+		admin_notice(span_danger("Event manager not setup."))
 		return
 	if(victim in victims)
 		if(!istype(src, /datum/overmap_event/meteor/comet_tail_core) && \
 		!istype(src, /datum/overmap_event/meteor/comet_tail_medium)  && \
 		!istype(src, /datum/overmap_event/meteor/comet_tail))
-			admin_notice("<span class='danger'>Multiple attempts to trigger the same event by [victim] detected.</span>")
+			admin_notice(span_danger("Multiple attempts to trigger the same event by [victim] detected."))
 			return
 	LAZYADD(victims, victim)
 	//var/datum/event_meta/EM = new(difficulty, "Overmap event - [name]", event, add_to_queue = FALSE, is_one_shot = TRUE)
@@ -296,7 +293,7 @@
 	event_icon_stage1 = list("object")
 	event_name_stages = list("comet core", "unknown object", "unknown spatial phenomenon")
 
-/datum/overmap_event/meteor/enter(var/obj/effect/overmap/ship/victim)
+/datum/overmap_event/meteor/enter(obj/effect/overmap/ship/victim)
 	..()
 	if(victims[victim])
 		var/datum/event/meteor_wave/overmap/E = victims[victim]
@@ -378,6 +375,7 @@
 	icon_stages = list("spacehulk", "ship", "poi")
 
 	log_game("Space wrecks point of interest has been scanned and revealed.")
+	overmap_event_handler.jtb_gen.add_specific_junk_field("SpaceWrecks")
 	return
 
 /obj/effect/overmap_event/poi/station
@@ -385,40 +383,39 @@
 /obj/effect/overmap_event/poi/station/reveal()
 	if(revealed)
 		return
-	revealed = TRUE
+	else
+		revealed = TRUE
 
 	log_game("Trading station point of interest has been scanned and revealed.")
 	SStrade.AddStation(loc)  // Add a new random station at this location
 	qdel(src)  // Clear the POI effect since there is a trading station at that location now
+	return
 
+/obj/effect/overmap_event/poi/blacksite
+	var/obj/effect/overmap/sector/blacksite/linked  // Linked blacksite sector
 
-/obj/effect/overmap_event/poi/map_spawner
-	var/sector_to_create_when_discovered = /obj/effect/overmap/sector/map_spawner/blacksite
-	var/obj/effect/overmap/sector/map_spawner/sector
+/obj/effect/overmap_event/poi/blacksite/New(loc, obj/effect/overmap/sector/linked_sector)
+	..(loc)
+	linked = linked_sector
 
-/obj/effect/overmap_event/poi/map_spawner/reveal()
+/obj/effect/overmap_event/poi/blacksite/Destroy()
+	linked = null
+	. = ..()
+
+/obj/effect/overmap_event/poi/blacksite/reveal()
 	if(revealed)
 		return
-	revealed = TRUE
+	else
+		revealed = TRUE
 
-	// Unlike regular /sector/ objects, this one is not created by a map being loaded,
-	// but instead loads a map when created
-	// Here we use roundstart-generated /poi/ objects to trigger new Z-level creation
-	sector = new sector_to_create_when_discovered(loc)
-	sector.loc = loc // Sectors are forced to spawn at random coordinates, because of course they are
-	sector.update_known()
-	var/new_sector_name = LAZYLEN(sector.name_stages) ? sector.name_stages[1] : "UNKNOWN"
-	log_and_message_admins("[new_sector_name] have been scanned and revealed.")
-	sector = null
-	qdel(src)  // Clear the POI effect since there is a sector revealed at that location now
+	// Blacksite sector is now known and no longer hidden
+	if(linked)
+		linked.known = 1
+		linked.invisibility = 0
+		linked.update_known()
+		log_game("Blacksite point of interest has been scanned and revealed.")
+	else
+		log_world("## ERROR: Blacksite point of interest was not linked to a sector.")
 
-
-/obj/effect/overmap_event/poi/map_spawner/medium_blacksite
-	sector_to_create_when_discovered = /obj/effect/overmap/sector/map_spawner/blacksite/medium
-
-/obj/effect/overmap_event/poi/map_spawner/fortress
-	sector_to_create_when_discovered = /obj/effect/overmap/sector/map_spawner/fortress
-
-/obj/effect/overmap_event/poi/map_spawner/spaceruins
-	sector_to_create_when_discovered = /obj/effect/overmap/sector/map_spawner/spaceruins
-
+	qdel(src)  // Clear the POI effect since there is a blacksite revealed at that location now
+	return

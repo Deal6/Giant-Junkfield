@@ -24,15 +24,19 @@
 
 /obj/effect/overmap/ship/Crossed(obj/effect/overmap_event/movable/ME)
 	..()
-	if(istype(ME))
-		if(ME.OE)
-			ME.OE.enter(src)
+	if(ME)
+		if(istype(ME, /obj/effect/overmap_event/movable))
+			if(ME.OE)
+				if(istype(src, /obj/effect/overmap/ship))
+					ME.OE:enter(src)
 
 /obj/effect/overmap/ship/Uncrossed(obj/effect/overmap_event/movable/ME)
 	..()
-	if(istype(ME))
-		if(ME.OE)
-			ME.OE.leave(src)
+	if(ME)
+		if(istype(ME, /obj/effect/overmap_event/movable))
+			if(ME.OE)
+				if(istype(src, /obj/effect/overmap/ship))
+					ME.OE:leave(src)
 
 /obj/effect/overmap/ship/New()
 	GLOB.ships += src
@@ -174,7 +178,7 @@
 /obj/effect/overmap/ship/Process()
 	if(!is_still())
 		var/list/deltas = list(0,0)
-		for(var/i=1, i<=2, i++)
+		for(var/i=1; i<=2; i++)
 			if(speed[i] && world.time > last_movement[i] + default_delay - speed_mod*abs(speed[i]))
 				deltas[i] = speed[i] > 0 ? 1 : -1
 				last_movement[i] = world.time
@@ -212,7 +216,7 @@
 //deciseconds to next step
 /obj/effect/overmap/ship/proc/ETA()
 	. = INFINITY
-	for(var/i=1, i<=2, i++)
+	for(var/i=1; i<=2; i++)
 		if(speed[i])
 			. = min(last_movement[i] + default_delay - speed_mod*abs(speed[i]) - world.time, .)
 	. = max(.,0)
@@ -221,7 +225,7 @@
     var/nx = x
     var/ny = y
     var/low_edge = 1
-    var/high_edge = OVERMAP_SIZE
+    var/high_edge = GLOB.maps_data.overmap_size
 
     if(x <= low_edge)
         nx = high_edge
@@ -237,7 +241,7 @@
     if(T)
         forceMove(T)
 
-/obj/effect/overmap/ship/Bump(var/atom/A)
+/obj/effect/overmap/ship/Bump(atom/A)
 	if(istype(A,/turf/map/edge))
 		handle_wraparound()
 	..()
@@ -253,7 +257,7 @@
 			enough_LRS = LRS
 
 	if(!enough_LRS)
-		nav_control.visible_message(SPAN_DANGER("The [src] buzzes an insistent warning as it fails to find any sensors with enough power to pulse"))
+		nav_control.visible_message(span_danger("The [src] buzzes an insistent warning as it fails to find any sensors with enough power to pulse"))
 		playsound(nav_control.loc, 'sound/machines/buzz-two.ogg', 100, 1, 5)
 
 	if(enough_LRS.consume_energy_scan())

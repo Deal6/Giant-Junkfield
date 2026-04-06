@@ -15,6 +15,10 @@
 	desc = "A camera film cartridge. Insert it into a camera to reload it."
 	icon_state = "film"
 	item_state = "electropack"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/misc/devices_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/misc/devices_righthand.dmi',
+		)
 	w_class = ITEM_SIZE_TINY
 	price_tag = 10
 	matter = list(MATERIAL_PLASTIC = 1)
@@ -62,7 +66,7 @@ var/global/photo_count = 0
 	if(in_range(user, src))
 		show(user)
 	else
-		extra_description += SPAN_NOTICE("It is too far away.")
+		extra_description += span_notice("It is too far away.")
 	..(user, extra_description)
 
 /obj/item/photo/proc/show(mob/user as mob)
@@ -108,7 +112,11 @@ var/global/photo_count = 0
 	icon = 'icons/obj/items.dmi'
 	desc = "A polaroid camera. 10 photos left."
 	icon_state = "camera"
-	item_state = "electropack"
+	item_state = "camera"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/misc/devices_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/misc/devices_righthand.dmi',
+		)
 	w_class = ITEM_SIZE_SMALL
 	flags = CONDUCT
 	slot_flags = SLOT_BELT
@@ -128,7 +136,7 @@ var/global/photo_count = 0
 	var/nsize = input("Photo Size","Pick a size of resulting photo.") as null|anything in list(3,5,7,9)
 	if(nsize)
 		radius = (nsize - 1) * 0.5
-		to_chat(usr, SPAN_NOTICE("Camera will now take [(radius*2)+1]x[(radius*2)+1] photos."))
+		to_chat(usr, span_notice("Camera will now take [(radius*2)+1]x[(radius*2)+1] photos."))
 
 /obj/item/device/camera/attack(mob/living/carbon/human/M as mob, mob/user as mob)
 	return
@@ -145,9 +153,9 @@ var/global/photo_count = 0
 /obj/item/device/camera/attackby(obj/item/I as obj, mob/user as mob)
 	if(istype(I, /obj/item/device/camera_film))
 		if(pictures_left)
-			to_chat(user, SPAN_NOTICE("[src] still has some film in it!"))
+			to_chat(user, span_notice("[src] still has some film in it!"))
 			return
-		to_chat(user, SPAN_NOTICE("You insert [I] into [src]."))
+		to_chat(user, span_notice("You insert [I] into [src]."))
 		user.drop_item()
 		qdel(I)
 		pictures_left = pictures_max
@@ -185,7 +193,7 @@ var/global/photo_count = 0
 
 	pictures_left--
 	desc = "A polaroid camera. It has [pictures_left] photos left."
-	to_chat(user, SPAN_NOTICE("[pictures_left] photos left."))
+	to_chat(user, span_notice("[pictures_left] photos left."))
 	icon_state = icon_off
 	on = FALSE
 	spawn(64)
@@ -222,7 +230,7 @@ var/global/photo_count = 0
 	p.desc = mobs
 	printpicture(user, p)
 
-/proc/createpicture(atom/target, mob/user, var/capturemode = CAPTURE_MODE_REGULAR, var/radius = 3)
+/proc/createpicture(atom/target, mob/user, capturemode = CAPTURE_MODE_REGULAR, radius = 3)
 	var/x_c = target.x - radius
 	var/y_c = target.y - radius
 	var/z_c	= target.z
@@ -265,7 +273,7 @@ var/global/photo_count = 0
 	else
 		p.forceMove(get_turf(src))
 
-/obj/item/photo/proc/copy(var/copy_id = 0)
+/obj/item/photo/proc/copy(copy_id = 0)
 	var/obj/item/photo/p = new/obj/item/photo()
 
 	p.name = name

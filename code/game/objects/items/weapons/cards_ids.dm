@@ -7,7 +7,6 @@
  */
 
 
-
 /*
  * DATA CARDS - Used for the teleporter
  */
@@ -15,6 +14,10 @@
 	name = "card"
 	desc = "Does card things."
 	icon = 'icons/obj/card.dmi'
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/equipment/idcards_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/equipment/idcards_lefthand.dmi',
+		)
 	w_class = ITEM_SIZE_TINY
 	bad_type = /obj/item/card
 	spawn_blacklisted = TRUE
@@ -84,7 +87,7 @@ var/const/NO_EMAG_ACT = -50
 		log_and_message_admins("emagged \an [A].")
 
 	if(uses<1)
-		user.visible_message(SPAN_WARNING("\The [src] fizzles and sparks - it seems it's been used once too often, and is now spent."))
+		user.visible_message(span_warning("\The [src] fizzles and sparks - it seems it's been used once too often, and is now spent."))
 		user.drop_item()
 		var/obj/item/card/emag_broken/junk = new(user.loc)
 		junk.add_fingerprint(user)
@@ -100,7 +103,8 @@ var/const/NO_EMAG_ACT = -50
 	slot_flags = SLOT_ID
 
 	var/access = list()
-	var/registered_name = "Unknown" // The name registered_name on the card
+	/// The name registered_name on the card
+	var/registered_name = "Unknown"
 	var/list/associated_email_login = list("login" = "", "password" = "")
 	var/associated_account_number = 0
 
@@ -113,24 +117,41 @@ var/const/NO_EMAG_ACT = -50
 	var/icon/side
 
 	//alt titles are handled a bit weirdly in order to unobtrusively integrate into existing ID system
-	var/assignment	//can be alt title or the actual job
-	var/rank			//actual job
-	var/dorm = 0			// determines if this ID has claimed a dorm already
+	/// can be alt title or the actual job
+	var/assignment
+	/// actual job
+	var/rank
+	/// determines if this ID has claimed a dorm already
+	var/dorm = 0
 
 	var/formal_name_prefix
 	var/formal_name_suffix
+	/// The name of the job for interns. If unset it will default to "[assignment] (Intern)". (This should have gone in id_trim but eris doesnt have ID trims. STINKY!!!)
+	var/intern_alt_name = null
+
+	/// Boolean value. If TRUE, the [Intern] tag gets prepended to this ID card when the label is updated.
+	var/is_intern = FALSE
+
+/obj/item/card/id/Initialize(mapload)
+	. = ..()
+	RegisterSignal(src, COMSIG_CLOTH_EQUIPPED, PROC_REF(update_intern_status))
+	RegisterSignal(src, COMSIG_CLOTH_DROPPED, PROC_REF(remove_intern_status))
+
+/obj/item/card/id/Destroy()
+	UnregisterSignal(src, list(COMSIG_CLOTH_EQUIPPED, COMSIG_CLOTH_DROPPED))
+	return ..()
 
 /obj/item/card/id/examine(mob/user, extra_description = "")
 	set src in oview(1) // TODO: See if this could be safely removed --KIROV
 	if(get_dist(user, src) < 2)
 		show(user)
 		extra_description += desc
-		extra_description += text("\n\icon[src] [name]: The current assignment on the card is [assignment].")
+		extra_description += text("\n[icon2html(src, user)] [name]: The current assignment on the card is [assignment].")
 		extra_description += "\nThe blood type on the card is [blood_type]."
 		extra_description += "\nThe DNA hash on the card is [dna_hash]."
 		extra_description += "\nThe fingerprint hash on the card is [fingerprint_hash]."
 	else
-		extra_description += SPAN_WARNING("It is too far away.")
+		extra_description += span_warning("It is too far away.")
 
 /obj/item/card/id/proc/prevent_tracking()
 	return 0
@@ -145,13 +166,59 @@ var/const/NO_EMAG_ACT = -50
 	return
 
 /obj/item/card/id/proc/update_name()
-	name = "[src.registered_name]'s ID Card ([src.assignment])"
+	var/name_string = registered_name ? "[registered_name]'s ID Card" : initial(name)
+	var/assignment_string
 
-/obj/item/card/id/proc/set_id_photo(var/mob/M)
+	if(is_intern)
+		if(assignment)
+			assignment_string = intern_alt_name || "Intern [assignment]"
+		else
+			assignment_string = "Intern"
+	else
+		assignment_string = assignment
+
+	name = "[name_string] ([assignment_string])"
+
+/obj/item/card/id/proc/update_intern_status(mob/user)
+	SIGNAL_HANDLER
+
+	if(!user?.client)
+		return
+	if(!CONFIG_GET(flag/use_exp_tracking))
+		return
+	if(!CONFIG_GET(flag/use_low_living_hour_intern))
+		return
+	if(!SSdbcore.Connect())
+		return
+
+	var/intern_threshold = (CONFIG_GET(number/use_low_living_hour_intern_hours) * 60) || (CONFIG_GET(number/use_exp_restrictions_heads_hours) * 60) || INTERN_THRESHOLD_FALLBACK_HOURS * 60
+	var/playtime = user.client.get_exp_living(pure_numeric = TRUE)
+
+	if((intern_threshold >= playtime) && (user.mind?.assigned_role in intern_possible_jobs))
+		is_intern = TRUE
+		update_name()
+		return
+
+	if(!is_intern)
+		return
+
+	is_intern = FALSE
+	update_name()
+
+/obj/item/card/id/proc/remove_intern_status(datum/source, mob/user)
+	SIGNAL_HANDLER
+
+	if(!is_intern)
+		return
+
+	is_intern = FALSE
+	update_name()
+
+/obj/item/card/id/proc/set_id_photo(mob/M)
 	front = getFlatIcon(M, SOUTH)
 	side = getFlatIcon(M, WEST)
 
-/mob/proc/set_id_info(var/obj/item/card/id/id_card)
+/mob/proc/set_id_info(obj/item/card/id/id_card)
 	id_card.age = 0
 	id_card.registered_name		= real_name
 	id_card.sex 				= capitalize(gender)
@@ -161,7 +228,7 @@ var/const/NO_EMAG_ACT = -50
 	id_card.fingerprint_hash= fingers_trace
 	id_card.update_name()
 
-/mob/living/carbon/human/set_id_info(var/obj/item/card/id/id_card)
+/mob/living/carbon/human/set_id_info(obj/item/card/id/id_card)
 	..()
 	id_card.age = age
 
@@ -180,8 +247,9 @@ var/const/NO_EMAG_ACT = -50
 	return dat
 
 /obj/item/card/id/attack_self(mob/user as mob)
-	user.visible_message("\The [user] shows you: \icon[src] [src.name]. The assignment on the card: [src.assignment]",\
-		"You flash your ID card: \icon[src] [src.name]. The assignment on the card: [src.assignment]")
+	var/visible_to = viewers(get_turf(src))
+	user.visible_message("\The [user] shows you: [icon2html(src, visible_to)] [src.name]. The assignment on the card: [src.assignment]",\
+		"You flash your ID card: [icon2html(src, visible_to)] [src.name]. The assignment on the card: [src.assignment]")
 
 	src.add_fingerprint(user)
 	return
@@ -244,9 +312,10 @@ var/const/NO_EMAG_ACT = -50
 	icon_state = "centcom"
 	registered_name = "Central Command"
 	assignment = "General"
-	New()
-		access = get_all_centcom_access()
-		..()
+
+/obj/item/card/id/centcom/New()
+	access = get_all_centcom_access()
+	..()
 
 /obj/item/card/id/gold
 	icon_state = MATERIAL_GOLD

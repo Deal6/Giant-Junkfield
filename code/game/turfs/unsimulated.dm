@@ -1,8 +1,3 @@
-// Special turf for use in .dmm chunks that compose randomly generated maps
-/turf/template_noop
-	name = "Turf Passthrough"
-	icon_state = "template_void"
-
 /turf/wall/dummy
 	name = "wall"
 	icon = 'icons/turf/walls.dmi'
@@ -66,3 +61,8 @@
 /turf/beach/water/New()
 	..()
 	overlays += image("icon"='icons/misc/beach.dmi',"icon_state"="water2","layer"=MOB_LAYER+0.1)
+
+/turf/misc/start
+	name = "start area"
+	icon = 'icons/turf/space.dmi'
+	icon_state = "startarea"

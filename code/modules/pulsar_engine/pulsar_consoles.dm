@@ -13,14 +13,18 @@
 	var/shield_power = 45
 	var/last_light_lvl = 0
 
+/obj/machinery/pulsar/Initialize(mapload, d)
+	linked = GLOB.maps_data.pulsar_star
+	ship = locate(/obj/effect/pulsar_ship) in get_area(linked)
+	if(ship)
+		RegisterSignal(ship, COMSIG_MOVABLE_MOVED, PROC_REF(onShipMoved))
+	..()
+	return INITIALIZE_HINT_LATELOAD
+
 /obj/machinery/pulsar/LateInitialize()
-	linked = locate()
-	if(linked)
-		ship = locate() in get_area(linked)
-		if(ship)
-			RegisterSignal(ship, COMSIG_MOVABLE_MOVED, PROC_REF(onShipMoved))
 	scan_for_fuel()
 	. = ..()
+
 
 /obj/machinery/pulsar/relaymove(mob/user, direction)
 	if(map_active && linked)
@@ -55,7 +59,7 @@
 	if(linked && map_active)
 		user.set_machine(src)
 		user.reset_view(linked)
-		user.client.view = "[PULSAR_SIZE + 1]x[PULSAR_SIZE + 1]"
+		user.client.view = "[GLOB.maps_data.pulsar_size + 1]x[GLOB.maps_data.pulsar_size + 1]"
 	nano_ui_interact(user)
 
 /obj/machinery/pulsar/nano_ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = NANOUI_FOCUS)
@@ -115,7 +119,7 @@
 			var/power = 150
 			check_pulsar_lights(power)
 			return power
-	var/power = max(0, round(((PULSAR_SIZE * ROOT(2,2)) - 2 * ROOT(2, abs(linked.x - ship.x) ** 2 + abs(linked.y - ship.y) ** 2)) * 100/(PULSAR_SIZE * ROOT(2,2))))
+	var/power = max(0, round(((GLOB.maps_data.pulsar_size * ROOT(2,2)) - 2 * ROOT(2, abs(linked.x - ship.x) ** 2 + abs(linked.y - ship.y) ** 2)) * 100/(GLOB.maps_data.pulsar_size * ROOT(2,2))))
 	check_pulsar_lights(power)
 	return power
 
@@ -131,7 +135,7 @@
 	for(var/obj/O in get_turf(ship))
 		if(O.type in subtypesof(/obj/effect/pulsar_beam))
 			return 60
-	return max(30, 30 + (round(((PULSAR_SIZE * ROOT(2,2)) - 2 * ROOT(2, abs(linked.x - ship.x) ** 2 + abs(linked.y - ship.y) ** 2)) * 100/(PULSAR_SIZE * ROOT(2,2))) / 5))
+	return max(30, 30 + (round(((GLOB.maps_data.pulsar_size * ROOT(2,2)) - 2 * ROOT(2, abs(linked.x - ship.x) ** 2 + abs(linked.y - ship.y) ** 2)) * 100/(GLOB.maps_data.pulsar_size * ROOT(2,2))) / 5))
 
 /obj/machinery/pulsar/proc/get_effective_power_porduced() //Formula comes with deminishing returns but it's rising way past 100, returns precentages
 	return get_produced_power() * (100 - shield_power) / 100
@@ -178,13 +182,12 @@
 
 /obj/machinery/power/pulsar_power_bridge/Initialize(mapload, d)
 	. = ..()
-	SSmapping.check_map_status("pulsar", load_if_not_present = TRUE)
 	connect_to_network()
+	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/power/pulsar_power_bridge/LateInitialize()
-	..()
-	// pulsar_console = locate() in world //I can get away with it once, right?
-	pulsar_console = locate() in SSmachines.processing // Nope
+	. = ..()
+	pulsar_console = locate() in world //I can get away with it once, right?
 	if(pulsar_console)
 		pulsar_console.set_block_events(FALSE)
 		console_area = get_area(pulsar_console) //Area stored so reconnections are cheaper.
@@ -291,12 +294,12 @@
 		var/obj/item/tank/tank = W
 		air_contents.merge(tank.return_air())
 		tank.remove_air(tank.volume)
-		to_chat(user, SPAN_NOTICE("You pump the contents of [tank] into [src]"))
+		to_chat(user, span_notice("You pump the contents of [tank] into [src]"))
 		playsound(src, 'sound/effects/spray.ogg', 50, 1, -3)
 
 		if(round(air_contents.get_total_moles()) > 100)
 			icon_state = "pulsar_tank_burst"
-			visible_message(SPAN_DANGER("[src] looks like it's about to explode!"))
+			visible_message(span_danger("[src] looks like it's about to explode!"))
 		else
 			icon_state = "pulsar_tank"
 
@@ -304,21 +307,21 @@
 			var/turf/T = get_turf(src)
 			if(!T)
 				return
-			visible_message(SPAN_DANGER("[src] explodes violently and all of the gas starts pouring out!"))
+			visible_message(span_danger("[src] explodes violently and all of the gas starts pouring out!"))
 			playsound(src, 'sound/effects/smoke.ogg', 100, 1, -3)
 			T.assume_air(air_contents)
 			qdel(src)
 	else
-		to_chat(user, SPAN_NOTICE("[src] can only be refiled with portable fuel tanks"))
+		to_chat(user, span_notice("[src] can only be refiled with portable fuel tanks"))
 
 /obj/structure/pulsar_fuel_tank/attack_hand(mob/user)
-	to_chat(user, SPAN_NOTICE("[src] can only be refiled with portable fuel tanks"))
+	to_chat(user, span_notice("[src] can only be refiled with portable fuel tanks"))
 	. = ..()
 
 /obj/structure/pulsar_fuel_tank/examine(mob/user, extra_description = "")
 	extra_description += "\nFuel: [round(air_contents.get_total_moles())]/100"
 	if(round(air_contents.get_total_moles()) >= 100)
-		extra_description += SPAN_DANGER("\nIt looks like its about to burst!")
+		extra_description += span_danger("\nIt looks like its about to burst!")
 	..(user, extra_description)
 
 /obj/structure/pulsar_fuel_tank/filled/Initialize()

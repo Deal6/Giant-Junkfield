@@ -71,7 +71,7 @@
 
 	var/targetrecievedtime = -250
 
-/mob/living/carbon/superior_animal/golem/Initialize(mapload, var/datum/cave_difficulty_level/difficulty)
+/mob/living/carbon/superior_animal/golem/Initialize(mapload, datum/cave_difficulty_level/difficulty)
 	if(mineral_name && (mineral_name in ore_data))
 		mineral = ore_data[mineral_name]
 
@@ -162,7 +162,7 @@
 			turns_since_move++
 			if(turns_since_move >= turns_per_move)
 				if(!(stop_automated_movement_when_pulled && pulledby))
-					var/moving_to = pick(cardinal)
+					var/moving_to = pick(GLOB.cardinal)
 					set_dir(moving_to)
 					step_glide(src, moving_to, DELAY2GLIDESIZE(0.5 SECONDS))
 					turns_since_move = 0
@@ -188,7 +188,7 @@
 
 /mob/living/carbon/superior_animal/golem/proc/updatePathFinding() // moved to a separate proc to avoid code repeats
 	set_glide_size(DELAY2GLIDESIZE(move_to_delay))
-	if(!retreat_on_too_close || (get_dist(loc, target_mob.loc) > kept_distance)) // if this AI doesn't retreat or the target is further than our retreat distance, walk to them.
+	if(!retreat_on_too_close || (get_dist(get_turf(src), get_turf(target_mob)) > kept_distance)) // if this AI doesn't retreat or the target is further than our retreat distance, walk to them.
 		walk_to(src, target_mob, kept_distance + 1, move_to_delay)
 	else
 		walk_away(src,target_mob,kept_distance,move_to_delay) // warning: mobs will strafe nonstop if they can't get far enough awaye)

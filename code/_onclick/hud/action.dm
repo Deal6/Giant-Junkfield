@@ -20,13 +20,13 @@
 	var/check_flags = 0
 	var/processing = 0
 	var/active = 0
-	var/obj/screen/movable/action_button/button
+	var/atom/movable/screen/movable/action_button/button
 	var/button_icon = 'icons/mob/actions.dmi'
 	var/button_icon_state = "default"
 	var/background_icon_state = "bg_default"
 	var/mob/living/owner
 
-/datum/action/New(var/Target)
+/datum/action/New(Target)
 	target = Target
 
 /datum/action/Destroy()
@@ -79,7 +79,7 @@
 			if(target && procname)
 				if(!arguments)
 					arguments = usr
-				call(target, procname)(arguments)		
+				call(target, procname)(arguments)
 	return
 
 /datum/action/proc/Activate()
@@ -120,11 +120,11 @@
 /datum/action/proc/UpdateName()
 	return name
 
-/obj/screen/movable/action_button
+/atom/movable/screen/movable/action_button
 	var/datum/action/owner
 	screen_loc = "WEST,NORTH"
 
-/obj/screen/movable/action_button/Click(location, control, params)
+/atom/movable/screen/movable/action_button/Click(location, control, params)
 	var/list/modifiers = params2list(params)
 	if(modifiers["shift"])
 		moved = 0
@@ -134,7 +134,7 @@
 	owner.Trigger()
 	return 1
 
-/obj/screen/movable/action_button/proc/UpdateIcon()
+/atom/movable/screen/movable/action_button/proc/UpdateIcon()
 	if(!owner)
 		return
 	icon = owner.button_icon
@@ -157,13 +157,13 @@
 		color = rgb(255, 255, 255, 255)
 
 //Hide/Show Action Buttons ... Button
-/obj/screen/movable/action_button/hide_toggle
+/atom/movable/screen/movable/action_button/hide_toggle
 	name = "Hide Buttons"
 	icon = 'icons/mob/actions.dmi'
 	icon_state = "bg_default"
 	var/hidden = 0
 
-/obj/screen/movable/action_button/hide_toggle/Click()
+/atom/movable/screen/movable/action_button/hide_toggle/Click()
 	//usr.hud_used.action_buttons_hidden = !usr.hud_used.action_buttons_hidden
 
 	//hidden = usr.hud_used.action_buttons_hidden
@@ -175,12 +175,12 @@
 	usr.update_action_buttons()
 
 
-/obj/screen/movable/action_button/hide_toggle/proc/InitialiseIcon(var/mob/living/user)
+/atom/movable/screen/movable/action_button/hide_toggle/proc/InitialiseIcon(mob/living/user)
 	icon_state = "bg_default"
 	UpdateIcon()
 	return
 
-/obj/screen/movable/action_button/hide_toggle/UpdateIcon()
+/atom/movable/screen/movable/action_button/hide_toggle/UpdateIcon()
 	overlays.Cut()
 	var/image/img = image(icon, src, hidden?"show":"hide")
 	overlays += img
@@ -194,7 +194,7 @@
 #define AB_NORTH_OFFSET 26
 #define AB_MAX_COLUMNS 10
 
-/datum/hud/proc/ButtonNumberToScreenCoords(var/number) // TODO : Make this zero-indexed for readabilty
+/datum/hud/proc/ButtonNumberToScreenCoords(number) // TODO : Make this zero-indexed for readabilty
 	var/row = round((number-1)/AB_MAX_COLUMNS)
 	var/col = ((number - 1)%(AB_MAX_COLUMNS)) + 1
 	var/coord_col = "+[col-1]"
@@ -203,7 +203,7 @@
 	var/coord_row_offset = AB_NORTH_OFFSET
 	return "WEST[coord_col]:[coord_col_offset],NORTH[coord_row]:[coord_row_offset]"
 
-/datum/hud/proc/SetButtonCoords(var/obj/screen/button, var/number)
+/datum/hud/proc/SetButtonCoords(atom/movable/screen/button, number)
 	var/row = round((number-1)/AB_MAX_COLUMNS)
 	var/col = ((number - 1)%(AB_MAX_COLUMNS)) + 1
 	var/x_offset = 32*(col-1) + AB_WEST_OFFSET + 2*col
@@ -215,7 +215,9 @@
 
 //Presets for item actions
 /datum/action/item_action
+	name = "Item Action"
 	check_flags = AB_CHECK_RESTRAINED|AB_CHECK_STUNNED|AB_CHECK_LYING|AB_CHECK_ALIVE|AB_CHECK_INSIDE
+	button_icon_state = null
 
 /datum/action/item_action/CheckRemoval(mob/living/user)
 	return !(target in user)

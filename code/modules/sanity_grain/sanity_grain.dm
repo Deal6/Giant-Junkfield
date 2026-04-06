@@ -1,4 +1,4 @@
-/obj/screen/film_grain
+/atom/movable/screen/film_grain
 	name = "Film Grain"
 	icon = 'code/modules/sanity_grain/static.dmi'
 	screen_loc = ui_entire_screen
@@ -8,7 +8,7 @@
 	mouse_opacity = 0
 
 /datum/sanity
-	var/obj/screen/film_grain/grain
+	var/atom/movable/screen/film_grain/grain
 
 /datum/sanity/New(mob/living/carbon/human/H)
 	..()
@@ -16,7 +16,8 @@
 
 /mob/living/carbon/human/show_HUD()
 	..()
-	if(client)
+	// this bih aint got no sanity
+	if(client && sanity)
 		client.screen += sanity.grain
 
 /datum/sanity/updateLevel(new_level)

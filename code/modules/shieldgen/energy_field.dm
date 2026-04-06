@@ -23,14 +23,14 @@
 	update_nearby_tiles()
 	. = ..()
 
-/obj/effect/energy_field/explosion_act(target_power, explosion_handler/handler)
+/obj/effect/energy_field/explosion_act(target_power, datum/explosion_handler/handler)
 	Stress(0.5 + target_power / 100)
 	return 0
 
-/obj/effect/energy_field/bullet_act(var/obj/item/projectile/Proj)
+/obj/effect/energy_field/bullet_act(obj/item/projectile/Proj)
 	Stress(Proj.get_structure_damage() / 10)
 
-/obj/effect/energy_field/proc/Stress(var/severity)
+/obj/effect/energy_field/proc/Stress(severity)
 	strength -= severity
 
 	//if we take too much damage, drop out - the generator will bring us back up if we have enough power
@@ -44,7 +44,7 @@
 		set_invisibility(0)
 		set_density(1)
 
-/obj/effect/energy_field/proc/Strengthen(var/severity)
+/obj/effect/energy_field/proc/Strengthen(severity)
 	strength += severity
 	if (strength < 0)
 		strength = 0

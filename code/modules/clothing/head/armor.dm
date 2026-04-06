@@ -250,7 +250,7 @@
 		update_icon()
 	usr.update_action_buttons()
 
-/obj/item/clothing/head/armor/bulletproof/ironhammer_nvg/dropped(usr)
+/obj/item/clothing/head/armor/bulletproof/ironhammer_nvg/dropped(mob/user)
 	..()
 	if(hud.loc != src)
 		if(ismob(hud.loc))
@@ -447,7 +447,7 @@
 		update_icon()
 	usr.update_action_buttons()
 
-/obj/item/clothing/head/armor/riot_hud/dropped(usr)
+/obj/item/clothing/head/armor/riot_hud/dropped(mob/user)
 	..()
 	if(hud.loc != src)
 		if(ismob(hud.loc))
@@ -704,6 +704,9 @@
 
 
 /obj/item/clothing/head/armor/faceshield/paramedic/proc/schedule_scan()
+	if(!ismob(loc))
+		return
+
 	if(scan_scheduled)
 		return
 
@@ -714,6 +717,11 @@
 	spawn(scan_interval)
 		if(QDELETED(src))
 			return
+
+		if(!ismob(loc))
+			scan_scheduled = FALSE
+			return
+
 		scan_scheduled = FALSE
 		report_health_alerts()
 
@@ -742,14 +750,14 @@
 		crewmembers += crew_repository.health_data(z_level)
 
 	if(crewmembers.len)
-		for(var/i = 1, i <= crewmembers.len, i++)
+		for(var/i = 1; i <= crewmembers.len; i++)
 			var/list/entry = crewmembers[i]
 			if(entry["alert"] && !entry["muted"])
 				if(entry["name"] in crewmembers_recently_reported)
 					continue
 				crewmembers_recently_reported += entry["name"]
 				schedule_memory_cleanup(entry["name"])
-				to_chat(user, SPAN_WARNING("[src] beeps: '[entry["name"]]'s on-suit sensors broadcast an emergency signal. Access monitoring software for details.'"))
+				to_chat(user, span_warning("[src] beeps: '[entry["name"]]'s on-suit sensors broadcast an emergency signal. Access monitoring software for details.'"))
 
 	schedule_scan()
 
@@ -764,10 +772,10 @@
 	set src in usr
 
 	if(speaker_enabled)
-		to_chat(usr, SPAN_WARNING("[src] beeps: 'Notifications disabled.'"))
+		to_chat(usr, span_warning("[src] beeps: 'Notifications disabled.'"))
 		speaker_enabled = FALSE
 	else
-		to_chat(usr, SPAN_WARNING("[src] beeps: 'Notifications enabled.'"))
+		to_chat(usr, span_warning("[src] beeps: 'Notifications enabled.'"))
 		speaker_enabled = TRUE
 		report_health_alerts()
 		schedule_scan()

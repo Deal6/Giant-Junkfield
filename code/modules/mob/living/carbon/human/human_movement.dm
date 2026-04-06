@@ -22,12 +22,17 @@
 				tally += 0.5
 	if(stats.getPerk(PERK_FAST_WALKER))
 		tally -= 0.5
+
 	if(blocking)
-		tally += 1
+		if(blocking_item)
+			tally += blocking_item.slowdown_blocking
+		else
+			tally += 1
+
 
 	if(recoil)
-		var/obj/item/gun/GA = get_active_hand()
-		var/obj/item/gun/GI = get_inactive_hand()
+		var/obj/item/gun/GA = get_active_held_item()
+		var/obj/item/gun/GI = get_inactive_held_item()
 
 		var/brace_recoil = 0
 		if(istype(GA))
@@ -92,7 +97,7 @@
 	//If no working jetpack then use the other checks
 	return ..()
 
-/mob/living/carbon/human/slip_chance(var/prob_slip = 5)
+/mob/living/carbon/human/slip_chance(prob_slip = 5)
 	if(!..())
 		return 0
 
@@ -118,7 +123,7 @@
 /mob/living/carbon/human/add_momentum(direction)
 	if(momentum_dir == direction)
 		momentum_speed++
-	else if(momentum_dir == reverse_dir[direction])
+	else if(momentum_dir == GLOB.reverse_dir[direction])
 		momentum_speed = 0
 		momentum_dir = direction
 	else
@@ -128,6 +133,9 @@
 	update_momentum()
 
 /mob/living/carbon/human/proc/update_momentum()
+	if (QDELETED(src))
+		deltimer(momentum_reduction_timer)
+		return
 	if(momentum_speed)
 		momentum_reduction_timer = addtimer(CALLBACK(src, PROC_REF(calc_momentum)), 1 SECONDS, TIMER_STOPPABLE)
 	else

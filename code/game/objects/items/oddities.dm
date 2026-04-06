@@ -59,6 +59,7 @@
 	name = "rusted lighter"
 	desc = "This zippo ligher has been rusted shut. It smells faintly of sulphur and blood."
 	icon_state = "syndicate_lighter"
+	item_state = "zippo"
 	oddity_stats = list(
 		STAT_ROB = 10,
 	)
@@ -67,6 +68,11 @@
 	name = "old id"
 	desc = "There is a story behind this name. Untold, and cruel in fate."
 	icon_state = "old_id"
+	item_state = "card-id"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/equipment/idcards_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/equipment/idcards_lefthand.dmi',
+		)
 	oddity_stats = list(
 		STAT_TGH = 10,
 	)
@@ -75,6 +81,7 @@
 	name = "observer photo"
 	desc = "Just looking at this photo sparks a primal fear in your heart."
 	icon_state = "photo_corridor"
+	item_state = "paper"
 	oddity_stats = list(
 		STAT_VIG = 10,
 	)
@@ -84,6 +91,11 @@
 	name = "broken design disk"
 	desc = "This disk is corrupted and completely unusable. It has a hand-drawn picture of some strange mechanism on it - looking at it for too long makes your head hurt."
 	icon_state = "disc"
+	item_state = "card-id"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/equipment/idcards_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/equipment/idcards_lefthand.dmi',
+		)
 	oddity_stats = list(
 		STAT_MEC = 10,
 	)
@@ -92,6 +104,7 @@
 	name = "unholy book"
 	desc = "The writings inside entail some strange ritual. Pages have been torn out or smudged to illegibility."
 	icon_state = "book_skull"
+	item_state = "necronomicon"
 	oddity_stats = list(
 		STAT_COG = 10,
 	)
@@ -100,7 +113,11 @@
 	name = "odd health scanner"
 	desc = "It's broken and stuck on some really strange readings. Was this even human?"
 	icon_state = "healthscanner"
-	item_state = "electronic"
+	item_state = "healthanalyzer"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/equipment/medical_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/equipment/medical_righthand.dmi',
+		)
 	oddity_stats = list(
 		STAT_BIO = 10,
 	)
@@ -120,6 +137,11 @@
 	name = "trustworthy towel"
 	desc = "It's always good to have one with you."
 	icon_state = "towel"
+	item_state = "sheet"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/misc/bedsheet_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/misc/bedsheet_righthand.dmi',
+		)
 	oddity_stats = list(
 		STAT_ROB = 6,
 		STAT_TGH = 6,
@@ -130,6 +152,7 @@
 	name = "old bible"
 	desc = "Oh, how quickly we forgot."
 	icon_state = "book_bible"
+	item_state = "bible"
 	oddity_stats = list(
 		STAT_ROB = 6,
 		STAT_VIG = 6,
@@ -139,6 +162,7 @@
 	name = "old money"
 	desc = "It's not like the organization that issued this exists anymore."
 	icon_state = "old_money"
+	item_state = "paper"
 	oddity_stats = list(
 		STAT_TGH = 6,
 		STAT_VIG = 6,
@@ -149,18 +173,19 @@
 	name = "expired mouthwash"
 	desc = "It's an old bottle of DRAGONBREATH X mouthwash. The contents have hopelessly congealed and fused to the bottle."
 	icon_state = "curly"
+	item_state = "coolant-c"
 	oddity_stats = list(
 		STAT_ROB = 4,
 		STAT_TGH = 4,
 		STAT_VIG = 4
 	)
 
-
 //Double stat, mixed
 /obj/item/oddity/common/photo_crime
 	name = "crime scene photo"
 	desc = "It is unclear whether this is a victim of suicide or murder. His face is frozen in a look of agony and terror, and you shudder to think at what his last moments might have been."
 	icon_state = "photo_crime"
+	item_state = "paper"
 	oddity_stats = list(
 		STAT_BIO = 7,
 		STAT_VIG = 7,
@@ -171,6 +196,7 @@
 	name = "surreal maint photo"
 	desc = "The corridor in this photograph looks familiar, though something seems wrong about it; it's as if everything in it was replaced with an exact replica of itself."
 	icon_state = "photo_corridor"
+	item_state = "paper"
 	oddity_stats = list(
 		STAT_MEC = 7,
 		STAT_VIG = 7,
@@ -181,6 +207,7 @@
 	name = "alien landscape photo"
 	desc = "There is some ire about the planet in this photograph."
 	icon_state = "photo_landscape"
+	item_state = "paper"
 	oddity_stats = list(
 		STAT_COG = 7,
 		STAT_VIG = 7,
@@ -191,6 +218,11 @@
 	name = "old radio"
 	desc = "Close your eyes, bring it closer and listen. You can almost hear it, in the edge of your consciousness. The World is ticking."
 	icon_state = "old_radio"
+	item_state = "radio"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/misc/devices_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/misc/devices_righthand.dmi',
+		)
 	oddity_stats = list(
 		STAT_COG = 9,
 		STAT_VIG = 9,
@@ -213,6 +245,10 @@
 	desc = "An old Nanotrasen era PDA. These were issued to their employees all throughout the galaxy."
 	icon_state = "old_pda"
 	item_state = "electronic"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/misc/devices_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/misc/devices_righthand.dmi',
+		)
 	oddity_stats = list(
 		STAT_COG = 6,
 		STAT_BIO = 6,
@@ -223,6 +259,7 @@
 	name = "strange blueprint"
 	desc = "There's no telling what this design is supposed to be. Whatever could be built from this likely wouldn't work."
 	icon_state = "blueprint"
+	item_state = "blueprint"
 	oddity_stats = list(
 		STAT_COG = 5,
 		STAT_MEC = 7,
@@ -233,6 +270,11 @@
 	name = "odd device"
 	desc = "Something about this gadget both disturbs and interests you. It's manufacturer's name has been mostly smudged away, but you can see a strange mechanism as their logo."
 	icon_state = "device"
+	item_state = "electronic"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/misc/devices_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/misc/devices_righthand.dmi',
+		)
 	oddity_stats = list(
 		STAT_COG = 8,
 		STAT_MEC = 8,
@@ -245,6 +287,10 @@
 	desc = "Is this blood older then you? You can't tell, and will never know."
 	icon_state = "old_knife"
 	item_state = "knife"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/weapons/swords_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/weapons/swords_righthand.dmi',
+		)
 	structure_damage_factor = STRUCTURE_DAMAGE_BLADE
 	tool_qualities = list(QUALITY_CUTTING = 20,  QUALITY_WIRE_CUTTING = 10, QUALITY_SCREW_DRIVING = 5)
 	force = WEAPON_FORCE_DANGEROUS
@@ -275,6 +321,7 @@
 	name = "observer book"
 	desc = "This book contains detailed information on otherwise unknown cyber creatures. Who did this, how is this even possible?"
 	icon_state = "book_eyes"
+	item_state = "scrapbook"
 	oddity_stats = list(
 		STAT_ROB = 9,
 		STAT_TGH = 9,
@@ -287,6 +334,7 @@
 	name = "paper bundle"
 	desc = "Somewhere there is a truth, hidden under all of this scrap."
 	icon_state = "paper_bundle"
+	item_state = "paper"
 	oddity_stats = list(
 		STAT_BIO = 6,
 		STAT_TGH = 6,
@@ -298,6 +346,7 @@
 	name = "occult book"
 	desc = "Most of the stories in this book seem to be the writings of madmen, but at least the stories are interesting."
 	icon_state = "book_omega"
+	item_state = "ithaqua"
 	oddity_stats = list(
 		STAT_BIO = 6,
 		STAT_ROB = 6,
@@ -309,6 +358,7 @@
 	name = "torn-out page"
 	desc = "This ALMOST makes sense."
 	icon_state = "paper_crumpled"
+	item_state = "paper"
 	oddity_stats = list(
 		STAT_MEC = 6,
 		STAT_ROB = 6,
@@ -321,6 +371,7 @@
 	name = "old newspaper"
 	desc = "It contains a report on some old and strange phenomenon. Maybe it's lies, maybe it's corporate experiments gone wrong. Wait, there are two comically obvious holes for peering through!"
 	icon_state = "old_newspaper"
+	item_state = "newspaper"
 	oddity_stats = list(
 		STAT_MEC = 6,
 		STAT_COG = 6,
@@ -336,6 +387,7 @@
 	name = "collection of obscure reports"
 	desc = "Even the authors seem to be rather skeptical about their findings. The reports are not connected to each other, but their results are similar."
 	icon_state = "folder-omega" //changed from "paper_omega"
+	item_state = "newspaper"
 	oddity_stats = list(
 		STAT_MEC = 8,
 		STAT_COG = 8,
@@ -380,15 +432,15 @@
 /obj/item/oddity/broken_necklace/examine(mob/user, extra_description = "")
 	var/area/my_area = get_area(src)
 	if(my_area.bluespace_entropy < (my_area.bluespace_hazard_threshold * 0.75))
-		extra_description += SPAN_NOTICE("This feels cold to the touch.")
+		extra_description += span_notice("This feels cold to the touch.")
 	else
-		extra_description += SPAN_NOTICE("This feels warm to the touch.")
+		extra_description += span_notice("This feels warm to the touch.")
 
 	if(GLOB.bluespace_entropy > GLOB.bluespace_hazard_threshold*0.7)
-		extra_description += SPAN_NOTICE("\nHas it always shone so brightly?")
+		extra_description += span_notice("\nHas it always shone so brightly?")
 
 	if(my_area.bluespace_entropy > my_area.bluespace_hazard_threshold*0.95 || GLOB.bluespace_entropy > GLOB.bluespace_hazard_threshold*0.95)
-		extra_description += SPAN_NOTICE("\nYou can see an inscription in some language unknown to you.")
+		extra_description += span_notice("\nYou can see an inscription in some language unknown to you.")
 
 	..(user, extra_description)
 
@@ -404,7 +456,7 @@
 	if(world.time < cooldown)
 		return
 	cooldown = world.time + 3 SECONDS
-	user.visible_message(SPAN_WARNING("[user] crushes [src]!"), SPAN_DANGER("You crush [src]!"))
+	user.visible_message(span_warning("[user] crushes [src]!"), span_danger("You crush [src]!"))
 	var/datum/effect/effect/system/spark_spread/sparks = new /datum/effect/effect/system/spark_spread()
 	sparks.set_up(3, 0, get_turf(user))
 	sparks.start()
@@ -418,7 +470,7 @@
 
 /obj/item/oddity/broken_necklace/throw_impact(atom/movable/hit_atom)
 	if(!..()) // not caught in mid-air
-		visible_message(SPAN_NOTICE("[src] fizzles upon impact!"))
+		visible_message(span_notice("[src] fizzles upon impact!"))
 		var/turf/T = get_turf(hit_atom)
 		var/datum/effect/effect/system/spark_spread/sparks = new /datum/effect/effect/system/spark_spread()
 		sparks.set_up(3, 0, T)
@@ -481,6 +533,11 @@
 	name = "warped radio"
 	desc = "An old radio covered in growths. You can hear nothing from it, nothing but the sound of machinery and souls begging for release."
 	icon_state = "warped_radio"
+	item_state = "radio"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/misc/devices_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/misc/devices_righthand.dmi',
+		)
 	oddity_stats = list(
 		STAT_COG = 8,
 		STAT_VIG = 8,
@@ -491,6 +548,11 @@
 	name = "abnormal pda"
 	desc = "An old Nanotrasen era PDA covered in growths. Is the hive Nanotrasen's creation, or made by something worse?"
 	icon_state = "abnormal_pda"
+	item_state = "electronic"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/misc/devices_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/misc/devices_righthand.dmi',
+		)
 	oddity_stats = list(
 		STAT_COG = 8,
 		STAT_MEC = 8,
@@ -501,6 +563,11 @@
 	name = "makeshift datapad"
 	desc = "A makeshift datapad covered in growths. Whatever data was stored here is now gone, part of it transferred to an unknown source, the rest simply wiped."
 	icon_state = "hivemind_core"
+	item_state = "electronic"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/misc/devices_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/misc/devices_righthand.dmi',
+		)
 	w_class = ITEM_SIZE_NORMAL
 	random_stats = FALSE
 	oddity_stats = list(
@@ -548,7 +615,7 @@
 
 /obj/item/oddity/pendant/Process()
 	if(world.time > produce_next)
-		visible_message(SPAN_NOTICE("[src] stops humming suddenly."))
+		visible_message(span_notice("[src] stops humming suddenly."))
 		src.desc = "An ornate golden necklace."
 		produce_ready = TRUE
 		STOP_PROCESSING(SSobj, src)
@@ -557,20 +624,18 @@
 /obj/item/oddity/pendant/attack_self(mob/user)
 	if(produce_ready)
 		new /obj/item/golden_leaf(get_turf(src))
-		user.visible_message(SPAN_NOTICE("[user] opens [src], and a little golden leaf falls from it. \The [src] closes shut right after."), SPAN_NOTICE("As you open [src], a little golden leaf falls from it. \The [src] closes shut right after and start to hum quietly."))
+		user.visible_message(span_notice("[user] opens [src], and a little golden leaf falls from it. \The [src] closes shut right after."), span_notice("As you open [src], a little golden leaf falls from it. \The [src] closes shut right after and start to hum quietly."))
 		src.desc = "An ornate golden necklace. It's closed and hums quietly."
 		produce_next = world.time + 10 MINUTES
 		produce_ready = FALSE
 		START_PROCESSING(SSobj, src)
 	else
-		user.visible_message(SPAN_NOTICE("[user] tries to open [src] without success."), SPAN_NOTICE("You fail to open [src]."))
+		user.visible_message(span_notice("[user] tries to open [src] without success."), span_notice("You fail to open [src]."))
 
 /hook/roundstart/proc/place_pendant()
 	var/obj/landmark/storyevent/potential_unique_oddity_spawn/L = pick_landmark(/obj/landmark/storyevent/potential_unique_oddity_spawn)
-	if(L)
-		new /obj/item/oddity/pendant(L.get_loc())
-		return TRUE
-	return FALSE
+	new /obj/item/oddity/pendant(L.get_loc())
+	return TRUE
 
 /obj/item/golden_leaf
 	name = "golden leaf"
@@ -588,11 +653,11 @@
 
 	if(target.is_refillable())
 		if(!target.reagents.has_reagent("water", 30))
-			to_chat(user, SPAN_NOTICE("You need some water for that."))
+			to_chat(user, span_notice("You need some water for that."))
 		else
 			target.reagents.remove_reagent("water", 30)
 			target.reagents.add_reagent("oddity_tea", 30)
-			to_chat(user, SPAN_NOTICE("You drop \the [src] in the water, it dissolves slowly."))
+			to_chat(user, span_notice("You drop \the [src] in the water, it dissolves slowly."))
 			qdel(src)
 
 //Complex Functional Oddities (Spawn in maint too, but moving them up would eat quite a bit of the document)
@@ -601,7 +666,6 @@
 	desc = "A cheerful mask of a cartoonish salesman."
 	icon_state = "big_shot"
 	item_state = "big_shot"
-
 
 	armor = list(
 		melee = 3,
@@ -628,6 +692,7 @@
 	desc = "A piece of paper with an unfinished mathematical equation."
 	icon = 'icons/obj/bureaucracy.dmi'
 	icon_state = "paper_words_crumpled"
+	item_state = "paper"
 	prob_perk = 0
 	oddity_stats = list(
 		STAT_ROB = 4,
@@ -641,14 +706,14 @@
 		if(alert(user, "Do you want to try and solve the equation on the scrap?", "Math problems!", "Yes", "No") == "Yes")
 			if(user.stat_check(STAT_COG, STAT_LEVEL_ADEPT))
 				if(prob(95))
-					user.visible_message(SPAN_WARNING("A bear appears out of nowhere!"), SPAN_DANGER("The equation results in a bear!"))
+					user.visible_message(span_warning("A bear appears out of nowhere!"), span_danger("The equation results in a bear!"))
 					var/turf/T = get_turf(pick(oview(2, user)))
 					var/mob/living/simple_animal/hostile/bear/B = new /mob/living/simple_animal/hostile/bear(T)
 					var/datum/effect/effect/system/spark_spread/sparks = new /datum/effect/effect/system/spark_spread()
 					sparks.set_up(3, 0, get_turf(B.loc))
 					sparks.start()
 					if(prob(15))
-						user.visible_message(SPAN_WARNING("The paper disintegrates!"))
+						user.visible_message(span_warning("The paper disintegrates!"))
 						qdel(src)
 				else
 					new /obj/spawner/oddities(get_turf(pick(oview(2, user))))
@@ -657,7 +722,7 @@
 					var/datum/effect/effect/system/spark_spread/sparks = new /datum/effect/effect/system/spark_spread()
 					sparks.set_up(3, 0, get_turf(user.loc))
 					sparks.start()
-					user.visible_message(SPAN_WARNING("A bunch of items appear out of nowhere!"), SPAN_DANGER("The equation results in several unique objects!"))
+					user.visible_message(span_warning("A bunch of items appear out of nowhere!"), span_danger("The equation results in several unique objects!"))
 					qdel(src)
 			else
 				to_chat(user, "You fail to solve the equation, did you carry the [rand(1, 9)]?")
@@ -711,8 +776,8 @@
 	if(istype(user))
 		if(alert(user, "Flip the coin?", "seven-sided coin", "Yes", "No") == "Yes")
 			if(prob(1))
-				user.visible_message(SPAN_NOTICE("[user] has thrown \the [src]. It lands on its side?! "), \
-						 SPAN_NOTICE("You throw \the [src]. It lands on its side?! "))
+				user.visible_message(span_notice("[user] has thrown \the [src]. It lands on its side?! "), \
+						 span_notice("You throw \the [src]. It lands on its side?! "))
 				if(!was_flipped)
 					oddity_stats = sideways_stats
 					desc = "An odd seven-sided coin with somewhat sharp edges and blank sides. Holding it gives you a strange sense of nonspecific closure."
@@ -730,8 +795,8 @@
 						desc = "An odd seven-sided coin with somewhat sharp edges. ONE DAY YOU WILL FORGIVE is stamped on the back."
 					comment = "heads"
 
-				user.visible_message(SPAN_NOTICE("[user] has thrown \the [src]. It lands on [comment]! "), \
-									 SPAN_NOTICE("You throw \the [src]. It lands on [comment]! "))
+				user.visible_message(span_notice("[user] has thrown \the [src]. It lands on [comment]! "), \
+									 span_notice("You throw \the [src]. It lands on [comment]! "))
 			was_flipped = TRUE
 			var/datum/component/inspiration/odd = GetComponent(/datum/component/inspiration)
 			odd.stats = oddity_stats
@@ -744,6 +809,12 @@
 	name = "expired anomazon dismembership card"
 	desc = "A gaudy-looking plastic card stamped with a slogan - \"All good things cost an arm and a leg!\" You have a bad feeling about this."
 	icon_state = "anomazon"
+	item_state = "silver_id"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/equipment/idcards_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/equipment/idcards_lefthand.dmi',
+		)
+
 	oddity_stats = list(
 		STAT_ROB = 7,
 		STAT_TGH = 7,
@@ -794,6 +865,33 @@
 				var/datum/effect/effect/system/spark_spread/sparks = new /datum/effect/effect/system/spark_spread()
 				sparks.set_up(3, 0, get_turf(user.loc))
 				sparks.start()
-				user.visible_message(SPAN_WARNING("A collection of strange items appears out of nowhere!"), SPAN_DANGER("The card disintegrates, leaving behind several strange objects!"))
+				user.visible_message(span_warning("A collection of strange items appears out of nowhere!"), span_danger("The card disintegrates, leaving behind several strange objects!"))
 				qdel(src)
 
+/obj/item/oddity/onestar
+	name = "One Star oddity"
+	desc = "You shouldn't be seeing this. Report to your nearest reeducation camp comrade (report it on discord)."
+	spawn_blacklisted = TRUE
+	bad_type = /obj/item/oddity/onestar
+
+
+/obj/item/oddity/onestar/mechcore
+	name = "Armored \"Distant Star\" Subpersona Core"
+	desc = "Remnants of circuitry salvaged from the terrifying robotic One Star beast. You hope it's disabled now and nothing more than a trophy..."
+	random_stats = FALSE
+	icon_state = "box" // I beg for a new sprite this sucks a bit but will do as a temporary thing
+	item_state = "electronic"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/misc/devices_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/misc/devices_righthand.dmi',
+		)
+	w_class = ITEM_SIZE_NORMAL
+	oddity_stats = list(
+		STAT_VIG = 10,
+		STAT_MEC = 10,
+		STAT_TGH = 10
+	)
+	perk = /datum/perk/oddity/balls_of_plasteel // (maybe we'll add another perk later (prolly additional dungeon access/navigation), I dont want to see a quiet-as-mouse on this one...)
+	origin_tech = list(
+        TECH_MATERIAL = 12, TECH_ENGINEERING = 5, TECH_POWER = 6, TECH_BLUESPACE = 1, TECH_COMBAT = 8, TECH_MAGNET = 5, TECH_DATA = 10 // 16200 total
+    )

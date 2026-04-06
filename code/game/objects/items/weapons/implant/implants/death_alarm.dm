@@ -9,7 +9,7 @@
 /obj/item/implant/death_alarm/get_data()
 	var/data = {"
 		<b>Implant Specifications:</b><BR>
-		<b>Name:</b> [company_name] \"Profit Margin\" Class Employee Lifesign Sensor<BR>
+		<b>Name:</b> [GLOB.company_name] \"Profit Margin\" Class Employee Lifesign Sensor<BR>
 		<b>Life:</b> Activates upon death.<BR>
 		<b>Important Notes:</b> Alerts crew to crewmember death.<BR>
 		<HR>
@@ -29,7 +29,7 @@
 	else if(M.stat == DEAD)
 		activate("death")
 
-/obj/item/implant/death_alarm/activate(var/cause)
+/obj/item/implant/death_alarm/activate(cause)
 	var/mob/M = wearer
 	var/area/t = get_area(M)
 	switch (cause)
@@ -40,7 +40,7 @@
 			STOP_PROCESSING(SSobj, src)
 		if ("emp")
 			var/obj/item/device/radio/headset/a = new /obj/item/device/radio/headset(null)
-			var/name = prob(50) ? t.name : pick(SSmapping.main_ship_areas_by_name)
+			var/name = prob(50) ? t.name : pick(SSmapping.teleportlocs)
 			a.autosay("[mobname] has died in [name]!", "[mobname]'s Death Alarm", use_text_to_speech = TRUE)
 			qdel(a)
 		else

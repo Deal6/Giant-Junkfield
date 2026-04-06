@@ -1,5 +1,9 @@
 /obj/item/device
 	icon = 'icons/obj/device.dmi'
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/misc/devices_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/misc/devices_righthand.dmi',
+		)
 	spawn_tags = SPAWN_TAG_DEVICE
 	bad_type = /obj/item/device
 	var/starting_cell = TRUE
@@ -32,7 +36,7 @@
 		update_icon()
 
 /obj/item/device/MouseDrop(over_object)
-	if((loc == usr) && suitable_cell && istype(over_object, /obj/screen/inventory/hand) && eject_item(cell, usr))
+	if((loc == usr) && suitable_cell && istype(over_object, /atom/movable/screen/inventory/hand) && eject_item(cell, usr))
 		cell = null
 		update_icon()
 		return
@@ -51,21 +55,21 @@
 /obj/item/device/examine(mob/user, extra_description = "")
 	if(suitable_cell)
 		if(cell)
-			extra_description += SPAN_NOTICE("\The [src]'s cell reads \"[round(cell.percent(),0.1)]%\"")
+			extra_description += span_notice("\The [src]'s cell reads \"[round(cell.percent(),0.1)]%\"")
 		else
-			extra_description += SPAN_WARNING("\The [src] has no cell installed.")
+			extra_description += span_warning("\The [src] has no cell installed.")
 	..(user, extra_description)
 
 /obj/item/device/proc/cell_use_check(charge, mob/user)
 	. = TRUE
 	if(!cell || !cell.checked_use(charge))
 		if(user)
-			to_chat(user, SPAN_WARNING("[src] battery is dead or missing."))
+			to_chat(user, span_warning("[src] battery is dead or missing."))
 		. = FALSE
 
 /obj/item/device/proc/cell_check(charge, mob/user)
 	. = TRUE
 	if(!cell || !cell.check_charge(charge))
 		if(user)
-			to_chat(user, SPAN_WARNING("[src] battery is dead or missing."))
+			to_chat(user, span_warning("[src] battery is dead or missing."))
 		. = FALSE

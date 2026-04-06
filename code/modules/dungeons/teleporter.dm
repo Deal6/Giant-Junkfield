@@ -22,11 +22,7 @@
 	var/victims_to_teleport = list()
 	var/obj/crawler/spawnpoint/target
 	var/obj/crawler/map_maker/dungeon_generator
-	var/destination_map_name = "crawler"
-	var/destination_map_is_generated = FALSE
-	var/dungeon_generation_started = FALSE
 	var/dungeon_is_generated = FALSE
-
 	anchored = TRUE
 	unacidable = 1
 	density = TRUE
@@ -44,41 +40,23 @@
 
 
 /obj/rogue/teleporter/attack_hand(mob/user)
-	// In case dungeon_generator haven't initialized in time and
-	// on_destination_map_loaded() failed to locate it
-	if(destination_map_is_generated && !dungeon_generation_started)
-		on_destination_map_loaded()
-	// Only trigger map loading if it wasn't queued before
-	else if(destination_map_name in SSmapping.loaded_map_names)
-		if(!destination_map_is_generated)
-			on_destination_map_loaded()
-		to_chat(user, "Nothing seems to happen.")
-	else if(destination_map_name in SSmapping.map_loading_queue)
-		to_chat(user, "Teleporter is charging up.")
-	else
-		to_chat(user, "You activate the teleporter. A strange rumbling fills the area around you.")
-		SSmapping.queue_map_loading(destination_map_name)
-
 	if(!charge)
 		charge++
-
+		dungeon_generator = locate(/obj/crawler/map_maker)
+		if(dungeon_generator)
+			to_chat(user, "You activate the teleporter. A strange rumbling fills the area around you.")
+			// Listen to signal for when the generation will be finished
+			RegisterSignal(src, COMSIG_DUNGEON_GENERATED, PROC_REF(dungeon_generated))
+			// Generate the dungeon while mobs are spawning to attack the teleporter
+			SEND_SIGNAL_OLD(dungeon_generator, COMSIG_GENERATE_DUNGEON, src)
+			start_teleporter_event()
+		else
+			to_chat(user, "Nothing seems to happen.")
 	else if(charging)
 		if(flick_lighting)
 			to_chat(user, "The portal looks too unstable to pass through!")
 		else
 			to_chat(user, "The teleporter needs time to charge.")
-
-/obj/rogue/teleporter/proc/on_destination_map_loaded()
-	destination_map_is_generated = TRUE
-	dungeon_generator = locate(/obj/crawler/map_maker)
-	if(dungeon_generator)
-		dungeon_generation_started = TRUE
-		// Listen to signal for when the generation will be finished
-		RegisterSignal(src, COMSIG_DUNGEON_GENERATED, PROC_REF(dungeon_generated))
-		// Generate the dungeon while mobs are spawning to attack the teleporter
-		SEND_SIGNAL_OLD(dungeon_generator, COMSIG_GENERATE_DUNGEON, src)
-		start_teleporter_event()
-
 
 /obj/rogue/teleporter/proc/dungeon_generated()
 	SIGNAL_HANDLER
@@ -109,7 +87,7 @@
 	if(!dungeon_is_generated || !target)
 		// Something wrong happened and dungeon was not properly generated
 		admin_notice("Failed to generate the OneStar dungeon - Warn coders.")
-		visible_message(SPAN_WARNING("The teleporter malfunctions and explodes in a shower of sparks!"))
+		visible_message(span_warning("The teleporter malfunctions and explodes in a shower of sparks!"))
 		destroy_teleporter()
 	else
 		end_teleporter_event()
@@ -229,7 +207,7 @@
 
 	playsound(src.loc, 'sound/weapons/flash.ogg', 100, 1)
 
-	for (var/mob/living/O in viewers(src, null))
+	for (var/mob/living/O in viewers(get_turf(src)))
 		if (get_dist(src, O) > 8)
 			continue
 

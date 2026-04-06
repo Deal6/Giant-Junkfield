@@ -4,6 +4,10 @@
 	icon = 'icons/obj/items.dmi'
 	icon_state = "implantpad-0"
 	item_state = "electronic"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/misc/devices_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/misc/devices_righthand.dmi',
+		)
 	throw_speed = 1
 	throw_range = 5
 	w_class = ITEM_SIZE_SMALL
@@ -54,7 +58,7 @@
 			dat += "The implant casing is empty."
 	else
 		dat += "Please insert an implant casing!"
-	user << browse(dat, "window=implantpad")
+	user << browse(HTML_SKELETON_TITLE("Implant Pad", dat), "window=implantpad")
 	onclose(user, "implantpad")
 	return
 

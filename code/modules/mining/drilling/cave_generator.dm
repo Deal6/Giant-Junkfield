@@ -75,7 +75,7 @@
 	var/orecount = 0
 
 /obj/cave_generator/Initialize()
-	// Initialize and not New to ensure SSmapping has been created
+	// Initialize and not New to ensure SSmapping.maploader has been created
 	// before preloading the templates
 
 	// Get pool of points of interest
@@ -208,7 +208,9 @@
 
 	// Get pool of points of interest for current seismic level
 	var/list/datum/map_template/cave_pois/pool = list()
-	for(var/datum/map_template/cave_pois/cave_poi_tmpl in pool_pois)
+	if (!length(pool_pois))
+		stack_trace("pool_pois is of 0 length!")
+	for(var/datum/map_template/cave_pois/cave_poi_tmpl as anything in pool_pois)
 		if(cave_poi_tmpl.min_seismic_lvl >= seismic_lvl)
 			pool += cave_poi_tmpl.type
 			pool[cave_poi_tmpl.type] = cave_poi_tmpl.spawn_prob
@@ -414,13 +416,13 @@
 	if(first_warning)
 		for(var/mob/living/M in SSmobs.mob_living_by_zlevel[z])
 			if(ishuman(M) && (M.x > x) && (M.x < x + CAVE_SIZE) && (M.y > y) && (M.y < y + CAVE_SIZE))
-				to_chat(M, SPAN_WARNING("WARNING: Cave collapse protocol has been engaged. \
+				to_chat(M, span_warning("WARNING: Cave collapse protocol has been engaged. \
 										The cave will collapse in T-[minutes_remaining] minutes. \
 										Miners, evacuate as many precious minerals as possible!"))
 	else
 		for(var/mob/living/M in SSmobs.mob_living_by_zlevel[z])
 			if(ishuman(M) && (M.x > x) && (M.x < x + CAVE_SIZE) && (M.y > y) && (M.y < y + CAVE_SIZE))
-				to_chat(M, SPAN_WARNING("WARNING: Cave collapse in T-[minutes_remaining] minutes. Remember, the Guild is counting on this haul!"))
+				to_chat(M, span_warning("WARNING: Cave collapse in T-[minutes_remaining] minutes. Remember, the Guild is counting on this haul!"))
 
 	// Call again in 30 seconds
 	if(cave_collapse_time - world.time > 45 SECONDS)
@@ -566,7 +568,7 @@
 		else
 			A.forceMove(dump)
 			if(!isobserver(A))
-				log_and_message_admins("[A] has been moved to [admin_jump_link(dump, src)] to avoid deletion in cave collapse.")
+				log_and_message_admins("[A] has been moved to [ADMIN_JMP(dump)] to avoid deletion in cave collapse.")
 
 	// Clean up shards and rods created when girders and windows are deleted at previous step
 	cave_content = get_area_contents(/area/asteroid/cave)
@@ -735,13 +737,13 @@
 
 /obj/structure/multiz/ladder/cave_hole/attackby(obj/item/I, mob/user)
 	if(!cave_gen || !((cave_gen.status == CAVE_OPENED) || (cave_gen.status == CAVE_COLLAPSING)))
-		to_chat(user, SPAN_NOTICE("The cave system is not opened yet."))
+		to_chat(user, span_notice("The cave system is not opened yet."))
 		return
 	. = ..()
 
-/obj/structure/multiz/ladder/cave_hole/attack_hand(var/mob/M)
+/obj/structure/multiz/ladder/cave_hole/attack_hand(mob/M)
 	if(!cave_gen || !((cave_gen.status == CAVE_OPENED) || (cave_gen.status == CAVE_COLLAPSING)))
-		to_chat(M, SPAN_NOTICE("The cave system is not opened yet."))
+		to_chat(M, span_notice("The cave system is not opened yet."))
 		return
 	. = ..()
 

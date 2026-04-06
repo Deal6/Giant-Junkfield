@@ -46,8 +46,7 @@ SUBSYSTEM_DEF(migration)
 	for (var/i = 0; i < roundstart_burrows; i++)
 		var/area/A = random_ship_area(FALSE, FALSE, FALSE)
 		var/turf/T = A.random_space() //Lets make sure the selected area is valid
-		if(T)
-			create_burrow(T)
+		create_burrow(T)
 
 
 
@@ -56,7 +55,7 @@ Called by roaches when they spawn.
 This proc will attempt to create a burrow against a wall, within view of the target location
 */
 /proc/create_burrow(turf/target)
-	if(!IS_SHIP_LEVEL(target.z))
+	if (!isOnShipLevel(target))
 		return
 
 	//First of all lets get a list of everything in dview.
@@ -95,7 +94,7 @@ This proc will attempt to create a burrow against a wall, within view of the tar
 			continue
 
 		//To be valid, the floor needs to have a wall in a cardinal direction
-		for (var/d in cardinal)
+		for (var/d in GLOB.cardinal)
 			var/turf/T = get_step(F, d)
 			if (T.is_wall)
 				//Its got a wall!
@@ -115,7 +114,7 @@ This proc will attempt to create a burrow against a wall, within view of the tar
 	return B
 
 //Looks for a burrow, and creates one if an existing burrow isnt found
-/proc/find_or_create_burrow(var/turf/target)
+/proc/find_or_create_burrow(turf/target)
 	if (find_visible_burrow(target))
 		return TRUE
 
@@ -214,7 +213,7 @@ This proc will attempt to create a burrow against a wall, within view of the tar
 	Picks a destination for migrating mobs.
 	High chance to reroll burrows that are outside of maintenance areas, to minimise incursions into crew space
 */
-/datum/controller/subsystem/migration/proc/choose_burrow_target(var/obj/structure/burrow/source, var/reroll_type = TRUE, var/reroll_prob = 99.5)
+/datum/controller/subsystem/migration/proc/choose_burrow_target(obj/structure/burrow/source, reroll_type = TRUE, reroll_prob = 99.5)
 	var/obj/structure/burrow/candidate
 
 	//Lets copy the list into a candidates buffer
@@ -245,7 +244,7 @@ This proc will attempt to create a burrow against a wall, within view of the tar
 			continue
 
 		// if burrow was closed before it has chance to be ignored
-		if (candidate.is_sealed && candidate.is_revealed && prob(reroll_prob/3))
+		if (candidate.isSealed && candidate.isRevealed && prob(reroll_prob/3))
 			continue
 
 		break
@@ -280,7 +279,7 @@ This proc will attempt to create a burrow against a wall, within view of the tar
 			continue
 
 		// Burrow is closed
-		if(candidate.is_sealed)
+		if(candidate.isSealed)
 			continue
 
 		//Lets not take mobs away from a burrow that's requesting more
@@ -375,7 +374,7 @@ This proc will attempt to create a burrow against a wall, within view of the tar
 /*
 	Finds burrows near to the specified one, and sends plants from it to them
 */
-/datum/controller/subsystem/migration/proc/spread_plants_from(var/obj/structure/burrow/B)
+/datum/controller/subsystem/migration/proc/spread_plants_from(obj/structure/burrow/B)
 	var/list/sorted = get_sorted_burrow_network(B)
 	/*
 	This gives us a list of burrows in ascending order of distance. The order is important, we dont want plants to
@@ -422,13 +421,13 @@ This proc will attempt to create a burrow against a wall, within view of the tar
 
 //Things hidden under floors don't show in some view/range calls
 //To work around this, use these procs to locate nearby burrows
-/proc/find_nearby_burrow(var/atom/target, var/dist = 10)
+/proc/find_nearby_burrow(atom/target, dist = 10)
 	var/turf/t = get_turf(target)
 	for (var/turf/T in range(dist, t))
 		for (var/obj/structure/burrow/B in T.contents)
 			return B
 
-/proc/find_nearby_burrows(var/atom/target, var/dist = 10)
+/proc/find_nearby_burrows(atom/target, dist = 10)
 	var/turf/t = get_turf(target)
 	var/list/NB = list()
 	for (var/turf/T in range(dist, t))
@@ -437,13 +436,13 @@ This proc will attempt to create a burrow against a wall, within view of the tar
 	return NB
 
 
-/proc/find_visible_burrow(var/atom/target, var/dist = 10)
+/proc/find_visible_burrow(atom/target, dist = 10)
 	var/turf/t = get_turf(target)
 	for (var/turf/T in dview(dist, t))
 		for (var/obj/structure/burrow/B in T.contents)
 			return B
 
-/proc/find_visible_burrows(var/atom/target, var/dist = 10)
+/proc/find_visible_burrows(atom/target, dist = 10)
 	var/turf/t = get_turf(target)
 	var/list/NB = list()
 	for (var/turf/T in dview(dist, t))
@@ -455,7 +454,7 @@ This proc will attempt to create a burrow against a wall, within view of the tar
 
 
 //Returns a list of all burrows, sorted in ascending order of distance from the source atom
-/proc/get_sorted_burrow_network(var/atom/source)
+/proc/get_sorted_burrow_network(atom/source)
 	var/list/sorted = list() //List of the burrows, in order
 	var/list/distances  = list() //Associative list of burrows and distances
 	for (var/b in GLOB.all_burrows)

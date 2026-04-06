@@ -44,7 +44,7 @@
 		var/datum/component/item_upgrade/IU = toremove.GetComponent(/datum/component/item_upgrade)
 		if (IU)
 			SEND_SIGNAL_OLD(toremove, COMSIG_REMOVE, src)
-			visible_message(SPAN_NOTICE("\The [toremove] detaches from \the [src]."))
+			visible_message(span_notice("\The [toremove] detaches from \the [src]."))
 			. = TRUE
 
 	refresh_upgrades()
@@ -59,7 +59,7 @@
 		var/datum/component/item_upgrade/IU = toremove.GetComponent(/datum/component/item_upgrade)
 		if (IU)
 			SEND_SIGNAL_OLD(toremove, COMSIG_REMOVE, src)
-			visible_message(SPAN_NOTICE("\The [toremove] detaches from \the [src]."))
+			visible_message(span_notice("\The [toremove] detaches from \the [src]."))
 			. = TRUE
 
 	refresh_upgrades()
@@ -420,6 +420,18 @@
 			if(SEND_SIGNAL_OLD(trash_mod, COMSIG_IATTACK, src, null))
 				break
 			QDEL_NULL(trash_mod)
+
+/obj/item/gun/projectile/modular/make_old(low_quality_oldification)
+	.=..()
+	for(var/part_path in required_parts)
+		var/downgrade
+		if(prob(80))
+			downgrade = -1
+		else if(prob(25))
+			downgrade = -2
+		var/obj/item/part/gun/modular/gun_part = locate(part_path) in contents
+		if(gun_part && downgrade)
+			gun_part.set_quality(min(gun_part.old_quality + downgrade))
 
 /obj/item/ammo_casing/make_old(low_quality_oldification)
 	if(!low_quality_oldification)// reducing the materials otherwise is infeasible due to BYOND's

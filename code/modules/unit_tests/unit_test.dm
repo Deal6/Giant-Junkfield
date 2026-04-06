@@ -42,7 +42,14 @@ GLOBAL_LIST_EMPTY(unit_test_mapping_logs)
 	return initial(a.priority) - initial(b.priority)
 
 /datum/unit_test/New()
+	// due to this coderbase being unpog we wont be having automatic space allocation for testing.
+	// if (isnull(reservation))
+	// 	var/datum/map_template/unit_tests/template = new
+	// 	reservation = template.load_new_z()
+
 	allocated = new
+	// run_loc_floor_bottom_left = get_turf(locate(/obj/effect/landmark/unit_test_bottom_left) in GLOB.landmarks_list)
+	// run_loc_floor_top_right = get_turf(locate(/obj/effect/landmark/unit_test_top_right) in GLOB.landmarks_list)
 
 	run_loc_floor_bottom_left = get_turf(locate(20,20,6))
 	run_loc_floor_top_right = get_turf(locate(20,21,6))
@@ -135,7 +142,7 @@ GLOBAL_LIST_EMPTY(unit_test_mapping_logs)
 		var/annotation_text = replacetext(text, "%", "%25")
 		annotation_text = replacetext(annotation_text, "\n", "%0A")
 
-		log_world("::error file=[file],line=[line],title=[station_name]: [test_path]::[annotation_text]")
+		log_world("::error file=[file],line=[line],title=[station_name()]: [test_path]::[annotation_text]")
 
 		// Normal log message
 		log_entry += "\tREASON #[reasonID]: [text] at [file]:[line]"
@@ -159,7 +166,7 @@ GLOBAL_LIST_EMPTY(unit_test_mapping_logs)
 	if(length(focused_tests))
 		tests_to_run = focused_tests
 
-	tests_to_run = sortTim(tests_to_run, /proc/cmp_unit_test_priority)
+	sortTim(tests_to_run, /proc/cmp_unit_test_priority)
 
 	var/list/test_results = list()
 

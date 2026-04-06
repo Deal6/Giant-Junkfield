@@ -27,7 +27,7 @@
 				break
 	..()
 
-/obj/machinery/shield_capacitor/emag_act(var/remaining_charges, var/mob/user)
+/obj/machinery/shield_capacitor/emag_act(remaining_charges, mob/user)
 	if(prob(75))
 		src.locked = !src.locked
 		user << "Controls are now [src.locked ? "locked." : "unlocked."]"
@@ -39,18 +39,18 @@
 
 /obj/machinery/shield_capacitor/attackby(obj/item/I, mob/user)
 
-	if(istype(I, /obj/item/card/id))
+	if(isidcard(I))
 		var/obj/item/card/id/C = I
 		if(access_captain in C.access || access_security in C.access || access_engine in C.access)
 			src.locked = !src.locked
 			user << "Controls are now [src.locked ? "locked." : "unlocked."]"
 			updateDialog()
 		else
-			user << "\red Access denied."
+			user << span_red("Access denied.")
 	if(QUALITY_BOLT_TURNING in I.tool_qualities)
 		if(I.use_tool(user, src, WORKTIME_FAST, QUALITY_BOLT_TURNING, FAILCHANCE_EASY,  required_stat = STAT_MEC))
 			src.anchored = !src.anchored
-			src.visible_message("\blue \icon[src] [src] has been [anchored ? "bolted to the floor" : "unbolted from the floor"] by [user].")
+			src.visible_message(span_blue("[icon2html(src, viewers(get_turf(src)))] [src] has been [anchored ? "bolted to the floor" : "unbolted from the floor"] by [user]."))
 
 			if(anchored)
 				spawn(0)
@@ -96,10 +96,10 @@
 		<a href='byond://?src=\ref[src];charge_rate=10000'>\[+++\]</a> \
 		<a href='byond://?src=\ref[src];charge_rate=100000'>\[+++\]</a><br>"
 	t += "<hr>"
-	t += "<a href='byond://?src=\ref[src]'>Refresh</A> "
-	t += "<a href='byond://?src=\ref[src];close=1'>Close</A><BR>"
+	t += "<A href='byond://?src=\ref[src]'>Refresh</A> "
+	t += "<A href='byond://?src=\ref[src];close=1'>Close</A><BR>"
 
-	user << browse(t, "window=shield_capacitor;size=500x400")
+	user << browse(HTML_SKELETON_TITLE("Shield Capacitor Control Console", t), "window=shield_capacitor;size=500x400")
 	user.set_machine(src)
 
 /obj/machinery/shield_capacitor/Process()
@@ -131,7 +131,7 @@
 		return
 	if( href_list["toggle"] )
 		if(!active && !anchored)
-			usr << "\red The [src] needs to be firmly secured to the floor first."
+			usr << span_red("The [src] needs to be firmly secured to the floor first.")
 			return
 		active = !active
 	if( href_list["charge_rate"] )

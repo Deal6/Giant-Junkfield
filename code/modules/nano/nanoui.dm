@@ -101,6 +101,8 @@ nanoui is used to open and update nano browser uis
 	add_common_assets()
 
 	var/datum/asset/nanoui = get_asset_datum(/datum/asset/simple/directories/nanoui)
+	if (!user?.client)
+		return
 	if (nanoui.send(user.client))
 		to_chat(user, span_warning("Currently sending <b>all</b> nanoui assets, please wait!"))
 		user.client.browse_queue_flush() // stall loading nanoui until assets actualy gets sent
@@ -158,7 +160,7 @@ nanoui is used to open and update nano browser uis
   *
   * @return 1 if closed, null otherwise.
   */
-/datum/nanoui/proc/update_status(var/push_update = 0)
+/datum/nanoui/proc/update_status(push_update = 0)
 	var/atom/host = src_object && src_object.nano_host(TRUE)
 	if(!host)
 		close()
@@ -208,9 +210,10 @@ nanoui is used to open and update nano browser uis
 			"autoUpdateLayout" = auto_update_layout,
 			"autoUpdateContent" = auto_update_content,
 			"showMap" = show_map,
-			"mapName" = "eris",
+			"mapName" = GLOB.maps_data.path,
 			"mapZLevel" = map_z_level,
-			"mapZLevels" = SSmapping.main_ship_z_levels,
+			"stationMapURL" = SSassets.transport.get_asset_url(SANITIZE_FILENAME("[GLOB.maps_data.path]-[map_z_level].png")),
+			"mapZLevels" = GLOB.maps_data.station_levels,
 			"user" = list("name" = user.name)
 		)
 	return config_data
@@ -222,7 +225,7 @@ nanoui is used to open and update nano browser uis
   *
   * @return /list data to send to the ui
   */
-/datum/nanoui/proc/get_send_data(var/list/data)
+/datum/nanoui/proc/get_send_data(list/data)
 	var/list/config_data = get_config_data()
 
 	var/list/send_data = list("config" = config_data)
@@ -232,7 +235,7 @@ nanoui is used to open and update nano browser uis
 
 		var/list/potential_catalog_data = list()
 		for(var/type in types)
-			var/datum/catalog_entry/E = get_catalog_entry(type)
+			var/datum/catalog_entry/E = SScwj.get_catalog_entry(type)
 			if(E)
 				potential_catalog_data.Add(list(list("entry_name" = E.title, "entry_img_path" = E.image_path, "entry_type" = E.thing_type)))
 
@@ -465,6 +468,8 @@ nanoui is used to open and update nano browser uis
   * @return nothing
   */
 /datum/nanoui/proc/focus()
+	if (!user || !user.client)
+		return
 	winset(user, window_id, "focus=true")
 	winset(user, "mapwindow.map", "focus=true") // return keyboard focus to map
 
@@ -551,7 +556,7 @@ nanoui is used to open and update nano browser uis
 
 	if(href_list["mapZLevel"])
 		var/map_z = text2num(href_list["mapZLevel"])
-		if(IS_SHIP_LEVEL(map_z))
+		if(map_z in GLOB.maps_data.station_levels)
 			set_map_z_level(map_z)
 			map_update = 1
 		else
@@ -589,5 +594,5 @@ nanoui is used to open and update nano browser uis
   *
   * @return nothing
   */
-/datum/nanoui/proc/update(var/force_open = 0)
+/datum/nanoui/proc/update(force_open = 0)
 	src_object.nano_ui_interact(user, ui_key, src, force_open, master_ui, state)

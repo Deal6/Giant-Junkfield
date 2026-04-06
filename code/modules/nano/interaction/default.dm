@@ -1,38 +1,40 @@
 GLOBAL_DATUM_INIT(default_state, /datum/nano_topic_state/default, new)
 
-/datum/nano_topic_state/default/href_list(var/mob/user)
+/datum/nano_topic_state/default/href_list(mob/user)
 	return list()
 
-/datum/nano_topic_state/default/can_use_topic(var/src_object, var/mob/user)
+/datum/nano_topic_state/default/can_use_topic(src_object, mob/user)
 	return user.default_can_use_topic(src_object)
 
-/mob/proc/default_can_use_topic(var/src_object)
+/mob/proc/default_can_use_topic(src_object)
 	return STATUS_CLOSE // By default no mob can do anything with NanoUI
 
-/mob/observer/ghost/default_can_use_topic(var/src_object)
+/mob/observer/ghost/default_can_use_topic(src_object)
 	if(can_admin_interact())
 		return STATUS_INTERACTIVE							// Admins are more equal
 	if(!client || get_dist(src_object, src)	> client.view)	// Preventing ghosts from having a million windows open by limiting to objects in range
 		return STATUS_CLOSE
 	return STATUS_UPDATE									// Ghosts can view updates
 
-/mob/living/silicon/pai/default_can_use_topic(var/src_object)
+/mob/living/silicon/pai/default_can_use_topic(src_object)
 	if((src_object == src || src_object == silicon_radio) && !stat)
 		return STATUS_INTERACTIVE
 	else
 		return ..()
 
-/mob/living/silicon/robot/default_can_use_topic(var/src_object)
+/mob/living/silicon/robot/default_can_use_topic(src_object)
 	. = shared_nano_interaction()
 	if(. <= STATUS_DISABLED)
 		return
 
 	// robots can interact with things they can see within their view range
-	if((src_object in view(src)) && get_dist(src_object, src) <= src.client.view)
+	var/distance = get_dist(src_object, src)
+	var/list/client_view_size = getviewsize(src.client.view)
+	if((src_object in view(src)) && distance <= client_view_size[1] && distance <= client_view_size[2])
 		return STATUS_INTERACTIVE	// interactive (green visibility)
 	return STATUS_DISABLED			// no updates, completely disabled (red visibility)
 
-/mob/living/silicon/ai/default_can_use_topic(var/src_object)
+/mob/living/silicon/ai/default_can_use_topic(src_object)
 	. = shared_nano_interaction()
 	if(. != STATUS_INTERACTIVE)
 		return
@@ -40,7 +42,8 @@ GLOBAL_DATUM_INIT(default_state, /datum/nano_topic_state/default, new)
 	// Prevents the AI from using Topic on admin levels (by for example viewing through the court/thunderdome cameras)
 	// unless it's on the same level as the object it's interacting with.
 	var/turf/T = get_turf(src_object)
-	if(!T || !(z == T.z || IS_PLAYABLE_LEVEL(T.z)))
+	var/turf/A = get_turf(src)
+	if(!A || !T || !AreConnectedZLevels(A.z, T.z))
 		return STATUS_CLOSE
 
 	// If an object is in view then we can interact with it
@@ -50,7 +53,7 @@ GLOBAL_DATUM_INIT(default_state, /datum/nano_topic_state/default, new)
 	// If we're installed in a chassi, rather than transfered to an inteliCard or other container, then check if we have camera view
 	if(is_in_chassis())
 		//stop AIs from leaving windows open and using then after they lose vision
-		if(cameranet && !cameranet.is_turf_visible(get_turf(src_object)))
+		if(GLOB.cameranet && !GLOB.cameranet.is_turf_visible(get_turf(src_object)))
 			return STATUS_CLOSE
 		return STATUS_INTERACTIVE
 	else if(get_dist(src_object, src) <= client.view)	// View does not return what one would expect while installed in an inteliCard
@@ -58,11 +61,20 @@ GLOBAL_DATUM_INIT(default_state, /datum/nano_topic_state/default, new)
 
 	return STATUS_CLOSE
 
-//Some atoms such as vehicles might have special rules for how mobs inside them interact with NanoUI.
-/atom/proc/contents_nano_distance(var/src_object, var/mob/living/user)
+/**
+ * Handles additional special checks for whether or not NanoUI interactions are valid. Some atoms such as vehicles might
+ * have special rules for how mobs inside them interact with NanoUI.
+ *
+ * **Parameters**:
+ * - `src_object` - The original object being interacted with.
+ * - `user` - The mob attempting the interaction.
+ *
+ * Returns int (One of `STATUS_*`).
+ */
+/atom/proc/contents_nano_distance(src_object, mob/living/user)
 	return user.shared_living_nano_distance(src_object)
 
-/mob/living/proc/shared_living_nano_distance(var/atom/movable/src_object)
+/mob/living/proc/shared_living_nano_distance(atom/movable/src_object)
 	if (!(src_object in view(4, src))) 	// If the src object is not visable, disable updates
 		return STATUS_CLOSE
 
@@ -77,7 +89,7 @@ GLOBAL_DATUM_INIT(default_state, /datum/nano_topic_state/default, new)
 		return STATUS_DISABLED 		// no updates, completely disabled (red visibility)
 	return STATUS_CLOSE
 
-/mob/living/default_can_use_topic(var/src_object)
+/mob/living/default_can_use_topic(src_object)
 	. = shared_nano_interaction(src_object)
 	if(. != STATUS_CLOSE)
 		if(loc)
@@ -85,7 +97,7 @@ GLOBAL_DATUM_INIT(default_state, /datum/nano_topic_state/default, new)
 	if(. == STATUS_INTERACTIVE)
 		return STATUS_UPDATE
 
-/mob/living/carbon/human/default_can_use_topic(var/src_object)
+/mob/living/carbon/human/default_can_use_topic(src_object)
 	. = shared_nano_interaction(src_object)
 	if(. != STATUS_CLOSE)
 		if(loc)

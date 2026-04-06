@@ -1,12 +1,15 @@
 SUBSYSTEM_DEF(ticker)
 	name = "Ticker"
 	init_order = INIT_ORDER_TICKER
-	priority = SS_PRIORITY_TICKER
+	priority = FIRE_PRIORITY_TICKER
 	flags = SS_KEEP_TIMING
 	runlevels = RUNLEVEL_LOBBY | RUNLEVEL_SETUP | RUNLEVEL_GAME
 
 	var/const/restart_timeout = 600
 	var/current_state = GAME_STATE_STARTUP
+	/// Boolean to track if round should be forcibly ended next ticker tick.
+	/// Set by admin intervention ([ADMIN_FORCE_END_ROUND])
+	var/force_ending = END_ROUND_AS_NORMAL
 	// If true, there is no lobby phase, the game starts immediately.
 	var/start_immediately = FALSE
 
@@ -25,16 +28,35 @@ SUBSYSTEM_DEF(ticker)
 	var/list/factions = list()			  // list of all factions
 	var/list/availablefactions = list()	  // list of factions with openings
 
-	var/pregame_timeleft = 180
+	var/pregame_timeleft = 5 MINUTES
+	var/start_at
 	var/last_player_left_timestamp = 0
 
-	var/delay_end = 0	//if set to nonzero, the round will not restart on it's own
+	var/end_state = "undefined"
+
+	/// Num of players, used for pregame stats on statpanel
+	var/totalPlayers = 0
+	/// Num of ready players, used for pregame stats on statpanel (only viewable by admins)
+	var/totalPlayersReady = 0
+	/// Num of ready admins, used for pregame stats on statpanel (only viewable by admins)
+	var/total_admins_ready = 0
+
+	var/queue_delay = 0
+	var/list/queued_players = list() //used for join queues when the server exceeds the hard population cap
+
+	var/delay_end = FALSE //if set true, the round will not restart on it's own
+	var/admin_delay_notice = "" //a message to display to anyone who tries to restart the world after a delay
+	var/ready_for_reboot = FALSE //all roundend preparation done with, all that's left is reboot
 
 	var/triai = 0//Global holder for Triumvirate
 
 	var/quoted = FALSE
-
+	var/round_start_time = 0
+	var/real_round_start_time = 0
 	var/round_end_announced = 0 // Spam Prevention. Announce round end only once.
+
+	/// ID of round reboot timer, if it exists
+	var/reboot_timer = null
 
 	var/ship_was_nuked = 0              // See nuclearbomb.dm and malfunction.dm.
 	var/ship_nuke_code = "NO CODE"       // Heads will get parts of this code.
@@ -47,7 +69,7 @@ SUBSYSTEM_DEF(ticker)
 
 	//station_explosion used to be a variable for every mob's hud. Which was a waste!
 	//Now we have a general cinematic centrally held within the gameticker....far more efficient!
-	var/obj/screen/cinematic = null
+	var/atom/movable/screen/cinematic = null
 
 	var/list/round_start_events
 
@@ -59,6 +81,9 @@ SUBSYSTEM_DEF(ticker)
 
 	setup_objects()
 	setup_huds()
+
+	// TODO: make this a config option
+	start_at = world.time + (5 MINUTES)
 
 	return ..()
 
@@ -82,17 +107,22 @@ SUBSYSTEM_DEF(ticker)
 /datum/controller/subsystem/ticker/fire()
 	switch(current_state)
 		if(GAME_STATE_STARTUP)
-			if(first_start_trying)
-				pregame_timeleft = initial(pregame_timeleft)
-				to_chat(world, "<B><FONT color='blue'>Welcome to the pre-game lobby!</FONT></B>")
-			else
-				pregame_timeleft = 40
+			if(Master.initializations_finished_with_no_players_logged_in || first_start_trying)
+				start_at = world.time + (5 MINUTES)
+			pregame_timeleft = initial(pregame_timeleft)
+			for(var/client/C in GLOB.clients)
+				window_flash(C) //let them know lobby has opened up.
+				GLOB.lobbyScreen.play_music(C)
 
 			if(!start_immediately)
-				to_chat(world, "Please, setup your character and select ready. Game will start in [pregame_timeleft] seconds.")
+				to_chat(world, span_boldnotice("Please, setup your character and select ready. Game will start in [DisplayTimeText(SSticker.GetTimeLeft())]."))
+			to_chat(world, span_notice("<b>Welcome to [station_name()]!</b>"))
 			current_state = GAME_STATE_PREGAME
+			// Start playing music for clients
+			for(var/client/C in GLOB.clients)
+				GLOB.lobbyScreen.play_music(C)
+			SEND_SIGNAL(src, COMSIG_TICKER_ENTER_PREGAME)
 			fire()
-
 		if(GAME_STATE_PREGAME)
 			if(start_immediately)
 				SSvote.stop_vote()
@@ -101,18 +131,35 @@ SUBSYSTEM_DEF(ticker)
 			if(!process_empty_server())
 				return
 
-			if(round_progressing)
-				pregame_timeleft--
+			//lobby stats for statpanels
+			if(isnull(pregame_timeleft))
+				pregame_timeleft = max(0,start_at - world.time)
+			totalPlayers = LAZYLEN(GLOB.player_list)
+			totalPlayersReady = 0
+			total_admins_ready = 0
+			for(var/mob/new_player/player as anything in GLOB.player_list)
+				if(!isnewplayer(player))
+					continue
+				if(player.ready)
+					++totalPlayersReady
+					if(player.client?.holder)
+						++total_admins_ready
 
-			if(!quoted)
+			//countdown
+			if(pregame_timeleft < 0)
+				return
+			pregame_timeleft -= wait
+
+			if(pregame_timeleft <= 30 SECONDS && !quoted)
 				send_quote_of_the_round()
 				quoted = TRUE
 
-			if(!story_vote_ended && (pregame_timeleft == config.vote_autogamemode_timeleft || !first_start_trying))
+			if(!story_vote_ended && (pregame_timeleft == CONFIG_GET(number/vote_autogamemode_timeleft) || !first_start_trying))
 				if(!SSvote.active_vote)
 					SSvote.autostoryteller()	//Quit calling this over and over and over and over.
 
 			if(pregame_timeleft <= 0)
+				SEND_SIGNAL(src, COMSIG_TICKER_ENTER_SETTING_UP)
 				current_state = GAME_STATE_SETTING_UP
 				Master.SetRunLevel(RUNLEVEL_SETUP)
 				if(start_immediately)
@@ -123,43 +170,25 @@ SUBSYSTEM_DEF(ticker)
 			if(!setup())
 				//setup failed
 				current_state = GAME_STATE_STARTUP
+				start_at = world.time + (5 MINUTES)
+				pregame_timeleft = null
 				Master.SetRunLevel(RUNLEVEL_LOBBY)
+				SEND_SIGNAL(src, COMSIG_TICKER_ERROR_SETTING_UP)
 
 		if(GAME_STATE_PLAYING)
 			GLOB.storyteller.Process()
 			GLOB.storyteller.process_events()
+			check_queue()
 
 			if(!process_empty_server())
 				return
 
-			var/game_finished = (evacuation_controller.round_over() || ship_was_nuked || universe_has_ended || excelsior_hijacking == 2)
+			var/game_finished = (evacuation_controller.round_over() || ship_was_nuked || universe_has_ended || excelsior_hijacking == 2 || force_ending)
 
 			if(!nuke_in_progress && game_finished)
 				current_state = GAME_STATE_FINISHED
 				Master.SetRunLevel(RUNLEVEL_POSTGAME)
-				for(var/client_key in SSinactivity_and_job_tracking.current_playtimes)
-					SSjob.SavePlaytimes(client_key)
 				declare_completion()
-
-				spawn(50)
-					callHook("roundend")
-
-					if(universe_has_ended)
-						if(!delay_end)
-							to_chat(world, SPAN_NOTICE("<b>Rebooting due to destruction of ship in [restart_timeout/10] seconds</b>"))
-					else
-						if(!delay_end)
-							to_chat(world, SPAN_NOTICE("<b>Restarting in [restart_timeout/10] seconds</b>"))
-
-
-					if(!delay_end)
-						sleep(restart_timeout)
-						if(!delay_end)
-							world.Reboot()
-						else
-							to_chat(world, SPAN_NOTICE("<b>An admin has delayed the round end</b>"))
-					else
-						to_chat(world, SPAN_NOTICE("<b>An admin has delayed the round end</b>"))
 
 // This proc will scan for player and if the game is in progress and...
 // there is no player for certain minutes (see config.empty_server_restart_time) it will restart the server and return FALSE
@@ -168,11 +197,11 @@ SUBSYSTEM_DEF(ticker)
 // will also return TRUE if its currently counting down to server's restart after last player left
 
 /datum/controller/subsystem/ticker/proc/process_empty_server()
-	if(!config.empty_server_restart_time)
+	if(!CONFIG_GET(number/empty_server_restart_time))
 		return TRUE
 	switch(current_state)
 		if(GAME_STATE_PLAYING)
-			if(clients.len)
+			if(GLOB.clients.len)
 				// Resets countdown if any player connects on empty server
 				if(last_player_left_timestamp)
 					last_player_left_timestamp = 0
@@ -183,13 +212,13 @@ SUBSYSTEM_DEF(ticker)
 					last_player_left_timestamp = world.time
 					return TRUE
 				// Counting down the world's end
-				else if (world.time >= last_player_left_timestamp + (config.empty_server_restart_time MINUTES))
+				else if (world.time >= last_player_left_timestamp + (CONFIG_GET(number/empty_server_restart_time) MINUTES))
 					last_player_left_timestamp = 0
-					log_game("\[Server\] No players were on a server last [config.empty_server_restart_time] minutes, restarting server...")
+					log_game("\[Server\] No players were on a server last [CONFIG_GET(number/empty_server_restart_time)] minutes, restarting server...")
 					world.Reboot()
 					return FALSE
 		if(GAME_STATE_PREGAME)
-			if(!clients.len)
+			if(!GLOB.clients.len)
 				// if pregame and no player we break fire() execution so no countdown will be done
 				if(pregame_timeleft == initial(pregame_timeleft))
 					return FALSE
@@ -201,7 +230,9 @@ SUBSYSTEM_DEF(ticker)
 	return TRUE
 
 /datum/controller/subsystem/ticker/proc/setup()
-	to_chat(world, "<span class='boldannounce'>Starting game...</span>")
+	to_chat(world, span_boldannounce("Starting game..."))
+	if (start_immediately)
+		to_chat(world, span_warning("The game was told to start immediately! Lighting may be temporarily askew if this was right after initializations finished!"))
 	var/init_start = world.timeofday
 	//Create and announce mode
 
@@ -209,7 +240,7 @@ SUBSYSTEM_DEF(ticker)
 		set_storyteller(announce = FALSE)
 
 	if(!GLOB.storyteller)
-		to_chat(world, "<span class='danger'>Serious error storyteller system!</span> Reverting to pre-game lobby.")
+		to_chat(world, "[span_danger("Serious error storyteller system!")] Reverting to pre-game lobby.")
 		return FALSE
 
 	SSjob.ResetOccupations()
@@ -241,6 +272,7 @@ SUBSYSTEM_DEF(ticker)
 		if(!H.mind || player_is_antag(H.mind, only_offstation_roles = 1) || !SSjob.ShouldCreateRecords(H.mind.assigned_role))
 			continue
 		CreateModularRecord(H)
+	data_core.manifest()
 
 	CHECK_TICK
 
@@ -249,22 +281,26 @@ SUBSYSTEM_DEF(ticker)
 		cb.InvokeAsync()
 	LAZYCLEARLIST(round_start_events)
 	log_world("Game start took [(world.timeofday - init_start)/10]s")
+	INVOKE_ASYNC(SSdbcore, TYPE_PROC_REF(/datum/controller/subsystem/dbcore,SetRoundStart))
 
 	current_state = GAME_STATE_PLAYING
 	Master.SetRunLevel(RUNLEVEL_GAME)
 
 	callHook("roundstart")
 
+	round_start_time = world.time //otherwise round_start_time would be 0 for the signals
+	real_round_start_time = REALTIMEOFDAY
+
 	// no, block the main thread.
 	GLOB.storyteller.set_up()
-	to_chat(world, "<FONT color='blue'><B>Enjoy the game!</B></FONT>")
-	SEND_SOUND(world, sound('sound/AI/welcome.ogg')) // Skie
+	to_chat(world, span_notice("<B>Welcome to [station_name()], enjoy your stay!</B>"))
+
+	SEND_SOUND(world, sound('sound/AI/welcome.ogg', volume = 50)) // Skie
 
 	for(var/mob/new_player/N in SSmobs.mob_list)
 		N.new_player_panel_proc()
 
 	CHECK_TICK
-	setup_codespeak()
 	generate_contracts(min(6 + round(minds.len / 5), 12))
 	generate_excel_contracts(min(6 + round(minds.len / 5), 12))
 	excel_check()
@@ -277,9 +313,33 @@ SUBSYSTEM_DEF(ticker)
 		if(C.holder)
 			admins_number++
 	if(admins_number == 0)
-		send2adminirc("Round has started with no admins online.")
+		send2adminchat("Round has started with no admins online.")
 
+	round_start_time = world.time //otherwise round_start_time would be 0 for the signals
+	SEND_SIGNAL(src, COMSIG_TICKER_ROUND_STARTING, world.time)
+
+
+	PostSetup()
 	return TRUE
+
+/datum/controller/subsystem/ticker/proc/PostSetup()
+	if(SSdbcore.Connect())
+		var/list/to_set = list()
+		var/arguments = list()
+		if(GLOB.storyteller)
+			to_set += "game_mode = :game_mode"
+			arguments["game_mode"] = GLOB.storyteller.name
+		if(GLOB.revdata.originmastercommit)
+			to_set += "commit_hash = :commit_hash"
+			arguments["commit_hash"] = GLOB.revdata.originmastercommit
+		if(to_set.len)
+			arguments["round_id"] = GLOB.round_id
+			var/datum/db_query/query_round_game_mode = SSdbcore.NewQuery(
+				"UPDATE [format_table_name("round")] SET [to_set.Join(", ")] WHERE id = :round_id",
+				arguments
+			)
+			query_round_game_mode.Execute()
+			qdel(query_round_game_mode)
 
 //These callbacks will fire after roundstart key transfer
 /datum/controller/subsystem/ticker/proc/OnRoundstart(datum/callback/cb)
@@ -288,8 +348,19 @@ SUBSYSTEM_DEF(ticker)
 	else
 		cb.InvokeAsync()
 
+/datum/controller/subsystem/ticker/proc/GetTimeLeft()
+	if(isnull(SSticker.pregame_timeleft))
+		return max(0, start_at - world.time)
+	return pregame_timeleft
+
+/datum/controller/subsystem/ticker/proc/SetTimeLeft(newtime)
+	if(newtime >= 0 && isnull(pregame_timeleft)) //remember, negative means delayed
+		start_at = world.time + newtime
+	else
+		pregame_timeleft = newtime
+
 // Provides an easy way to make cinematics for other events. Just use this as a template :)
-/datum/controller/subsystem/ticker/proc/station_explosion_cinematic(var/ship_missed = 0)
+/datum/controller/subsystem/ticker/proc/station_explosion_cinematic(ship_missed = 0)
 	if(cinematic)
 		return	//already a cinematic in progress!
 
@@ -307,7 +378,7 @@ SUBSYSTEM_DEF(ticker)
 	cinematic.screen_loc = "1,0"
 
 	for(var/mob/M in SSmobs.mob_list | SShumans.mob_list)
-		if(IS_SHIP_LEVEL(M.z))
+		if(isOnStationLevel(M))
 			if(M.client)
 				M.client.screen += cinematic
 			if(isliving(M))
@@ -375,8 +446,14 @@ SUBSYSTEM_DEF(ticker)
 	var/list/quotes = file2list("strings/quotes.txt")
 	if(quotes.len)
 		message = pick(quotes)
+	if(!message)
+		return
+	if(message[1] != "@")
+		message = html_encode(message)
+	else
+		message = copytext(message, 2)
 	if(message)
-		to_chat(world, SPAN_NOTICE("<font color='purple'><b>Quote of the round: </b>[html_encode(message)]</font>"))
+		to_chat(world, custom_boxed_message("purple_box", span_purple("<span class='oocplain'><b>Quote of the round: </b>[message]</span>")))
 
 /datum/controller/subsystem/ticker/proc/create_characters()
 	for(var/mob/new_player/player in GLOB.player_list)
@@ -387,6 +464,7 @@ SUBSYSTEM_DEF(ticker)
 			else if(!player.mind.assigned_role)
 				continue
 			else
+				GLOB.joined_player_list += player.ckey
 				player.create_character()
 				qdel(player)
 
@@ -429,6 +507,8 @@ SUBSYSTEM_DEF(ticker)
 /datum/controller/subsystem/ticker/proc/excel_check()
 
 	for(var/datum/antag_contract/excel/targeted/overthrow/M in GLOB.excel_antag_contracts)
+		if (isnull(M))
+			GLOB.excel_antag_contracts -= M
 		var/mob/living/carbon/human/H = M.target_mind.current
 		if (H.stat == DEAD || is_excelsior(H))
 			M.complete()
@@ -482,23 +562,23 @@ SUBSYSTEM_DEF(ticker)
 			if(Player.stat != DEAD)
 				var/turf/playerTurf = get_turf(Player)
 				if(evacuation_controller.round_over() && evacuation_controller.emergency_evacuation)
-					if(!IS_TECHNICAL_LEVEL(playerTurf.z)) // Escape pods and some other shuttles go to a normally inacessible Z-level
-						to_chat(Player, "<font color='blue'><b>You managed to survive, but were marooned on [station_name] as [Player.real_name]...</b></font>")
+					if(isNotAdminLevel(playerTurf.z))
+						to_chat(Player, "<font color='blue'><b>You managed to survive, but were marooned on [station_name()] as [Player.real_name]...</b></font>")
 					else
-						to_chat(Player, "<font color='green'><b>You managed to survive the events on [station_name] as [Player.real_name].</b></font>")
-				else if(IS_TECHNICAL_LEVEL(playerTurf.z))
-					to_chat(Player, "<font color='green'><b>You successfully underwent crew transfer after events on [station_name] as [Player.real_name].</b></font>")
+						to_chat(Player, "<font color='green'><b>You managed to survive the events on [station_name()] as [Player.real_name].</b></font>")
+				else if(isAdminLevel(playerTurf.z))
+					to_chat(Player, "<font color='green'><b>You successfully underwent crew transfer after events on [station_name()] as [Player.real_name].</b></font>")
 				else if(issilicon(Player))
-					to_chat(Player, "<font color='green'><b>You remain operational after the events on [station_name] as [Player.real_name].</b></font>")
+					to_chat(Player, "<font color='green'><b>You remain operational after the events on [station_name()] as [Player.real_name].</b></font>")
 				else
-					to_chat(Player, "<font color='blue'><b>You missed the crew transfer after the events on [station_name] as [Player.real_name].</b></font>")
+					to_chat(Player, "<font color='blue'><b>You missed the crew transfer after the events on [station_name()] as [Player.real_name].</b></font>")
 			else
 				if(isghost(Player))
 					var/mob/observer/ghost/O = Player
 					if(!O.started_as_observer)
-						to_chat(Player, "<font color='red'><b>You did not survive the events on [station_name]...</b></font>")
+						to_chat(Player, "<font color='red'><b>You did not survive the events on [station_name()]...</b></font>")
 				else
-					to_chat(Player, "<font color='red'><b>You did not survive the events on [station_name]...</b></font>")
+					to_chat(Player, "<font color='red'><b>You did not survive the events on [station_name()]...</b></font>")
 	to_chat(world, "<br>")
 
 	for(var/mob/living/silicon/ai/aiPlayer in SSmobs.mob_list)
@@ -529,10 +609,12 @@ SUBSYSTEM_DEF(ticker)
 	if(dronecount)
 		to_chat(world, "<b>There [dronecount>1 ? "were" : "was"] [dronecount] industrious maintenance [dronecount>1 ? "drones" : "drone"] at the end of this round.</b>")
 
-	GLOB.storyteller.declare_completion()//To declare normal completion.
-	scoreboard()//scores
+	GLOB.storyteller.declare_completion() //To declare normal completion.
+	scoreboard() //scores
+	gather_roundend_feedback()
 	//Ask the event manager to print round end information
 	SSevent.RoundEnd()
+	SSdbcore.SetRoundEnd()
 
 	//Print a list of antagonists to the server log
 	var/list/total_antagonists = list()
@@ -544,17 +626,230 @@ SUBSYSTEM_DEF(ticker)
 				total_antagonists.Add(temprole)
 			total_antagonists[temprole] += ", [antag.owner.name]([antag.owner.key])"
 
-
 	//Now print them all into the log!
 	log_game("Antagonists at round end were...")
 	for(var/i in total_antagonists)
 		log_game("[i]s[total_antagonists[i]].")
 
+	sleep(5 SECONDS)
+	SSplexora.roundended()
+	callHook("roundend")
+	ready_for_reboot = TRUE
+	standard_reboot()
+
+/datum/controller/subsystem/ticker/proc/gather_roundend_feedback()
+	gather_antag_data()
+
+/datum/controller/subsystem/ticker/proc/gather_antag_data()
+	// var/team_gid = 1
+	// var/list/team_ids = list()
+
+	for(var/datum/antagonist/A in GLOB.antagonists)
+		if(!A.owner)
+			continue
+
+		var/list/antag_info = list()
+		antag_info["key"] = A.owner.key
+		antag_info["name"] = A.owner.name
+		antag_info["antagonist_type"] = A.type
+		antag_info["antagonist_name"] = A.id //For auto and custom roles
+		antag_info["objectives"] = list()
+		antag_info["team"] = list()
+		// var/datum/team/T = A.get_team()
+		// if(T)
+		// 	antag_info["team"]["type"] = T.type
+		// 	antag_info["team"]["name"] = T.name
+		// 	if(!team_ids[T])
+		// 		team_ids[T] = team_gid++
+		// 	antag_info["team"]["id"] = team_ids[T]
+
+		if(length(A.objectives))
+			for(var/datum/objective/O in A.objectives)
+				var/result = O.check_completion() ? "SUCCESS" : "FAIL"
+				antag_info["objectives"] += list(list("objective_type"=O.type,"text"=O.explanation_text,"result"=result))
+		SSblackbox.record_feedback("associative", "antagonists", 1, antag_info)
+/datum/controller/subsystem/ticker/proc/save_admin_data()
+	if(IsAdminAdvancedProcCall())
+		to_chat(usr, "<span class='admin prefix'>Admin rank DB Sync blocked: Advanced ProcCall detected.</span>")
+		return
+	if(CONFIG_GET(flag/admin_legacy_system)) //we're already using legacy system so there's nothing to save
+		return
+	else if(load_admins(TRUE)) //returns true if there was a database failure and the backup was loaded from
+		return
+	sync_ranks_with_db()
+	var/list/sql_admins = list()
+	for(var/i in GLOB.protected_admins)
+		var/datum/admins/A = GLOB.protected_admins[i]
+		sql_admins += list(list("ckey" = A.target, "rank" = A.rank_names()))
+	SSdbcore.MassInsert(format_table_name("admin"), sql_admins, duplicate_key = TRUE)
+	var/datum/db_query/query_admin_rank_update = SSdbcore.NewQuery("UPDATE [format_table_name("player")] p INNER JOIN [format_table_name("admin")] a ON p.ckey = a.ckey SET p.lastadminrank = a.rank")
+	query_admin_rank_update.Execute()
+	qdel(query_admin_rank_update)
+
+	//json format backup file generation stored per server
+	var/json_file = file("data/admins_backup.json")
+	var/list/file_data = list(
+		"ranks" = list(),
+		"admins" = list(),
+		"connections" = list(),
+	)
+	for(var/datum/admin_rank/R in GLOB.admin_ranks)
+		file_data["ranks"]["[R.name]"] = list()
+		file_data["ranks"]["[R.name]"]["include rights"] = R.include_rights
+		file_data["ranks"]["[R.name]"]["exclude rights"] = R.exclude_rights
+		file_data["ranks"]["[R.name]"]["can edit rights"] = R.can_edit_rights
+
+	for(var/admin_ckey in GLOB.admin_datums + GLOB.deadmins)
+		var/datum/admins/admin = GLOB.admin_datums[admin_ckey]
+
+		if(!admin)
+			admin = GLOB.deadmins[admin_ckey]
+			if (!admin)
+				continue
+
+		file_data["admins"][admin_ckey] = admin.rank_names()
+
+		if (admin.owner)
+			file_data["connections"][admin_ckey] = list(
+				"cid" = admin.owner.computer_id,
+				"ip" = admin.owner.address,
+			)
+
+	fdel(json_file)
+	WRITE_FILE(json_file, json_encode(file_data))
+
+/datum/controller/subsystem/ticker/proc/update_everything_flag_in_db()
+	for(var/datum/admin_rank/R in GLOB.admin_ranks)
+		var/list/flags = list()
+		if(R.include_rights == R_EVERYTHING)
+			flags += "flags"
+		if(R.exclude_rights == R_EVERYTHING)
+			flags += "exclude_flags"
+		if(R.can_edit_rights == R_EVERYTHING)
+			flags += "can_edit_flags"
+		if(!flags.len)
+			continue
+		var/flags_to_check = flags.Join(" != [R_EVERYTHING] AND ") + " != [R_EVERYTHING]"
+		var/datum/db_query/query_check_everything_ranks = SSdbcore.NewQuery(
+			"SELECT flags, exclude_flags, can_edit_flags FROM [format_table_name("admin_ranks")] WHERE rank = :rank AND ([flags_to_check])",
+			list("rank" = R.name)
+		)
+		if(!query_check_everything_ranks.Execute())
+			qdel(query_check_everything_ranks)
+			return
+		if(query_check_everything_ranks.NextRow()) //no row is returned if the rank already has the correct flag value
+			var/flags_to_update = flags.Join(" = [R_EVERYTHING], ") + " = [R_EVERYTHING]"
+			var/datum/db_query/query_update_everything_ranks = SSdbcore.NewQuery(
+				"UPDATE [format_table_name("admin_ranks")] SET [flags_to_update] WHERE rank = :rank",
+				list("rank" = R.name)
+			)
+			if(!query_update_everything_ranks.Execute())
+				qdel(query_update_everything_ranks)
+				return
+			qdel(query_update_everything_ranks)
+		qdel(query_check_everything_ranks)
+
+/datum/controller/subsystem/ticker/proc/check_queue()
+	if(!queued_players.len)
+		return
+	var/hard_popcap = CONFIG_GET(number/hard_popcap)
+	if(!hard_popcap)
+		list_clear_nulls(queued_players)
+		for (var/mob/new_player/new_player in queued_players)
+			to_chat(new_player, span_userdanger("The alive players limit has been released!<br><a href='byond://?src=[REF(new_player)];late_join=override'>[html_encode(">>Join Game<<")]</a>"))
+			SEND_SOUND(new_player, sound('sound/misc/notice1.ogg'))
+			send_link(new_player, "?late_join=override")
+		queued_players.len = 0
+		queue_delay = 0
+		return
+
+	queue_delay++
+	var/mob/new_player/next_in_line = queued_players[1]
+
+	switch(queue_delay)
+		if(5) //every 5 ticks check if there is a slot available
+			list_clear_nulls(queued_players)
+			if(living_player_count() < hard_popcap)
+				if(next_in_line?.client)
+					to_chat(next_in_line, span_userdanger("A slot has opened! You have approximately 20 seconds to join. <a href='byond://?src=[REF(next_in_line)];late_join=override'>\>\>Join Game\<\<</a>"))
+					SEND_SOUND(next_in_line, sound('sound/misc/notice1.ogg'))
+					send_link(next_in_line, "?late_join=override")
+					return
+				queued_players -= next_in_line //Client disconnected, remove he
+			queue_delay = 0 //No vacancy: restart timer
+		if(25 to INFINITY)  //No response from the next in line when a vacancy exists, remove he
+			to_chat(next_in_line, span_danger("No response received. You have been removed from the line."))
+			queued_players -= next_in_line
+			queue_delay = 0
+
+
 /datum/controller/subsystem/ticker/proc/HasRoundStarted()
 	return current_state >= GAME_STATE_PLAYING
 
-// /datum/controller/subsystem/ticker/proc/IsRoundInProgress()
-// 	return current_state == GAME_STATE_PLAYING
+/datum/controller/subsystem/ticker/proc/IsRoundInProgress()
+	return current_state == GAME_STATE_PLAYING
+
+/datum/controller/subsystem/ticker/proc/standard_reboot()
+	if(ready_for_reboot)
+		if(universe_has_ended)
+			Reboot("Station destroyed", "nuke")
+		else
+			Reboot("Round ended.", "proper completion")
+	else
+		CRASH("Attempted standard reboot without ticker roundend completion")
+
+/datum/controller/subsystem/ticker/proc/Reboot(reason, end_string, delay)
+	set waitfor = FALSE
+	if(usr && !check_rights(R_SERVER, TRUE))
+		return
+
+	if(!delay)
+		// TOOD: Move to a config
+		delay = 1 MINUTE + 30 SECONDS
+
+	var/skip_delay = check_rights()
+	if(delay_end && !skip_delay)
+		to_chat(world, span_boldannounce("An admin has delayed the round end."))
+		return
+
+	to_chat(world, span_boldannounce("Rebooting World in [DisplayTimeText(delay)]. [reason]"))
+
+	// var/start_wait = world.time
+	// UNTIL((world.time - start_wait) > (delay * 2)) //don't wait forever
+	reboot_timer = addtimer(CALLBACK(src, PROC_REF(reboot_callback), reason, end_string), delay, TIMER_STOPPABLE)
+
+/datum/controller/subsystem/ticker/proc/reboot_callback(reason, end_string)
+	// if(end_string)
+	// 	end_state = end_string
+
+	// var/statspage = CONFIG_GET(string/roundstatsurl)
+	// var/gamelogloc = CONFIG_GET(string/gamelogurl)
+	// if(statspage)
+	// 	to_chat(world, span_info("Round statistics and logs can be viewed <a href=\"[statspage][GLOB.round_id]\">at this website!</a>"))
+	// else if(gamelogloc)
+	// 	to_chat(world, span_info("Round logs can be located <a href=\"[gamelogloc]\">at this website!</a>"))
+
+	save_admin_data()
+	update_everything_flag_in_db()
+
+	log_game(span_boldannounce("Rebooting World. [reason]"))
+
+	world.Reboot()
+
+/**
+ * Deletes the current reboot timer and nulls the var
+ *
+ * Arguments:
+ * * user - the user that cancelled the reboot, may be null
+ */
+/datum/controller/subsystem/ticker/proc/cancel_reboot(mob/user)
+	if(!reboot_timer)
+		to_chat(user, span_warning("There is no pending reboot!"))
+		return FALSE
+	to_chat(world, span_boldannounce("An admin has delayed the round end."))
+	deltimer(reboot_timer)
+	reboot_timer = null
+	return TRUE
 
 // expand me pls
 /datum/controller/subsystem/ticker/Recover()
@@ -572,3 +867,23 @@ SUBSYSTEM_DEF(ticker)
 		if(GAME_STATE_PLAYING)
 			Master.SetRunLevel(RUNLEVEL_GAME)
 		if(GAME_STATE_FINISHED)
+			current_state = SSticker.current_state
+
+	quoted = SSticker.quoted
+
+	pregame_timeleft = SSticker.pregame_timeleft
+
+	totalPlayers = SSticker.totalPlayers
+	totalPlayersReady = SSticker.totalPlayersReady
+	total_admins_ready = SSticker.total_admins_ready
+
+	round_start_time = SSticker.round_start_time
+
+	if (Master) //Set Masters run level if it exists
+		switch (current_state)
+			if(GAME_STATE_SETTING_UP)
+				Master.SetRunLevel(RUNLEVEL_SETUP)
+			if(GAME_STATE_PLAYING)
+				Master.SetRunLevel(RUNLEVEL_GAME)
+			if(GAME_STATE_FINISHED)
+				Master.SetRunLevel(RUNLEVEL_POSTGAME)

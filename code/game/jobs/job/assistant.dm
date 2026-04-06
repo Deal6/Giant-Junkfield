@@ -3,8 +3,10 @@
 	flag = ASSISTANT
 	department = DEPARTMENT_CIVILIAN
 	department_flag = CIVILIAN
+	exp_granted_type = EXP_TYPE_CREW
 	faction = "CEV Eris"
 	total_positions = -1
+	spawn_positions = -1
 	supervisors = "anyone who pays you"
 	selection_color = "#dddddd"
 	initial_balance	= 0 // This is now defined in code\modules\economy\cash.dm under spacecash/bundle/Vagabond as they carry cash on them.

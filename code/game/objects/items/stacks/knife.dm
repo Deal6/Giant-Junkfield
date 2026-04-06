@@ -50,7 +50,7 @@
 		J.amount = 1
 		J.update_icon()
 		J.launchAt(target, C)
-	visible_message(SPAN_DANGER("[C] has thrown \the [src]."))
+	visible_message(span_danger("[C] has thrown \the [src]."))
 	update_icon()
 
 /obj/item/stack/thrown/proc/launchAt(atom/target, mob/living/carbon/C)
@@ -63,6 +63,10 @@
 	icon = 'icons/obj/stack/items.dmi'
 	icon_state = "knife"
 	item_state = "knife"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/weapons/swords_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/weapons/swords_righthand.dmi',
+		)
 	singular_name = "throwing knife"
 	flags = CONDUCT
 	sharp = TRUE

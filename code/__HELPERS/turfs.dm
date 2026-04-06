@@ -73,7 +73,7 @@
 	return !turf_contains_dense_objects(T)
 
 /proc/is_station_turf(turf/T)
-	return T && IS_SHIP_LEVEL(T.z)
+	return T && isStationLevel(T.z)
 
 /*
 	Turf manipulation
@@ -96,7 +96,7 @@
 	return turf_map
 
 
-/proc/translate_turfs(list/translation, area/base_area, turf/base_turf)
+/proc/translate_turfs(list/translation, area/base_area = null, turf/base_turf)
 	for(var/turf/source in translation)
 
 		var/turf/target = translation[source]
@@ -149,7 +149,7 @@
 /proc/cardinal_turfs(atom/A)
 	var/list/turf/turfs = list()
 	var/turf/origin = get_turf(A)
-	for (var/a in cardinal)
+	for (var/a in GLOB.cardinal)
 		var/turf/T = get_step(origin, a)
 		if (T)
 			turfs.Add(T)
@@ -174,7 +174,7 @@
 
 //Returns true if this tile is an upper hull tile of the ship. IE, a roof
 /proc/turf_is_upper_hull(turf/T)
-	var/turf/B = SSmapping.GetBelow(T)
+	var/turf/B = GetBelow(T)
 	if (!B)
 		//Gotta be something below us if we're a roof
 		return FALSE
@@ -195,7 +195,7 @@
 		//We must be indoors
 		return FALSE
 
-	var/turf/B = SSmapping.GetBelow(T)
+	var/turf/B = GetBelow(T)
 	if (!B)
 		//If we're on the lowest zlevel, return true
 		return TRUE
@@ -210,11 +210,18 @@
 
 
 
+/proc/isOnShipLevel(atom/A)
+	if (A && istype(A))
+		if (A.z in GLOB.maps_data.station_levels)
+			return TRUE
+	return FALSE
+
+
 //This is used when you want to check a turf which is a Z transition. For example, an openspace or stairs
 //If this turf conencts to another in that manner, it will return the destination. If not, it will return the input
-/proc/get_connecting_turf(turf/T, turf/from)
+/proc/get_connecting_turf(turf/T, turf/from = null)
 	if (T.is_hole)
-		var/turf/U = SSmapping.GetBelow(T)
+		var/turf/U = GetBelow(T)
 		if (U)
 			return U
 

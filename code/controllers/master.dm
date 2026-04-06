@@ -7,18 +7,8 @@
  *
  **/
 
-//Init the debugger datum first so we can debug Master
-//You might wonder why not just create the debugger datum global in its own file, since its loaded way earlier than this DM file
-//Well for whatever reason then the Master gets created first and then the debugger when doing that
-//So thats why this code lives here now, until someone finds out how Byond inits globals
-GLOBAL_REAL(Debugger, /datum/debugger) = new
-//This is the ABSOLUTE ONLY THING that should init globally like this
-//2019 update: the failsafe,config and Global controllers also do it
-GLOBAL_REAL(Master, /datum/controller/master) = new
-
-//THIS IS THE INIT ORDER
-//Master -> SSPreInit -> GLOB -> world -> config -> SSInit -> Failsafe
-//GOT IT MEMORIZED?
+// See initialization order in /code/game/world.dm
+GLOBAL_REAL(Master, /datum/controller/master)
 
 /datum/controller/master
 	name = "Master"
@@ -43,7 +33,6 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	var/init_timeofday
 	var/init_time
 	var/tickdrift = 0
-	var/chronofailure = FALSE
 
 	/// How long is the MC sleeping between runs, read only (set by Loop() based off of anti-tick-contention heuristics)
 	var/sleep_delta = 1
@@ -63,6 +52,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	var/datum/controller/subsystem/queue_tail //!End of queue linked list (used for appending to the list)
 	var/queue_priority_count = 0 //Running total so that we don't have to loop thru the queue each run to split up the tick
 	var/queue_priority_count_bg = 0 //Same, but for background subsystems
+	var/map_loading = FALSE //!Are we loading in a new map?
 
 	var/current_runlevel //!for scheduling different subsystems for different stages of the round
 	var/sleep_offline_after_initializations = TRUE
@@ -81,9 +71,11 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	///used by CHECK_TICK as well so that the procs subsystems call can obey that SS's tick limits
 	var/static/current_ticklimit = TICK_LIMIT_RUNNING
 
+	var/list/list/stage_sorted_subsystems
+
 /datum/controller/master/New()
-	// if(!config)
-	// 	config = new
+	if(!config)
+		config = new
 	// Highlander-style: there can only be one! Kill off the old and replace it with the new.
 
 	if(!random_seed)
@@ -101,7 +93,6 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 			Recover()
 			qdel(Master)
 			Master = src
-			chronofailure = FALSE // presume time is stable before evidence otherwise
 		else
 			//Code used for first master on game boot or if existing master got deleted
 			Master = src
@@ -175,25 +166,25 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 					msg += "\t [varname] = [varval]\n"
 	log_world(msg)
 
-	var/datum/controller/subsystem/BadBoy = Master.last_type_processed
+	var/datum/controller/subsystem/lastSS = Master.last_type_processed
 	var/FireHim = FALSE
-	if(istype(BadBoy))
+	if(istype(lastSS))
 		msg = null
-		LAZYINITLIST(BadBoy.failure_strikes)
-		switch(++BadBoy.failure_strikes[BadBoy.type])
+		LAZYINITLIST(lastSS.failure_strikes)
+		switch(++lastSS.failure_strikes[lastSS.type])
 			if(2)
-				msg = "The [BadBoy.name] subsystem was the last to fire for 2 controller restarts. It will be recovered now and disabled if it happens again."
+				msg = "The [lastSS.name] subsystem was the last to fire for 2 controller restarts. It will be recovered now and disabled if it happens again."
 				FireHim = TRUE
 			if(3)
-				msg = "The [BadBoy.name] subsystem seems to be destabilizing the MC and will be offlined."
-				BadBoy.flags |= SS_NO_FIRE
+				msg = "The [lastSS.name] subsystem seems to be destabilizing the MC and will be offlined."
+				lastSS.flags |= SS_NO_FIRE
 		if(msg)
-			to_chat(admins, span_boldannounce("[msg]"))
+			to_chat(GLOB.admins, span_boldannounce("[msg]"))
 			log_world(msg)
 
 	if (istype(Master.subsystems))
 		if(FireHim)
-			Master.subsystems += new BadBoy.type //NEW_SS_GLOBAL will remove the old one
+			Master.subsystems += new lastSS.type //NEW_SS_GLOBAL will remove the old one
 		subsystems = Master.subsystems
 		current_runlevel = Master.current_runlevel
 		StartProcessing(10)
@@ -216,9 +207,11 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	init_stage_completed = 0
 	var/mc_started = FALSE
 
-	to_chat(world, span_boldannounce("Initializing subsystems..."))
+	var/msg = "Sorting subsystems to init..."
+	to_chat(world, span_boldannounce(msg))
+	log_world(msg)
 
-	var/list/stage_sorted_subsystems = new(INITSTAGE_MAX)
+	stage_sorted_subsystems = new(INITSTAGE_MAX)
 	for (var/i in 1 to INITSTAGE_MAX)
 		stage_sorted_subsystems[i] = list()
 
@@ -235,15 +228,19 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	// Sort subsystems by display setting for easy access.
 	sortTim(subsystems, /proc/cmp_subsystem_display)
 	var/start_timeofday = REALTIMEOFDAY
+	log_world("Initializing subsystems...")
 	for (var/current_init_stage in 1 to INITSTAGE_MAX)
 
 		// Initialize subsystems.
 		for (var/datum/controller/subsystem/subsystem in stage_sorted_subsystems[current_init_stage])
-			if (subsystem.flags & SS_NO_INIT || subsystem.initialized) //Don't init SSs with the correspondig flag or if they already are initialzized
+			if (subsystem.flags & SS_NO_INIT || subsystem.initialized) //Don't init SSs with the corresponding flag or if they are already initialzized
 				continue
 			current_initializing_subsystem = subsystem
+			subsystem.order_in_stage = stage_sorted_subsystems[current_init_stage].Find(subsystem)
 
 			rustg_time_reset(SS_INIT_TIMER_KEY)
+			log_game("Initializing [subsystem.name] subsystem...")
+			world.name = "[get_default_world_name(FALSE)] - [subsystem.order_string()] Initializing [subsystem.name] subsystem..."
 			subsystem.Initialize()
 
 			CHECK_TICK
@@ -259,14 +256,21 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	var/time = (REALTIMEOFDAY - start_timeofday) / 10
 
 
+	var/msg_fancy = "Initializations complete within [get_colored_thresh_text("[time] second[time == 1 ? "" : "s"]!", time, 200 SECONDS / 10)]!"
+	msg = "Initializations complete within [time] second[time == 1 ? "" : "s"]!"
 
-	var/msg = "Initializations complete within [time] second[time == 1 ? "" : "s"]!"
-	to_chat(world, span_boldannounce("[msg]"))
+	world.name = get_default_world_name()
+
+	to_chat(world, span_boldannounce(msg_fancy))
 	log_world(msg)
 
+	SSplexora.serverinitdone(time)
+
+	if (tgs_prime)
+		world.TgsInitializationComplete()
 
 	// Set world options.
-	world.change_fps(config.fps)
+	world.change_fps(CONFIG_GET(number/fps))
 	var/initialized_tod = REALTIMEOFDAY
 
 	// if(sleep_offline_after_initializations)
@@ -304,8 +308,10 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	if (rtn >= MC_LOOP_RTN_GRACEFUL_EXIT || processing < 0)
 		return //this was suppose to happen.
 	//loop ended, restart the mc
-	log_game("MC crashed or runtimed, restarting")
-	message_admins("MC crashed or runtimed, restarting")
+	var/msg = "MC crashed or runtimed, restarting"
+	log_game(msg)
+	message_admins(msg)
+	SSplexora.mc_alert(msg)
 	var/rtn2 = Recreate_MC()
 	if (rtn2 <= 0)
 		log_game("Failed to recreate MC (Error code: [rtn2]), it's up to the failsafe now")
@@ -377,23 +383,6 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	while (1)
 		tickdrift = max(0, MC_AVERAGE_FAST(tickdrift, (((REALTIMEOFDAY - init_timeofday) - (world.time - init_time)) / world.tick_lag)))
 		var/starting_tick_usage = TICK_USAGE
-
-		if(REALTIMEOFDAY < init_timeofday || REALTIMEOFDAY < 0 || world.time < 0)
-			chronofailure = TRUE
-			log_game("CHRONOFAILURE: Time collapse with rollover number [midnight_rollovers].")
-			send2coders(message = "CHRONOFAILURE: Time is collapsing, rollover number [midnight_rollovers]. Attempting timeless reboot.", color = "#ff0000", admiralty = 1)
-			restart_timeout = 0 // time isn't trustworthy anymore
-			restart_clear = 0
-			switch(Recreate_MC()) // attempt reboot
-				if(-1)
-					log_game("CHRONOFAILURE: MC reboot failed.")
-					send2coders(message = "CHRONOFAILURE: Timeless reboot failed.", color = "#ff0000", admiralty = 1)
-				if(0)
-					log_game("CHRONOFAILURE: MC reboot failed beyond repair.")
-					send2coders(message = "CHRONOFAILURE: Timeless reboot failed beyond repair.", color = "#ff0000", admiralty = 1)
-				if(1)
-					log_game("CHRONOFAILURE: MC reboot successful.")
-					send2coders(message = "CHRONOFAILURE: Timeless reboot successful.", color = "#00ff00", admiralty = 1)
 
 		if (init_stage != init_stage_completed)
 			return MC_LOOP_RTN_NEWSTAGES
@@ -715,6 +704,22 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 /datum/controller/master/proc/laggy_byond_map_update_incoming()
 	if (!skip_ticks)
 		skip_ticks = 1
+
+/datum/controller/master/StartLoadingMap()
+	//disallow more than one map to load at once, multithreading it will just cause race conditions
+	while(map_loading)
+		stoplag()
+	for(var/S in subsystems)
+		var/datum/controller/subsystem/SS = S
+		SS.StartLoadingMap()
+	map_loading = TRUE
+
+/datum/controller/master/StopLoadingMap(bounds = null)
+	map_loading = FALSE
+	for(var/S in subsystems)
+		var/datum/controller/subsystem/SS = S
+		SS.StopLoadingMap()
+
 
 /datum/controller/master/proc/UpdateTickRate()
 	if (!processing)

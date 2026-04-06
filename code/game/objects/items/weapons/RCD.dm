@@ -4,6 +4,10 @@
 	desc = "A device used to rapidly build walls and floors."
 	icon = 'icons/obj/tools.dmi'
 	icon_state = "rcd"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/equipment/tools_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/equipment/tools_righthand.dmi',
+		)
 	opacity = 0
 	density = FALSE
 	anchored = FALSE
@@ -28,8 +32,8 @@
 /obj/item/rcd/attack()
 	return 0
 
-/obj/item/rcd/proc/can_use(var/mob/user,var/turf/T)
-	return (user.Adjacent(T) && user.get_active_hand() == src && !user.stat && !user.restrained())
+/obj/item/rcd/proc/can_use(mob/user,turf/T)
+	return (user.Adjacent(T) && user.get_active_held_item() == src && !user.stat && !user.restrained())
 
 /obj/item/rcd/examine(mob/user, extra_description = "")
 	if(get_dist(user, src) < 2)
@@ -55,7 +59,7 @@
 		if(M.use(amount) && stored_matter < max_stored_matter)
 			stored_matter += amount
 			playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
-			to_chat(user, "<span class='notice'>You load [amount] Compressed Matter into \the [src]</span>.")
+			to_chat(user, "[span_notice("You load [amount] Compressed Matter into \the [src]")].")
 			update_icon()	//Updates the ammo counter
 	else
 		..()
@@ -63,7 +67,7 @@
 /obj/item/rcd/attack_self(mob/user)
 	//Change the mode
 	if(++mode > modes.len) mode = 1
-	to_chat(user, SPAN_NOTICE("Changed mode to '[modes[mode]]'"))
+	to_chat(user, span_notice("Changed mode to '[modes[mode]]'"))
 	playsound(src.loc, 'sound/effects/pop.ogg', 50, 0)
 	if(prob(20)) src.spark_system.start()
 
@@ -75,7 +79,7 @@
 		return 0
 	return alter_turf(A,user)
 
-/obj/item/rcd/proc/useResource(var/amount, var/mob/user, var/checkOnly)
+/obj/item/rcd/proc/useResource(amount, mob/user, checkOnly)
 	if(stored_matter < amount)
 		return 0
 	if (!checkOnly)
@@ -83,7 +87,7 @@
 		update_icon()	//Updates the ammo counter if ammo is succesfully used
 	return 1
 
-/obj/item/rcd/proc/alter_turf(var/T,var/mob/user)
+/obj/item/rcd/proc/alter_turf(T,mob/user)
 
 	var/build_cost = 0
 	var/build_type
@@ -203,7 +207,7 @@
 /obj/item/rcd/borg
 	spawn_tags = null
 
-/obj/item/rcd/borg/useResource(var/amount, mob/user, var/checkOnly)
+/obj/item/rcd/borg/useResource(amount, mob/user, checkOnly)
 	if(isrobot(user))
 		var/mob/living/silicon/robot/R = user
 		if(R.cell)
@@ -217,13 +221,13 @@
 /obj/item/rcd/borg/attackby()
 	return
 
-/obj/item/rcd/borg/can_use(var/mob/user,var/turf/T)
+/obj/item/rcd/borg/can_use(mob/user,turf/T)
 	return (user.Adjacent(T) && !user.stat)
 
 /obj/item/rcd/mounted
 	spawn_tags = null//mech item
 
-/obj/item/rcd/mounted/useResource(var/amount, mob/user, var/checkOnly)
+/obj/item/rcd/mounted/useResource(amount, mob/user, checkOnly)
 	var/cost = amount*130 //so that a rig with default powercell can build ~2.5x the stuff a fully-loaded RCD can.
 	/// RIG MOUNTED
 	if(istype(loc,/obj/item/rig_module))
@@ -247,5 +251,5 @@
 /obj/item/rcd/mounted/attackby()
 	return
 
-/obj/item/rcd/mounted/can_use(var/mob/user,var/turf/T)
+/obj/item/rcd/mounted/can_use(mob/user,turf/T)
 	return (user.Adjacent(T) && !user.stat && !user.restrained())

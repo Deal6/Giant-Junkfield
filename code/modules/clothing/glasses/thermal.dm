@@ -18,7 +18,7 @@
 	if(ishuman(src.loc))
 		var/mob/living/carbon/human/M = src.loc
 		if(M.glasses == src)
-			to_chat(M, SPAN_DANGER("[src] overloads and blinds you!"))
+			to_chat(M, span_danger("[src] overloads and blinds you!"))
 			M.eye_blind = 3
 			M.eye_blurry = 5
 	..()
@@ -81,5 +81,9 @@
 	desc = "A set of implantable lenses designed to augment your vision"
 	icon_state = "thermalimplants"
 	item_state = "syringe_kit"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/equipment/medical_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/equipment/medical_righthand.dmi',
+		)
 
 

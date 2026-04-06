@@ -1,5 +1,8 @@
 # MySQL Connection Configuration
 
+## Should SQL be enabled? Uncomment to enable
+#SQL_ENABLED
+
 # Server the MySQL database can be found at
 # Examples: localhost, 200.135.5.43, www.mysqldb.com, etc.
 ADDRESS localhost
@@ -8,21 +11,13 @@ ADDRESS localhost
 PORT 3306
 
 # Database the population, death, karma, etc. tables may be found in
-DATABASE ceveris
+FEEDBACK_DATABASE ceveris
 
 # Username/Login used to access the database
-LOGIN mylogin
+FEEDBACK_LOGIN mylogin
 
 # Password used to access the database
-PASSWORD mypassword
-
-## Prefix to be added to the name of every table, older databases will require this be set to erro_
-## Note, this does not change the table names in the database, you will have to do that yourself.
-##IE:
-##	TABLEPREFIX
-##	TABLEPREFIX SS13_
-## Remove "SS13_" if you are using the standard schema file.
-TABLEPREFIX SS13_
+FEEDBACK_PASSWORD mypassword
 
 ## Time in seconds for asynchronous queries to timeout
 ## Set to 0 for infinite

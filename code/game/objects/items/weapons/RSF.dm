@@ -5,10 +5,14 @@ RSF
 */
 
 /obj/item/rsf
-	name = "\improper Rapid-Service-Fabricator"
+	name = "rapid service fabricator"
 	desc = "A device used to rapidly deploy service items."
 	icon = 'icons/obj/tools.dmi'
 	icon_state = "rcd"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/equipment/tools_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/equipment/tools_righthand.dmi',
+		)
 	opacity = 0
 	density = FALSE
 	anchored = FALSE
@@ -29,7 +33,7 @@ RSF
 		if(M.use(amount) && stored_matter < max_stored_matter)
 			stored_matter += amount
 			playsound(src.loc, 'sound/machines/click.ogg', 10, 1)
-			to_chat(user, "<span class='notice'>You load [amount] Compressed Matter into \the [src]</span>.")
+			to_chat(user, "[span_notice("You load [amount] Compressed Matter into \the [src]")].")
 	else
 		..()
 /obj/item/rsf/attack_self(mob/user as mob)

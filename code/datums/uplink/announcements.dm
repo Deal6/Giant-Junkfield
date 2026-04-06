@@ -4,7 +4,7 @@
 /datum/uplink_item/abstract/announcements
 	category = /datum/uplink_category/services
 
-/datum/uplink_item/abstract/announcements/buy(var/obj/item/device/uplink/U, var/mob/user)
+/datum/uplink_item/abstract/announcements/buy(obj/item/device/uplink/U, mob/user)
 	. = ..()
 	if(.)
 		log_and_message_admins("has triggered a falsified [src]", user)
@@ -16,11 +16,11 @@
 	desc = "Broadcasts a message anonymously to the entire vessel. Triggers immediately after supplying additional data."
 	antag_roles = list(ROLE_CONTRACTOR,ROLE_MARSHAL,ROLE_INQUISITOR,ROLE_MERCENARY,ROLE_CARRION)
 
-/datum/uplink_item/abstract/announcements/announce/get_goods(var/obj/item/device/uplink/U, var/loc, var/mob/user, var/list/args)
+/datum/uplink_item/abstract/announcements/announce/get_goods(obj/item/device/uplink/U, loc, mob/user)
 	var/message = input(user, "What would you like the text of the announcement to be? Write as much as you like, The title will appear as Unknown Broadcast", "False Announcement") as text|null
 	if (!message)
 		return FALSE
-	command_announcement.Announce(message, "Unknown Broadcast", use_text_to_speech = TRUE)
+	priority_announce(message, "Unknown Broadcast", color_override = "red")
 	return 1
 
 /datum/uplink_item/abstract/announcements/fake_crew_arrival
@@ -33,47 +33,53 @@
 	..()
 	antag_roles = list(ROLE_MERCENARY)
 
-/datum/uplink_item/abstract/announcements/fake_crew_arrival/get_goods(var/obj/item/device/uplink/U, var/loc, var/mob/user, var/list/args)
+/datum/uplink_item/abstract/announcements/fake_crew_arrival/get_goods(obj/item/device/uplink/U, loc, mob/user)
 	if(!user)
 		return 0
 
 	var/obj/item/card/id/I = user.GetIdCard()
-	var/datum/computer_file/report/crew_record/random_record
-	if(GLOB.all_crew_records.len)
-		random_record = pick(GLOB.all_crew_records)
+	var/datum/data/record/random_general_record
+	var/datum/data/record/random_medical_record
+	if(data_core.general.len)
+		random_general_record	= pick(data_core.general)
+		random_medical_record	= find_medical_record("id", random_general_record.fields["id"])
 
-	var/datum/computer_file/report/crew_record/general = new()
+	var/datum/data/record/general = data_core.CreateGeneralRecord(user)
 	if(I)
-		general.set_age(I.age)
-		general.set_job(I.assignment)
-		general.set_name(I.registered_name)
-		general.set_sex(I.sex)
+		general.fields["age"] = I.age
+		general.fields["rank"] = I.assignment
+		general.fields["real_rank"] = I.assignment
+		general.fields["name"] = I.registered_name
+		general.fields["sex"] = I.sex
 	else
 		var/mob/living/carbon/human/H
 		if(ishuman(user))
 			H = user
-			general.set_age(H.age)
+			general.fields["age"] = H.age
 		else
-			general.set_age(initial(H.age))
+			general.fields["age"] = initial(H.age)
 		var/assignment = GetAssignment(user)
-		general.set_job(assignment)
-		general.set_department(args["department"])
-		general.set_name(user.real_name)
-		general.set_sex(capitalize(user.gender))
+		general.fields["rank"] = assignment
+		general.fields["real_rank"] = assignment
+		general.fields["name"] = user.real_name
+		general.fields["sex"] = capitalize(user.gender)
 
-	general.set_species(user.get_species())
+	general.fields["species"] = user.get_species()
+	var/datum/data/record/medical = data_core.CreateMedicalRecord(general.fields["name"], general.fields["id"])
+	data_core.CreateSecurityRecord(general.fields["name"], general.fields["id"])
 
-	if(random_record)
-		general.set_fingerprint(random_record.get_fingerprint())
-		general.set_bloodtype(random_record.get_bloodtype())
-		general.set_dna(random_record.get_bloodtype())
+	if(!random_general_record)
+		general.fields["fingerprint"] 	= random_general_record.fields["fingerprint"]
+	if(random_medical_record)
+		medical.fields["b_type"]		= random_medical_record.fields["b_type"]
+		medical.fields["b_dna"]			= random_medical_record.fields["b_type"]
 
 	if(I)
-		general.set_fingerprint(I.fingerprint_hash)
-		general.set_bloodtype(I.blood_type)
-		general.set_dna(I.dna_hash)
+		general.fields["fingerprint"] 	= I.fingerprint_hash
+		medical.fields["b_type"]	= I.blood_type
+		medical.fields["b_dna"]		= I.dna_hash
 
-	AnnounceArrival(general.get_name(), general.get_job(), "has completed cryogenic revival")
+	AnnounceArrival(general.fields["name"], general.fields["rank"], "has completed cryogenic revival")
 	return 1
 
 /datum/uplink_item/abstract/announcements/fake_ion_storm
@@ -82,7 +88,7 @@
 	item_cost = 2
 	antag_roles = list(ROLE_CONTRACTOR,ROLE_MARSHAL,ROLE_INQUISITOR,ROLE_MERCENARY,ROLE_CARRION)
 
-/datum/uplink_item/abstract/announcements/fake_ion_storm/get_goods(var/obj/item/device/uplink/U, var/loc)
+/datum/uplink_item/abstract/announcements/fake_ion_storm/get_goods(obj/item/device/uplink/U, loc)
 	ion_storm_announcement()
 	return 1
 
@@ -92,7 +98,7 @@
 	item_cost = 4
 	antag_roles = list(ROLE_CONTRACTOR,ROLE_MARSHAL,ROLE_INQUISITOR,ROLE_MERCENARY,ROLE_CARRION)
 
-/datum/uplink_item/abstract/announcements/fake_radiation/get_goods(var/obj/item/device/uplink/U, var/loc)
+/datum/uplink_item/abstract/announcements/fake_radiation/get_goods(obj/item/device/uplink/U, loc)
 	var/datum/event/radiation_storm/syndicate/S =  new(null, EVENT_LEVEL_MODERATE)
 	S.Initialize()
 	return 1
@@ -103,8 +109,7 @@
 	item_cost = 3
 	antag_roles = list(ROLE_CONTRACTOR,ROLE_MARSHAL,ROLE_INQUISITOR,ROLE_MERCENARY,ROLE_CARRION)
 
-/datum/uplink_item/abstract/announcements/fake_serb/get_goods(var/obj/item/device/uplink/U, var/loc)
+/datum/uplink_item/abstract/announcements/fake_serb/get_goods(obj/item/device/uplink/U, loc)
 	var/datum/shuttle/autodock/multi/antag/mercenary/merc = /datum/shuttle/autodock/multi/antag/mercenary
-	command_announcement.Announce(initial(merc.arrival_message), initial(merc.announcer) || "[boss_name]")
-	qdel(merc)
+	priority_announce(initial(merc.arrival_message), sender_override = initial(merc.announcer) || "[GLOB.boss_name]")
 	return 1

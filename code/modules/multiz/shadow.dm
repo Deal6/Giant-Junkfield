@@ -18,7 +18,7 @@
 /mob/shadow/can_fall()
 	return FALSE
 
-/mob/shadow/New(var/mob/L)
+/mob/shadow/New(mob/L)
 	if(!istype(L))
 		qdel(src)
 		return
@@ -33,7 +33,7 @@
 /mob/shadow/examine(mob/user, distance, infix, suffix)
 	return owner.examine(user, distance, infix, suffix)
 
-/mob/shadow/proc/sync_icon(var/mob/M)
+/mob/shadow/proc/sync_icon(mob/M)
 	name = M.name
 	icon = M.icon
 	icon_state = M.icon_state
@@ -44,24 +44,24 @@
 	if(shadow)
 		shadow.sync_icon(src)
 
-/mob/living/Move(NewLoc, Dir = 0, step_x = 0, step_y = 0, var/glide_size_override = 0)
+/mob/living/Move(NewLoc, Dir = 0, step_x = 0, step_y = 0, glide_size_override = 0)
 	. = ..()
 	check_shadow()
 
-/mob/living/forceMove(atom/destination, var/special_event, glide_size_override=0)
+/mob/living/forceMove(atom/destination, special_event, glide_size_override=0)
 	. = ..()
 	check_shadow()
 
 /mob/living/proc/check_shadow()
 	var/mob/M = src
 	if(isturf(M.loc))
-		var/turf/T = SSmapping.GetAbove(src)
+		var/turf/T = GetAbove(src)
 		while(T && T.is_transparent)
 			if(!M.shadow)
 				M.shadow = new(M)
 			M.shadow.forceMove(T)
 			M = M.shadow
-			T = SSmapping.GetAbove(M)
+			T = GetAbove(M)
 
 	if(M.shadow)
 		qdel(M.shadow)

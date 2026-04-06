@@ -35,7 +35,7 @@
 	var/dat = list()
 	if(istype(target, /obj/machinery/beehive))
 		var/obj/machinery/beehive/BH = target
-		dat += SPAN_NOTICE("Scan result of \the [BH]...")
+		dat += span_notice("Scan result of \the [BH]...")
 		dat += "Beehive is [BH.bee_count ? "[round(BH.bee_count)]% full" : "empty"].[BH.bee_count > 90 ? " Colony is ready to split." : ""]"
 		if(BH.frames)
 			dat += "[BH.frames] frames installed, [round(BH.honeycombs / 100)] filled."
@@ -50,13 +50,13 @@
 	else if(istype(target,/obj/item/reagent_containers/food/snacks/grown))
 
 		var/obj/item/reagent_containers/food/snacks/grown/G = target
-		grown_seed = plant_controller.seeds[G.plantname]
+		grown_seed = SSplants.seeds[G.plantname]
 		grown_reagents = G.reagents
 
 	else if(istype(target,/obj/item/grown))
 
 		var/obj/item/grown/G = target
-		grown_seed = plant_controller.seeds[G.plantname]
+		grown_seed = SSplants.seeds[G.plantname]
 		grown_reagents = G.reagents
 
 	else if(istype(target,/obj/item/seeds))
@@ -70,18 +70,22 @@
 		grown_seed = H.seed
 		grown_reagents = H.reagents
 
-	var/form_title = "[grown_seed.seed_name] (#[grown_seed.uid])"
-	dat += "<h3>Plant data for [form_title]</h3>"
+	if (grown_seed)
+		var/form_title = "[grown_seed.seed_name] (#[grown_seed.uid])"
+		dat += "<h3>Plant data for [form_title]</h3>"
+	else
+		dat += "<h3>No seed present</h3>"
 
 	dat += "<h2>General Data</h2>"
 
-	dat += "<table>"
-	dat += "<tr><td><b>Endurance</b></td><td>[grown_seed.get_trait(TRAIT_ENDURANCE)]</td></tr>"
-	dat += "<tr><td><b>Yield</b></td><td>[grown_seed.get_trait(TRAIT_YIELD)]</td></tr>"
-	dat += "<tr><td><b>Maturation time</b></td><td>[grown_seed.get_trait(TRAIT_MATURATION)]</td></tr>"
-	dat += "<tr><td><b>Production time</b></td><td>[grown_seed.get_trait(TRAIT_PRODUCTION)]</td></tr>"
-	dat += "<tr><td><b>Potency</b></td><td>[grown_seed.get_trait(TRAIT_POTENCY)]</td></tr>"
-	dat += "</table>"
+	if (grown_seed)
+		dat += "<table>"
+		dat += "<tr><td><b>Endurance</b></td><td>[grown_seed.get_trait(TRAIT_ENDURANCE)]</td></tr>"
+		dat += "<tr><td><b>Yield</b></td><td>[grown_seed.get_trait(TRAIT_YIELD)]</td></tr>"
+		dat += "<tr><td><b>Maturation time</b></td><td>[grown_seed.get_trait(TRAIT_MATURATION)]</td></tr>"
+		dat += "<tr><td><b>Production time</b></td><td>[grown_seed.get_trait(TRAIT_PRODUCTION)]</td></tr>"
+		dat += "<tr><td><b>Potency</b></td><td>[grown_seed.get_trait(TRAIT_POTENCY)]</td></tr>"
+		dat += "</table>"
 
 	if(grown_reagents && grown_reagents.reagent_list && grown_reagents.reagent_list.len)
 		dat += "<h2>Reagent Data</h2>"
@@ -89,6 +93,9 @@
 		dat += "<br>This sample contains: "
 		for(var/datum/reagent/R in grown_reagents.reagent_list)
 			dat += "<br>- [R.id], [grown_reagents.get_reagent_amount(R.id)] unit(s)"
+
+	if (!grown_seed)
+		return JOINTEXT(dat)
 
 	dat += "<h2>Other Data</h2>"
 

@@ -1,35 +1,35 @@
 
 /datum/preferences
 	//The mob should have a gender you want before running this proc. Will run fine without H
-	proc/randomize_appearance_and_body_for(var/mob/living/carbon/human/H)
-		var/datum/species/current_species = all_species[species]
-		if(!current_species) current_species = all_species[SPECIES_HUMAN]
-		gender = pick(current_species.genders)
-		h_style = random_hair_style(gender, species)
-		f_style = random_facial_hair_style(gender, species)
-		if(current_species)
-			s_tone = random_skin_tone()
-			if(current_species.appearance_flags & HAS_EYE_COLOR)
-				randomize_eyes_color()
-			if(current_species.appearance_flags & HAS_SKIN_COLOR)
-				randomize_skin_color()
-			if(current_species.appearance_flags & HAS_HAIR_COLOR)
-				randomize_hair_color("hair")
-				randomize_hair_color("facial")
-		if(current_species.appearance_flags & HAS_UNDERWEAR)
-			all_underwear.Cut()
-			for(var/datum/category_group/underwear/WRC in GLOB.underwear.categories)
-				var/datum/category_item/underwear/WRI = pick(WRC.items)
-				all_underwear[WRC.name] = WRI.name
+/datum/preferences/proc/randomize_appearance_and_body_for(mob/living/carbon/human/H)
+	var/datum/species/current_species = GLOB.all_species[species]
+	if(!current_species) current_species = GLOB.all_species[SPECIES_HUMAN]
+	gender = pick(current_species.genders)
+	h_style = random_hair_style(gender, species)
+	f_style = random_facial_hair_style(gender, species)
+	if(current_species)
+		s_tone = random_skin_tone()
+		if(current_species.appearance_flags & HAS_EYE_COLOR)
+			randomize_eyes_color()
+		if(current_species.appearance_flags & HAS_SKIN_COLOR)
+			randomize_skin_color()
+		if(current_species.appearance_flags & HAS_HAIR_COLOR)
+			randomize_hair_color("hair")
+			randomize_hair_color("facial")
+	if(current_species.appearance_flags & HAS_UNDERWEAR)
+		all_underwear.Cut()
+		for(var/datum/category_group/underwear/WRC in GLOB.underwear.categories)
+			var/datum/category_item/underwear/WRI = pick(WRC.items)
+			all_underwear[WRC.name] = WRI.name
 
-		backpack = decls_repository.get_decl(pick(subtypesof(/decl/backpack_outfit)))
-		age = rand(current_species.min_age, current_species.max_age)
-		b_type = RANDOM_BLOOD_TYPE
-		if(H)
-			copy_to(H)
+	backpack = decls_repository.get_decl(pick(subtypesof(/decl/backpack_outfit)))
+	age = rand(current_species.min_age, current_species.max_age)
+	b_type = RANDOM_BLOOD_TYPE
+	if(H)
+		copy_to(H)
 
 
-/datum/preferences/proc/randomize_hair_color(var/target = "hair")
+/datum/preferences/proc/randomize_hair_color(target = "hair")
 	if(prob (75) && target == "facial") // Chance to inherit hair color
 		facial_color = hair_color
 		return
@@ -38,7 +38,7 @@
 	var/green
 	var/blue
 
-	var/col = pick ("blonde", "black", "chestnut", "copper", "brown", "wheat", "old", "punk")
+	var/col = pick("blonde", "black", "chestnut", "copper", "brown", "wheat", "old", "punk")
 	switch(col)
 		if("blonde")
 			red = 255
@@ -88,7 +88,7 @@
 	var/green
 	var/blue
 
-	var/col = pick ("black", "grey", "brown", "chestnut", "blue", "lightblue", "green", "albino")
+	var/col = pick("black", "grey", "brown", "chestnut", "blue", "lightblue", "green", "albino")
 	switch(col)
 		if("black")
 			red = 0
@@ -134,7 +134,7 @@
 	var/green
 	var/blue
 
-	var/col = pick ("black", "grey", "brown", "chestnut", "blue", "lightblue", "green", "albino")
+	var/col = pick("black", "grey", "brown", "chestnut", "blue", "lightblue", "green", "albino")
 	switch(col)
 		if("black")
 			red = 0
@@ -175,53 +175,59 @@
 
 	skin_color = rgb(red, green, blue)
 
-/datum/preferences/proc/dress_preview_mob(var/mob/living/carbon/human/mannequin, naked = FALSE)
+/datum/preferences/proc/get_preview_job()
+	if (!SSjob)
+		return
+	// Determine what job is marked as 'High' priority, and dress them up as such.
+	if(ASSISTANT_TITLE in job_low)
+		return SSjob.GetJob(ASSISTANT_TITLE)
+	else
+		for(var/datum/job/job in SSjob.occupations)
+			if(job.title == job_high)
+				return job
+
+/datum/preferences/proc/dress_preview_mob(mob/living/carbon/human/mannequin, naked = FALSE)
 	var/update_icon = FALSE
 	copy_to(mannequin, TRUE)
 
-	if(!naked)
-		var/datum/job/previewJob
-		if(equip_preview_mob && SSjob)
-			// Determine what job is marked as 'High' priority, and dress them up as such.
-			if(ASSISTANT_TITLE in job_low)
-				previewJob = SSjob.GetJob(ASSISTANT_TITLE)
+	if(naked)
+		return
+
+	var/datum/job/previewJob = get_preview_job()
+	if(!equip_preview_mob || !previewJob)
+		return
+
+	if((equip_preview_mob & EQUIP_PREVIEW_JOB) && previewJob)
+		mannequin.job = previewJob.title
+		previewJob.equip_preview(mannequin, player_alt_titles[previewJob.title])
+		update_icon = TRUE
+
+	if((equip_preview_mob & EQUIP_PREVIEW_LOADOUT) && !(previewJob && (equip_preview_mob & EQUIP_PREVIEW_JOB) && (previewJob.type == /datum/job/ai || previewJob.type == /datum/job/cyborg)))
+		// Equip custom gear loadout, replacing any job items
+		var/list/loadout_taken_slots = list()
+		for(var/thing in Gear())
+			var/datum/gear/G = GLOB.gear_datums[thing]
+			if(!G)
+				continue
+
+			var/permitted = 0
+			if(G.allowed_roles && G.allowed_roles.len)
+				if(previewJob)
+					for(var/job_title in G.allowed_roles)
+						if(previewJob.title == job_title)
+							permitted = 1
 			else
-				for(var/datum/job/job in SSjob.occupations)
-					if(job.title == job_high)
-						previewJob = job
-						break
-		else
-			return
+				permitted = 1
 
-		if((equip_preview_mob & EQUIP_PREVIEW_JOB) && previewJob)
-			mannequin.job = previewJob.title
-			previewJob.equip_preview(mannequin, player_alt_titles[previewJob.title])
-			update_icon = TRUE
+			if(G.whitelisted && (G.whitelisted != mannequin.species.name))
+				permitted = 0
 
-		if((equip_preview_mob & EQUIP_PREVIEW_LOADOUT) && !(previewJob && (equip_preview_mob & EQUIP_PREVIEW_JOB) && (previewJob.type == /datum/job/ai || previewJob.type == /datum/job/cyborg)))
-			// Equip custom gear loadout, replacing any job items
-			var/list/loadout_taken_slots = list()
-			for(var/thing in Gear())
-				var/datum/gear/G = gear_datums[thing]
-				if(G)
-					var/permitted = 0
-					if(G.allowed_roles && G.allowed_roles.len)
-						if(previewJob)
-							for(var/job_title in G.allowed_roles)
-								if(previewJob.title == job_title)
-									permitted = 1
-					else
-						permitted = 1
+			if(!permitted)
+				continue
 
-					if(G.whitelisted && (G.whitelisted != mannequin.species.name))
-						permitted = 0
-
-					if(!permitted)
-						continue
-
-					if(G.slot && G.slot != slot_accessory_buffer && !(G.slot in loadout_taken_slots) && G.spawn_on_mob(mannequin, gear_list[gear_slot][G.display_name]))
-						loadout_taken_slots.Add(G.slot)
-						update_icon = TRUE
+			if(G.slot && G.slot != slot_accessory_buffer && !(G.slot in loadout_taken_slots) && G.spawn_on_mob(mannequin, gear_list[gear_slot][G.display_name]))
+				loadout_taken_slots.Add(G.slot)
+				update_icon = TRUE
 
 	if(update_icon)
 		mannequin.update_icons()

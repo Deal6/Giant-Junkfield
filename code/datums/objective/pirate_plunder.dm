@@ -34,7 +34,7 @@
 	explanation_text = "Return to your ship and withdraw to base within [round(mission_timer / (1 MINUTE), 1)] minutes."
 
 /datum/objective/timed/pirate/get_panel_entry()
-	return "Withdraw to base within [round(mission_timer / (1 MINUTE), 1)] minutes. Time remaining: [time2text(mission_timer, "mm:ss")]."
+	return "Withdraw to base within [round(mission_timer / (1 MINUTE), 1)] minutes. Time remaining: [time2text(mission_timer, "mm:ss", NO_TIMEZONE)]."
 
 /datum/objective/timed/pirate/get_info()
 	return "Time remaining at arrival: [time2text(mission_timer, "mm:ss")]."
@@ -91,7 +91,7 @@
 		if (!H)
 			continue
 
-		if (!IS_SHIP_LEVEL(H.z))
+		if (isNotStationLevel(H.z))
 			continue
 
 		var/obj/item/organ/external/affecting = H.get_organ(BP_HEAD)

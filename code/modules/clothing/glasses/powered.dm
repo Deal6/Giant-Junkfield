@@ -20,7 +20,7 @@
 	if(active)
 		if(!cell || !cell.checked_use(tick_cost))
 			if(ismob(src.loc))
-				to_chat(src.loc, SPAN_WARNING("[src] shut down."))
+				to_chat(src.loc, span_warning("[src] shut down."))
 			toggle(ismob(loc) && loc, FALSE)
 
 /obj/item/clothing/glasses/powered/get_cell()
@@ -34,12 +34,12 @@
 /obj/item/clothing/glasses/powered/toggle(mob/user, new_state)
 	if(new_state)
 		if(!cell || !cell.check_charge(tick_cost) && user)
-			to_chat(user, SPAN_WARNING("[src] battery is dead or missing."))
+			to_chat(user, span_warning("[src] battery is dead or missing."))
 			return
 	..(user, new_state)
 
 /obj/item/clothing/glasses/powered/MouseDrop(over_object)
-	if((src.loc == usr) && istype(over_object, /obj/screen/inventory/hand) && eject_item(cell, usr))
+	if((src.loc == usr) && istype(over_object, /atom/movable/screen/inventory/hand) && eject_item(cell, usr))
 		cell = null
 
 /obj/item/clothing/glasses/powered/attackby(obj/item/C, mob/living/user)

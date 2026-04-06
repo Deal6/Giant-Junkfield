@@ -4,8 +4,12 @@
 	head_position = 1
 	department = DEPARTMENT_CHURCH
 	department_flag = CHURCH | COMMAND
+	exp_requirements = 600
+	exp_required_type_department = DEPARTMENT_CHURCH
+	exp_granted_type = EXP_TYPE_CREW
 	faction = "CEV Eris"
 	total_positions = 1
+	spawn_positions = 1
 	supervisors = "the NeoTheology Church"
 	selection_color = "#ecd37d"
 	also_known_languages = list(LANGUAGE_LATIN = 100)
@@ -72,8 +76,12 @@
 	flag = ACOLYTE
 	department = DEPARTMENT_CHURCH
 	department_flag = CHURCH
+	exp_requirements = 300
+	exp_required_type = EXP_TYPE_CREW
+	exp_granted_type = EXP_TYPE_CREW
 	faction = "CEV Eris"
-	total_positions = 1
+	total_positions = 2
+	spawn_positions = 2
 	supervisors = "the NeoTheology Preacher"
 	selection_color = "#ecd37d"
 	also_known_languages = list(LANGUAGE_LATIN = 100)
@@ -115,8 +123,10 @@
 	flag = BOTANIST
 	department = DEPARTMENT_CHURCH
 	department_flag = CHURCH
+	exp_granted_type = EXP_TYPE_CREW
 	faction = "CEV Eris"
-	total_positions = 1
+	total_positions = 3
+	spawn_positions = 3
 	supervisors = "the NeoTheology Preacher"
 	selection_color = "#ecd37d"
 	//alt_titles = list("Hydroponicist")
@@ -161,8 +171,10 @@
 	flag = JANITOR
 	department = DEPARTMENT_CHURCH
 	department_flag = CHURCH
+	exp_granted_type = EXP_TYPE_CREW
 	faction = "CEV Eris"
-	total_positions = 2
+	total_positions = 4
+	spawn_positions = 4
 	supervisors = "the NeoTheology Preacher"
 	selection_color = "#ecd37d"
 	//alt_titles = list("Custodian","Sanitation Technician")

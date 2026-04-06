@@ -36,7 +36,7 @@
 		completing = TRUE
 	return FALSE
 
-/obj/machinery/door/airlock/proc/do_command(var/command)
+/obj/machinery/door/airlock/proc/do_command(command)
 	switch(command)
 		if("open")
 			open()
@@ -62,7 +62,7 @@
 
 	send_status()
 
-/obj/machinery/door/airlock/proc/command_completed(var/command)
+/obj/machinery/door/airlock/proc/command_completed(command)
 	switch(command)
 		if("open")
 			return !density
@@ -84,7 +84,7 @@
 
 	return 1	//Unknown command. Just assume it's completed.
 
-/obj/machinery/door/airlock/proc/send_status(var/bumped = 0)
+/obj/machinery/door/airlock/proc/send_status(bumped = 0)
 	if(radio_connection)
 		var/datum/signal/signal = new
 		signal.transmission_method = 1 //radio signal
@@ -124,6 +124,27 @@
 		frequency = new_frequency
 		radio_connection = SSradio.add_object(src, frequency, RADIO_AIRLOCK)
 
+
+/obj/machinery/door/airlock/Initialize()
+	. = ..()
+	if(frequency)
+		set_frequency(frequency)
+
+	//wireless connection
+	if(_wifi_id)
+		wifi_receiver = new(_wifi_id, src)
+
+	update_icon()
+
+/obj/machinery/door/airlock/New()
+	..()
+
+	set_frequency(frequency)
+
+/obj/machinery/door/airlock/Destroy()
+	if(frequency)
+		SSradio.remove_object(src,frequency)
+	. = ..()
 
 /obj/machinery/airlock_sensor
 	icon = 'icons/obj/airlock_machines.dmi'
@@ -234,7 +255,7 @@
 	var/max_steps = 3
 
 //Checks for walls and closed airlocks blocking the tile. Ignores other dense objects
-/obj/machinery/airlock_sensor/shuttle_exterior/proc/turf_open(var/turf/T)
+/obj/machinery/airlock_sensor/shuttle_exterior/proc/turf_open(turf/T)
 	if (T.is_wall)
 		return FALSE
 
@@ -290,7 +311,7 @@
 
 /obj/machinery/access_button/attackby(obj/item/I as obj, mob/user as mob)
 	//Swiping ID on the access button
-	if (istype(I, /obj/item/card/id) || istype(I, /obj/item/modular_computer))
+	if (isidcard(I) || istype(I, /obj/item/modular_computer))
 		attack_hand(user)
 		return
 	..()
@@ -299,7 +320,7 @@
 	playsound(loc, 'sound/machines/button.ogg', 100, 1)
 	add_fingerprint(usr)
 	if(!allowed(user))
-		to_chat(user, SPAN_WARNING("Access Denied"))
+		to_chat(user, span_warning("Access Denied"))
 
 	else if(radio_connection)
 		var/datum/signal/signal = new

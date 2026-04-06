@@ -35,16 +35,16 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 /obj/item/device/uplink/nano_host()
 	return loc
 
-/obj/item/device/uplink/New(var/location, var/datum/mind/owner, var/telecrystals = DEFAULT_TELECRYSTAL_AMOUNT)
+/obj/item/device/uplink/New(location, datum/mind/owner, telecrystals = DEFAULT_TELECRYSTAL_AMOUNT)
 	..()
 	src.uplink_owner = owner
 	purchase_log = list()
-	world_uplinks += src
+	GLOB.world_uplinks += src
 	uses = telecrystals
 	addtimer(CALLBACK(src, TYPE_PROC_REF(/obj/item/device/uplink, gain_TC)), 600)
 
 /obj/item/device/uplink/Destroy()
-	world_uplinks -= src
+	GLOB.world_uplinks -= src
 	return ..()
 
 
@@ -90,7 +90,7 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 
 
 // The hidden uplink MUST be inside an obj/item's contents.
-/obj/item/device/uplink/hidden/New(var/location, var/datum/mind/owner, var/telecrystals = DEFAULT_TELECRYSTAL_AMOUNT)
+/obj/item/device/uplink/hidden/New(location, datum/mind/owner, telecrystals = DEFAULT_TELECRYSTAL_AMOUNT)
 	spawn(2)
 		if(!istype(src.loc, /obj))
 			qdel(src)
@@ -111,7 +111,7 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 // Checks to see if the value meets the target. Like a frequency being a contractor_frequency, in order to unlock a headset.
 // If true, it accesses trigger() and returns 1. If it fails, it returns false. Use this to see if you need to close the
 // current item's menu.
-/obj/item/device/uplink/hidden/proc/check_trigger(mob/user as mob, var/value)
+/obj/item/device/uplink/hidden/proc/check_trigger(mob/user as mob, value)
 	if(value == trigger_code)
 		trigger(user)
 		return 1
@@ -120,7 +120,7 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 /*
 	NANO UI FOR UPLINK WOOP WOOP
 */
-/obj/item/device/uplink/hidden/nano_ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = NANOUI_FOCUS)
+/obj/item/device/uplink/hidden/nano_ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = NANOUI_FOCUS)
 	var/title = "Remote Uplink"
 	var/data[0]
 	var/list/implants_in_list = list()
@@ -234,14 +234,14 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 		nanoui_data["items"] = items
 	else if(nanoui_menu == 2)
 		var/permanentData[0]
-		for(var/datum/computer_file/report/crew_record/L in GLOB.all_crew_records)
-			permanentData[++permanentData.len] = list(Name = L.get_name(), "id" = jointext(L.get_name(), L.get_job()))
+		for(var/datum/data/record/L in sortRecord(data_core.locked))
+			permanentData[++permanentData.len] = list(Name = L.fields["name"],"id" = L.fields["id"])
 		nanoui_data["exploit_records"] = permanentData
 	else if(nanoui_menu == 21)
 		nanoui_data["exploit_exists"] = 0
 
-		for(var/datum/computer_file/report/crew_record/L in GLOB.all_crew_records)
-			if(jointext(L.get_name(), L.get_job()) == exploit_id) // datacore used name and job to make their IDs, so this would be the same level of specificity as it was in datacore
+		for(var/datum/data/record/L in data_core.locked)
+			if(L.fields["id"] == exploit_id)
 				nanoui_data["exploit"] = list()  // Setting this to equal L.fields passes it's variables that are lists as reference instead of value.
 								 // We trade off being able to automatically add shit for more control over what gets passed to json
 								 // and if it's sanitized for html.
@@ -340,7 +340,7 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 		uplink.owner_roles |= owner_roles
 	..()
 
-/obj/structure/uplink/attack_hand(var/mob/user)
+/obj/structure/uplink/attack_hand(mob/user)
 	uplink.trigger(user)
 
 /obj/structure/uplink/mercenary

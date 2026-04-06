@@ -1,17 +1,23 @@
 //This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:31
 
-/proc/dopage(src, target)
+/proc/dopage(source, target)
 	var/href_list
 	var/href
-	href_list = params2list("src=\ref[src]&[target]=1")
-	href = "src=\ref[src];[target]=1"
-	src:temphtml = null
-	src:Topic(href, href_list)
+	href_list = params2list("src=\ref[source]&[target]=1")
+	href = "src=\ref[source];[target]=1"
+	source:temphtml = null
+	source:Topic(href, href_list)
 	return null
 
 /proc/get_z(O)
 	var/turf/loc = get_turf(O)
 	return loc ? loc.z : 0
+
+/proc/get_area_name(N) //get area by its name
+	for(var/area/A in GLOB.map_areas)
+		if(A.name == N)
+			return A
+	return 0
 
 // get the area's name
 /proc/get_area_name_litteral(atom/X, format_text = FALSE)
@@ -284,7 +290,7 @@
 	return candidates
 
 /proc/ScreenText(obj/O, maptext="", screen_loc="CENTER-7,CENTER-7", maptext_height=480, maptext_width=480)
-	if(!isobj(O))	O = new /obj/screen/text()
+	if(!isobj(O))	O = new /atom/movable/screen/text()
 	O.maptext = maptext
 	O.maptext_height = maptext_height
 	O.maptext_width = maptext_width
@@ -293,7 +299,7 @@
 
 /proc/Show2Group4Delay(obj/O, list/group, delay=0)
 	if(!isobj(O))	return
-	if(!group)	group = clients
+	if(!group)	group = GLOB.clients
 	for(var/client/C in group)
 		C.screen += O
 	if(delay)
@@ -301,12 +307,40 @@
 			for(var/client/C in group)
 				C.screen -= O
 
-/proc/flick_overlay(image/I, list/show_to, duration)
-	for(var/client/C in show_to)
-		C.images += I
-	spawn(duration)
-		for(var/client/C in show_to)
-			C.images -= I
+/// Adds an image to a client's `.images`. Useful as a callback.
+/proc/add_image_to_client(image/image_to_remove, client/add_to)
+	add_to?.images += image_to_remove
+
+/// Like add_image_to_client, but will add the image from a list of clients
+/proc/add_image_to_clients(image/image_to_remove, list/show_to)
+	for(var/client/add_to in show_to)
+		add_to.images += image_to_remove
+
+/// Removes an image from a client's `.images`. Useful as a callback.
+/proc/remove_image_from_client(image/image_to_remove, client/remove_from)
+	remove_from?.images -= image_to_remove
+
+/// Like remove_image_from_client, but will remove the image from a list of clients
+/proc/remove_image_from_clients(image/image_to_remove, list/hide_from)
+	for(var/client/remove_from in hide_from)
+		remove_from.images -= image_to_remove
+
+/// Add an image to a list of clients and calls a proc to remove it after a duration
+/proc/flick_overlay_global(image/image_to_show, list/show_to, duration)
+	if(!length(show_to) || !image_to_show)
+		return
+	for(var/client/add_to in show_to)
+		add_to.images += image_to_show
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(remove_image_from_clients), image_to_show, show_to), duration, TIMER_CLIENT_TIME)
+
+///Flicks a certain overlay onto an atom, handling icon_state strings
+/atom/proc/flick_overlay(image_to_show, list/show_to, duration, layer)
+	var/image/passed_image = \
+		istext(image_to_show) \
+			? image(icon, src, image_to_show, layer) \
+			: image_to_show
+
+	flick_overlay_global(passed_image, show_to, duration)
 
 /datum/projectile_data
 	var/src_x
@@ -431,7 +465,7 @@
 /proc/getOPressureDifferential(turf/loc)
 	var/minp=16777216;
 	var/maxp=0;
-	for(var/dir in cardinal)
+	for(var/dir in GLOB.cardinal)
 		var/turf/T=get_turf(get_step(loc, dir))
 		var/cp=0
 		if(T && istype(T) && T.zone)
@@ -451,7 +485,7 @@
 
 /proc/getCardinalAirInfo(turf/loc, list/stats=list("temperature"))
 	var/list/temps = new/list(4)
-	for(var/dir in cardinal)
+	for(var/dir in GLOB.cardinal)
 		var/direction
 		switch(dir)
 			if(NORTH)
@@ -491,7 +525,7 @@
 /proc/get_vents()
 	var/list/vents = list()
 	for(var/obj/machinery/atmospherics/unary/vent_pump/temp_vent in GLOB.machines)
-		if(!temp_vent.welded && temp_vent.network && IS_SHIP_LEVEL(temp_vent.z))
+		if(!temp_vent.welded && temp_vent.network && isOnStationLevel(temp_vent))
 			if(temp_vent.network.normal_members.len > 15)
 				vents += temp_vent
 	return vents
@@ -529,8 +563,8 @@
 	if (L.len)
 		return pick(L)
 
-/proc/activate_mobs_in_range(atom/caller , distance)
-	var/turf/starting_point = get_turf(caller)
+/proc/activate_mobs_in_range(atom/requester , distance)
+	var/turf/starting_point = get_turf(requester)
 	if(!starting_point)
 		return FALSE
 	for(var/mob/living/potential_attacker in SSmobs.mob_living_by_zlevel[starting_point.z])
@@ -539,3 +573,28 @@
 		if(!(get_dist(starting_point, potential_attacker) <= distance))
 			continue
 		potential_attacker.try_activate_ai()
+
+///sends a whatever to all playing players; use instead of to_chat(world, where needed)
+/proc/send_to_playing_players(thing)
+	for(var/player_mob in GLOB.player_list)
+		if(player_mob && !isnewplayer(player_mob))
+			to_chat(player_mob, thing)
+
+/// Sends a message to all dead and observing players, if a source is provided a follow link will be attached.
+/proc/send_to_observers(message, source)
+	var/list/all_observers = GLOB.dead_mob_list
+	for(var/mob/observer as anything in all_observers)
+		if (isnull(source))
+			to_chat(observer, "[message]")
+			continue
+		var/link = FOLLOW_LINK(observer, source)
+		to_chat(observer, "[link] [message]")
+
+// TODO: Implement preferences for this
+///Flash the window of a player
+/proc/window_flash(client/flashed_client)
+	if(ismob(flashed_client))
+		var/mob/player_mob = flashed_client
+		if(player_mob.client)
+			flashed_client = player_mob.client
+	winset(flashed_client, "mainwindow", "flash=5")

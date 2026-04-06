@@ -4,7 +4,7 @@
 	lastKnownIP	= client.address
 	computer_id	= client.computer_id
 	log_access("Login: [key_name(src)] from [lastKnownIP ? lastKnownIP : "localhost"]-[computer_id] || BYOND v[client.byond_version]")
-	if(config.log_access)
+	if(CONFIG_GET(flag/log_access))
 		var/is_multikeying = 0
 		for(var/mob/M in GLOB.player_list)
 			if(M == src)	continue
@@ -18,10 +18,10 @@
 					is_multikeying = 1
 				if(matches)
 					if(M.client)
-						message_admins("<font color='red'><B>Notice: </B></font><font color='blue'><a href='byond://?src=\ref[usr];priv_msg=\ref[src]'>[key_name_admin(src)]</A> has the same [matches] as <a href='byond://?src=\ref[usr];priv_msg=\ref[M]'>[key_name_admin(M)]</A>.</font>", 1)
+						message_admins("<font color='red'><B>Notice: </B></font><font color='blue'><A href='byond://?src=\ref[usr];priv_msg=\ref[src]'>[key_name_admin(src)]</A> has the same [matches] as <A href='byond://?src=\ref[usr];priv_msg=\ref[M]'>[key_name_admin(M)]</A>.</font>", 1)
 						log_access("Notice: [key_name(src)] has the same [matches] as [key_name(M)].")
 					else
-						message_admins("<font color='red'><B>Notice: </B></font><font color='blue'><a href='byond://?src=\ref[usr];priv_msg=\ref[src]'>[key_name_admin(src)]</A> has the same [matches] as [key_name_admin(M)] (no longer logged in). </font>", 1)
+						message_admins("<font color='red'><B>Notice: </B></font><font color='blue'><A href='byond://?src=\ref[usr];priv_msg=\ref[src]'>[key_name_admin(src)]</A> has the same [matches] as [key_name_admin(M)] (no longer logged in). </font>", 1)
 						log_access("Notice: [key_name(src)] has the same [matches] as [key_name(M)] (no longer logged in).")
 		if(is_multikeying && !client.warned_about_multikeying)
 			client.warned_about_multikeying = 1
@@ -33,6 +33,9 @@
 		return FALSE
 	GLOB.player_list |= src
 	update_Login_details()
+	canon_client = client
+	client.persistent_client.set_mob(src)
+
 	world.update_status()
 
 	client.images = list()				//remove the images such as AIs being unable to see runes
@@ -43,11 +46,12 @@
 
 	next_move = 1
 	sight |= SEE_SELF
+	client.statobj = src
 
-	// YES, this is expensive
-	// YES, this calls 200k Move() calls
-	// however eris paralax is so bad that removing this breaks it
+	MakeParallax()
 
+	// We don't call the parent login proc. Previous comment below.
+	// --
 	// BYOND's internal implementation of login does two things
 	// 1: Set statobj to the mob being logged into (We got this covered)
 	// 2: And I quote "If the mob has no location, place it near (1,1,1) if possible"
@@ -58,7 +62,6 @@
 	// We don't allow moves from nullspace -> somewhere. This means the loop has to iterate all the turfs in (1,1,1)'s area
 	// For us, (1,1,1) is a space tile. This means roughly 200,000! calls to Move()
 	// You do not want this
-	..()
 
 	if(!client)
 		return FALSE
@@ -91,6 +94,23 @@
 
 		client.CAN_MOVE_DIAGONALLY = FALSE
 
+		for(var/datum/action/A as anything in persistent_client.player_actions)
+			A.Grant(src)
+
+		for(var/datum/callback/CB as anything in persistent_client.post_login_callbacks)
+			CB.Invoke()
+
+		log_played_names(
+			client.ckey,
+			list(
+				"[name]" = tag,
+				"[real_name]" = tag,
+			),
+		)
+
 	update_client_colour(0)
+
+	if(GLOB.admin_notice)
+		to_chat(src, span_notice("<b>Admin Notice:</b>\n \t [GLOB.admin_notice]"))
 
 	return TRUE

@@ -78,7 +78,7 @@ var/list/science_positions = list(JOBS_SCIENCE)
 var/list/moebius_positions = list(JOBS_MOEBIUS)
 
 //BS12 EDIT
-var/list/guild_positions = list(JOBS_GUILD)
+var/list/cargo_positions = list(JOBS_CARGO)
 
 
 var/list/church_positions = list(JOBS_CHURCH)
@@ -90,8 +90,23 @@ var/list/civilian_positions = list(JOBS_CIVILIAN)
 var/list/security_positions = list(JOBS_SECURITY)
 var/list/armory_positions = list(JOBS_ARMORY)
 
-var/list/silicon_positions = list(JOBS_SILICON)
+var/list/nonhuman_positions = list(JOBS_NONHUMAN)
 
+// list of jobs that can be an intern
+var/list/intern_possible_jobs = list(
+	"Moebius Scientist",
+	"Moebius Roboticist",
+	"Moebius Paramedic",
+	"Moebius Psychiatrist",
+	"Ironhammer Operative",
+	"Technomancer",
+	"Club Worker",
+	"Club Artist",
+	"Guild Technician",
+	"Guild Miner",
+	"NeoTheology Custodian",
+	ASSISTANT_TITLE,
+)
 
 /proc/guest_jobbans(var/job)
-	return ((job in command_positions) || (job in silicon_positions) || (job in armory_positions))
+	return ((job in command_positions) || (job in nonhuman_positions) || (job in armory_positions))

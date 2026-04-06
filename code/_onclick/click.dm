@@ -79,7 +79,9 @@
 		build_click(src, client.buildmode, params, A)
 		return
 
+
 	var/list/modifiers = params2list(params)
+
 	if(modifiers["shift"] && modifiers["ctrl"])
 		CtrlShiftClickOn(A, params)
 		return 1
@@ -129,7 +131,7 @@
 			return 1
 		throw_mode_off()
 
-	var/obj/item/W = get_active_hand()
+	var/obj/item/W = get_active_held_item()
 
 	if(W == A) // Handle attack_self
 		W.attack_self(src)
@@ -154,7 +156,7 @@
 		return
 
 	if(W && !W.can_use_lying && src.lying)
-		to_chat(src, SPAN_WARNING("You cannot use \the [W] while lying down!"))
+		to_chat(src, span_warning("You cannot use \the [W] while lying down!"))
 		return 1
 
 	//Atoms on turfs (not on your person)
@@ -295,6 +297,7 @@
 /atom/movable/CtrlClick(mob/user, params)
 	if(Adjacent(user))
 		user.start_pulling(src)
+		user.animate_interact(src, INTERACT_GRAB)
 
 /*
 	Alt click
@@ -350,7 +353,7 @@
 		nutrition = max(nutrition - rand(1, 5), 0)
 		handle_regular_hud_updates()
 	else
-		to_chat(src, SPAN_WARNING("You're out of energy!  You need food!"))
+		to_chat(src, span_warning("You're out of energy!  You need food!"))
 
 // Simple helper to face what you clicked on, in case it should be needed in more than one place
 /atom/movable/proc/face_atom(atom/A)
@@ -378,28 +381,28 @@
 
 GLOBAL_LIST_INIT(click_catchers, create_click_catcher())
 
-/obj/screen/click_catcher
+/atom/movable/screen/click_catcher
 	icon = 'icons/mob/screen_gen.dmi'
 	icon_state = "click_catcher"
 	plane = CLICKCATCHER_PLANE
 	mouse_opacity = 2
 	screen_loc = "CENTER-7,CENTER-7"
 
-/obj/screen/click_catcher/Destroy()
+/atom/movable/screen/click_catcher/Destroy()
 	return QDEL_HINT_LETMELIVE
 
-/obj/screen/click_catcher/New(_name = "", mob/living/_parentmob, _icon, _icon_state)
+/atom/movable/screen/click_catcher/New(_name = "", mob/living/_parentmob, _icon, _icon_state)
 	..()
 
 /proc/create_click_catcher()
 	. = list()
-	for(var/i = 0, i<15, i++)
-		for(var/j = 0, j<15, j++)
-			var/obj/screen/click_catcher/CC = new()
+	for(var/i = 0; i < 15; i++)
+		for(var/j = 0; j < 15; j++)
+			var/atom/movable/screen/click_catcher/CC = new()
 			CC.screen_loc = "NORTH-[i],EAST-[j]"
 			. += CC
 
-/obj/screen/click_catcher/Click(location, control, params)
+/atom/movable/screen/click_catcher/Click(location, control, params)
 	var/list/modifiers = params2list(params)
 	if(modifiers["middle"] && istype(usr, /mob/living/carbon))
 		var/mob/living/carbon/C = usr
@@ -413,6 +416,6 @@ GLOBAL_LIST_INIT(click_catchers, create_click_catcher())
 
 	. = 1
 
-/obj/screen/click_catcher/proc/resolve(mob/user)
+/atom/movable/screen/click_catcher/proc/resolve(mob/user)
 	var/turf/T = screen_loc2turf(screen_loc, get_turf(user))
 	return T

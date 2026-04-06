@@ -1,19 +1,32 @@
 /obj
-	//Used to store information about the contents of the object.
+	/// Used to store information about the contents of the object.
 	var/list/matter
 	var/list/matter_reagents
-	var/w_class // Size of the object.
-	var/unacidable = 0 //universal "unacidabliness" var, here so you can use it in any obj.
+	/// Size of the object.
+	var/w_class
+	/// universal "unacidabliness" var, here so you can use it in any obj.
+	var/unacidable = 0
 	animate_movement = 2
 	var/throwforce = 1
-	var/sharp = FALSE		// whether this object cuts
-	var/edge = FALSE		// whether this object is more likely to dismember
-	var/in_use = 0 // If we have a user using us, this will be set on. We will check if the user has stopped using us, and thus stop updating and LAGGING EVERYTHING!
+	/// whether this object cuts
+	var/sharp = FALSE
+	/// whether this object is more likely to dismember
+	var/edge = FALSE
+	/// If we have a user using us, this will be set on. We will check if the user has stopped using us, and thus stop updating and LAGGING EVERYTHING!
+	var/in_use = 0
 	var/damtype = "brute"
 	var/armor_divisor = 1
-	var/corporation
 	var/heat = 0
+	/// The vertical pixel offset applied when the object is anchored on a tile with table
+	/// Ignored when set to 0 - to avoid shifting directional wall-mounted objects above tables
+	var/anchored_tabletop_offset = 0
+	///if set, this object was constructed by a lathe. the information stored in the define tells us which lathe it was
+	var/watermark
 
+/obj/Initialize(mapload)
+	. = ..()
+
+	check_on_table()
 
 /obj/proc/is_hot()
 	return heat
@@ -25,9 +38,10 @@
 	if(!ismachinery(src))
 		STOP_PROCESSING(SSobj, src) // TODO: Have a processing bitflag to reduce on unnecessary loops through the processing lists
 	SSnano.close_uis(src)
+	SStgui.close_uis(src)
 	. = ..()
 
-/obj/Topic(href, href_list, var/datum/nano_topic_state/state = GLOB.default_state)
+/obj/Topic(href, href_list, datum/nano_topic_state/state = GLOB.default_state)
 	if(..())
 		return 1
 
@@ -163,7 +177,7 @@
 /*
 	var/mob/mo = locate(/mob) in src
 	if(mo)
-		var/rendered = "<span class='game say'><span class='name'>[M.name]: </span> <span class='message'>[text]</span></span>"
+		var/rendered = "<span class='game say'>[span_name("[M.name]: ")] [span_message("[text]")]</span>"
 		mo.show_message(rendered, 2)
 		*/
 	return
@@ -171,7 +185,8 @@
 /obj/proc/see_emote(mob/M, text, emote_type)
 	return
 
-/obj/proc/show_message(msg, type, alt, alt_type)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
+/// Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
+/obj/proc/show_message(msg, type, alt, alt_type)
 	return
 
 /obj/proc/add_hearing()
@@ -189,7 +204,7 @@
 	playsound(src.loc, 'sound/weapons/guns/interact/pistol_magin.ogg', 75, 1)
 	user.visible_message(
 		"[user] removes [I] from [src].",
-		SPAN_NOTICE("You remove [I] from [src].")
+		span_notice("You remove [I] from [src].")
 	)
 	return TRUE
 
@@ -198,7 +213,7 @@
 		return FALSE
 	I.forceMove(src)
 	playsound(src.loc, 'sound/weapons/guns/interact/pistol_magout.ogg', 75, 1)
-	to_chat(user, SPAN_NOTICE("You insert [I] into [src]."))
+	to_chat(user, span_notice("You insert [I] into [src]."))
 	return TRUE
 
 /obj/proc/replace_item(obj/item/I_old, obj/item/I_new, mob/living/user)
@@ -211,20 +226,24 @@
 		playsound(src.loc, 'sound/weapons/guns/interact/pistol_magin.ogg', 75, 1)
 	user.visible_message(
 		"[user] replaces [I_old] with [I_new] in [src].",
-		SPAN_NOTICE("You replace [I_old] with [I_new] in [src]."))
+		span_notice("You replace [I_old] with [I_new] in [src]."))
 	return TRUE
 
-//Returns the list of matter in this object
-//You can override it to customise exactly what is returned.
+/**
+ * Returns the list of matter in this object
+ * You can override it to customise exactly what is returned.
+ */
 /atom/proc/get_matter()
 	return list()
 
 /obj/get_matter()
 	return matter ? matter.Copy() : list()
 
-//Drops the materials in matter list on into target location
-//Use for deconstrction
-// Dropper is whoever is handling these materials if any , causes them to leave fingerprints on the sheets.
+/**
+ * Drops the materials in matter list on into target location
+ * Use for deconstrction
+ * Dropper is whoever is handling these materials if any , causes them to leave fingerprints on the sheets.
+ */
 /atom/proc/drop_materials(target_loc, mob/living/dropper)
 	var/list/materials = get_matter()
 
@@ -235,19 +254,22 @@
 
 		material.place_material(target_loc, materials[mat_name], dropper)
 
-//To be called from things that spill objects on the floor.
-//Makes an object move around randomly for a couple of tiles
-/obj/proc/tumble(var/dist = 2)
+/**
+ * To be called from things that spill objects on the floor.
+ * Makes an object move around randomly for a couple of tiles
+ */
+
+/obj/proc/tumble(dist = 2)
 	set waitfor = FALSE
 	if (dist >= 1)
 		dist += rand(0,1)
-		for(var/i = 1, i <= dist, i++)
+		for(var/i = 1; i <= dist; i++)
 			if(src)
 				step(src, pick(NORTH,SOUTH,EAST,WEST))
 				sleep(rand(2,4))
 
 
-//Intended for gun projectiles, but defined at this level for various things that aren't of projectile type
+/// Intended for gun projectiles, but defined at this level for various things that aren't of projectile type
 /obj/proc/multiply_projectile_damage(newmult)
 	throwforce = initial(throwforce) * newmult
 
@@ -262,3 +284,61 @@
 /obj/proc/multiply_projectile_step_delay(newmult)
 
 /obj/proc/multiply_projectile_halloss(newmult)
+
+///the obj is deconstructed into pieces, whether through careful disassembly or when destroyed.
+/obj/proc/deconstruct(disassembled = TRUE)
+	SEND_SIGNAL(src, COMSIG_OBJ_DECONSTRUCT, disassembled)
+	qdel(src)
+
+/// Adjusts the vertical pixel offset when the object is anchored on a tile with table
+/obj/proc/check_on_table()
+	if(anchored_tabletop_offset != 0 && !istype(src, /obj/structure/table) && locate(/obj/structure/table) in loc)
+		pixel_y = anchored ? anchored_tabletop_offset : initial(pixel_y)
+
+/obj/vv_get_dropdown()
+	. = ..()
+	VV_DROPDOWN_OPTION("", "---")
+	VV_DROPDOWN_OPTION(VV_HK_MASS_DEL_TYPE, "Delete all of type")
+
+/obj/vv_do_topic(list/href_list)
+	if(!(. = ..()))
+		return
+
+	if(href_list[VV_HK_MASS_DEL_TYPE])
+		if(check_rights(R_DEBUG|R_SERVER))
+			var/action_type = tgui_alert(usr, "Strict type ([type]) or type and all subtypes?",,list("Strict type","Type and subtypes","Cancel"))
+			if(action_type == "Cancel" || !action_type)
+				return
+
+			if(tgui_alert(usr, "Are you really sure you want to delete all objects of type [type]?",,list("Yes","No")) != "Yes")
+				return
+
+			if(tgui_alert(usr, "Second confirmation required. Delete?",,list("Yes","No")) != "Yes")
+				return
+
+			var/O_type = type
+			switch(action_type)
+				if("Strict type")
+					var/i = 0
+					for(var/obj/Obj in world)
+						if(Obj.type == O_type)
+							i++
+							qdel(Obj)
+						CHECK_TICK
+					if(!i)
+						to_chat(usr, "No objects of this type exist")
+						return
+					log_admin("[key_name(usr)] deleted all objects of type [O_type] ([i] objects deleted) ")
+					message_admins(span_notice("[key_name(usr)] deleted all objects of type [O_type] ([i] objects deleted) "))
+				if("Type and subtypes")
+					var/i = 0
+					for(var/obj/Obj in world)
+						if(istype(Obj,O_type))
+							i++
+							qdel(Obj)
+						CHECK_TICK
+					if(!i)
+						to_chat(usr, "No objects of this type exist")
+						return
+					log_admin("[key_name(usr)] deleted all objects of type or subtype of [O_type] ([i] objects deleted) ")
+					message_admins(span_notice("[key_name(usr)] deleted all objects of type or subtype of [O_type] ([i] objects deleted) "))

@@ -9,6 +9,10 @@
 	icon = 'icons/obj/power_cells.dmi'
 	icon_state = "b_st"
 	item_state = "cell"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/misc/devices_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/misc/devices_righthand.dmi',
+		)
 	origin_tech = list(TECH_POWER = 1)
 	force = WEAPON_FORCE_WEAK
 	throwforce = WEAPON_FORCE_WEAK
@@ -146,7 +150,7 @@
 		extra_description += "\nThe manufacturer's label states this cell has a power rating of [maxcharge], and that you should not swallow it."
 		extra_description += "\nThe charge meter reads [round(percent() )]%."
 		if(rigged && user.stats?.getStat(STAT_MEC) >= STAT_LEVEL_ADEPT)
-			extra_description += SPAN_WARNING("\nThis cell is ready to short circuit!")
+			extra_description += span_warning("\nThis cell is ready to short circuit!")
 	..(user, extra_description)
 
 
@@ -170,7 +174,7 @@
 /obj/item/cell/proc/explode()
 	if(QDELETED(src))
 		rigged = FALSE // Prevent error spam
-		throw EXCEPTION("A rigged cell has attempted to explode in nullspace. Usually this means that handle_atom_del handling is missing somewhere.")
+		CRASH("A rigged cell has attempted to explode in nullspace. Usually this means that handle_atom_del handling is missing somewhere.")
 
 	var/turf/T = get_turf(loc)
 /*
@@ -213,7 +217,7 @@
 	if (charge < 0)
 		charge = 0
 	..()
-/obj/item/cell/explosion_act(target_power, explosion_handler/handle)
+/obj/item/cell/explosion_act(target_power, datum/explosion_handler/handle)
 	take_damage(target_power)
 	return 0
 

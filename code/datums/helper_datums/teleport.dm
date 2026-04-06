@@ -182,41 +182,44 @@
 		if(isliving(teleatom))
 			var/mob/living/MM = teleatom
 			if(bagholding.len)
-				to_chat(MM, SPAN_DANGER("The bluespace interface of your bag of holding interferes with the teleport!"))
+				to_chat(MM, span_danger("The bluespace interface of your bag of holding interferes with the teleport!"))
 			if(pouchholding.len)
-				to_chat(MM, SPAN_DANGER("The bluespace interface of your pouch of holding interferes with the teleport!"))
+				to_chat(MM, span_danger("The bluespace interface of your pouch of holding interferes with the teleport!"))
 			if(beltholding.len)
-				to_chat(MM, SPAN_DANGER("The bluespace interface of your belt of holding interferes with the teleport!"))
+				to_chat(MM, span_danger("The bluespace interface of your belt of holding interferes with the teleport!"))
 			if(trashholding.len)
-				to_chat(MM, SPAN_DANGER("The bluespace interface of your trashbag of holding interferes with the teleport!"))
+				to_chat(MM, span_danger("The bluespace interface of your trashbag of holding interferes with the teleport!"))
 			if(satchelholding.len)
-				to_chat(MM, SPAN_DANGER("The bluespace interface of your satchel of holding interferes with the teleport!"))
+				to_chat(MM, span_danger("The bluespace interface of your satchel of holding interferes with the teleport!"))
 	return 1
 /datum/teleport/instant/science/teleportChecks()
 	if(istype(teleatom, /obj/effect/sparks))
 		return 0
 	if(istype(teleatom, /obj/item/disk/nuclear)) // Don't let nuke disks get teleported --NeoFite
-		teleatom.visible_message(SPAN_DANGER("\The [teleatom] bounces off of the portal!"))
+		teleatom.visible_message(span_danger("\The [teleatom] bounces off of the portal!"))
 		return 0
 
 	if(!isemptylist(teleatom.search_contents_for(/obj/item/disk/nuclear)))
 		if(isliving(teleatom))
 			var/mob/living/MM = teleatom
 			MM.visible_message(
-				SPAN_DANGER("\The [MM] bounces off of the portal!"),
-				SPAN_WARNING("Something you are carrying seems to be unable to pass through the portal. Better drop it if you want to go through.")
+				span_danger("\The [MM] bounces off of the portal!"),
+				span_warning("Something you are carrying seems to be unable to pass through the portal. Better drop it if you want to go through.")
 			)
 		else
-			teleatom.visible_message(SPAN_DANGER("\The [teleatom] bounces off of the portal!"))
+			teleatom.visible_message(span_danger("\The [teleatom] bounces off of the portal!"))
 		return 0
 
-	if(IS_TECHNICAL_LEVEL(destination.z))
+	if(isAdminLevel(destination.z))
 		if(istype(teleatom, /mob/living/exosuit))
 			var/mob/living/exosuit/MM = teleatom
-			MM.occupant_message(SPAN_DANGER("\The [MM.pilots.Join(" and ")] would not survive the jump to a location so far away!"))
+			MM.occupant_message(span_danger("\The [MM.pilots.Join(" and ")] would not survive the jump to a location so far away!"))
 			return 0
 		if(!isemptylist(teleatom.search_contents_for(/obj/item/storage/backpack/holding)))
-			teleatom.visible_message(SPAN_DANGER("\The [teleatom] bounces off of the portal!"))
+			teleatom.visible_message(span_danger("\The [teleatom] bounces off of the portal!"))
 			return 0
 
+
+	if(destination.z > max_default_z_level()) //Away mission z-levels
+		return 0
 	return 1

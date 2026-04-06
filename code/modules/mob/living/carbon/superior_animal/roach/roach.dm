@@ -79,12 +79,8 @@
 		layer = BELOW_MOB_LAYER // Below stunned roaches
 
 		if(prob(3))
-			visible_message(SPAN_DANGER("\the [src] hacks up a tape!"))
+			visible_message(span_danger("\the [src] hacks up a tape!"))
 			new /obj/item/music_tape(get_turf(src))
-
-	else if(prob(10))
-		visible_message(SPAN_DANGER("\the [src] drops behind a gift basket!"))
-
 	if(!blattedin_revives_left)
 		leaveOvermind()
 	else
@@ -94,7 +90,6 @@
 	. = ..()
 	if(overseer)
 		overseer.awaken()
-
 
 /mob/living/carbon/superior_animal/roach/commandchain(mob/potentialally) // this proc bypasses the 33 roach limit.
 	. = ..()
@@ -109,7 +104,7 @@
 						else if(overseer && !comrade.overseer)
 							comrade.joinOvermind(overseer)
 						else if(!overseer && !comrade.overseer)
-							var/datum/overmind/roachmind/newmind = new() // team up to make a two fuhrer overmind, with the caller being the leader
+							var/datum/overmind/roachmind/newmind = new() // team up to make a two fuhrer overmind, with the requester being the leader
 							newmind.leader = comrade
 							comrade.joinOvermind(newmind)
 							joinOvermind(newmind)

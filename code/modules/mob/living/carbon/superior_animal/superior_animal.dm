@@ -122,7 +122,7 @@
 	pixel_x = RAND_DECIMAL(-randpixel, randpixel)
 	pixel_y = RAND_DECIMAL(-randpixel, randpixel)
 
-/mob/living/carbon/superior_animal/Initialize(var/mapload)
+/mob/living/carbon/superior_animal/Initialize(mapload)
 	if(islist(armor))
 		armor = getArmor(arglist(armor))
 	else if(!armor)
@@ -151,7 +151,7 @@
 	if(islist(message))
 		message = safepick(message)
 	if(message)
-		visible_message("<span class='name'>[src]</span> [message]")
+		visible_message("[span_name("[src]")] [message]", visible_message_flags = EMOTE_MESSAGE)
 
 /mob/living/carbon/superior_animal/update_icons()
 	. = ..()
@@ -282,7 +282,7 @@
 			turns_since_move++
 			if(turns_since_move >= turns_per_move)
 				if(!(stop_automated_movement_when_pulled && pulledby))
-					var/moving_to = pick(cardinal)
+					var/moving_to = pick(GLOB.cardinal)
 					set_dir(moving_to)
 					step_glide(src, moving_to, DELAY2GLIDESIZE(0.5 SECONDS))
 					turns_since_move = 0
@@ -406,7 +406,7 @@
 	else if(!target || !Adjacent(target))
 		return
 
-	visible_message(SPAN_WARNING("[src] grabs [target]!"))
+	visible_message(span_warning("[src] grabs [target]!"))
 	target.grabbed_by += src
 	grabbing = target
 	cheap_update_lying_buckled_and_verb_status_()

@@ -4,6 +4,11 @@
 	desc = "Gun ammunition stored in a shiny new box. You can see caliber information on the label."
 	mag_type = SPEEDLOADER	//To prevent load in magazine filled guns
 	icon = 'icons/obj/ammo.dmi'
+	item_state = "ammobox"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/equipment/briefcase_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/equipment/briefcase_righthand.dmi',
+		)
 	reload_delay = 30
 	ammo_mag = "box"
 	matter = list(MATERIAL_CARDBOARD = 1)
@@ -13,7 +18,7 @@
 /obj/item/ammo_magazine/ammobox/resolve_attackby(atom/A, mob/user)
 	if(isturf(A) && locate(/obj/item/ammo_casing) in A || istype(A, /obj/item/ammo_casing))
 		if(!do_after(user, src.reload_delay, src))
-			to_chat(user, SPAN_WARNING("You stoped scooping ammo into [src]."))
+			to_chat(user, span_warning("You stoped scooping ammo into [src]."))
 			return
 		if(collectAmmo(get_turf(A), user))
 			return TRUE
@@ -33,9 +38,9 @@
 				insertCasing(I)
 	if(user)
 		if(.)
-			user.visible_message(SPAN_NOTICE("[user] scoopes some ammo in [src]."),SPAN_NOTICE("You scoop some ammo in [src]."),SPAN_NOTICE("You hear metal clanging."))
+			user.visible_message(span_notice("[user] scoopes some ammo in [src]."),span_notice("You scoop some ammo in [src]."),span_notice("You hear metal clanging."))
 		else
-			to_chat(user, SPAN_NOTICE("You fail to pick anything up with \the [src]."))
+			to_chat(user, span_notice("You fail to pick anything up with \the [src]."))
 	update_icon()
 
 /obj/item/ammo_magazine/ammobox/pistol

@@ -3,12 +3,12 @@ var/command_name
 	if (command_name)
 		return command_name
 
-	var/name = "[boss_name]"
+	var/name = "[GLOB.boss_name]"
 
 	command_name = name
 	return name
 
-/proc/change_command_name(var/name)
+/proc/change_command_name(name)
 
 	command_name = name
 
@@ -18,12 +18,31 @@ var/command_name
 	return "Nyx"
 
 
-/proc/world_name(var/name)
+/proc/get_default_world_name()
+	var/config_server_name = CONFIG_GET(string/servername)
+	if(config_server_name)
+		return "[config_server_name][config_server_name == GLOB.station_name ? "" : ": [html_decode(GLOB.station_name)]"]"
+	else
+		return html_decode(GLOB.station_name)
 
-	station_name = name
+/proc/station_name()
+	if(!GLOB.station_name)
+		var/newname
+		newname = DEFAULT_STATION_NAME
 
-	if (config && config.server_name)
-		world.name = "[config.server_name]: [name]"
+		set_station_name(newname)
+	return GLOB.station_name
+
+/proc/set_station_name(new_name)
+	GLOB.station_name = new_name
+
+	world.name = get_default_world_name()
+
+/proc/world_name(name)
+	GLOB.station_name = name
+
+	if (config && CONFIG_GET(string/servername))
+		world.name = "[CONFIG_GET(string/servername)]: [name]"
 	else
 		world.name = name
 
@@ -91,15 +110,15 @@ var/syndicate_code_response//Code response for contractors.
 	var/safety[] = list(1, 2, 3)//Tells the proc which options to remove later on.
 	var/nouns[] = list("love", "hate", "anger", "peace", "pride", "sympathy", "bravery", "loyalty", "honesty", "integrity", "compassion", "charity", "success", "courage", "deceit", "skill", "beauty", "brilliance", "pain", "misery", "beliefs", "dreams", "justice", "truth", "faith", "liberty", "knowledge", "thought", "information", "culture", "trust", "dedication", "progress", "education", "hospitality", "leisure", "trouble", "friendships", "relaxation")
 	var/drinks[] = list("vodka and tonic", "gin fizz", "bahama mama", "manhattan", "black Russian", "whiskey soda", "long island tea", "margarita", "Irish coffee", " manly dwarf", "Irish cream", "doctor's delight", "Beepksy Smash", "tequilla sunrise", "brave bull", "gargle blaster", "bloody mary", "whiskey cola", "white Russian", "vodka martini", "martini", "Cuba libre", "kahlua", "vodka", "wine", "moonshine")
-	var/locations[] = LAZYLEN(SSmapping.main_ship_areas_by_name) ? SSmapping.main_ship_areas_by_name : drinks // If null, defaults to drinks instead.
+	var/locations[] = SSmapping.teleportlocs.len ? SSmapping.teleportlocs : drinks//if null, defaults to drinks instead.
 
 	var/names[] = list()
-	for(var/datum/computer_file/report/crew_record/t in GLOB.all_crew_records)//Picks from crew manifest.
-		names += t.get_name()
+	for(var/datum/data/record/t in data_core.general)//Picks from crew manifest.
+		names += t.fields["name"]
 
 	var/maxwords = words//Extra var to check for duplicates.
 
-	for(words, words>0, words--)//Randomly picks from one of the choices below.
+	for(words; words>0; words--)//Randomly picks from one of the choices below.
 
 		if(words==1&&(1 in safety)&&(2 in safety))//If there is only one word remaining and choice 1 or 2 have not been selected.
 			safety = list(pick(1, 2))//Select choice 1 or 2.

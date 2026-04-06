@@ -12,7 +12,11 @@
 	var/last_ip
 	var/last_id
 
+	var/db_flags
+
 	var/save_load_cooldown
+
+	var/list/exp = list()
 
 	//game-preferences
 	var/lastchangelog = ""				//Saved changlog filesize to detect if there was a change
@@ -64,20 +68,23 @@
 		var/mob/new_player/np = client.mob
 		np.new_player_panel(TRUE)
 
-/datum/preferences/proc/load_and_update_character(var/slot)
+/datum/preferences/proc/load_and_update_character(slot)
 	load_character(slot)
-	if(update_setup(loaded_preferences, loaded_character))
+	var/migrated = update_setup(savefile_version, loaded_character)
+	if(loaded_character)	del(loaded_character)
+	if(migrated)
 		save_preferences()
 		save_character()
 
 /datum/preferences/proc/ShowChoices(mob/user)
 	if(!SScharacter_setup.initialized)
+		to_chat(user, span_danger("Still initializing, please wait!"))
 		return
 	if(!user || !user.client)
 		return
 
 	if(!get_mob_by_key(client_ckey))
-		to_chat(user, SPAN_DANGER("No mob exists for the given client!"))
+		to_chat(user, span_danger("No mob exists for the given client!"))
 		close_load_dialog(user)
 		return
 
@@ -89,7 +96,6 @@
 
 	var/dat = "<html><body><center>"
 	if(path)
-		SSjob.UpdatePlayableJobs(user.client.ckey)
 		dat += "Slot - "
 		dat += "<a href='byond://?src=\ref[src];load=1'>Load slot</a> - "
 		dat += "<a href='byond://?src=\ref[src];save=1'>Save slot</a> - "
@@ -106,7 +112,7 @@
 	dat += player_setup.content(user)
 
 	dat += "</html></body>"
-	var/datum/browser/popup = new(user, "Character Setup","Character Setup", 1200, 800, src)
+	var/datum/browser/popup = new(user, "Character Setup","Character Setup", 1545, 800, src)
 	popup.set_content(dat)
 	popup.open()
 
@@ -116,10 +122,10 @@
 	if(isliving(user)) return
 
 	if(href_list["preference"] == "open_whitelist_forum")
-		if(config.forumurl)
-			user << link(config.forumurl)
+		if(CONFIG_GET(string/forumurl))
+			user << link(CONFIG_GET(string/forumurl))
 		else
-			to_chat(user, SPAN_DANGER("The forum URL is not set in the server configuration."))
+			to_chat(user, span_danger("The forum URL is not set in the server configuration."))
 			return
 	ShowChoices(usr)
 	return 1
@@ -143,6 +149,8 @@
 		load_preferences()
 		load_character()
 		sanitize_preferences()
+		preview_should_rebuild_organs = TRUE
+		update_preview_icon(naked = istype(player_setup.selected_category, /datum/category_group/player_setup_category/augmentation))
 	else if(href_list["load"])
 		if(!IsGuestKey(usr.key))
 			open_load_dialog(usr)
@@ -168,7 +176,7 @@
 	character.set_species(species)
 	var/random_first = random_first_name(gender, species)
 	var/random_last = random_last_name(gender, species)
-	var/random_full = real_first_name + " " + real_last_name
+	var/random_full = real_first_name + (real_last_name ? " " + real_last_name : real_last_name)
 
 	if(be_random_name)
 		real_first_name = random_first
@@ -196,7 +204,8 @@
 	character.f_style = f_style
 
 	// Build mob body from prefs
-	character.rebuild_organs(src)
+	if (preview_should_rebuild_organs || !is_preview_copy)
+		character.rebuild_organs(src)
 
 	character.eyes_color = eyes_color
 	character.hair_color = hair_color
@@ -222,10 +231,11 @@
 
 	character.backpack_setup = new(backpack, backpack_metadata["[backpack]"])
 
-	character.force_update_limbs()
-	character.update_mutations(0)
-	character.update_implants(0)
-
+	if (preview_should_rebuild_organs || !is_preview_copy)
+		character.force_update_limbs()
+		character.update_mutations(0)
+		character.update_implants(0)
+		preview_should_rebuild_organs = FALSE
 
 	character.update_body(0)
 	character.update_underwear(0)
@@ -239,7 +249,10 @@
 
 	for(var/lang in alternate_languages)
 		character.add_language(lang)
-	
+
+	character.med_record = med_record
+	character.sec_record = sec_record
+	character.gen_record = gen_record
 	character.exploit_record = exploit_record
 	if(!character.isSynthetic())
 		character.nutrition = rand(250, 450)
@@ -251,29 +264,20 @@
 
 	character.post_prefinit()
 
-/datum/preferences/proc/character_load_path(savefile/S, slot)
-	var/original_cd = S.cd
-	S.cd = "/"
-	. = private_use_legacy_saves(S, slot) ? "/character[slot]" : "/eris/character[slot]"
-	S.cd = original_cd // Attempting to make this call as side-effect free as possible
-
-/datum/preferences/proc/private_use_legacy_saves(savefile/S, slot)
-	if(!S.dir.Find("eris")) // If we cannot find the map path folder, load the legacy save
-		return TRUE
-	S.cd = "/eris" // Finally, if we cannot find the character slot in the map path folder, load the legacy save
-	return !S.dir.Find("character[slot]")
 
 /datum/preferences/proc/open_load_dialog(mob/user)
 	var/dat  = list()
 	dat += "<body>"
 	dat += "<tt><center>"
 
+	if(loaded_preferences)	del(loaded_preferences)
+	if(loaded_character)	del(loaded_character)
 	var/savefile/S = new /savefile(path)
 	if(S)
 		dat += "<b>Select a character slot to load</b><hr>"
 		var/name
-		for(var/i=1, i<= config.character_slots, i++)
-			S.cd = character_load_path(S, i)
+		for(var/i=1; i<= CONFIG_GET(number/character_slots); i++)
+			S.cd = GLOB.maps_data.character_load_path(S, i)
 			S["real_name"] >> name
 			if(!name)	name = "Character[i]"
 			if(i==default_slot)
@@ -291,3 +295,12 @@
 		panel.close()
 		panel = null
 	user << browse(null, "window=saves")
+
+/datum/preferences/proc/GetJobLevel(datum/job/job)
+	. = JOB_LEVEL_NEVER
+	if(job_high == job.title)
+		. = JOB_LEVEL_HIGH
+	else if(job.title in job_medium)
+		. = JOB_LEVEL_MEDIUM
+	else if(job.title in job_low)
+		. = JOB_LEVEL_LOW

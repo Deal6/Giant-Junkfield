@@ -46,13 +46,13 @@
 
 /turf/mineral/is_plating()
 	return TRUE
-/turf/mineral/explosion_act(target_power, explosion_handler/handler)
+/turf/mineral/explosion_act(target_power, datum/explosion_handler/handler)
 	. = ..()
 	if(src && target_power > 75)
 		mined_ore = 1
 		GetDrilled()
 
-/turf/mineral/bullet_act(var/obj/item/projectile/Proj)
+/turf/mineral/bullet_act(obj/item/projectile/Proj)
 
 	// Emitter blasts
 	if(istype(Proj, /obj/item/projectile/beam/emitter))
@@ -91,7 +91,7 @@
 
 /turf/mineral/proc/MineralSpread()
 	if(mineral && mineral.spread)
-		for(var/trydir in cardinal)
+		for(var/trydir in GLOB.cardinal)
 			if(prob(mineral.spread_chance))
 				var/turf/mineral/target_turf = get_step(src, trydir)
 				if(istype(target_turf) && !target_turf.mineral)
@@ -120,18 +120,18 @@
 		if(QUALITY_EXCAVATION)
 			var/excavation_amount = input("How deep are you going to dig?", "Excavation depth", 0)
 			if(excavation_amount)
-				to_chat(user, SPAN_NOTICE("You start exacavating [src]."))
+				to_chat(user, span_notice("You start exacavating [src]."))
 				if(I.use_tool(user, src, WORKTIME_NORMAL, tool_type, FAILCHANCE_NORMAL, required_stat = STAT_COG))
-					to_chat(user, SPAN_NOTICE("You finish excavating [src]."))
+					to_chat(user, span_notice("You finish excavating [src]."))
 					excavation_level += excavation_amount
 					GetDrilled(0)
 				return
 			return
 
 		if(QUALITY_DIGGING)
-			to_chat(user, SPAN_NOTICE("You start digging the [src]."))
+			to_chat(user, span_notice("You start digging the [src]."))
 			if(I.use_tool(user, src, WORKTIME_FAST, tool_type, FAILCHANCE_VERY_EASY, required_stat = STAT_ROB))
-				to_chat(user, SPAN_NOTICE("You finish digging the [src]."))
+				to_chat(user, span_notice("You finish digging the [src]."))
 				GetDrilled(0)
 			return
 		if(ABORT_CHECK)
@@ -150,7 +150,7 @@
 	var/obj/item/ore/O = new mineral.ore (src)
 	return O
 
-/turf/mineral/proc/GetDrilled(var/artifact_fail = 0)
+/turf/mineral/proc/GetDrilled(artifact_fail = 0)
 	//var/destroyed = 0 //used for breaking strange rocks
 	if (mineral && mineral.result_amount)
 
@@ -214,7 +214,7 @@
 		updateMineralOverlays(1)
 	seismic_activity = rand(1,6)
 
-/turf/floor/asteroid/explosion_act(target_power, explosion_handler/handler)
+/turf/floor/asteroid/explosion_act(target_power, datum/explosion_handler/handler)
 	. = ..()
 	if(src && target_power > 50)
 		gets_dug()
@@ -226,10 +226,10 @@
 
 	if(QUALITY_DIGGING in I.tool_qualities)
 		if (dug)
-			to_chat(user, SPAN_WARNING("This area has already been dug"))
+			to_chat(user, span_warning("This area has already been dug"))
 			return
 		if(I.use_tool(user, src, WORKTIME_FAST, QUALITY_DIGGING, FAILCHANCE_EASY, required_stat = STAT_ROB))
-			to_chat(user, SPAN_NOTICE("You dug a hole."))
+			to_chat(user, span_notice("You dug a hole."))
 			gets_dug()
 
 	else
@@ -247,7 +247,7 @@
 	icon_state = "asteroid_dug"
 	return
 
-/turf/floor/asteroid/proc/updateMineralOverlays(var/update_neighbors)
+/turf/floor/asteroid/proc/updateMineralOverlays(update_neighbors)
 
 	overlays.Cut()
 
@@ -285,6 +285,6 @@
 /turf/floor/asteroid/proc/check_radial_dig()
 	return FALSE
 
-/turf/floor/asteroid/take_damage(var/damage, var/damage_type = BRUTE, var/ignore_resistance = FALSE)
+/turf/floor/asteroid/take_damage(damage, damage_type = BRUTE, ignore_resistance = FALSE)
 	// Asteroid turfs are indestructible, otherwise they can be destroyed at some point and expose metal plating
 	return

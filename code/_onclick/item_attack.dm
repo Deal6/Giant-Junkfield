@@ -4,14 +4,14 @@ These are the default click code call sequences used when clicking on stuff with
 
 Atoms:
 
-mob/ClickOn() calls the item's resolve_attackby() proc.
+/mob/ClickOn() calls the item's resolve_attackby() proc.
 item/resolve_attackby() calls the target atom's attackby() proc.
 
 Mobs:
 
-mob/living/attackby() after checking for surgery, calls the item's attack() proc.
+/mob/living/attackby() after checking for surgery, calls the item's attack() proc.
 item/attack() generates attack logs, sets click cooldown and calls the mob's attacked_with_item() proc. If you override this, consider whether you need to set a click cooldown, play attack animations, and generate logs yourself.
-mob/attacked_with_item() should then do mob-type specific stuff (like determining hit/miss, handling shields, etc) and then possibly call the item's apply_hit_effect() proc to actually apply the effects of being hit.
+/mob/attacked_with_item() should then do mob-type specific stuff (like determining hit/miss, handling shields, etc) and then possibly call the item's apply_hit_effect() proc to actually apply the effects of being hit.
 
 Item Hit Effects:
 
@@ -26,7 +26,7 @@ avoid code duplication. This includes items that may sometimes act as a standard
 
 // Called at the start of resolve_attackby(), before the actual attack.
 // Return a nonzero value to abort the attack
-/obj/item/proc/pre_attack(atom/a, mob/user, var/params)
+/obj/item/proc/pre_attack(atom/a, mob/user, params)
 	return
 
 //I would prefer to rename this to attack(), but that would involve touching hundreds of files.
@@ -38,7 +38,7 @@ avoid code duplication. This includes items that may sometimes act as a standard
 	add_fingerprint(user)
 	if(ishuman(user))//monkeys can use items, unfortunately
 		var/mob/living/carbon/human/H = user
-		if(H.blocking)
+		if(H.blocking && !istype(H.blocking_item, /obj/item/shield))
 			H.stop_blocking()
 	if(ishuman(user) && !(user == A) && !(user.loc == A) && (w_class >=  ITEM_SIZE_NORMAL) && wielded && user.a_intent == I_HURT && !istype(src, /obj/item/gun) && !istype(A, /obj/structure) && !istype(A, /turf/wall) && A.loc != user && !no_swing)
 		swing_attack(A, user, params)
@@ -47,40 +47,50 @@ avoid code duplication. This includes items that may sometimes act as a standard
 		return 1 //Swinging calls its own attacks
 	return A.attackby(src, user, params)
 
-//Returns TRUE if attack is to be carried out, FALSE otherwise.
+/// The default method of invoking double tact. Returns TRUE if attack is to be carried out, FALSE otherwise.
 /obj/item/proc/double_tact(mob/user, atom/atom_target, adjacent)
 	if(atom_target.loc == user)//putting stuff in your backpack, or something else on your person?
 		return TRUE //regular bags won't even be able to hold items this big, but who knows
 	if((w_class >= ITEM_SIZE_HUGE || (w_class == ITEM_SIZE_BULKY && !wielded)) && !abstract && !istype(src, /obj/item/gun) && !no_double_tact)//grabs have colossal w_class. You can't raise something that does not exist.
 		if(!adjacent || istype(atom_target, /turf) || istype(atom_target, /mob) || user.a_intent == I_HURT)//guns have the point blank privilege
 			if(!ready)
-				user.visible_message(SPAN_DANGER("[user] raises [src]!"))
-				ready = TRUE
-				var/obj/effect/effect/melee/alert/A = new()
-				user.vis_contents += A
-				qdel(A)
-				var/unready_time = world.time + (10 SECONDS)
-				while(world.time < unready_time)
-					sleep(1)
-					if(!(ready))
-						user.vis_contents -= A
-						return FALSE
-					if(!(is_equipped()))
-						ready = FALSE
-						user.vis_contents -= A
-						return FALSE
-				user.visible_message(SPAN_NOTICE("[user] lowers \his [src]."))
-				ready = FALSE
-				user.vis_contents -= A
+				start_tact(user, atom_target)
 				return FALSE
 			else
-				ready = FALSE
+				if(used_now)//do not unready or resolve, we are currently prepping an attack
+					return FALSE
+				end_tact(user, atom_target, TRUE)
 				return TRUE
 		else
 			return TRUE
 	else
 		return TRUE
 
+
+/// attempts to activate double tact state, can be called independently of double_tact.
+/obj/item/proc/start_tact(mob/user, target)
+	//is our object eligible for double tact?
+	if((w_class >= ITEM_SIZE_HUGE || (w_class == ITEM_SIZE_BULKY && !wielded)) && !abstract && !istype(src, /obj/item/gun) && !no_double_tact)
+		//tact windup length is scaled inversely with the robustness stat, bottoming out at MIN_TACT_DURATION
+		var/tact_duration = max(MIN_TACT_DURATION, BASE_TACT_DURATION * (1 - user.stats.getStat(STAT_ROB) / 150))
+		if(!ready && do_after(user, tact_duration, user, TRUE, immobile = FALSE, unique = TRUE))
+			user.vis_contents += tact_visual
+			user.visible_message(span_danger("[user] raises \the [src]!"))
+			ready = TRUE
+			//this will eventually cancel the raised state if it isn't used elsewhere
+			addtimer(CALLBACK(src, PROC_REF(end_tact), user, target, FALSE), 10 SECONDS, TIMER_UNIQUE | TIMER_OVERRIDE)
+		return
+
+/// if a double_tact item is raised, lowers it.
+/obj/item/proc/end_tact(mob/user, target, combo)
+	if(user && ready)
+		ready = FALSE
+		user.vis_contents.Remove(tact_visual)
+		//Automatically start winding back up after the 1st double tact swing. Makes double_tact smoother to use
+		if(combo)
+			addtimer(CALLBACK(src, PROC_REF(start_tact), user, target), 2, TIMER_UNIQUE | TIMER_OVERRIDE)
+		else
+			user.visible_message(span_notice("[user] lowers \his [src]."))
 
 /obj/item/proc/swing_attack(atom/A, mob/user, params)
 	var/holdinghand = user.get_inventory_slot(src)
@@ -126,7 +136,7 @@ avoid code duplication. This includes items that may sometimes act as a standard
 			L = get_step(C, EAST)
 	var/obj/effect/effect/melee/swing/S = new(get_turf(user))
 	S.dir = _dir
-	user.visible_message(SPAN_DANGER("[user] swings \his [src]"))
+	user.visible_message(span_danger("[user] swings \his [src]"))
 	playsound(loc, 'sound/effects/swoosh.ogg', 50, 1, -1)
 	switch(holdinghand)
 		if(slot_l_hand)
@@ -156,7 +166,7 @@ avoid code duplication. This includes items that may sometimes act as a standard
 		user.do_attack_animation(src)
 		if (I.hitsound)
 			playsound(loc, I.hitsound, 50, 1, -1)
-		visible_message(SPAN_DANGER("[src] has been hit by [user] with [I]."))
+		visible_message(span_danger("[src] has been hit by [user] with [I]."))
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 
 // meant for handling stuff when destroyed
@@ -169,7 +179,7 @@ avoid code duplication. This includes items that may sometimes act as a standard
 		return FALSE
 	var/obj/item/tool/sword/nt_sword/NT = I
 	if(user.a_intent != I_HURT)
-		to_chat(user, SPAN_NOTICE("You need to be in a harming stance."))
+		to_chat(user, span_notice("You need to be in a harming stance."))
 		return FALSE
 	if(NT.isBroken)
 		return FALSE
@@ -179,7 +189,7 @@ avoid code duplication. This includes items that may sometimes act as a standard
 		user.do_attack_animation(src)
 		if (NT.hitsound)
 			playsound(loc, I.hitsound, 50, 1, -1)
-		visible_message(SPAN_DANGER("[src] has been hit by [user] with [NT]."))
+		visible_message(span_danger("[src] has been hit by [user] with [NT]."))
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		for(var/mob/living/carbon/human/H in viewers(user))
 			SEND_SIGNAL_OLD(H, SWORD_OF_TRUTH_OF_DESTRUCTION, src)
@@ -195,10 +205,10 @@ avoid code duplication. This includes items that may sometimes act as a standard
 		. = TRUE
 
 
-/obj/item/attackby(obj/item/I, mob/living/user, var/params)
+/obj/item/attackby(obj/item/I, mob/living/user, params)
 	return
 
-/mob/living/attackby(obj/item/I, mob/living/user, var/params)
+/mob/living/attackby(obj/item/I, mob/living/user, params)
 	if(!ismob(user))
 		return FALSE
 	var/surgery_check = can_operate(src, user)
@@ -208,7 +218,7 @@ avoid code duplication. This includes items that may sometimes act as a standard
 		return I.attack(src, user, user.targeted_organ)
 
 //Used by Area of effect attacks, if it returns FALSE, it failed
-/obj/item/proc/attack_with_multiplier(mob/living/user, var/atom/target, var/modifier = 1)
+/obj/item/proc/attack_with_multiplier(mob/living/user, atom/target, modifier = 1)
 	if(!wielded && modifier > 0)
 		return FALSE
 	var/original_force = force
@@ -219,7 +229,7 @@ avoid code duplication. This includes items that may sometimes act as a standard
 	return TRUE
 
 //Same as above but for mobs
-/obj/item/proc/attack_with_multiplier_mob(mob/living/user, var/mob/living/target, var/modifier = 1)
+/obj/item/proc/attack_with_multiplier_mob(mob/living/user, mob/living/target, modifier = 1)
 	if(!wielded && modifier > 0)
 		return FALSE
 	var/original_force = force
@@ -230,7 +240,7 @@ avoid code duplication. This includes items that may sometimes act as a standard
 	return TRUE
 
 //Area of effect attacks (swinging), return remaining damage
-/obj/item/proc/tileattack(mob/living/user, turf/targetarea, var/modifier = 1, var/swing_degradation = 0.2, var/original_target)
+/obj/item/proc/tileattack(mob/living/user, turf/targetarea, modifier = 1, swing_degradation = 0.2, original_target)
 	if(istype(targetarea, /turf/wall))
 		var/turf/W = targetarea
 		if(attack_with_multiplier(user, W, modifier))
@@ -296,6 +306,7 @@ avoid code duplication. This includes items that may sometimes act as a standard
 	/////////////////////////
 	user.lastattacked = M
 	M.lastattacker = user
+	M.lastattackerckey = user.ckey
 
 	if(!no_attack_log)
 		user.attack_log += "\[[time_stamp()]\]<font color='red'> Attacked [M.name] ([M.ckey]) with [name] (INTENT: [uppertext(user.a_intent)]) (DAMTYE: [uppertext(damtype)])</font>"
@@ -313,7 +324,7 @@ avoid code duplication. This includes items that may sometimes act as a standard
 	return TRUE
 
 //Called when a weapon is used to make a successful melee attack on a mob. Returns the blocked result
-/obj/item/proc/apply_hit_effect(mob/living/target, mob/living/user, var/hit_zone)
+/obj/item/proc/apply_hit_effect(mob/living/target, mob/living/user, hit_zone)
 	if(hitsound)
 		playsound(loc, hitsound, 50, 1, -1)
 

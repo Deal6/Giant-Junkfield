@@ -32,10 +32,12 @@
 
 	var/is_virtual = FALSE // for non-physical scanner to avoid displaying action messages
 
+	COOLDOWN_DECLARE(use_cooldown)
+
 
 /obj/item/device/scanner/attack_self(mob/user)
 	if(!scan_data)
-		to_chat(user, SPAN_NOTICE("[src]\'s data buffer is empty."))
+		to_chat(user, span_notice("[src]\'s data buffer is empty."))
 		return
 	show_results(user)
 
@@ -68,13 +70,20 @@
 	if(!can_use(user))
 		return
 
+	if(!COOLDOWN_FINISHED(src, use_cooldown))
+		// TODO: Replace with balloon_alert
+		to_chat(user, "on cooldown!")
+		return
+
+	COOLDOWN_START(src, use_cooldown, 1 SECOND)
+
 	if(is_valid_scan_target(A) && A.simulated)
 		if(!is_virtual)
-			user.visible_message(SPAN_NOTICE("[user] runs \the [src] over \the [A]."), range = 2)
+			user.visible_message(span_notice("[user] runs \the [src] over \the [A]."), vision_distance = 2)
 			if(scan_sound)
 				playsound(src, scan_sound, 30)
 		else
-			user.visible_message(SPAN_NOTICE("[user] focuses on \the [A] for a moment."), range = 2)
+			user.visible_message(span_notice("[user] focuses on \the [A] for a moment."), vision_distance = 2)
 		if(use_delay && !do_after(user, use_delay, A))
 			if(!is_virtual)
 				to_chat(user, "You stop scanning \the [A] with \the [src].")
@@ -97,7 +106,7 @@
 		return
 	print_report(user)
 
-/obj/item/device/scanner/OnTopic(var/user, var/list/href_list)
+/obj/item/device/scanner/OnTopic(user, list/href_list)
 	if(href_list["print"])
 		print_report(user)
 		return 1

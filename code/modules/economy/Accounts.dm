@@ -37,12 +37,8 @@
 	return owner_name
 
 //Attempts to return the associated data record for this account
-// expensive to run, store the result from this.
 /datum/money_account/proc/get_record()
-	for(var/datum/computer_file/report/crew_record/CR in GLOB.all_crew_records)
-		var/accountnum = CR.get_account()
-		if(account_number == accountnum)
-			return CR
+	return find_general_record("pay_account", account_number)
 
 /datum/transaction
 	var/target_name = ""
@@ -60,7 +56,7 @@
 	purpose = sanitizeSafe(_purpose, MAX_NAME_LEN,TRUE)
 	source_terminal = _source_terminal
 
-	if(istype(_source_terminal, /atom))
+	if(isatom(_source_terminal))
 		var/atom/terminal_atom = _source_terminal
 		source_terminal = "[terminal_atom.name] at [get_area(terminal_atom)]"
 
@@ -73,7 +69,7 @@
 	else
 		time = stationtime2text()
 
-/datum/transaction/proc/apply_to(var/datum/money_account/account)
+/datum/transaction/proc/apply_to(datum/money_account/account)
 	if(!istype(account) || !account.is_valid())
 		return FALSE
 
@@ -85,7 +81,7 @@
 	account.transaction_log.Add(src.Copy())
 	return TRUE
 
-/datum/transaction/proc/set_amount(var/amount, var/update_time = TRUE)
+/datum/transaction/proc/set_amount(amount, update_time = TRUE)
 	src.amount = amount
 	if(update_time)
 		src.time = stationtime2text()

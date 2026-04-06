@@ -17,8 +17,14 @@
 
 /obj/machinery/computer/helm/Initialize()
 	. = ..()
+	linked = map_sectors["[z]"]
 	get_known_sectors()
 	new /obj/effect/overmap_event/movable/comet()
+
+	if (isnull(linked))
+		error("There are no map_sectors on [src]'s z.")
+		return
+	linked.check_link()
 
 /obj/machinery/computer/helm/proc/get_known_sectors()
 	var/area/overmap/map = locate() in world
@@ -33,7 +39,7 @@
 /obj/machinery/computer/helm/Process()
 	..()
 	if (autopilot && dx && dy)
-		var/turf/T = locate(dx,dy,SSmapping.overmap_z)
+		var/turf/T = locate(dx,dy,GLOB.maps_data.overmap_z)
 		if(linked.loc == T)
 			if(linked.is_still())
 				autopilot = 0
@@ -49,12 +55,12 @@
 
 		return
 
-/obj/machinery/computer/helm/relaymove(var/mob/user, direction)
+/obj/machinery/computer/helm/relaymove(mob/user, direction)
 	if(manual_control && linked)
 		linked.relaymove(user,direction)
 		return 1
 
-/obj/machinery/computer/helm/check_eye(var/mob/user as mob)
+/obj/machinery/computer/helm/check_eye(mob/user as mob)
 	if (isAI(user))
 		user.unset_machine()
 		if (!manual_control)
@@ -66,15 +72,11 @@
 	return 0
 
 /obj/machinery/computer/helm/attack_hand(mob/user)
+
 	if(..())
 		user.unset_machine()
 		manual_control = 0
 		return
-
-	if(!linked)
-		linked = map_sectors["[z]"]
-		if(linked)
-			linked.check_link()
 
 	if(!isAI(user))
 		user.set_machine(src)
@@ -83,11 +85,16 @@
 		user.reset_view(linked)
 		user.client.view = "[2*NAVIGATION_VIEW_RANGE+1]x[2*NAVIGATION_VIEW_RANGE+1]"
 
+	else if(!CONFIG_GET(flag/use_overmap) && user?.client?.holder)
+		// Let the new developers know why the helm console is unresponsive
+		// (it's disabled by default on local server to make it start a bit faster)
+		to_chat(user, "NOTE: overmap generation is disabled in server configuration.")
+		to_chat(user, "To use overmap, make sure that \"config.txt\" file is present in the server config folder and \"USE_OVERMAP\" is uncommented.")
+
 	nano_ui_interact(user)
 
-/obj/machinery/computer/helm/nano_ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = NANOUI_FOCUS)
+/obj/machinery/computer/helm/nano_ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = NANOUI_FOCUS)
 	if(!linked)
-		to_chat(user, SPAN_WARNING("Unable to connect to ship control systems."))
 		return
 
 	var/data[0]
@@ -152,7 +159,7 @@
 			sec_name = "Sector #[known_sectors.len]"
 		R.fields["name"] = sec_name
 		if(sec_name in known_sectors)
-			to_chat(usr, "<span class='warning'>Sector with that name already exists, please input a different name.</span>")
+			to_chat(usr, span_warning("Sector with that name already exists, please input a different name."))
 			return
 		switch(href_list["add"])
 			if("current")
@@ -238,9 +245,8 @@
 	icon_keyboard = "generic_key"
 	icon_screen = "helm"
 
-/obj/machinery/computer/navigation/nano_ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = NANOUI_FOCUS)
+/obj/machinery/computer/navigation/nano_ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = NANOUI_FOCUS)
 	if(!linked)
-		to_chat(user, SPAN_WARNING("Unable to connect to ship control systems."))
 		return
 
 	var/data[0]
@@ -270,7 +276,7 @@
 		ui.open()
 		ui.set_auto_update(1)
 
-/obj/machinery/computer/navigation/check_eye(mob/user)
+/obj/machinery/computer/navigation/check_eye(mob/user as mob)
 	if (isAI(user))
 		user.unset_machine()
 		if (!viewing)
@@ -283,16 +289,11 @@
 		return -1
 	return 0
 
-/obj/machinery/computer/navigation/attack_hand(mob/user)
+/obj/machinery/computer/navigation/attack_hand(mob/user as mob)
 	if(..())
 		user.unset_machine()
 		viewing = 0
 		return
-
-	if(!linked)
-		linked = map_sectors["[z]"]
-		if(linked)
-			linked.check_link()
 
 	if(viewing && linked)
 		if (!isAI(user))

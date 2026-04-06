@@ -2,13 +2,14 @@
 	if(!owner || !owner.current)
 		return
 
-	var/text
+	var/text = ""
 
-	if (objectives.len)
+	if(length(objectives))
 		text = "<b>Your [role_text] current objectives:</b>"
-
-	if(faction)
+	else if(faction)
 		text = "<b>Your [faction.name] faction current objectives:</b>"
+	else
+		text = "<b>Your current objectives:</b>"
 
 	text += print_objectives(FALSE)
 
@@ -20,7 +21,7 @@
 
 	var/mob/player = owner.current
 	// Basic intro text.
-	to_chat(player, "<span class='danger'><font size=3>You are \a [role_text]!</font></span>")
+	to_chat(player, span_danger("<font size=3>You are \a [role_text]!</font>"))
 	if(faction)
 		if(src in faction.leaders)
 			to_chat(player, "You are a leader of the [faction.name]!")
@@ -39,7 +40,7 @@
 	var/tipsAndTricks/T = SStips.getRoleTip(src)
 	if(T)
 		var/mob/player = owner.current
-		to_chat(player, SStips.formatTip(T, "Tip for \a [role_text]: "))
+		to_chat(player, SStips.formatTip(T, "Tip for \a [role_text]"))
 
 /datum/antagonist/proc/get_special_objective_text()
 	return ""
@@ -54,7 +55,7 @@
 	// Display the results.
 	return text
 
-/datum/antagonist/proc/print_objectives(var/append_success = TRUE)
+/datum/antagonist/proc/print_objectives(append_success = TRUE)
 	var/text = get_special_objective_text()
 
 	var/list/contracts = list()
@@ -97,7 +98,8 @@
 				text += "<br><font color='red'><B>The [role_text] has failed.</B></font>"
 			else
 				text += "<br><font color='green'><B>The [role_text] was successful!</B></font>"
-
+	if(!length(text))
+		return "<br><b>No objectives available</b>"
 	return text
 
 /datum/antagonist/proc/print_player()
@@ -109,7 +111,7 @@
 	if(owner.current)
 		if(owner.current.stat == DEAD)
 			text += "died"
-		else if(!IS_SHIP_LEVEL(owner.current.z))
+		else if(isNotStationLevel(owner.current.z))
 			text += "fled the ship"
 		else
 			text += "survived"
@@ -128,7 +130,7 @@
 	var/TC_uses = 0
 	var/list/purchases = list()
 
-	for(var/obj/item/device/uplink/H in world_uplinks)
+	for(var/obj/item/device/uplink/H in GLOB.world_uplinks)
 		if(H.uplink_owner && H.uplink_owner == owner)
 			TC_uses += H.used_TC
 

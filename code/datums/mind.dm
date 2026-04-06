@@ -47,11 +47,6 @@
 	var/datum/job/assigned_job
 
 
-	var/has_been_rev = FALSE	//Tracks if this mind has been a rev or not
-
-
-	var/rev_cooldown = 0
-
 	// the world.time since the mob has been brigged, or -1 if not at all
 	var/brigged_since = -1
 
@@ -74,6 +69,9 @@
 
 	var/creation_time = 0 //World time when this datum was New'd. Useful to tell how long since a character spawned
 
+	/// A list to keep track of which books a person has read (to prevent people from reading the same book again and again for positive mood events)
+	var/list/book_titles_read
+
 /datum/mind/New(key)
 	src.key = key
 	creation_time = world.time
@@ -85,6 +83,7 @@
 	if(current)					//remove ourself from our old body's mind variable
 		current.mind = null
 
+		SStgui.on_transfer(current, new_character)
 		SSnano.user_transferred(current, new_character) // transfer active NanoUI instances to new user
 
 		if(current.client)
@@ -127,8 +126,8 @@
 	var/output = "<B>[current.real_name]'s Memory</B><HR>"
 	output += memory
 
-	for(var/datum/antagonist/A in antagonist)
-		if(!A.objectives.len)
+	for(var/datum/antagonist/A as anything in antagonist)
+		if(!length(A.objectives))
 			break
 		if(A.faction)
 			output += "<br><b>Your [A.faction.name] faction objectives:</b>"
@@ -142,7 +141,7 @@
 	panel.open()
 
 /datum/mind/proc/edit_memory()
-	if(SSticker.current_state != GAME_STATE_PLAYING)
+	if(!SSticker.IsRoundInProgress())
 		alert("Not before round-start!", "Alert")
 		return
 
@@ -167,7 +166,7 @@
 	out += print_individualobjectives()
 
 	out += "<br><a href='byond://?src=\ref[src];edit_memory=1'>"
-	usr << browse(out, "window=edit_memory[src]")
+	usr << browse(HTML_SKELETON_TITLE("Mind memory edit", out), "window=edit_memory[src]")
 
 /datum/mind/Topic(href, href_list)
 	if(!check_rights(R_ADMIN))
@@ -198,7 +197,7 @@
 				if(antag.create_antagonist(src))
 					log_admin("[key_name_admin(usr)] made [key_name(src)] into a [antag.role_text].")
 				else
-					to_chat(usr, SPAN_WARNING("[src] could not be made into a [antag.role_text]!"))
+					to_chat(usr, span_warning("[src] could not be made into a [antag.role_text]!"))
 
 	else if(href_list["role_edit"])
 		var/new_role = input("Select new role", "Assigned role", assigned_role) as null|anything in GLOB.joblist
@@ -262,7 +261,7 @@
 				take_uplink()
 				memory = null//Remove any memory they may have had.
 			if("crystals")
-				if (usr.client.holder.rights & R_FUN)
+				if (usr.client.holder.rank_flags() & R_FUN)
 					var/obj/item/device/uplink/hidden/suplink = find_syndicate_uplink()
 					var/crystals
 					if (suplink)
@@ -316,12 +315,10 @@
 	//faction =       null //Uncommenting this causes a compile error due to 'undefined type', fucked if I know.
 	role_alt_title =  null
 	initial_account = null
-	has_been_rev =    0
-	rev_cooldown =    0
 	brigged_since =   -1
 
 //Antagonist role check
-/mob/living/proc/check_special_role(role)
+/mob/proc/check_special_role(role)
 	return role && mind && player_is_antag_id(mind, role)
 
 //Initialisation procs
@@ -334,6 +331,9 @@
 		SSticker.minds += mind
 	if(!mind.name)	mind.name = real_name
 	mind.current = src
+
+	RegisterSignal(src, COMSIG_ADMIN_DELETING, PROC_REF(ghost_before_admin_delete), override = TRUE)
+	SEND_SIGNAL(src, COMSIG_MOB_MIND_INITIALIZED, mind)
 
 //HUMAN
 /mob/living/carbon/human/mind_initialize()
@@ -369,9 +369,12 @@
 	..()
 	mind.assigned_role = "Corgi"
 
+	/// Signal proc for [COMSIG_ADMIN_DELETING], to ghostize a mob beforehand if an admin is manually deleting it.
+/mob/proc/ghost_before_admin_delete(datum/source)
+	SIGNAL_HANDLER
+	ghostize(can_reenter_corpse = FALSE)
 
-
-/datum/mind/proc/manifest_status(var/datum/computer_file/report/crew_record/CR)
+/datum/mind/proc/manifest_status(datum/computer_file/report/crew_record/CR)
 	var/inactive_time = world.time - last_activity
 	if (inactive_time >= 60 MINUTES)
 		return null //The server hasn't seen us alive in an hour.

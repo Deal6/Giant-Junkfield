@@ -43,4 +43,4 @@
 
 /proc/is_valid_apc(obj/machinery/power/apc/apc)
 	var/area/A = get_area(apc)
-	return !(A && (A.flags & AREA_FLAG_CRITICAL)) && !apc.emagged && IS_SHIP_LEVEL(apc.z)
+	return !(A && (A.flags & AREA_FLAG_CRITICAL)) && !apc.emagged && isOnShipLevel(apc)

@@ -52,21 +52,21 @@
 	return
 
 
-/obj/effect/accelerated_particle/explosion_act(target_power, explosion_handler/handler)
+/obj/effect/accelerated_particle/explosion_act(target_power, datum/explosion_handler/handler)
 	qdel(src)
 	return 0
 
 
 
-/obj/effect/accelerated_particle/proc/toxmob(var/mob/living/M)
+/obj/effect/accelerated_particle/proc/toxmob(mob/living/M)
 	var/radiation = (energy*2)
 	M.apply_effect((radiation*3),IRRADIATE,0)
 	M.updatehealth()
-	//M << "\red You feel odd."
+	//M << span_red("You feel odd.")
 	return
 
 
-/obj/effect/accelerated_particle/proc/move(var/lag)
+/obj/effect/accelerated_particle/proc/move(lag)
 	if(target)
 		if(movetotarget)
 			if(!step_towards(src,target))

@@ -20,6 +20,8 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 
 	var/equip_preview_mob = EQUIP_PREVIEW_ALL
 
+	var/preview_should_rebuild_organs = TRUE
+
 	var/icon/bgstate = "black"
 	var/list/bgstate_options = list("steel", "dark_steel", "white_tiles", "black_tiles", "wood", "carpet", "white", "black")
 
@@ -27,8 +29,9 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	name = "Body"
 	sort_order = 2
 	var/hide_species = TRUE
+	var/randomize_shutup = FALSE
 
-/datum/category_item/player_setup_item/physical/body/load_character(var/savefile/S)
+/datum/category_item/player_setup_item/physical/body/load_character(savefile/S)
 	from_file(S["species"], pref.species)
 	from_file(S["skin_tone"], pref.s_tone)
 	from_file(S["skin_base"], pref.s_base)
@@ -44,7 +47,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	from_file(S["facial_color"], pref.facial_color)
 
 
-/datum/category_item/player_setup_item/physical/body/save_character(var/savefile/S)
+/datum/category_item/player_setup_item/physical/body/save_character(savefile/S)
 	to_file(S["species"], pref.species)
 	to_file(S["skin_tone"], pref.s_tone)
 	to_file(S["skin_base"], pref.s_base)
@@ -58,7 +61,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	to_file(S["hair_color"], pref.hair_color)
 	to_file(S["facial_color"], pref.facial_color)
 
-/datum/category_item/player_setup_item/physical/body/sanitize_character(var/savefile/S)
+/datum/category_item/player_setup_item/physical/body/sanitize_character(savefile/S)
 	pref.h_style		= sanitize_inlist(pref.h_style, GLOB.hair_styles_list, initial(pref.h_style))
 	pref.f_style		= sanitize_inlist(pref.f_style, GLOB.facial_hair_styles_list, initial(pref.f_style))
 	pref.b_type			= sanitize_text(pref.b_type, initial(pref.b_type))
@@ -67,7 +70,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	pref.skin_color		= iscolor(pref.skin_color) ? pref.skin_color : "#000000"
 	pref.eyes_color		= iscolor(pref.eyes_color) ? pref.eyes_color : "#000000"
 
-	if(!pref.species || !(pref.species in playable_species))
+	if(!pref.species || !(pref.species in GLOB.playable_species))
 		pref.species = SPECIES_HUMAN
 
 	sanitize_integer(pref.s_tone, -185, 34, initial(pref.s_tone))
@@ -79,12 +82,11 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	if(!pref.bgstate || !(pref.bgstate in pref.bgstate_options))
 		pref.bgstate = "black"
 
-/datum/category_item/player_setup_item/physical/body/content(var/mob/user)
+/datum/category_item/player_setup_item/physical/body/content(mob/user)
 	if(!pref.preview_icon)
 		pref.update_preview_icon()
-	user << browse_rsc(pref.preview_icon, "previewicon.png")
 
-	var/datum/species/mob_species = all_species[pref.species]
+	var/datum/species/mob_species = GLOB.all_species[pref.species]
 	. += "<style>span.color_holder_box{display: inline-block; width: 20px; height: 8px; border:1px solid #000; padding: 0px;}</style>"
 	. += "<hr>"
 	. += "<table><tr style='vertical-align:top; width: 100%'><td width=65%><b>Body</b> "
@@ -118,7 +120,8 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 		. += "<a href='byond://?src=\ref[src];skin_color=1'><span class='color_holder_box' style='background-color:[pref.skin_color]'></span></a><br>"
 
 	. += "</td><td style = 'text-align:center;' width = 35%><b>Preview</b><br>"
-	. += "<div style ='padding-bottom:-2px;' class='statusDisplay'><img src=previewicon.png width=[pref.preview_icon.Width()] height=[pref.preview_icon.Height()]></div>"
+	. += "<style>.previewicon { width: 192px;height: 128px; }</style>"
+	. += "<div class='statusDisplay'>[ma2html(pref.preview_icon, user, "previewicon")]</div>"
 	. += "<br><a href='byond://?src=\ref[src];cycle_bg=1'>Cycle background</a>"
 	. += "<br><a href='byond://?src=\ref[src];toggle_preview_value=[EQUIP_PREVIEW_LOADOUT]'>[pref.equip_preview_mob & EQUIP_PREVIEW_LOADOUT ? "Hide loadout" : "Show loadout"]</a>"
 	. += "<br><a href='byond://?src=\ref[src];toggle_preview_value=[EQUIP_PREVIEW_JOB]'>[pref.equip_preview_mob & EQUIP_PREVIEW_JOB ? "Hide job gear" : "Show job gear"]</a>"
@@ -127,17 +130,28 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 
 
 
-/datum/category_item/player_setup_item/physical/body/proc/has_flag(var/datum/species/mob_species, var/flag)
+/datum/category_item/player_setup_item/physical/body/proc/has_flag(datum/species/mob_species, flag)
 	return mob_species && (mob_species.appearance_flags & flag)
 
-/datum/category_item/player_setup_item/physical/body/OnTopic(var/href,var/list/href_list, var/mob/user)
+/datum/category_item/player_setup_item/physical/body/OnTopic(href,list/href_list, mob/user)
 
-	var/datum/species/mob_species = all_species[pref.species]
+	var/datum/species/mob_species = GLOB.all_species[pref.species]
 	if(href_list["toggle_species_verbose"])
 		hide_species = !hide_species
 		return TOPIC_REFRESH
 
 	else if(href_list["random"])
+		if(randomize_shutup)
+			pref.randomize_appearance_and_body_for()
+			return TOPIC_REFRESH_UPDATE_PREVIEW
+
+		var/ohgod = alert(user, "Are you SURE you want to randomize your character? (You can always click \"Reload Slot\" at the top)", "Randomize Character", "Yes", "Yes (Shut up)", "No!")
+		if(ohgod == "No!")
+			return
+
+		if(ohgod == "Yes (Shut up)")
+			randomize_shutup = TRUE
+
 		pref.randomize_appearance_and_body_for()
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 
@@ -151,7 +165,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 		if(!has_flag(mob_species, HAS_HAIR_COLOR))
 			return TOPIC_NOACTION
 		var/new_hair = input(user, "Choose your character's hair colour:", CHARACTER_PREFERENCE_INPUT_TITLE, pref.hair_color) as color|null
-		if(new_hair && has_flag(all_species[pref.species], HAS_HAIR_COLOR) && CanUseTopic(user))
+		if(new_hair && has_flag(GLOB.all_species[pref.species], HAS_HAIR_COLOR) && CanUseTopic(user))
 			pref.hair_color = new_hair
 			return TOPIC_REFRESH_UPDATE_PREVIEW
 
@@ -159,7 +173,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 		var/list/valid_hairstyles = mob_species.get_hair_styles()
 		var/new_h_style = input(user, "Choose your character's hair style:", CHARACTER_PREFERENCE_INPUT_TITLE, pref.h_style)  as null|anything in valid_hairstyles
 
-		mob_species = all_species[pref.species]
+		mob_species = GLOB.all_species[pref.species]
 		if(new_h_style && CanUseTopic(user) && (new_h_style in mob_species.get_hair_styles()))
 			pref.h_style = new_h_style
 			return TOPIC_REFRESH_UPDATE_PREVIEW
@@ -168,7 +182,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 		if(!has_flag(mob_species, HAS_HAIR_COLOR))
 			return TOPIC_NOACTION
 		var/new_facial = input(user, "Choose your character's facial-hair colour:", CHARACTER_PREFERENCE_INPUT_TITLE, pref.facial_color) as color|null
-		if(new_facial && has_flag(all_species[pref.species], HAS_HAIR_COLOR) && CanUseTopic(user))
+		if(new_facial && has_flag(GLOB.all_species[pref.species], HAS_HAIR_COLOR) && CanUseTopic(user))
 			pref.facial_color = new_facial
 			return TOPIC_REFRESH_UPDATE_PREVIEW
 
@@ -176,7 +190,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 		if(!has_flag(mob_species, HAS_EYE_COLOR))
 			return TOPIC_NOACTION
 		var/new_eyes = input(user, "Choose your character's eye colour:", CHARACTER_PREFERENCE_INPUT_TITLE, pref.eyes_color) as color|null
-		if(new_eyes && has_flag(all_species[pref.species], HAS_EYE_COLOR) && CanUseTopic(user))
+		if(new_eyes && has_flag(GLOB.all_species[pref.species], HAS_EYE_COLOR) && CanUseTopic(user))
 			pref.eyes_color = new_eyes
 			return TOPIC_REFRESH_UPDATE_PREVIEW
 
@@ -189,16 +203,17 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	else if(href_list["skin_tone"])
 		var/new_s_tone = input(user, "Choose your character's skin-tone. Lower numbers are lighter, higher are darker. Range: 1 to 225", CHARACTER_PREFERENCE_INPUT_TITLE, (-pref.s_tone) + 35) as num|null
 
-		mob_species = all_species[pref.species]
+		mob_species = GLOB.all_species[pref.species]
 		if(new_s_tone && CanUseTopic(user))
-			pref.s_tone = 35 - max(min(round(new_s_tone), 220), 1)
+			pref.s_tone = 35 - max(min(round(new_s_tone), 225), 1)
+			pref.preview_should_rebuild_organs = TRUE
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 
 	else if(href_list["skin_color"])
 		if(!has_flag(mob_species, HAS_SKIN_COLOR))
 			return TOPIC_NOACTION
 		var/new_skin = input(user, "Choose your character's skin colour: ", CHARACTER_PREFERENCE_INPUT_TITLE, pref.skin_color) as color|null
-		if(new_skin && has_flag(all_species[pref.species], HAS_SKIN_COLOR) && CanUseTopic(user))
+		if(new_skin && has_flag(GLOB.all_species[pref.species], HAS_SKIN_COLOR) && CanUseTopic(user))
 			pref.skin_color = new_skin
 			return TOPIC_REFRESH_UPDATE_PREVIEW
 
@@ -207,7 +222,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 
 		var/new_f_style = input(user, "Choose your character's facial-hair style:", CHARACTER_PREFERENCE_INPUT_TITLE, pref.f_style)  as null|anything in valid_facialhairstyles
 
-		mob_species = all_species[pref.species]
+		mob_species = GLOB.all_species[pref.species]
 		if(new_f_style && CanUseTopic(user) && mob_species.get_facial_hair_styles(pref.gender))
 			pref.f_style = new_f_style
 			return TOPIC_REFRESH_UPDATE_PREVIEW
@@ -215,10 +230,6 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	else if(href_list["disabilities"])
 		var/disability_flag = text2num(href_list["disabilities"])
 		pref.disabilities ^= disability_flag
-		return TOPIC_REFRESH_UPDATE_PREVIEW
-
-	else if(href_list["toggle_preview_value"])
-		pref.equip_preview_mob ^= text2num(href_list["toggle_preview_value"])
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 
 	else if(href_list["cycle_bg"])
@@ -238,7 +249,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 				return TOPIC_NOACTION
 			new_h_style = valid_hairstyles[old_pos+1]
 
-		mob_species = all_species[pref.species]
+		mob_species = GLOB.all_species[pref.species]
 		if(new_h_style && CanUseTopic(user) && (new_h_style in mob_species.get_hair_styles()))
 			pref.h_style = new_h_style
 			return TOPIC_REFRESH_UPDATE_PREVIEW
@@ -254,7 +265,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 			if(old_pos + 1 > valid_facialhairstyles.len)
 				return TOPIC_NOACTION
 			new_f_style = valid_facialhairstyles[old_pos+1]
-		mob_species = all_species[pref.species]
+		mob_species = GLOB.all_species[pref.species]
 		if(new_f_style && CanUseTopic(user) && mob_species.get_facial_hair_styles(pref.gender))
 			pref.f_style = new_f_style
 			return TOPIC_REFRESH_UPDATE_PREVIEW
@@ -267,7 +278,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 
 /datum/category_item/player_setup_item/proc/ResetHair()
 
-	var/datum/species/mob_species = all_species[pref.species]
+	var/datum/species/mob_species = GLOB.all_species[pref.species]
 	var/list/valid_hairstyles = mob_species.get_hair_styles()
 
 	if(valid_hairstyles.len)
@@ -280,7 +291,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 
 /datum/category_item/player_setup_item/proc/ResetFacialHair()
 
-	var/datum/species/mob_species = all_species[pref.species]
+	var/datum/species/mob_species = GLOB.all_species[pref.species]
 	var/list/valid_facialhairstyles = mob_species.get_facial_hair_styles(pref.gender)
 
 	if(valid_facialhairstyles.len)

@@ -1,3 +1,8 @@
+/obj/machinery/computer/shuttle_control/multi/vox
+	name = "skipjack control console"
+	req_access = list(access_syndicate)
+	shuttle_tag = "Skipjack"
+
 /obj/machinery/computer/shuttle_control/multi/mercenary
 	name = "mercenary shuttle control console"
 	req_access = list(access_mercenary)

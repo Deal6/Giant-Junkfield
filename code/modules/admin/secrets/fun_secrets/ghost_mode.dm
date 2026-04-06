@@ -6,7 +6,7 @@
 	..()
 	affected_mobs = list()
 
-/datum/admin_secret_item/fun_secret/ghost_mode/execute(var/mob/user)
+/datum/admin_secret_item/fun_secret/ghost_mode/execute(mob/user)
 	. = ..()
 	if(!.)
 		return
@@ -17,20 +17,20 @@
 			affected_mobs |= M
 			switch(rand(1,4))
 				if(1)
-					M.show_message(text(SPAN_NOTICE("You shudder as if cold...")), 1)
+					M.show_message(span_notice(text("You shudder as if cold...")), 1)
 				if(2)
-					M.show_message(text(SPAN_NOTICE("You feel something gliding across your back...")), 1)
+					M.show_message(span_notice(text("You feel something gliding across your back...")), 1)
 				if(3)
-					M.show_message(text(SPAN_NOTICE("Your eyes twitch, you feel like something you can't see is here...")), 1)
+					M.show_message(span_notice(text("Your eyes twitch, you feel like something you can't see is here...")), 1)
 				if(4)
-					M.show_message(text(SPAN_NOTICE("You notice something moving out of the corner of your eye, but nothing is there...")), 1)
+					M.show_message(span_notice(text("You notice something moving out of the corner of your eye, but nothing is there...")), 1)
 
 			for(var/obj/W in orange(5,M))
 				if(prob(25) && !W.anchored)
 					step_rand(W)
 
 			var/area/A = get_area(M)
-			if(A.requires_power && !A.always_unpowered && A.power_light && IS_PLAYABLE_LEVEL(A.z))
+			if(A.requires_power && !A.always_unpowered && A.power_light && isPlayerLevel(A.z))
 				affected_areas |= get_area(M)
 
 	affected_mobs |= user
@@ -43,6 +43,6 @@
 
 	sleep(100)
 	for(var/mob/M in affected_mobs)
-		M.show_message(text(SPAN_NOTICE("The chilling wind suddenly stops...")), 1)
+		M.show_message(span_notice(text("The chilling wind suddenly stops...")), 1)
 	affected_mobs.Cut()
 	affected_areas.Cut()

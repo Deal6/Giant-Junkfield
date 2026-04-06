@@ -1,4 +1,4 @@
-/mob/proc/on_mob_jump(var/turf/T)
+/mob/proc/on_mob_jump(turf/T)
 	if (istype(loc, /mob/living/exosuit))
 		var/mob/living/exosuit/M = loc
 		M.forceMove(T)
@@ -9,28 +9,27 @@
 	stop_following()
 	..()
 
-/client/proc/Jump(area_name in SSmapping.all_areas_by_name)
+/client/proc/Jump(area/A in GLOB.map_areas)
 	set name = "Jump to Area"
 	set desc = "Area to jump to"
 	set category = "Admin"
-	if(!check_rights(R_ADMIN|R_MOD|R_DEBUG))
+	if(!check_rights(R_ADMIN|R_DEBUG))
 		return
 
-	var/area/area = SSmapping.all_areas_by_name[area_name]
-	var/new_location = safepick(get_area_turfs(area))
+	var/new_location = safepick(get_area_turfs(A))
 
 	if(new_location)
 		usr.on_mob_jump(new_location)
-		log_admin("[key_name(usr)] jumped to [area]")
-		message_admins("[key_name_admin(usr)] jumped to [area]", 1)
+		log_admin("[key_name(usr)] jumped to [A]")
+		message_admins("[key_name_admin(usr)] jumped to [A]", 1)
 	else
-		alert("Admin jump failed due to missing [area] area turfs.")
+		alert("Admin jump failed due to missing [A] area turfs.")
 
 //allows us to jump to a specific turf
-/client/proc/jumptoturf(var/turf/T in turfs)
+/client/proc/jumptoturf(turf/T in world)
 	set name = "Jump to Turf"
 	set category = "Admin"
-	if(!check_rights(R_ADMIN|R_MOD|R_DEBUG))
+	if(!check_rights(R_ADMIN|R_DEBUG))
 		return
 
 	log_admin("[key_name(usr)] jumped to [T.x],[T.y],[T.z] in [T.loc]")
@@ -40,12 +39,12 @@
 	usr.on_mob_jump(T)
 
 //allows us to jump to a specific mob
-/client/proc/jumptomob(var/mob/M in SSmobs.mob_list | SShumans.mob_list)
+/client/proc/jumptomob(mob/M in SSmobs.mob_list | SShumans.mob_list)
 	set category = "Admin"
 	set name = "Jump to Mob"
 
 
-	if(!check_rights(R_ADMIN|R_MOD|R_DEBUG))
+	if(!check_rights(R_ADMIN|R_DEBUG))
 		return
 
 
@@ -64,7 +63,7 @@
 	set category = "Admin"
 	set name = "Jump to Coordinate"
 
-	if(!check_rights(R_ADMIN|R_MOD|R_DEBUG))
+	if(!check_rights(R_ADMIN|R_DEBUG))
 		return
 
 	if(src.mob)
@@ -77,7 +76,7 @@
 	set category = "Admin"
 	set name = "Jump to Key"
 
-	if(!check_rights(R_ADMIN|R_MOD|R_DEBUG))
+	if(!check_rights(R_ADMIN|R_DEBUG))
 		return
 
 	var/list/keys = list()
@@ -93,11 +92,11 @@
 	usr.on_mob_jump(get_turf(M))
 
 //teleports a mob to our location
-/client/proc/Getmob(var/mob/M in SSmobs.mob_list | SShumans.mob_list)
+/client/proc/Getmob(mob/M in SSmobs.mob_list | SShumans.mob_list)
 	set category = "Admin"
 	set name = "Get Mob"
 	set desc = "Mob to teleport"
-	if(!check_rights(R_ADMIN|R_MOD|R_DEBUG))
+	if(!check_rights(R_ADMIN|R_DEBUG))
 		return
 
 	log_admin("[key_name(usr)] teleported [key_name(M)]")
@@ -110,7 +109,7 @@
 	set name = "Get Key"
 	set desc = "Key to teleport"
 
-	if(!check_rights(R_ADMIN|R_MOD|R_DEBUG))
+	if(!check_rights(R_ADMIN|R_DEBUG))
 		return
 
 	var/list/keys = list()

@@ -1,8 +1,3 @@
-#define JOB_LEVEL_NEVER  4
-#define JOB_LEVEL_LOW    3
-#define JOB_LEVEL_MEDIUM 2
-#define JOB_LEVEL_HIGH   1
-
 /datum/preferences
 	//Since there can only be 1 high job.
 	var/job_high = null
@@ -22,7 +17,7 @@
 	var/job_icon_dir = SOUTH
 	var/job_info_selected_rank
 
-/datum/category_item/player_setup_item/occupation/load_character(var/savefile/S)
+/datum/category_item/player_setup_item/occupation/load_character(savefile/S)
 	from_file(S["alternate_option"], 	pref.alternate_option)
 	from_file(S["job_high"],			pref.job_high)
 	from_file(S["job_medium"],			pref.job_medium)
@@ -33,7 +28,7 @@
 
 	//load_skills()
 
-/datum/category_item/player_setup_item/occupation/save_character(var/savefile/S)
+/datum/category_item/player_setup_item/occupation/save_character(savefile/S)
 	//save_skills()
 
 	to_file(S["alternate_option"],		pref.alternate_option)
@@ -65,7 +60,7 @@
 
 	//pref.skills_allocated = pref.sanitize_skills(pref.skills_allocated)		//this proc also automatically computes and updates points_by_job
 
-	var/jobs_by_type = decls_repository.get_decls(allowed_jobs)
+	var/jobs_by_type = decls_repository.get_decls(GLOB.maps_data.allowed_jobs)
 	for(var/job_type in jobs_by_type)
 		var/datum/job/job = jobs_by_type[job_type]
 		var/alt_title = pref.player_alt_titles[job.title]
@@ -112,7 +107,7 @@
 			if((index < limit) && (lastJob != null))
 				//If the cells were broken up by a job in the splitJob list then it will fill in the rest of the cells with
 				//the last job's selection color. Creating a rather nice effect.
-				for(var/i = 0, i < (limit - index), i += 1)
+				for(var/i = 0; i < (limit - index); i += 1)
 					. += "<tr bgcolor='[lastJob.selection_color]'><td width='40%' align='right'><a>&nbsp</a></td><td><a>&nbsp</a></td></tr>"
 			. += "</table></td><td width='20%'><table width='100%' cellpadding='1' cellspacing='0'>"
 			index = 0
@@ -123,17 +118,18 @@
 		lastJob = job
 		. += "<a href='byond://?src=\ref[src];job_info=[rank]'>\[?\]</a>"
 		var/bad_message = ""
-		if(job.total_positions == 0)
+		var/required_playtime_remaining = job.required_playtime_remaining(user.client)
+		if(job.total_positions == 0 && job.spawn_positions == 0)
 			bad_message = "<b> \[UNAVAILABLE]</b>"
-		else if(jobban_isbanned(user, rank))
+		else if(jobban_isbanned(user.ckey, rank))
 			bad_message = "<b> \[BANNED]</b>"
-		else if(IsGuestKey(user.key) && SSjob.job_to_playtime_requirement[job.title])
+		else if(IsGuestKey(user.key) && job.exp_requirements)
 			bad_message = "<b> \[ACCOUNT REQUIRED] </b>"
-		else if(SSjob.ckey_to_job_to_can_play[user.client.ckey] && !SSjob.ckey_to_job_to_can_play[user.client.ckey][job.title])
-			bad_message = "\[PLAYTIME REQUIRED : [SSjob.job_to_playtime_requirement[job.title]] Minutes as [job.department]]"
-		/*else if(!job.player_old_enough(user.client))
+		else if(required_playtime_remaining)
+			bad_message = "\[PLAYTIME REQUIRED : [required_playtime_remaining] Minutes as [job.get_exp_req_type() || "crew"]]"
+		else if(!job.player_old_enough(user.client))
 			var/available_in_days = job.available_in_days(user.client)
-			bad_message = "\[IN [(available_in_days)] DAYS]"*/
+			bad_message = "\[IN [(available_in_days)] DAYS]"
 		else if(job.minimum_character_age && user.client && (user.client.prefs.age < job.minimum_character_age))
 			bad_message = "\[MINIMUM CHARACTER AGE: [job.minimum_character_age]]"
 		else if(user.client && job.is_setup_restricted(user.client.prefs.setup_options))
@@ -146,8 +142,8 @@
 			. += "<a href='byond://?src=\ref[src];set_skills=[rank]'><del>[rank]</del></a></td><td><font color=black>[bad_message]</font></td></tr>"
 			continue
 
-		//. += (unspent && (current_level != JOB_LEVEL_NEVER) ? "<a class='Points' href='?src=\ref[src];set_skills=[rank]'>" : "<a href='byond://?src=\ref[src];set_skills=[rank]'>")
-		. += (current_level != JOB_LEVEL_NEVER ? "<a class='Points' href='?src=\ref[src];set_skills=[rank]'>" : "<a href='byond://?src=\ref[src];set_skills=[rank]'>")
+		//. += (unspent && (current_level != JOB_LEVEL_NEVER) ? "<a class='Points' href='byond://?src=\ref[src];set_skills=[rank]'>" : "<a href='byond://?src=\ref[src];set_skills=[rank]'>")
+		. += (current_level != JOB_LEVEL_NEVER ? "<a class='Points' href='byond://?src=\ref[src];set_skills=[rank]'>" : "<a href='byond://?src=\ref[src];set_skills=[rank]'>")
 		if((rank in command_positions) || (rank == "AI"))//Bold head jobs
 			. += "<b>[rank]</b>"
 		else
@@ -185,8 +181,35 @@
 
 	. += "<a href='byond://?src=\ref[src];reset_jobs=1'>\[Reset\]</a></center>"
 	. += "</tt><br>"
-	//. += "Jobs that <span class='Points'>look like this</span> have unspent skill points remaining."
+	//. += "Jobs that [span_Points("look like this")] have unspent skill points remaining."
 	. = jointext(.,null)
+
+/datum/category_item/player_setup_item/occupation/proc/get_required_job_playtime(mob/user)
+	var/list/data = list()
+
+	var/list/job_days_left = list()
+	var/list/job_required_experience = list()
+
+	for (var/datum/job/job as anything in SSjob.occupations)
+		var/required_playtime_remaining = job.required_playtime_remaining(user.client)
+		if (required_playtime_remaining)
+			job_required_experience[job.title] = list(
+				"experience_type" = job.get_exp_req_type(),
+				"required_playtime" = required_playtime_remaining,
+			)
+
+			continue
+
+		if (!job.player_old_enough(user.client))
+			job_days_left[job.title] = job.available_in_days(user.client)
+
+	if (job_days_left.len)
+		data["job_days_left"] = job_days_left
+
+	if (job_required_experience)
+		data["job_required_experience"] = job_required_experience
+
+	return data
 
 /datum/category_item/player_setup_item/occupation/OnTopic(href, href_list, user)
 	if(href_list["reset_jobs"])
@@ -262,13 +285,13 @@
 
 	else if(href_list["job_wiki"])
 		var/rank = href_list["job_wiki"]
-		open_link(user,"[config.wikiurl][rank]_Eris[config.language]")
+		open_link(user,"[CONFIG_GET(string/wikiurl)][rank]_Eris[CONFIG_GET(string/language)]")
 
 	return ..()
 
 
 
-/datum/category_item/player_setup_item/occupation/proc/create_job_description(var/mob/user)
+/datum/category_item/player_setup_item/occupation/proc/create_job_description(mob/user)
 	var/datum/job/job
 	//Which job will we show info for?
 
@@ -298,13 +321,12 @@
 
 
 
-	job_desc += "<tr><td style='width: 220px;overflow: hidden;display: inline-block; white-space: nowrap;'>"
+	job_desc += "<tr><td style='width: 220px;overflow: hidden; white-space: nowrap;'>"
 	//The mannequin and its buttons are in their own little mini table, within a fixed width 200px cell
 	var/mob/living/carbon/human/dummy/mannequin/mannequin = job.get_job_mannequin()
-	var/icon/job_icon = getFlatIcon(mannequin, job_icon_dir)
-	job_icon.Scale(job_icon.Width() * 2.5, job_icon.Height() * 2.5)
-	send_rsc(user, job_icon, "job_icon_[job_icon_dir].png")
-	job_desc += "<table style='float:left; height = 270px; table-layout: fixed; vertical-align:top' cellpadding='0' cellspacing='0'><tr><td><img src=job_icon_[job_icon_dir].png width=220 height=220 style='float:left;'></td></tr>"
+	mannequin.dir = job_icon_dir
+	job_desc += "<style>.not_a_naked_man { width: auto; height: 256px; }</style>"
+	job_desc += "<table style='float:left; height: 256px; table-layout: fixed; vertical-align:top' cellpadding='0' cellspacing='0'><tr><td>[ma2html(mannequin, user, extra_classes="not_a_naked_man")]</td></tr>"
 	job_desc += "<tr><td><center><a href='byond://?src=\ref[src];rotate=right'>&lt;&lt;</a> <a href='byond://?src=\ref[src];rotate=left'>&gt;&gt;</a></center></td></tr></table>"
 
 	job_desc += "</td>"
@@ -361,7 +383,7 @@
 
 
 
-	if(config.wikiurl)
+	if(CONFIG_GET(string/wikiurl))
 		job_desc += "<a href='byond://?src=\ref[src];job_info_selected_rank_wiki=[job_info_selected_rank]'>Open wiki page in browser</a>"
 	var/description = job.get_description_blurb()
 	/*if(job.required_education)
@@ -396,7 +418,7 @@
 
 	return 1
 
-/datum/category_item/player_setup_item/occupation/proc/SetJobDepartment(var/datum/job/job, var/level)
+/datum/category_item/player_setup_item/occupation/proc/SetJobDepartment(datum/job/job, level)
 	if(!job || !level)	return 0
 
 	var/current_level = JOB_LEVEL_NEVER
@@ -427,7 +449,7 @@
 
 	return 1
 
-/datum/preferences/proc/CorrectLevel(var/datum/job/job, var/level)
+/datum/preferences/proc/CorrectLevel(datum/job/job, level)
 	if(!job || !level)	return 0
 	switch(level)
 		if(1)
@@ -445,7 +467,7 @@
  */
 /datum/category_item/player_setup_item/proc/prune_job_prefs()
 	var/allowed_titles = list()
-	var/jobs_by_type = decls_repository.get_decls(allowed_jobs)
+	var/jobs_by_type = decls_repository.get_decls(GLOB.maps_data.allowed_jobs)
 	for(var/job_type in jobs_by_type)
 		var/datum/job/job = jobs_by_type[job_type]
 		allowed_titles += job.title
@@ -496,8 +518,3 @@
 
 /datum/preferences/proc/GetPlayerAltTitle(datum/job/job)
 	return (job.title in player_alt_titles) ? player_alt_titles[job.title] : job.title
-
-#undef JOB_LEVEL_NEVER
-#undef JOB_LEVEL_LOW
-#undef JOB_LEVEL_MEDIUM
-#undef JOB_LEVEL_HIGH

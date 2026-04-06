@@ -51,9 +51,9 @@
 	if(init_on_new)
 		init_src()
 
-/datum/trade_station/proc/init_src(var/turf/station_loc = null, var/force_discovered = FALSE)
+/datum/trade_station/proc/init_src(turf/station_loc = null, force_discovered = FALSE)
 	if(name)
-		CRASH("Some retard gived trade station a name before init_src, overriding name_pool. ([type])")
+		CRASH("Somebody gived trade station a name before init_src, overriding name_pool. ([type])")
 	for(var/datum/trade_station/S in SStrade.all_stations)
 		name_pool.Remove(S.name)
 		if(!length(name_pool))
@@ -80,9 +80,9 @@
 		x = rand(forced_overmap_zone[1][1], forced_overmap_zone[1][2])
 		y = rand(forced_overmap_zone[2][1], forced_overmap_zone[2][2])
 	else
-		x = rand(OVERMAP_EDGE, OVERMAP_SIZE)
-		y = rand(OVERMAP_EDGE, OVERMAP_SIZE)
-	place_overmap(min(x, OVERMAP_SIZE - OVERMAP_EDGE), min(y, OVERMAP_SIZE - OVERMAP_EDGE))
+		x = rand(OVERMAP_EDGE, GLOB.maps_data.overmap_size)
+		y = rand(OVERMAP_EDGE, GLOB.maps_data.overmap_size)
+	place_overmap(min(x, GLOB.maps_data.overmap_size - OVERMAP_EDGE), min(y, GLOB.maps_data.overmap_size - OVERMAP_EDGE))
 
 	SStrade.all_stations += src
 	if(start_discovered)
@@ -258,7 +258,7 @@
 					var/list/good_packet = category[item_path]
 					. += good_packet["price"]
 
-/datum/trade_station/proc/add_to_wealth(var/income, is_offer = FALSE)
+/datum/trade_station/proc/add_to_wealth(income, is_offer = FALSE)
 	if(!isnum(income))
 		return
 	wealth += income
@@ -271,7 +271,7 @@
 	if(!recommendation_unlocked)
 		try_recommendation()
 
-/datum/trade_station/proc/subtract_from_wealth(var/cost)
+/datum/trade_station/proc/subtract_from_wealth(cost)
 	if(!isnum(cost))
 		return
 	wealth -= cost
@@ -290,7 +290,7 @@
 	qdel(overmap_location)
 	return ..()
 
-/datum/trade_station/proc/place_overmap(x, y, z = SSmapping.overmap_z)
+/datum/trade_station/proc/place_overmap(x, y, z = GLOB.maps_data.overmap_z)
 	overmap_location = locate(x, y, z)
 
 	overmap_object = new(overmap_location)
@@ -304,7 +304,7 @@
 		GLOB.entered_event.register(overmap_location, src, PROC_REF(discovered))
 
 /datum/trade_station/proc/discovered(_, obj/effect/overmap/ship/ship)
-	if(!istype(ship))
+	if(!istype(ship) || !ship.base)
 		return
 
 	SStrade.discovered_stations |= src

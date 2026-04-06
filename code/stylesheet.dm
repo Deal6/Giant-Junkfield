@@ -1,4 +1,4 @@
-client/script = {"<style>
+/client/script = {"<style>
 body					{font-family: Verdana, sans-serif;}
 
 h1, h2, h3, h4, h5, h6	{color: #0000ff;font-family: Georgia, Verdana, sans-serif;}
@@ -23,7 +23,12 @@ em						{font-style: normal;font-weight: bold;}
 .ooc .elevated			{color: #2e78d9;}
 .ooc .moderator			{color: #184880;}
 .ooc .developer			{color: #1b521f;}
-.ooc .admin				{color: #b82e00;}
+.ooc					{color: #b82e00;}
+.adminobserverooc		{color: #0099cc;	font-weight: bold;}
+.adminooc				{color: #700038;	font-weight: bold;}
+
+.adminsay				{color:	#FF4500;	font-weight: bold;}
+.admin					{color: #386aff;	font-weight: bold;}
 
 /* Admin: Private Messages */
 .pm  .howto				{color: #ff0000;	font-weight: bold;		font-size: 200%;}
@@ -36,6 +41,7 @@ em						{font-style: normal;font-weight: bold;}
 .mod_channel .admin		{color: #b82e00;	font-weight: bold;}
 .admin_channel			{color: #9611D4;	font-weight: bold;}
 .adminticket			{color: #386AFF;	font-weight: bold;}
+.adminticketalt 		{color: #014c8a;	font-weight: bold}
 
 /* Radio: Misc */
 .deadsay				{color: #530FAD;}
@@ -45,18 +51,18 @@ em						{font-style: normal;font-weight: bold;}
 .newscaster				{color: #750000;}
 
 /* Radio Channels */
-.comradio				{color: #193A7A;}
-.syndradio				{color: #6D3F40;}
-.centradio				{color: #5C5C8A;}
-.airadio				{color: #FF00FF;}
-.ntradio				{color: #D4AF37;}
+.comradio				{color: #193A7A;} /* Command */
+.syndradio				{color: #6D3F40;} /* Command */
+.centradio				{color: #5C5C8A;} /* Central command - Not used */
+.airadio				{color: #FF00FF;} /* Ai */
+.ntradio				{color: #D4AF37;} /* NeoTheology */
 
-.secradio				{color: #A30000;}
-.engradio				{color: #A66300;}
-.medradio				{color: #0081A3;}
-.sciradio				{color: #993399;}
-.supradio				{color: #5F4519;}
-.srvradio				{color: #6eaa2c;}
+.secradio				{color: #A30000;} /* Security */
+.engradio				{color: #A66300;} /* Techno */
+.medradio				{color: #0081A3;} /* Medical */
+.sciradio				{color: #993399;} /* Science */
+.supradio				{color: #5F4519;} /* Guild */
+.srvradio				{color: #6eaa2c;} /* Club */
 
 /* Miscellaneous */
 .name					{font-weight: bold;}
@@ -64,7 +70,7 @@ em						{font-style: normal;font-weight: bold;}
 .alert					{color: #ff0000;}
 h1.alert, h2.alert		{color: #000000;}
 
-.emote					{font-style: italic;}
+.emote					{}
 
 /* Game Messages */
 

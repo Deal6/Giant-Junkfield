@@ -71,8 +71,9 @@
 /turf/floor/bluegrid,
 /area/crawler)
 "r" = (
-/obj/structure/safe/floor,
-/obj/spawner/credits/c1000,
+/obj/structure/safe/floor{
+	contents = newlist(/obj/spawner/credits/c1000)
+	},
 /obj/item/tool/crowbar/onestar,
 /turf/floor/tiled/derelict,
 /area/crawler)
@@ -134,7 +135,7 @@
 /area/crawler)
 "Q" = (
 /obj/structure/table/onestar,
-/obj/item/gun/projectile/pistol/type_90,
+/obj/item/gun/projectile/type_90,
 /turf/floor/tiled/derelict/white_small_edges,
 /area/crawler)
 "W" = (

@@ -80,36 +80,34 @@
 			var/used_sound = panel_open ? 'sound/machines/Custom_screwdriveropen.ogg' :  'sound/machines/Custom_screwdriverclose.ogg'
 			if(I.use_tool(user, src, WORKTIME_NEAR_INSTANT, tool_type, FAILCHANCE_VERY_EASY, required_stat = STAT_MEC, instant_finish_tier = 30, forced_sound = used_sound))
 				panel_open = !panel_open
-				to_chat(user, SPAN_NOTICE("You [panel_open ? "open" : "close"] the maintenance panel."))
+				to_chat(user, span_notice("You [panel_open ? "open" : "close"] the maintenance panel."))
 				update_icon()
 			return
 
 	if(istype(I, /obj/item/spacecash))
 		if(istype(I, /obj/item/spacecash/ewallet))
-			to_chat(user, SPAN_WARNING("[src] is cash-only."))
+			to_chat(user, span_warning("[src] is cash-only."))
 			return
 		var/obj/item/spacecash/doshdoshdosh = I
-		to_chat(user, SPAN_NOTICE("You feed [I] to \the [src]."))
+		to_chat(user, span_notice("You feed [I] to \the [src]."))
 		moneyinput += doshdoshdosh.worth
 		qdel(I)
 		return TRUE
 
-	if(istype(I, /obj/item/card/id))
-		to_chat(user, SPAN_WARNING("[src] is cash-only."))
+	if(isidcard(I))
+		to_chat(user, span_warning("[src] is cash-only."))
 		return
 
 	if(sales_paused || !user.unEquip(I))
 		return
 
-	if(I.contents.len)
+	if(length(I.contents))
 		if(istype(I, /obj/item/storage/deferred))
-			var/obj/item/storage/deferred/fillinsides
-			fillinsides.populate_contents()
+			astype(I, /obj/item/storage/deferred).populate_contents()
 		var/success = TRUE
 		if(istype(I, /obj/item/storage/secure))
-			var/obj/item/storage/secure/lockable = I
-			if(lockable.locked)
-				to_chat(user, (SPAN_WARNING("[I] is locked.")))
+			if(astype(I, /obj/item/storage/secure/).locked)
+				to_chat(user, (span_warning("[I] is locked.")))
 				success = FALSE
 		if(success && istype(I, /obj/item/storage))
 			var/obj/item/storage/todump = I
@@ -167,7 +165,7 @@
 /obj/machinery/amerecycler/emag_act(remaining_charges, mob/user, emag_source)
 	. = ..()
 	sales_paused = TRUE
-	to_chat(user, SPAN_NOTICE("[src]'s display flashes red."))
+	to_chat(user, span_notice("[src]'s display flashes red."))
 	update_icon()
 
 /obj/machinery/amerecycler/proc/evaluate_stored_item(obj/evaluated)
@@ -295,7 +293,7 @@
 			var/flat = maxamount*round(amount/maxamount) // some are full if this is positive
 			var/remainder = amount - flat // and one's not if this is positive
 			if(flat)
-				for(var/increment = 1, increment < round(amount/maxamount), increment++)
+				for(var/increment = 1; increment < round(amount/maxamount); increment++)
 					stackspawned = new materialfound.stack_type(get_turf(src))
 					stackspawned.amount = maxamount
 					stackspawned.update_strings()
@@ -520,7 +518,7 @@
 		var/hash = md5("AME"+hashfodder.time) // hash the account name and the creation time of the account
 		var/list/fullpin = list()
 		var/texttoadd
-		for(var/incrementor = 1, length(fullpin) < 6 && incrementor < 99, incrementor++)
+		for(var/incrementor = 1; length(fullpin) < 6 && incrementor < 99; incrementor++)
 			if(length(fullpin) > 3 && prob(10)) // pins can be up to six in length, but also down to four. due to rand(1111, 111111) generation, 4 is <1% and 6 is ~90%.
 				break
 			texttoadd = copytext("[text2ascii(hash,incrementor)]", 2, 3) // grabs the second digit of the byte of the hash corresponding to incrementor
@@ -550,44 +548,44 @@
 		if(istype(I, /obj/item/spacecash/ewallet))
 			var/obj/item/spacecash/ewallet/chargedcard = I
 			chargecard = chargedcard
-			to_chat(user, SPAN_NOTICE("You register [I] with [src]."))
+			to_chat(user, span_notice("You register [I] with [src]."))
 		else if(istype(I, /obj/item/spacecash/bundle))
 			user.remove_from_mob(I, drop = FALSE)
 			I.forceMove(src)
 			PakKash = I
-			to_chat(user, SPAN_NOTICE("You feed [I] to the PakPort on [src]."))
+			to_chat(user, span_notice("You feed [I] to the PakPort on [src]."))
 			spawn(10 SECONDS)
 				if(PakKash && !QDELING(PakKash))
 					PakKash.forceMove(get_turf(src))
 					visible_message("[PakKash] falls out of [src].", "You hear a mute impact with the floor alongside quiet clinking.")
-	if(istype(I, /obj/item/card/id))
-		visible_message("<span class='info'>\The [usr] swipes \the [I] through \the [src].</span>")
+	if(isidcard(I))
+		visible_message(span_info("\The [usr] swipes \the [I] through \the [src]."))
 		var/obj/item/card/id/swiped = I
 		if(!required_access)
 			if(!length(swiped.access) > 0)
-				to_chat(user, SPAN_WARNING("[src] has not been fully initialized!\n Use a door privileged card upon [src] to initialize it."))
+				to_chat(user, span_warning("[src] has not been fully initialized!\n Use a door privileged card upon [src] to initialize it."))
 				return TRUE
 			required_access = swiped.access[1] // just grab the first one and let them reset it for themselves
-			to_chat(user, SPAN_NOTICE("You have set the required access of \the [src] to one of the access codes within [swiped]."))
+			to_chat(user, span_notice("You have set the required access of \the [src] to one of the access codes within [swiped]."))
 			return TRUE
 		var/datum/money_account/accountgot = get_account(swiped.associated_account_number)
 		if(accountgot.security_level != 0)
 			var/attempt_pin = input("Enter pin code", "Silo transaction") as num
 			moneycard = attempt_account_access(swiped.associated_account_number, attempt_pin, 2)
 			if(moneycard)
-				to_chat(user, SPAN_NOTICE("You have logged in to the [accountgot.get_name()] account successfully."))
+				to_chat(user, span_notice("You have logged in to the [accountgot.get_name()] account successfully."))
 		else
 			moneycard = accountgot
-			to_chat(user, SPAN_NOTICE("You have logged in to the [accountgot.get_name()] account."))
+			to_chat(user, span_notice("You have logged in to the [accountgot.get_name()] account."))
 	if(istype(I, /obj/item/stack/material))
 		var/obj/item/stack/material/input = I
 		if(input.material.name in materials_supported)
-			to_chat(user, SPAN_NOTICE("You feed [I] into [src]."))
+			to_chat(user, span_notice("You feed [I] into [src]."))
 			user.remove_from_mob(I, drop = FALSE)
 			I.forceMove(src)
 			PortMats |= I
 		else
-			to_chat(user, SPAN_WARNING("[I] is a material not supported by the AME Network."))
+			to_chat(user, span_warning("[I] is a material not supported by the AME Network."))
 
 
 /obj/machinery/amesilo/Destroy()
@@ -720,7 +718,7 @@
 		var/flat = maxamount*round(amount/maxamount) // some are full if this is positive
 		var/remainder = amount - flat // and one's not if this is positive
 		if(flat)
-			for(var/increment = 0, increment < round(amount/maxamount), increment++)
+			for(var/increment = 0; increment < round(amount/maxamount); increment++)
 				stackspawned = new materialfound.stack_type(location)
 				. += stackspawned
 				stackspawned.amount = maxamount
@@ -777,9 +775,9 @@
 /obj/machinery/amesilo/emag_act(remaining_charges, mob/user, emag_source)
 	. = ..()
 	required_access = null // you bypass the access, surely this means you get all the money?
-	to_chat(user, SPAN_NOTICE("You wipe [src]'s access cache."))
+	to_chat(user, span_notice("You wipe [src]'s access cache."))
 	selleverything() // haha you thought
-	to_chat(user, SPAN_DANGER("You triggered the anti-tamper failsafe!"))
+	to_chat(user, span_danger("You triggered the anti-tamper failsafe!"))
 
 
 /obj/machinery/amesilo/ui_status()
@@ -802,7 +800,12 @@
 		if(istype(otherprime))
 			var/area/A = get_area(otherprime)
 			var/displayed_area = A ? " - [strip_improper(A.name)]" : ""
-			data["otherprimeloc"] = "[otherprime.x]:[otherprime.y], [otherprime.z][displayed_area]"
+			var/obj/map_data/M = GLOB.maps_data.all_levels[otherprime.z]
+			if(M.custom_z_names)
+				data["otherprimeloc"] = "[otherprime.x]:[otherprime.y], [M.custom_z_name(otherprime.z)][displayed_area]"
+			else
+				data["otherprimeloc"] = "[otherprime.x]:[otherprime.y], [otherprime.z][displayed_area]"
+
 		else if(isnull(otherprime))
 			data["otherprimeloc"] = "Prime does not exist, please reset to set Prime."
 		else

@@ -5,6 +5,11 @@
 	desc = "A general purpose Chef's Knife made by Asters Merchant Guild. Guaranteed to stay sharp for years to come."
 	icon = 'icons/obj/kitchen.dmi'
 	icon_state = "knife"
+	item_state = "knife"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/weapons/swords_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/weapons/swords_righthand.dmi',
+		)
 	description_info = "Could be attached to a gun"
 	flags = CONDUCT
 	sharp = TRUE
@@ -25,6 +30,9 @@
 	//spawn values
 	rarity_value = 10
 	spawn_tags = SPAWN_TAG_KNIFE
+
+	//if used on a modgun, it'll create a visible bayonet
+	modular_overlay = "bayonet"
 
 /obj/item/tool/knife/New()
 	..()
@@ -71,6 +79,7 @@
 /obj/item/tool/knife/butch
 	name = "butcher's cleaver"
 	icon_state = "butch"
+	item_state = "butch"
 	desc = "A huge thing used for chopping and chopping up meat. This includes roaches and roach-by-products."
 	force = WEAPON_FORCE_DANGEROUS
 	throwforce = WEAPON_FORCE_NORMAL
@@ -204,7 +213,7 @@
 	if(prob(min(100,(100-L.getarmor(user.targeted_organ, ARMOR_MELEE))+modifier)))
 		var/trans = reagents.trans_to_mob(target, rand(1,3)*reagent_modifier, CHEM_BLOOD)
 		admin_inject_log(user, target, src, reagents.log_list(), trans)
-		to_chat(user, SPAN_NOTICE("You inject [trans] units of the solution. [src] now contains [src.reagents.total_volume] units."))
+		to_chat(user, span_notice("You inject [trans] units of the solution. [src] now contains [src.reagents.total_volume] units."))
 
 /obj/item/tool/knife/butterfly
 	name = "butterfly knife"
@@ -228,7 +237,7 @@
 
 /obj/item/tool/knife/butterfly/turn_on(mob/user)
 	item_state = "[initial(item_state)]_on"
-	to_chat(user, SPAN_NOTICE("You flip out [src]."))
+	to_chat(user, span_notice("You flip out [src]."))
 	playsound(user, 'sound/weapons/flipblade.ogg', 15, 1)
 	edge = TRUE
 	sharp = TRUE
@@ -248,7 +257,7 @@
 	item_state = initial(item_state)
 	attack_verb = list("punched","cracked")
 	playsound(user, 'sound/weapons/flipblade.ogg', 15, 1)
-	to_chat(user, SPAN_NOTICE("You flip [src] back into the handle gracefully."))
+	to_chat(user, span_notice("You flip [src] back into the handle gracefully."))
 	switched_on = FALSE
 	tool_qualities = switched_off_qualities
 	force = initial(force)
@@ -278,7 +287,7 @@
 
 /obj/item/tool/knife/switchblade/turn_on(mob/user)
 	item_state = "[initial(item_state)]_on"
-	to_chat(user, SPAN_NOTICE("You press a button on the handle and [src] slides out."))
+	to_chat(user, span_notice("You press a button on the handle and [src] slides out."))
 	playsound(user, 'sound/weapons/flipblade.ogg', 15, 1)
 	edge = TRUE
 	sharp = TRUE
@@ -298,7 +307,7 @@
 	item_state = initial(item_state)
 	attack_verb = list("punched","cracked")
 	playsound(user, 'sound/weapons/flipblade.ogg', 15, 1)
-	to_chat(user, SPAN_NOTICE("You press the button and [src] swiftly retracts."))
+	to_chat(user, span_notice("You press the button and [src] swiftly retracts."))
 	switched_on = FALSE
 	tool_qualities = switched_off_qualities
 	force = initial(force)
@@ -332,6 +341,10 @@
 	icon_state = "spear_glass"
 	item_state = "spear_glass"
 	wielded_icon = "spear_glass_wielded"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/weapons/polearms_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/weapons/polearms_righthand.dmi',
+		)
 	flags = CONDUCT
 	sharp = TRUE
 	edge = TRUE

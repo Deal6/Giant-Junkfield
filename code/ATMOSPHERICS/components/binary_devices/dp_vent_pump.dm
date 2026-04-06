@@ -41,7 +41,7 @@
 	//2: Do not pass input_pressure_min
 	//4: Do not pass output_pressure_max
 
-/obj/machinery/atmospherics/binary/dp_vent_pump/LateInitialize()
+/obj/machinery/atmospherics/binary/dp_vent_pump/New()
 	..()
 	air1.volume = ATMOS_DEFAULT_VOLUME_PUMP
 	air2.volume = ATMOS_DEFAULT_VOLUME_PUMP
@@ -50,12 +50,12 @@
 /obj/machinery/atmospherics/binary/dp_vent_pump/high_volume
 	name = "Large Dual Port Air Vent"
 
-/obj/machinery/atmospherics/binary/dp_vent_pump/high_volume/LateInitialize()
+/obj/machinery/atmospherics/binary/dp_vent_pump/high_volume/New()
 	..()
 	air1.volume = ATMOS_DEFAULT_VOLUME_PUMP + 800
 	air2.volume = ATMOS_DEFAULT_VOLUME_PUMP + 800
 
-/obj/machinery/atmospherics/binary/dp_vent_pump/update_icon(var/safety = 0)
+/obj/machinery/atmospherics/binary/dp_vent_pump/update_icon(safety = 0)
 	if(!check_icon_cache())
 		return
 
@@ -95,7 +95,7 @@
 			else
 				add_underlay(T, node2, dir)
 
-/obj/machinery/atmospherics/binary/dp_vent_pump/hide(var/i)
+/obj/machinery/atmospherics/binary/dp_vent_pump/hide(i)
 	update_icon()
 	update_underlays()
 

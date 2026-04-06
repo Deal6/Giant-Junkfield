@@ -5,8 +5,6 @@
 	var/list/treatments_item = list()	// list(/obj/item = amount)
 	var/list/treatments_tool = list()	// list(QUALITY_TOOL = FAILCHANCE)
 	var/list/treatments_chem = list()	// list(CE_CHEMEFFECT = strength)
-	var/list/stabilizers_chem = list()	 // like the above, but for stabilizing the wound.
-	var/list/firstaid_type = list()			//list(WE_TREATMENTTYPE = TREATEFFECT)
 	var/datum/internal_wound/scar			// If defined, applies this wound type when successfully treated
 
 	var/diagnosis_stat					// BIO for organic, MEC for robotic
@@ -19,8 +17,6 @@
 	// IWOUND_SPREAD - Allows the wound to spread to another organ
 	// IWOUND_HALLUCINATE - Causes hallucinations
 	// IWOUND_AGGRAVATION - inheritance increases severity gradually if progress IW flag is not present
-	//IWOUND_RECOVER - recovers over time
-	//IWOUND_STASIS - disables certain automatic changes
 	var/characteristic_flag = IWOUND_CAN_DAMAGE|IWOUND_PROGRESS
 
 	var/severity = 0					// How much the wound contributes to internal organ damage
@@ -68,6 +64,7 @@
 
 	START_PROCESSING(SSinternal_wounds, src)
 
+	// TODO: @Mycah142 fix this, make this a macro
 	var/obj/item/organ/O = parent
 	var/obj/item/organ/external/E = O.parent
 	var/mob/living/carbon/human/H = O.owner
@@ -96,10 +93,8 @@
 	if((!parent || O.status & ORGAN_DEAD) && !(characteristic_flag & IWOUND_PROGRESS_DEATH))
 		return PROCESS_KILL
 
-	// Progress if not recovering or in a cryo tube or in stasis
-	if(characteristic_flag & IWOUND_RECOVER)
-		treatment_slow()
-	else if(characteristic_flag & IWOUND_PROGRESS && (H && !(H.bodytemperature < 170 || H.in_stasis)))
+	// Progress if not in a cryo tube or in stasis
+	if(characteristic_flag & IWOUND_PROGRESS && (H && !(H.bodytemperature < 170 || H.in_stasis)))
 		++current_progression_tick
 		if(current_progression_tick >= progression_threshold)
 			current_progression_tick = 0
@@ -108,7 +103,6 @@
 	if(!H)
 		return
 
-	var/stabilized = characteristic_flag & IWOUND_STASIS
 	// Chemical treatment handling
 	var/list/owner_ce = H.chem_effects
 	for(var/chem_effect in owner_ce)
@@ -117,19 +111,14 @@
 			owner_ce[chem_effect] -= treatment_threshold
 			treatment(FALSE)
 			return
-		if(chem_effect in stabilizers_chem)
-			stabilized = TRUE
-	if(stabilized)
-		characteristic_flag &= ~(IWOUND_PROGRESS|IWOUND_PROGRESS_DEATH) // gotta do this somehow
-	else if(severity < severity_max)
-		characteristic_flag |= (initial(characteristic_flag) & (IWOUND_PROGRESS|IWOUND_PROGRESS_DEATH)) // re-add if not stabilized/stasis
 
 	// Spread once
 	if(characteristic_flag & IWOUND_SPREAD)
 		if(severity == spread_threshold)
 			var/list/internal_organs_sans_parent = H.internal_organs.Copy() - O
-			var/obj/item/organ/next_organ = pick(internal_organs_sans_parent)
-			SEND_SIGNAL_OLD(next_organ, COMSIG_IORGAN_ADD_WOUND, type)
+			var/obj/item/organ/next_organ = safepick(internal_organs_sans_parent)
+			if (next_organ)
+				SEND_SIGNAL_OLD(next_organ, COMSIG_IORGAN_ADD_WOUND, type)
 
 	// Deal damage - halloss is handled in shock.dm
 	if(psy_damage)
@@ -166,10 +155,10 @@
 	var/obj/item/organ/O = parent
 	var/obj/item/organ/external/E = parent ? O.parent : null
 	var/mob/living/carbon/human/H = parent ? O.owner : null
+	if(((characteristic_flag & IWOUND_CAN_DAMAGE) || hal_damage) && H)
+		H.custom_pain("Something inside your [E.name] hurts a lot.", 0)
 	if(severity < severity_max)
 		++severity
-		if(((characteristic_flag & IWOUND_CAN_DAMAGE) || hal_damage) && H)
-			H.custom_pain("Something inside your [E.name] hurts a lot.", 0)
 	else
 		characteristic_flag &= ~(IWOUND_PROGRESS|IWOUND_PROGRESS_DEATH)	// Lets us remove the wound from processing
 		if(next_wound && ispath(next_wound, /datum/internal_wound))
@@ -191,7 +180,7 @@
 				S.afterattack(O.owner, user, TRUE)
 			return
 		else
-			to_chat(user, SPAN_WARNING("You cannot draw blood like this."))
+			to_chat(user, span_warning("You cannot draw blood like this."))
 
 	if(!I.tool_qualities || !LAZYLEN(I.tool_qualities))
 		var/charges_needed
@@ -215,7 +204,7 @@
 				qdel(I)
 			if(is_treated)
 				if(free_use)
-					to_chat(user, SPAN_NOTICE("You have managed to waste less [I.name]."))
+					to_chat(user, span_notice("You have managed to waste less [I.name]."))
 				success = TRUE
 	else
 		for(var/tool_quality in treatments_tool)
@@ -228,11 +217,11 @@
 
 	if(user)
 		if(success)
-			to_chat(user, SPAN_NOTICE("You treat the [name] with \the [I]."))
+			to_chat(user, span_notice("You treat the [name] with \the [I]."))
 			if(limb)
 				SSnano.update_user_uis(user, limb)
 		else
-			to_chat(user, SPAN_WARNING("You cannot treat the [name] with \the [I]."))
+			to_chat(user, span_warning("You cannot treat the [name] with \the [I]."))
 
 	return success
 
@@ -240,7 +229,8 @@
 	if(severity > 0 && !used_tool)
 		--severity
 		// If it was turned off by reaching the max, turn it on again.
-		characteristic_flag |= (initial(characteristic_flag) & (IWOUND_PROGRESS|IWOUND_PROGRESS_DEATH))
+		if(initial(characteristic_flag) & IWOUND_PROGRESS)
+			characteristic_flag |= IWOUND_PROGRESS
 	else
 		if(!used_autodoc && scar && ispath(scar, /datum/internal_wound))
 			SEND_SIGNAL_OLD(parent, COMSIG_IORGAN_ADD_WOUND, pick(subtypesof(scar)))
@@ -254,19 +244,6 @@
 		treatment()
 	if(!QDELING(src) && treatmentamount < amount)
 		treatment_slow(amount - treatmentamount)
-
-/datum/internal_wound/proc/first_aid(list/aideffects = list())
-	parent?.owner.visible_message("aid attempt")
-	for(var/totest in aideffects)
-		if(firstaid_type[totest])
-			switch(firstaid_type[totest])
-				if(WOUND_STABLE)
-					characteristic_flag &= ~(IWOUND_PROGRESS|IWOUND_PROGRESS_DEATH)
-					characteristic_flag |= IWOUND_STASIS
-				if(WOUND_RECOVER)
-					characteristic_flag |= IWOUND_RECOVER
-					break // most potent effect should end the loop
-
 
 /datum/internal_wound/proc/apply_effects()
 	var/obj/item/organ/internal/O = parent

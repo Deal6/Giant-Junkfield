@@ -2,7 +2,7 @@
 	var/metabolism_class //CHEM_TOUCH, CHEM_INGEST, or CHEM_BLOOD
 	var/mob/living/carbon/parent
 
-/datum/reagents/metabolism/New(var/max = 100, mob/living/carbon/parent_mob, var/met_class)
+/datum/reagents/metabolism/New(max = 100, mob/living/carbon/parent_mob, met_class)
 	..(max, parent_mob)
 
 	metabolism_class = met_class
@@ -98,7 +98,7 @@
 		for(var/stat in ALL_STATS)
 			parent.stats.removeTempStat(stat, "nsa_breach")
 
-	var/obj/screen/nsa/hud = parent.HUDneed["neural system accumulation"]
+	var/atom/movable/screen/nsa/hud = parent.HUDneed["neural system accumulation"]
 	hud?.update_icon()
 
 /datum/metabolism_effects/proc/nsa_breached_effect()
@@ -246,7 +246,7 @@
 /mob/living/carbon/proc/remove_all_addictions()
 	metabolism_effects.addiction_list.Cut()
 
-/mob/living/carbon/proc/get_metabolism_handler(var/location)
+/mob/living/carbon/proc/get_metabolism_handler(location)
 	if(location == CHEM_TOUCH)
 		return touching
 	else if(location == CHEM_INGEST)

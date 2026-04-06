@@ -3,6 +3,10 @@
 	desc = "Dance my monkeys! DANCE!!!"
 	icon_state = "electropack0"
 	item_state = "electropack"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/misc/devices_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/misc/devices_righthand.dmi',
+		)
 	frequency = 1449
 	flags = CONDUCT
 	slot_flags = SLOT_BACK
@@ -14,7 +18,7 @@
 
 /obj/item/device/radio/electropack/attack_hand(mob/user as mob)
 	if(src == user.back)
-		to_chat(user, SPAN_NOTICE("You need help taking this off!"))
+		to_chat(user, span_notice("You need help taking this off!"))
 		return
 	..()
 
@@ -22,7 +26,7 @@
 	..()
 	if(istype(W, /obj/item/clothing/head/armor/helmet))
 		if(!b_stat)
-			to_chat(user, SPAN_NOTICE("[src] is not ready to be attached!"))
+			to_chat(user, span_notice("[src] is not ready to be attached!"))
 			return
 		var/obj/item/assembly/shock_kit/A = new /obj/item/assembly/shock_kit( user )
 		A.icon = 'icons/obj/assemblies.dmi'
@@ -93,7 +97,7 @@
 				sleep(50)
 				if(M)
 					M.moved_recently = 0
-		to_chat(M, SPAN_DANGER("You feel a sharp shock!"))
+		to_chat(M, span_danger("You feel a sharp shock!"))
 		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 		s.set_up(3, 1, M)
 		s.start()
@@ -110,20 +114,20 @@
 		return
 	user.set_machine(src)
 	var/dat = {"<TT>
-<a href='byond://?src=\ref[src];power=1'>Turn [on ? "Off" : "On"]</A><BR>
+<A href='byond://?src=\ref[src];power=1'>Turn [on ? "Off" : "On"]</A><BR>
 <B>Frequency/Code</B> for electropack:<BR>
 Frequency:
-<a href='byond://?src=\ref[src];freq=-10'>-</A>
-<a href='byond://?src=\ref[src];freq=-2'>-</A> [format_frequency(frequency)]
-<a href='byond://?src=\ref[src];freq=2'>+</A>
-<a href='byond://?src=\ref[src];freq=10'>+</A><BR>
+<A href='byond://?src=\ref[src];freq=-10'>-</A>
+<A href='byond://?src=\ref[src];freq=-2'>-</A> [format_frequency(frequency)]
+<A href='byond://?src=\ref[src];freq=2'>+</A>
+<A href='byond://?src=\ref[src];freq=10'>+</A><BR>
 
 Code:
-<a href='byond://?src=\ref[src];code=-5'>-</A>
-<a href='byond://?src=\ref[src];code=-1'>-</A> [code]
-<a href='byond://?src=\ref[src];code=1'>+</A>
-<a href='byond://?src=\ref[src];code=5'>+</A><BR>
+<A href='byond://?src=\ref[src];code=-5'>-</A>
+<A href='byond://?src=\ref[src];code=-1'>-</A> [code]
+<A href='byond://?src=\ref[src];code=1'>+</A>
+<A href='byond://?src=\ref[src];code=5'>+</A><BR>
 </TT>"}
-	user << browse(dat, "window=radio")
+	user << browse(HTML_SKELETON_TITLE("Electropack",dat), "window=radio")
 	onclose(user, "radio")
 	return

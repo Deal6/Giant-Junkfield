@@ -6,8 +6,12 @@
 	head_position = TRUE
 	aster_guild_member = TRUE
 	department_flag = GUILD | COMMAND
+	exp_requirements = 600
+	exp_required_type_department = DEPARTMENT_GUILD
+	exp_granted_type = EXP_TYPE_CREW
 	faction = "CEV Eris"
 	total_positions = 1
+	spawn_positions = 1
 	supervisors = "your greed"
 	selection_color = "#b3a68c"
 	wage = WAGE_NONE	//Guild merchant draws a salary from the guild account
@@ -69,8 +73,10 @@ Your second loyalty is to the guild. Ensure it retains good relations with priva
 	flag = GUILDTECH
 	department = DEPARTMENT_GUILD
 	department_flag = GUILD
+	exp_granted_type = EXP_TYPE_CREW
 	faction = "CEV Eris"
-	total_positions = 2
+	total_positions = 3
+	spawn_positions = 3
 	supervisors = "the Guild Merchant"
 	selection_color = "#c3b9a6"
 	also_known_languages = list(LANGUAGE_JIVE = 100)
@@ -121,8 +127,10 @@ Your main duties are to keep the local guild branch operational and profitable. 
 	flag = MINER
 	department = DEPARTMENT_GUILD
 	department_flag = GUILD
+	exp_granted_type = EXP_TYPE_CREW
 	faction = "CEV Eris"
-	total_positions = 2
+	total_positions = 4
+	spawn_positions = 4
 	supervisors = "the Guild Merchant"
 	selection_color = "#c3b9a6"
 	wage = WAGE_LABOUR_HAZARD //The miners union is stubborn

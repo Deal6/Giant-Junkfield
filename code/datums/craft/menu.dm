@@ -1,6 +1,3 @@
-/mob/living
-	var/datum/nano_module/craft/CM
-
 //this one is called when you need just a regular CM, without strick tab opened
 /mob/living/verb/craft_menu()
 	set name = "Craft Menu"
@@ -55,7 +52,7 @@
 	if(CR)
 		data["cur_item"] = list(
 			"name" = CR.name,
-			"icon" = SSassets.transport.get_asset_url(sanitizeFileName("[CR.result].png")),
+			"icon" = SSassets.transport.get_asset_url(SANITIZE_FILENAME("[CR.result].png")),
 			"ref"  = "[REF(CR)]",
 			"desc" = CR.get_description(),
 			"batch" = CR.flags & CRAFT_BATCH

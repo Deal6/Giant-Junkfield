@@ -17,7 +17,7 @@ var/global/list/crafting_designs
 	var/warmed_up = FALSE
 	var/mob/living/Crafter
 	var/list/designs = list()
-	categories = list("firearm frames", "firearm grips", "firearm barrels", "pistol mechanisms", "revolver mechanisms", "pump-action mechanisms", "SMG mechanisms", "self-loading mechanisms", ".35 caliber", ".40 caliber", ".20 caliber", ".25 caliber", ".30 caliber", "shotgun shells", "special munitions", "miscellaneous")
+	categories = list("firearm frames", "firearm grips", "firearm barrels", "pistol mechanisms", "revolver mechanisms", "pump-action mechanisms", "SMG mechanisms", "self-loading mechanisms", "bolt-action mechanisms", ".35 caliber", ".40 caliber", ".20 caliber", ".25 caliber", ".30 caliber", "shotgun shells", "special munitions", "miscellaneous")
 
 /obj/machinery/autolathe/crafting_station/Initialize()
 	. = ..()
@@ -38,11 +38,11 @@ var/global/list/crafting_designs
 /obj/machinery/autolathe/crafting_station/design_list()
 	return designs
 
-/obj/machinery/autolathe/crafting_station/nano_ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = NANOUI_FOCUS)
+/obj/machinery/autolathe/crafting_station/nano_ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = NANOUI_FOCUS)
 	..()
 	Crafter = user
 
-/obj/machinery/autolathe/crafting_station/can_print(var/datum/computer_file/binary/design/design_file)
+/obj/machinery/autolathe/crafting_station/can_print(datum/computer_file/binary/design/design_file)
 	if(!Crafter.Adjacent(src))
 		return ERR_DISTANT
 	if(Crafter.incapacitated(INCAPACITATION_DEFAULT) || !(Crafter.machine == src))
@@ -80,7 +80,7 @@ var/global/list/crafting_designs
 					icon_state = "[icon_state]_square"
 				if(".35 caliber", ".40 caliber", ".20 caliber", ".25 caliber", ".30 caliber", "shotgun shells", "special munitions")
 					icon_state = "[icon_state]_points"
-				if("firearm barrels", "pistol mechanisms", "revolver mechanisms", "pump-action mechanisms", "SMG mechanisms", "self-loading mechanisms")
+				if("firearm barrels", "pistol mechanisms", "revolver mechanisms", "pump-action mechanisms", "SMG mechanisms", "self-loading mechanisms", "bolt-action mechanisms")
 					icon_state = "[icon_state]_cut"
 	else if(warmed_up)
 		flick("craft_done", src)

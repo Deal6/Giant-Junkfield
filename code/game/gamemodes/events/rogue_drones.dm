@@ -28,7 +28,7 @@
 		//And thusly, places where they might fire into the ship
 	var/area/spess = locate(/area/space) in world
 	for (var/turf/T in spess)
-		if (!IS_SHIP_LEVEL(T.z))
+		if (!(T.z in GLOB.maps_data.station_levels))
 			continue
 
 		if (locate(/obj/effect/shield) in T)
@@ -57,7 +57,7 @@
 		msg = "Contact has been lost with a combat drone wing operating out of the IHS Atomos. If any are sighted in the area, approach with caution."
 	else
 		msg = "Unidentified hackers have targetted a combat drone wing deployed from the IHS Atomos. If any are sighted in the area, approach with caution."
-	command_announcement.Announce(msg, "Rogue drone alert")
+	priority_announce(msg, "Rogue drone alert")
 
 /datum/event/rogue_drone/start()
 	//Pick a list of spawn locatioons
@@ -80,13 +80,13 @@
 		var/datum/effect/effect/system/spark_spread/sparks = new /datum/effect/effect/system/spark_spread()
 		sparks.set_up(3, 0, D.loc)
 		sparks.start()
-		D.loc = null
+		D.z = GLOB.maps_data.admin_levels[1]
 		D.has_loot = 0
 
 		qdel(D)
 		num_recovered++
 
 	if(num_recovered > drones_list.len * 0.75)
-		command_announcement.Announce("IHS Atomos drone control reports the malfunctioning wing has been recovered safely.", "Rogue drone alert")
+		priority_announce("IHS Atomos drone control reports the malfunctioning wing has been recovered safely.", "Rogue drone alert")
 	else
-		command_announcement.Announce("IHS Atomos drone control registers disappointment at the loss of the drones, but the survivors have been recovered.", "Rogue drone alert")
+		priority_announce("IHS Atomos drone control registers disappointment at the loss of the drones, but the survivors have been recovered.", "Rogue drone alert")

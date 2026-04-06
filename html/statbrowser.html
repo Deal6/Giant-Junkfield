@@ -6,32 +6,63 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link id="goonStyle" rel="stylesheet" type="text/css" href="browserOutput_white.css" media="all" />
 <style>
+.light:root {
+	--scrollbar-base: #f2f2f2;
+	--scrollbar-thumb: #a7a7a7;
+}
+
 body {
 	font-family: Verdana, Geneva, Tahoma, sans-serif;
 	font-size: 12px !important;
-	margin: 5px !important;
-	padding: 2px !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	overflow-x: hidden;
+	overflow-y: scroll;
 }
+
+.dark:root {
+	--scrollbar-base: #181818;
+	--scrollbar-thumb: #363636;
+}
+
 body.dark {
 	background-color: #131313;
-	color: #abc6ec;
+	color: #b2c4dd;
+	scrollbar-base-color: #1c1c1c;
+	scrollbar-face-color: #3b3b3b;
+	scrollbar-3dlight-color: #252525;
+	scrollbar-highlight-color: #252525;
+	scrollbar-track-color: #1c1c1c;
+	scrollbar-arrow-color: #929292;
+	scrollbar-shadow-color: #3b3b3b;
 }
 
 #menu {
-	background-color: white;
+	background-color: #F0F0F0;
+	position: fixed;
+	width: 100%;
+	z-index: 100;
 }
+
 .dark #menu {
-	background-color: #131313;
+	background-color: #202020;
+}
+
+#statcontent {
+	padding: 7px 7px 7px 7px;
 }
 
 a {
 	color: black;
 	text-decoration: none
 }
+
 .dark a {
-	color: #abc6ec;
+	color: #b2c4dd;
 }
-a:hover, .dark a:hover {
+
+a:hover,
+.dark a:hover {
 	text-decoration: underline;
 }
 
@@ -60,67 +91,129 @@ li a:hover:not(.active) {
 
 .button-container {
 	display: inline-flex;
-	flex-wrap: wrap;
+	flex-wrap: wrap-reverse;
 	flex-direction: row;
-	justify-content: flex-start;
 	align-items: flex-start;
-	min-width: 0;
-	min-height: 0;
+	overflow-x: hidden;
 	white-space: pre-wrap;
+	padding: 0 4px;
 }
+
 .button {
-	background-color: #FFFFFE;
-	border-color: rgba(255, 255, 254, 0.5);
-	border-width: 1px;
-	color: black;
-	padding: 7px 14px;
+	background-color: #dfdfdf;
+	border: 1px solid #cecece;
+	border-bottom-width: 2px;
+	color: rgba(0, 0, 0, 0.7);
+	padding: 6px 4px 4px;
 	text-align: center;
 	text-decoration: none;
 	font-size: 12px;
-	margin: 2px 2px;
+	margin: 0;
 	cursor: pointer;
-	border-radius: 10%;
-	transition-duration: 0.25s;
+	transition-duration: 100ms;
 	order: 3;
+	min-width: 40px;
 }
+
 .dark button {
-	background-color: #252525;
-	border-color: rgba(37, 37, 36, 0.5);
-	color: white;
+	background-color: #222222;
+	border-color: #343434;
+	color: rgba(255, 255, 255, 0.5);
 }
+
 .button:hover {
-	border-color: rgba(255, 255, 254, 0.5);
-	background-color: #252525;
-	color: white;
+	background-color: #ececec;
+	transition-duration: 0;
 }
+
 .dark button:hover {
-	border-color: rgba(37, 37, 36, 0.5);
-	background-color: #FFFFFE;
-	color: #252525;
+	background-color: #2e2e2e;
 }
-.button:active, .button.active {
+
+.button:active,
+.button.active {
+	background-color: #ffffff;
+	color: black;
+	border-top-color: #cecece;
+	border-left-color: #cecece;
+	border-right-color: #cecece;
+	border-bottom-color: #ffffff;
+}
+
+.dark .button:active,
+.dark .button.active {
+	background-color: #444444;
+	color: white;
+	border-top-color: #343434;
+	border-left-color: #343434;
+	border-right-color: #343434;
+	border-bottom-color: #ffffff;
+}
+
+.grid-container {
+	margin: -2px;
+	margin-right: -15px;
+}
+
+.grid-item {
+	position: relative;
+	display: inline-block;
+	width: 100%;
+	box-sizing: border-box;
+	overflow: visible;
+	padding: 3px 2px;
+	text-decoration: none;
+}
+
+@media only screen and (min-width: 300px) {
+	.grid-item {
+		width: 50%;
+	}
+}
+
+@media only screen and (min-width: 430px) {
+	.grid-item {
+		width: 33%;
+	}
+}
+
+@media only screen and (min-width: 560px) {
+	.grid-item {
+		width: 25%;
+	}
+}
+
+@media only screen and (min-width: 770px) {
+	.grid-item {
+		width: 20%;
+	}
+}
+
+.grid-item:hover {
+	z-index: 1;
+}
+
+.grid-item:hover .grid-item-text {
+	width: auto;
 	text-decoration: underline;
 }
-.grid-container {
-	display: inline-flex;
-	flex-wrap: wrap;
-	justify-content: flex-start;
-	align-items: flex-start;
-	min-width: 0;
-	min-height: 0;
-	white-space: pre-wrap;
+
+.grid-item-text {
+	display: inline-block;
+	width: 100%;
+	background-color: #ffffff;
+	margin: 0 -6px;
+	padding: 0 6px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	pointer-events: none;
 }
-.grid-item {
-	color: black;
-	width: 150px;
-	font-size: 11px;
-	line-height: 24px;
-	text-align: left;
-	min-width: 0;
-	min-height: 0;
-	white-space: pre-wrap;
-	padding-right: 12px; /* A little more than two spaces, to look good in IE8 where flex-justify does nothing */
+
+.dark .grid-item-text {
+	background-color: #131313;
 }
+
 .link {
 	display: inline;
 	background: none;
@@ -132,68 +225,54 @@ li a:hover:not(.active) {
 	font-size: 13px;
 	margin: 2px 2px;
 }
+
 .dark .link {
 	color: #abc6ec;
 }
+
 .link:hover {
 	text-decoration: underline;
 }
+
+img {
+	-ms-interpolation-mode: nearest-neighbor;
+	image-rendering: pixelated;
+}
+
 </style>
 </head>
 <body>
 <ul id="menu" class="button-container"></ul>
+<div id="under_menu"></div>
 <div id="statcontent"></div>
 <script>
-// Polyfills and compatibility ------------------------------------------------
-var decoder = decodeURIComponent || unescape;
-var addEventListenerKey = (document.addEventListener ? 'addEventListener' : 'attachEvent'); // IE8 handling for Wine users
-var textContentKey = (typeof document.body.textContent != 'undefined') ? 'textContent' : 'innerText';
-if(!Array.prototype.includes) {
-	Array.prototype.includes = function(thing) {
-		for(var i = 0; i < this.length; i++) {
-			if(this[i] == thing) return true;
-		}
-		return false;
-	}
-}
-if (!String.prototype.trim) {
-	String.prototype.trim = function () {
-		return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
-	};
-}
-
 // Browser passthrough code ---------------------------------------------------
 if (window.location) {
-	var anti_spam = []; // wow I wish I could use e.repeat but IE is dumb and doesn't have it.
-	document[addEventListenerKey]("keydown", function(e) {
-		if(e.target && (e.target.localName == "input" || e.target.localName == "textarea"))
+	document.addEventListener("keydown", (e) => {
+		const tag = e.target?.localName;
+		if (tag === "input" || tag === "textarea")
 			return;
-		if(e.defaultPrevented)
-			return; // do e.preventDefault() to prevent this behavior.
-		if(e.which) {
-			if(!anti_spam[e.which]) {
-				anti_spam[e.which] = true;
-				var href = "?__keydown=" + e.which;
-				if(e.ctrlKey === false) href += "&ctrlKey=0"
-				else if(e.ctrlKey === true) href += "&ctrlKey=1"
-				window.location.href = href;
-			}
-		}
+		if (e.defaultPrevented || e.repeat)
+			return;
+
+		let href = "?__keydown=" + encodeURIComponent(e.code);
+		href += "&ctrlKey=" + (e.ctrlKey ? "1" : "0");
+		window.location.href = href;
 	});
-	document[addEventListenerKey]("keyup", function(e) {
-		if(e.target && (e.target.localName == "input" || e.target.localName == "textarea"))
+
+	document.addEventListener("keyup", (e) => {
+		const tag = e.target?.localName;
+		if (tag === "input" || tag === "textarea")
 			return;
-		if(e.defaultPrevented)
+		if (e.defaultPrevented)
 			return;
-		if(e.which) {
-			anti_spam[e.which] = false;
-			var href = "?__keyup=" + e.which;
-			if(e.ctrlKey === false) href += "&ctrlKey=0"
-			else if(e.ctrlKey === true) href += "&ctrlKey=1"
-			window.location.href = href;
-		}
+
+		let href = "?__keyup=" + encodeURIComponent(e.code);
+		href += "&ctrlKey=" + (e.ctrlKey ? "1" : "0");
+		window.location.href = href;
 	});
 }
+
 /* document.addEventListener("mousedown", function(e){
  var shiftPressed=0;
  var evt = e?e:window.event;
@@ -205,9 +284,9 @@ if (window.location) {
 }); */
 
 // Status panel implementation ------------------------------------------------
-var status_tab_parts = [["loading..."]];
+var status_tab_parts = [["Loading..."]];
 var current_tab = null;
-var mc_tab_parts = [["loading...", ""]];
+var mc_tab_parts = [["Loading...", ""]];
 var href_token = null;
 var verb_tabs = [];
 var verbs = [["", ""]]; // list with a list inside
@@ -216,8 +295,11 @@ var inner = "";
 var sqdl2 = [];
 var permanent_tabs = []; // tabs that won't be cleared by wipes
 var turfcontents = [];
+var last_turfcontents_json = null;
 var turfname = "";
 var menu = document.querySelector('#menu');
+var under_menu = document.getElementById('under_menu');
+var statcontentdiv = document.getElementById('statcontent');
 
 function createStatusTab(name) {
 	if(document.getElementById(name) || name.trim() == "")
@@ -227,7 +309,7 @@ function createStatusTab(name) {
 	var B = document.createElement("BUTTON");
 	B.onclick = function() {tab_change(name)};
 	B.id = name;
-	B[textContentKey] = name;
+	B.textContent = name;
 	B.className = "button";
 	//ORDERING ALPHABETICALLY
 	B.style.order = name.charCodeAt(0);
@@ -239,6 +321,7 @@ function createStatusTab(name) {
 	}
 	//END ORDERING
 	menu.appendChild(B);
+	under_menu.style.height = menu.clientHeight + 'px';
 }
 
 function removeStatusTab(name) {
@@ -252,6 +335,7 @@ function removeStatusTab(name) {
 	menu.removeChild(document.getElementById(name));
 	if(document.getElementById(name)) // repeat for duplicates
 		removeStatusTab(name);
+	under_menu.style.height = menu.clientHeight + 'px';
 }
 
 function addPermanentTab(name) {
@@ -269,11 +353,29 @@ function removePermanentTab(name) {
 	removeStatusTab(name);
 }
 
+window.onresize = function () {
+	under_menu.style.height = menu.clientHeight + 'px';
+}
+
 function checkStatusTab() {
 	for(var i=0; i < menu.children.length; i++)
 		if(!verb_tabs.includes(menu.children[i].id) && !permanent_tabs.includes(menu.children[i].id))
 			removeStatusTab(menu.children[i].id);
 }
+
+function sortVerbs() {
+	verbs.sort(function (a, b) {
+		var selector = a[0] == b[0] ? 1 : 0;
+		if (a[selector].toUpperCase() < b[selector].toUpperCase()) {
+			return 1;
+		}
+		else if (a[selector].toUpperCase() > b[selector].toUpperCase()) {
+			return -1;
+		}
+		return 0;
+	})
+}
+
 function add_verb(v) {
 	var to_add = JSON.parse(v);
 	var cat = "";
@@ -391,20 +493,32 @@ function init_verbs(c, v) {
 	}
 }
 
-function update(global_data, personal_data) {
+function update() {
 	status_tab_parts = [];
-	var parsed = JSON.parse(global_data);
-	for(var i = 0; i < parsed.length; i++)
-		if(parsed[i] != null)
-			status_tab_parts.push(parsed[i]);
-	parsed = JSON.parse(personal_data);
-	for(var i = 0; i < parsed.length; i++)
-		if(parsed[i] != null)
-			status_tab_parts.push(parsed[i]);
-	if(current_tab == "Status")
+	var failedParsing = false;
+	for (var i = 0; i < arguments.length; i++) {
+		var dataArray = arguments[i];
+		try {
+			var parsed = JSON.parse(dataArray);
+			for (var j = 0; j < parsed.length; j++) {
+				var item = parsed[j];
+				if (item != null) {
+					status_tab_parts.push(item);
+				}
+			}
+		} catch (e) {
+			failedParsing = true;
+			console.error("failed to parse incoming update. Likely invalid data", e);
+		}
+	}
+	if (failedParsing) {
+		status_tab_parts.push(["\n\nFailed to parse some incoming data from the server."]);
+	}
+	if (current_tab === "Status") {
 		draw_status();
-	else if(current_tab == "Debug Stat Panel")
+	} else if (current_tab === "Debug Stat Panel") {
 		draw_debug();
+	}
 }
 
 function update_mc(global_mc_data, coords_entry, ht) {
@@ -447,64 +561,64 @@ function tab_change(tab) {
 		draw_listedturf();
 	} else {
 		var statcontentdiv = document.getElementById("statcontent");
-		statcontentdiv[textContentKey] = "loading...";
+		statcontentdiv.textContent = "Loading...";
 	}
 	window.location.href = "byond://winset?statbrowser.is-visible=true";
 }
 
 function draw_debug() {
 	var statcontentdiv = document.getElementById("statcontent");
-	statcontentdiv[textContentKey] = "";
+	statcontentdiv.textContent = "";
 	var wipeverbstabs = document.createElement("div");
 	var link = document.createElement("a");
 	link.onclick = function() {wipe_verbs()};
-	link[textContentKey] = "Wipe All Verbs";
+	link.textContent = "Wipe All Verbs";
 	wipeverbstabs.appendChild(link);
 	document.getElementById("statcontent").appendChild(wipeverbstabs);
 	var text = document.createElement("div");
-	text[textContentKey] = "Verb Tabs:";
+	text.textContent = "Verb Tabs:";
 	document.getElementById("statcontent").appendChild(text);
 	var table1 = document.createElement("table");
 	for(var i=0; i < verb_tabs.length ; i++) {
 		var part = verb_tabs[i];
 		var tr = document.createElement("tr");
 		var td1 = document.createElement("td");
-		td1[textContentKey] = part;
+		td1.textContent = part;
 		var a = document.createElement("a");
 		a.onclick = function (part) {
 			return function() {removeStatusTab(part)};
 		}(part);
-		a[textContentKey] = " Delete Tab " + part;
+		a.textContent = " Delete Tab " + part;
 		td1.appendChild(a);
 		tr.appendChild(td1);
 		table1.appendChild(tr);
 	}
 	document.getElementById("statcontent").appendChild(table1);
 	var header2 = document.createElement("div");
-	header2[textContentKey] = "Verbs:";
+	header2.textContent = "Verbs:";
 	document.getElementById("statcontent").appendChild(header2);
 	var table2 = document.createElement("table");
 	for(var v = 0; v < verbs.length; v++) {
 		var part2 = verbs[v];
 		var trr = document.createElement("tr");
 		var tdd1 = document.createElement("td");
-		tdd1[textContentKey] = part2[0];
+		tdd1.textContent = part2[0];
 		var tdd2 = document.createElement("td");
-		tdd2[textContentKey] = part2[1];
+		tdd2.textContent = part2[1];
 		trr.appendChild(tdd1);
 		trr.appendChild(tdd2);
 		table2.appendChild(trr);
 	}
 	document.getElementById("statcontent").appendChild(table2);
 	var text3 = document.createElement("div");
-	text3[textContentKey] = "Permanent Tabs:";
+	text3.textContent = "Permanent Tabs:";
 	document.getElementById("statcontent").appendChild(text3);
 	var table3 = document.createElement("table");
 	for(var i=0; i < permanent_tabs.length ; i++) {
 		var part3 = permanent_tabs[i];
 		var trrr = document.createElement("tr");
 		var tddd1 = document.createElement("td");
-		tddd1[textContentKey] = part3;
+		tddd1.textContent = part3;
 		trrr.appendChild(tddd1);
 		table3.appendChild(trrr);
 	}
@@ -517,7 +631,7 @@ function draw_status() {
 		createStatusTab("Status");
 		current_tab = "Status";
 	}
-	statcontentdiv[textContentKey] = inner;
+	statcontentdiv.textContent = inner;
 	for(var i = 0; i < status_tab_parts.length; i++) {
 		var part = status_tab_parts[i];
 
@@ -566,7 +680,7 @@ function draw_status() {
 					if(current_module_data[1] != null)
 					{
 						var a = document.createElement("a");
-						a[textContentKey] = current_module_data[0];
+						a.textContent = current_module_data[0];
 						a.href = "?_src_=statpanel;statpanel_ref=" + current_module_data[1];
 						module_div.appendChild(a);
 						module_div.appendChild(document.createElement("br"));
@@ -574,10 +688,10 @@ function draw_status() {
 					else
 					{
 						var div = document.createElement("div");
-						div[textContentKey] = current_module_data[0];
+						div.textContent = current_module_data[0];
 						module_div.appendChild(div);
 					}
-					
+
 				}
 				document.getElementById("statcontent").appendChild(module_div);
 			}
@@ -596,7 +710,7 @@ function draw_status() {
 			}
 			var a = document.createElement("a");
 			a.href = "?_src_=statpanel;statpanel_ref=" + part[1];
-			a[textContentKey] = part[0];
+			a.textContent = part[0];
 			document.getElementById("statcontent").appendChild(a);
 
 			var br = document.createElement("br");
@@ -605,7 +719,7 @@ function draw_status() {
 		else
 		{
 			var div = document.createElement("div");
-			div[textContentKey] = part[0];
+			div.textContent = part[0];
 			document.getElementById("statcontent").appendChild(div);
 		}
 	}
@@ -616,21 +730,21 @@ function draw_status() {
 }
 function draw_mc() {
 	var statcontentdiv = document.getElementById("statcontent");
-	statcontentdiv[textContentKey] = "";
+	statcontentdiv.textContent = "";
 	var table = document.createElement("table");
 	for(var i = 0; i < mc_tab_parts.length; i++) {
 		var part = mc_tab_parts[i];
 		var tr = document.createElement("tr");
 		var td1 = document.createElement("td");
-		td1[textContentKey] = part[0];
+		td1.textContent = part[0];
 		var td2 = document.createElement("td");
 		if(part[2]) {
 			var a = document.createElement("a");
-			a.href = "?_src_=vars;admin_token=" + href_token + ";Vars=" + part[2];
-			a[textContentKey] = part[1];
+			a.href = "?_src_=vars;" + href_token + ";Vars=" + part[2];
+			a.textContent = part[1];
 			td2.appendChild(a);
 		} else {
-			td2[textContentKey] = part[1];
+			td2.textContent = part[1];
 		}
 		tr.appendChild(td1);
 		tr.appendChild(td2);
@@ -671,74 +785,108 @@ function create_listedturf(TN) {
 	addPermanentTab(turfname);
 	tab_change(turfname);
 }
+
 function update_listedturf(TC) {
 	turfcontents = JSON.parse(TC);
-	if(current_tab == turfname)
+	if (current_tab === turfname)
 		draw_listedturf();
 }
 
 function draw_listedturf() {
-	var statcontentdiv = document.getElementById("statcontent");
-	statcontentdiv[textContentKey] = "";
-	var table = document.createElement("table");
-	for(var i = 0; i < turfcontents.length; i++) {
-		var part = turfcontents[i];
-		if(part[2]) {
-			var img = document.createElement("img");
-			img.src = part[2];
-			table.appendChild(img);
-		}
-		var b = document.createElement("div");
-		var clickcatcher = "";
-		b.className = "link";
-		b.onmousedown = function (part) {
-			// The outer function is used to close over a fresh "part" variable,
-			// rather than every onmousedown getting the "part" of the last entry.
-			return function(e) {
-				e.preventDefault();
-				clickcatcher = "?src=" + part[1] + ";statpanel_item_click=1";
-				if(e.shiftKey){
-					clickcatcher += ";statpanel_item_shiftclick=1";
-				}
-				if(e.ctrlKey){
-					clickcatcher += ";statpanel_item_ctrlclick=1";
-				}
-				if(e.altKey) {
-					clickcatcher += ";statpanel_item_altclick=1";
-				}
-				window.location.href = clickcatcher;
-			}
-		}(part);
-		b[textContentKey] = part[0];
-		table.appendChild(b);
-		table.appendChild(document.createElement("br"));
-	}
-	document.getElementById("statcontent").appendChild(table);
-}
+	const statcontentdiv = document.getElementById("statcontent");
+	const existingContainer = document.getElementById("turf-container");
 
+	// If the same items are present (by name), only refresh image srcs and refs.
+	// Screen objects from ma2html expire after 5s so refs must be updated each tick,
+	// but clearing the DOM on every tick causes visible flickering.
+	if (existingContainer) {
+		const existingItems = existingContainer.querySelectorAll('.turf-item');
+		if (existingItems.length === turfcontents.length) {
+			let sameStructure = true;
+			for (let i = 0; i < turfcontents.length; i++) {
+				if (existingItems[i].getAttribute('data-turf-name') !== turfcontents[i][0]) {
+					sameStructure = false;
+					break;
+				}
+			}
+			if (sameStructure) {
+				for (let i = 0; i < turfcontents.length; i++) {
+					const ref = turfcontents[i][1];
+					const html = turfcontents[i][2];
+					const item = existingItems[i];
+					item.setAttribute('data-turf-ref', ref);
+					const iconSpan = item.querySelector('.turf-icon');
+					if (iconSpan) {
+						const tmpDiv = document.createElement('div');
+						tmpDiv.innerHTML = html;
+						const newImg = tmpDiv.querySelector('img');
+						const existingImg = iconSpan.querySelector('img');
+						if (newImg && existingImg) {
+							existingImg.src = newImg.src;
+						} else {
+							iconSpan.innerHTML = html;
+						}
+					}
+				}
+				return;
+			}
+		}
+	}
+
+	// Full redraw: item list changed or first render
+	statcontentdiv.textContent = "";
+	const container = document.createElement("div");
+	container.id = "turf-container";
+
+	for (let i = 0; i < turfcontents.length; i++) {
+		const part = turfcontents[i];
+		const label = part[0];
+		const ref = part[1];
+		const html = part[2];
+
+		const b = document.createElement("div");
+		b.className = "link turf-item";
+		b.setAttribute('data-turf-name', label);
+		b.setAttribute('data-turf-ref', ref);
+		b.innerHTML = `<div class="turf-entry-label">${label}</div><span class="turf-icon">${html}</span>`;
+		b.onmousedown = (e) => {
+			e.preventDefault();
+			const currentRef = b.getAttribute('data-turf-ref');
+			let clickcatcher = "?src=" + currentRef + ";statpanel_item_click=1";
+			if (e.shiftKey) clickcatcher += ";statpanel_item_shiftclick=1";
+			if (e.ctrlKey) clickcatcher += ";statpanel_item_ctrlclick=1";
+			if (e.altKey) clickcatcher += ";statpanel_item_altclick=1";
+			window.location.href = clickcatcher;
+		};
+
+		container.appendChild(b);
+	}
+
+	statcontentdiv.appendChild(container);
+}
 function remove_listedturf() {
 	removePermanentTab(turfname);
 	checkStatusTab();
-	if(current_tab == turfname)
+	if (current_tab === turfname)
 		tab_change("Status");
 }
 function draw_sqdl2(){
 	var statcontentdiv = document.getElementById("statcontent");
-	statcontentdiv[textContentKey] = "";
+	statcontentdiv.textContent = "";
 	var table = document.createElement("table");
 	for(var i = 0; i < sqdl2.length; i++) {
 		var part = sqdl2[i];
 		var tr = document.createElement("tr");
 		var td1 = document.createElement("td");
-		td1[textContentKey] = part[0];
+		td1.textContent = part[0];
 		var td2 = document.createElement("td");
 		if(part[2]) {
 			var a = document.createElement("a");
 			a.href = "?src=" + part[2] + ";statpanel_item_click=1";
-			a[textContentKey] = part[1];
+			a.textContent = part[1];
 			td2.appendChild(a);
 		} else {
-			td2[textContentKey] = part[1];
+			td2.textContent = part[1];
 		}
 		tr.appendChild(td1);
 		tr.appendChild(td2);
@@ -746,32 +894,51 @@ function draw_sqdl2(){
 	}
 	document.getElementById("statcontent").appendChild(table);
 }
-function draw_verbs(cat){
-	var statcontentdiv = document.getElementById("statcontent");
-	statcontentdiv[textContentKey] = "";
-	var table = document.createElement("newdiv");
+function draw_verbs(cat) {
+	statcontentdiv.textContent = "";
+	var table = document.createElement("div");
+	var additions = {}; // additional sub-categories to be rendered
 	table.className = "grid-container";
-	var command = ""; // typecast name to string
-	verbs.sort();
+	sortVerbs();
 	verbs.reverse(); // sort verbs backwards before we draw
-	for(var i = verbs.length - 1; i >= 0; i--) {
-		var part = verbs[i]; // should be a list containing category and command
-		if(!part[1]) continue;
-		if(part[0] != cat){
-			continue;
+	for (var i = 0; i < verbs.length; ++i) {
+		var part = verbs[i];
+		var name = part[0];
+		var command = part[1];
+
+		if (command && name.lastIndexOf(cat, 0) != -1 && (name.length == cat.length || name.charAt(cat.length) == ".")) {
+			var subCat = name.lastIndexOf(".") != -1 ? name.split(".")[1] : null;
+			if (subCat && !additions[subCat]) {
+				var newTable = document.createElement("div");
+				newTable.className = "grid-container";
+				additions[subCat] = newTable;
+			}
+
+			var a = document.createElement("a");
+			a.href = "byond://winset?command=" + command.replace(/\s/g, "-");
+			a.className = "grid-item";
+			var t = document.createElement("span");
+			t.textContent = command;
+			t.className = "grid-item-text";
+			a.appendChild(t);
+			(subCat ? additions[subCat] : table).appendChild(a);
 		}
-		if(part[0].trim() == ""){
-			verbs.splice(i, 1);
-			continue;
-		}
-		command = part[1];
-		var a = document.createElement("a");
-		a.href = "byond://winset?command=" + command.replace(/\s/g, "-");
-		a[textContentKey] = command;
-		a.className = "grid-item";
-		table.appendChild(a);
 	}
-	document.getElementById("statcontent").appendChild(table);
+
+	// Append base table to view
+	var content = document.getElementById("statcontent");
+	content.appendChild(table);
+
+	// Append additional sub-categories if relevant
+	for (var cat in additions) {
+		if (additions.hasOwnProperty(cat)) {
+			// do addition here
+			var header = document.createElement("h3");
+			header.textContent = cat;
+			content.appendChild(header);
+			content.appendChild(additions[cat]);
+		}
+	}
 }
 
 function set_theme(which) {
@@ -799,7 +966,7 @@ function set_style_sheet(sheet) {
 	head.appendChild(sheetElement);
 }
 
-document[addEventListenerKey]("click", function(e) {
+document.addEventListener("click", function(e) {
 	window.location.href = "byond://winset?map.focus=true";
 });
 
@@ -823,7 +990,7 @@ function getCookie(cname) {
 	var c = ca[i];
 	while (c.charAt(0)==' ') c = c.substring(1);
 		if (c.indexOf(name) === 0) {
-			return decoder(c.substring(name.length,c.length));
+			return decodeURIComponent(c.substring(name.length,c.length));
 		}
 	}
 	return '';

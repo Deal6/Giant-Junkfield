@@ -40,7 +40,7 @@
 		return
 	health -= severity
 	if(health <= 0)
-		visible_message(SPAN_DANGER("[user] tears open \the [src], spilling its contents everywhere!"), SPAN_DANGER("You tear open the [src], spilling its contents everywhere!"))
+		visible_message(span_danger("[user] tears open \the [src], spilling its contents everywhere!"), span_danger("You tear open the [src], spilling its contents everywhere!"))
 		spill()
 		qdel(src)
 
@@ -49,11 +49,11 @@
 		return
 
 	if(LAZYLEN(contents))
-		to_chat(user, SPAN_WARNING("You can't fold this box with items still inside!"))
+		to_chat(user, span_warning("You can't fold this box with items still inside!"))
 		return
 
 	close_all() // Close open UI windows
-	to_chat(user, SPAN_NOTICE("You fold [src] flat."))
+	to_chat(user, span_notice("You fold [src] flat."))
 	new /obj/item/stack/material/cardboard(get_turf(src))
 	qdel(src)
 
@@ -413,6 +413,10 @@
 	desc = "Box of stuff used to implant death alarms."
 	illustration = "implant"
 	item_state = "syringe_kit"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/equipment/medical_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/equipment/medical_righthand.dmi',
+		)
 	rarity_value = 50
 	prespawned_content_amount = 6
 	prespawned_content_type = /obj/item/implantcase/death_alarm

@@ -22,7 +22,7 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 	. = ..()
 	GLOB.all_crew_records.Remove(src)
 
-/datum/computer_file/report/crew_record/proc/load_from_mob(var/mob/living/carbon/human/H)
+/datum/computer_file/report/crew_record/proc/load_from_mob(mob/living/carbon/human/H)
 	if(istype(H))
 		if(H.job == ASSISTANT_TITLE) // As stowaways, Vagabond do not show up on the crew manifest.
 			GLOB.all_crew_records.Remove(src)
@@ -53,138 +53,41 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 
 	// Medical record
 	set_bloodtype(H ? H.b_type : "Unset")
-	var/datum/preferences/loadedprefs = H?.client?.prefs
-	var/datum/report_field/arrayclump/medRecord = get_linkage_medRecord()
-	if(H)
-		var/list/wounds = list()
-		var/list/prosthetics = list()
-		var/list/scannedlimbs = list()
-		for(var/datum/organ_description/OD in H.species.has_limbs) // default limbs for species
-			if(H.organs_by_name[OD.organ_tag])
-				if(istype(H.organs_by_name[OD.organ_tag], OD.default_type)) // these lists contain abnormalilities, so normalities are skipped.
-					continue
-				else
-					var/obj/item/organ/external/organthing = H.organs_by_name[OD.organ_tag]
-					if(organthing.is_stump())
-						wounds.Add("[organthing.name] instead of [OD.name]")
-					else
-						prosthetics.Add(organthing.name)
-						
-						scannedlimbs.Add(organthing)
-				// TODO: add organ checks once FBPs are better coded
-			else
-				wounds.Add("Missing [OD.name]")
-		var/list/addictions = list()
-		for(var/datum/reagent/addicted in H.metabolism_effects.addiction_list)
-			addictions.Add("Observed addicted to [addicted.name]")
-
-		var/bodystate
-		switch(H.stat)
-			if(DEAD)
-				bodystate = list("Dead at time of writing")
-			if(UNCONSCIOUS)
-				if(H.getOxyLoss() > H.species.total_health/2)
-					bodystate = list("Comatose at time of writing")
-				else
-					bodystate = list("Alive at time of writing")
-			if(CONSCIOUS)
-				bodystate = list("Alive at time of writing")
-
-		medRecord.value["wounds"] = wounds.len ? wounds : list("No wounds on record.")
-		medRecord.value["prosthetics"] = prosthetics.len ? prosthetics :  list("No prosthetics on record.")
-		medRecord.value["Body state"] = bodystate ? bodystate : list("\[Data Missing\]")
-		medRecord.value["chemhistory"] = addictions.len ? addictions : list("Chemical record is clean.")
-		
-		var/list/psychological = list()
-		for(var/datum/perk/profile in H.stats.perks)
-			switch(profile.type)
-				if(PERK_NIHILIST)
-					psychological.Add("Has an empty outlook on life.")
-				if(PERK_MORALIST)
-					psychological.Add("High morale in groups.")
-				if(PERK_DRUG_ADDICT)
-					psychological.Add("Easily addicted, remains addicted indefinitely.")
-				if(PERK_ALCOHOLIC)
-					psychological.Add("Psychologically dependent on alcohol.")
-				if(PERK_REJECTED_GENIUS, PERK_NOBLE)
-					psychological.Add("Mentally destabilized by minor stressing factors.")
-				if(PERK_RAT)
-					psychological.Add("Innately stressed by environments, to some degree.")
-				if(PERK_PAPER_WORM)
-					psychological.Add("Accustomed to over-stress.")
-				if(PERK_OBORIN_SYNDROME)
-					psychological.Add("Innately resilient to mental harm.")
-				if(PERK_LOWBORN, PERK_VAGABOND)
-					psychological |= "Accustomed to bad living conditions."
-				if(PERK_SURVIVOR)
-					psychological.Add("Accustomed to the presence of death.")
-				if(PERK_NEAT)
-					psychological.Add("Accustomed to the presence of grime, and comforted by its removal.")
-				if(PERK_GREEN_THUMB)
-					psychological.Add("Comforted by gardening.")
-				if(PERK_CLUB)
-					psychological.Add("Provides a comfortingly professional presence.")
-				if(PERK_CHAINGUN_SMOKER)
-					psychological.Add("Invigorated by smoking.")
-				if(PERK_CHARMING_PERSONALITY)
-					psychological.Add("Provides a comfortingly charming presence.")
-				if(PERK_HORRIBLE_DEEDS)
-					psychological.Add("UNSETTLING.")
-				if(PERK_TERRIBLE_FATE)
-					psychological.Add("More afraid of death than usual.")
-				if(PERK_BALLS_OF_PLASTEEL)
-					psychological.Add("Higher pain tolerance than otherwise indicated.")
-				if(PERK_ARTIST)
-					psychological.Add("Looks at life as art.")
-
-		medRecord.value["psychological"] = 	psychological.len ? psychological : list("No psychological abnormality at time of writing.")
-	else // if there isn't a human
-		var/datum/storedrecord/medical/default/medrecord = new() // just use the defaults
-		medrecord.transfertocomputer(medRecord)
-		qdel(medrecord)
+	set_medRecord((H && H.med_record && !jobban_isbanned(H.ckey, "Records") ? html_decode(H.med_record) : "No record supplied"))
 
 	// Security record
 	set_criminalStatus(GLOB.default_security_status)
 	set_dna(H ? H.dna_trace : "")
 	set_fingerprint(H ? H.fingers_trace : "")
+	set_secRecord(H && H.sec_record && !jobban_isbanned(H.ckey, "Records") ? html_decode(H.sec_record) : "No record supplied")
+
+	// Employment record
+	var/employment_record = "No record supplied"
+	if(H)
+		if(H.gen_record && !jobban_isbanned(H.ckey, "Records"))
+			employment_record = html_decode(H.gen_record)
+		if(H.client && H.client.prefs)
+			var/list/qualifications
+			if(LAZYLEN(qualifications))
+				employment_record = "[employment_record ? "[employment_record]\[br\]" : ""][jointext(qualifications, "\[br\]>")]"
+	set_emplRecord(employment_record)
+
 
 	if(H)
-		for(var/datum/perk/fate/profile in H.stats.perks)
-			switch(profile)
-				if(PERK_PAPER_WORM)
-					set_emplRecord("Experienced in bureacracy.")
-				if(PERK_FREELANCER)
-					set_emplRecord("Wide variety of employments.")
-				if(PERK_DRUG_ADDICT)
-					set_emplRecord("Has a history of drug addiction.")
-				if(PERK_ALCOHOLIC)
-					set_emplRecord("Is an alcoholic.")
-				if(PERK_NOBLE)
-					set_emplRecord("Is of noble origin.")
-				if(PERK_LOWBORN)
-					set_emplRecord("Was hired from poverty.")
-		if(!get_emplRecord())
-			set_emplRecord("Standard background.")
-	else
-		set_emplRecord("No record supplied.")
+		var/stats = list()
+		for(var/statName in ALL_STATS)
+			var/points = H.stats.getStat(statName,pure = TRUE)
+			if(points > STAT_LEVEL_NONE)
+				stats += "[statName]: [points] ([statPointsToLevel(points)])"
 
-	if(loadedprefs)
-		var/originfound
-		for(var/datum/category_group/setup_option_category/background/origin/OriginBG in loadedprefs.setup_options)
-			if(loadedprefs.loaded_character[OriginBG.name])
-				originfound = OriginBG.name
-				break
-		if(originfound)
-			set_origin(originfound)
-		else
-			set_origin("Origin not on record.")
+		set_skillset(jointext(stats,"\n"))
 
 	// Antag record
 	set_antagRecord(H && H.exploit_record && !jobban_isbanned(H, "Records") ? html_decode(H.exploit_record) : "")
 
 // Global methods
 // Used by character creation to create a record for new arrivals.
-/proc/CreateModularRecord(var/mob/living/carbon/human/H)
+/proc/CreateModularRecord(mob/living/carbon/human/H)
 	var/datum/computer_file/report/crew_record/CR = new/datum/computer_file/report/crew_record()
 	GLOB.all_crew_records.Add(CR)
 	CR.load_from_mob(H)
@@ -193,20 +96,20 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 
 /proc/SortModularRecords()
 	// improved bubble sort
-	if(GLOB.all_crew_records.len > 1) // if list is big enough to sort
-		for(var/i = 1, i <= GLOB.all_crew_records.len, i++) // for each entry in list
-			var/flag = FALSE // define a var as false
-			for(var/j = GLOB.all_crew_records.len-1, j >= 1, j--) // cycle through all entries,
-				var/datum/computer_file/report/crew_record/CR = GLOB.all_crew_records[j] // starting from the one before the last
-				var/datum/computer_file/report/crew_record/CR_NEXT = GLOB.all_crew_records[j+1] // and the last
-				if(sorttext(CR.get_name(), CR_NEXT.get_name()) == 1) // if the one before the last is bigger than the last
-					flag = TRUE // reset the var to true
-					GLOB.all_crew_records.Swap(j,j+1) // and swap the last and the one before the last
-			if(!flag) // if no work was done, stop
+	if(GLOB.all_crew_records.len > 1)
+		for(var/i = 1; i <= GLOB.all_crew_records.len; i++)
+			var/flag = FALSE
+			for(var/j = 1; j <= GLOB.all_crew_records.len - 1; j++)
+				var/datum/computer_file/report/crew_record/CR = GLOB.all_crew_records[j]
+				var/datum/computer_file/report/crew_record/CR_NEXT = GLOB.all_crew_records[j+1]
+				if(sorttext(CR.get_name(), CR_NEXT.get_name()) == -1)
+					flag = TRUE
+					GLOB.all_crew_records.Swap(j,j+1)
+			if(!flag)
 				break
 
 // Gets crew records filtered by set of positions
-/proc/department_crew_manifest(var/list/filter_positions, var/blacklist = FALSE)
+/proc/department_crew_manifest(list/filter_positions, blacklist = FALSE)
 	var/list/matches = list()
 	for(var/datum/computer_file/report/crew_record/CR in GLOB.all_crew_records)
 		var/rank = CR.get_job()
@@ -220,7 +123,7 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 
 // Simple record to HTML (for paper purposes) conversion.
 // Not visually that nice, but it gets the work done, feel free to tweak it visually
-/proc/record_to_html(var/datum/computer_file/report/crew_record/CR, var/access)
+/proc/record_to_html(datum/computer_file/report/crew_record/CR, access)
 	var/dat = "<tt><H2>RECORD DATABASE DATA DUMP</H2><i>Generated on: [stationdate2text()] [stationtime2text()]</i><br>******************************<br>"
 	dat += "<table>"
 	for(var/datum/report_field/F in CR.fields)
@@ -232,18 +135,18 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 	dat += "</tt>"
 	return dat
 
-/proc/get_crewmember_record(var/name)
+/proc/get_crewmember_record(name)
 	for(var/datum/computer_file/report/crew_record/CR in GLOB.all_crew_records)
 		if(CR.get_name() == name)
 			return CR
 	return null
 
-/proc/GetDepartment(var/mob/living/carbon/human/H)
+/proc/GetDepartment(mob/living/carbon/human/H)
 	if(H && H.mind && H.mind.assigned_job)
 		return H.mind.assigned_job.department
 	return "Unassigned"
 
-/proc/GetAssignment(var/mob/living/carbon/human/H)
+/proc/GetAssignment(mob/living/carbon/human/H)
 	if(!H)
 		return "Unassigned"
 	if(!H.mind)
@@ -258,11 +161,7 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 
 #define GETTER_SETTER(PATH, KEY) /datum/computer_file/report/crew_record/proc/get_##KEY(){var/datum/report_field/F = locate(/datum/report_field/##PATH/##KEY) in fields; if(F) return F.get_value()} \
 /datum/computer_file/report/crew_record/proc/set_##KEY(given_value){var/datum/report_field/F = locate(/datum/report_field/##PATH/##KEY) in fields; if(F) F.set_value(given_value)}
-#define SELF_GETTER(PATH, KEY) /datum/computer_file/report/crew_record/proc/get_linkage_##KEY(){return locate(/datum/report_field/##PATH/##KEY) in fields}
 #define SETUP_FIELD(NAME, KEY, PATH, ACCESS, ACCESS_EDIT) GETTER_SETTER(PATH, KEY); /datum/report_field/##PATH/##KEY;\
-/datum/computer_file/report/crew_record/generate_fields(){..(); var/datum/report_field/##KEY = add_field(/datum/report_field/##PATH/##KEY, ##NAME);\
-KEY.set_access(ACCESS, ACCESS_EDIT || ACCESS || access_heads)}
-#define SETUP_ARRAYFIELD(NAME, KEY, PATH, ACCESS, ACCESS_EDIT) SELF_GETTER(PATH, KEY); /datum/report_field/##PATH/##KEY;\
 /datum/computer_file/report/crew_record/generate_fields(){..(); var/datum/report_field/##KEY = add_field(/datum/report_field/##PATH/##KEY, ##NAME);\
 KEY.set_access(ACCESS, ACCESS_EDIT || ACCESS || access_heads)}
 
@@ -275,8 +174,6 @@ KEY.set_access(ACCESS, ACCESS_EDIT || ACCESS || access_heads)}
 #define FIELD_LIST(NAME, KEY, OPTIONS, ACCESS, ACCESS_EDIT) FIELD_LIST_EDIT(NAME, KEY, OPTIONS, ACCESS, ACCESS_EDIT)
 #define FIELD_LIST_EDIT(NAME, KEY, OPTIONS, ACCESS, ACCESS_EDIT) SETUP_FIELD(NAME, KEY, options/crew_record, ACCESS, ACCESS_EDIT);\
 /datum/report_field/options/crew_record/##KEY/get_options(){return OPTIONS}
-#define ARRAYFIELD_SINGLE(NAME, KEY, ACCESS, ACCESS_EDIT) SETUP_ARRAYFIELD(NAME, KEY, array/crew_record, ACCESS, ACCESS_EDIT)
-#define ARRAYFIELD_CLUMP(NAME, KEY, ACCESS, ACCESS_EDIT) SETUP_ARRAYFIELD(NAME, KEY, arrayclump/crew_record, ACCESS, ACCESS_EDIT)
 
 // GENERIC RECORDS
 FIELD_SHORT("Name", name, null, access_change_ids)
@@ -292,17 +189,17 @@ FIELD_NUM("Account",account, null, access_change_ids)
 
 // MEDICAL RECORDS
 FIELD_LIST("Blood Type", bloodtype, GLOB.blood_types, access_moebius, access_moebius)
-ARRAYFIELD_CLUMP("Medical Record", medRecord, access_moebius, access_moebius)
+FIELD_LONG("Medical Record", medRecord, access_moebius, access_moebius)
 
 // SECURITY RECORDS
 FIELD_LIST("Criminal Status", criminalStatus, GLOB.security_statuses, access_security, access_security)
-ARRAYFIELD_SINGLE("Brief", secNotes, access_security, access_security)
+FIELD_LONG("Security Record", secRecord, access_security, access_security)
 FIELD_SHORT("DNA", dna, access_security, access_security)
 FIELD_SHORT("Fingerprint", fingerprint, access_security, access_security)
 
 // EMPLOYMENT RECORDS
 FIELD_LONG("Employment Record", emplRecord, access_heads, access_heads)
-FIELD_LONG("Place of origin", origin, access_heads, access_heads)
+FIELD_LONG("Qualifications", skillset, access_heads, access_heads)
 
 // ANTAG RECORDS
 FIELD_LONG("Exploitable Information", antagRecord, access_syndicate, access_syndicate)
@@ -343,13 +240,9 @@ FIELD_LONG("Exploitable Information", antagRecord, access_syndicate, access_synd
 		. |= BR.name
 */
 #undef GETTER_SETTER
-#undef SELF_GETTER
 #undef SETUP_FIELD
-#undef SETUP_ARRAYFIELD
 #undef FIELD_SHORT
 #undef FIELD_LONG
 #undef FIELD_NUM
 #undef FIELD_LIST
 #undef FIELD_LIST_EDIT
-#undef ARRAYFIELD_SINGLE
-#undef ARRAYFIELD_CLUMP

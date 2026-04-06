@@ -10,7 +10,7 @@
 	status_flags = PASSEMOTES
 	a_intent = I_HURT
 	mob_size = MOB_GIGANTIC
-	can_be_fed = 0
+	can_be_fed = FALSE
 	defaultHUD = "exosuits"
 	bad_type = /mob/living/exosuit
 
@@ -66,23 +66,23 @@
 	injury_type = INJURY_TYPE_UNLIVING // Has no soft vitals, but also contains delicate electronics
 
 // Interface stuff.
-	var/list/hud_elements = list()
+	var/list/atom/movable/hud_elements = list()
 	var/list/hardpoint_hud_elements = list()
-	var/obj/screen/movable/exosuit/health/hud_health
-	var/obj/screen/movable/exosuit/toggle/hatch_open/hud_open
-	var/obj/screen/movable/exosuit/power/hud_power
-	var/obj/screen/movable/exosuit/heat/hud_heat
-	var/obj/screen/movable/exosuit/toggle/power_control/hud_power_control
-	var/obj/screen/movable/exosuit/toggle/camera/hud_camera
+	var/atom/movable/screen/movable/exosuit/health/hud_health
+	var/atom/movable/screen/movable/exosuit/toggle/hatch_open/hud_open
+	var/atom/movable/screen/movable/exosuit/power/hud_power
+	var/atom/movable/screen/movable/exosuit/heat/hud_heat
+	var/atom/movable/screen/movable/exosuit/toggle/power_control/hud_power_control
+	var/atom/movable/screen/movable/exosuit/toggle/camera/hud_camera
 
 	var/power = MECH_POWER_OFF
 
 	// Strafing - Is the mech currently strafing?
 	var/strafing = FALSE
 
-/mob/living/exosuit/show_message(msg, type, alt, alt_type)
+/mob/living/exosuit/show_message(msg, type, alt, alt_type, avoid_highlighting = FALSE, no_text_limit = FALSE)
 	for(var/mob/i in pilots)
-		i.show_message(msg, type, alt, alt_type)
+		i.show_message(msg, type, alt, alt_type, avoid_highlighting, no_text_limit)
 
 /mob/living/exosuit/proc/occupant_message(msg as text)
 	for(var/mob/i in pilots)
@@ -90,7 +90,7 @@
 
 /mob/living/exosuit/proc/toggle_power(mob/living/user)
 	if(power == MECH_POWER_TRANSITION)
-		to_chat(user, SPAN_NOTICE("Power transition in progress. Please wait."))
+		to_chat(user, span_notice("Power transition in progress. Please wait."))
 	else if(power == MECH_POWER_ON) //Turning it off is instant
 		playsound(src, 'sound/mechs/mech-shutdown.ogg', 100, 0)
 		power = MECH_POWER_OFF
@@ -102,11 +102,11 @@
 			playsound(src, 'sound/mechs/nominal.ogg', 50, 0)
 			power = MECH_POWER_ON
 		else
-			to_chat(user, SPAN_WARNING("You abort the powerup sequence."))
+			to_chat(user, span_warning("You abort the powerup sequence."))
 			power = MECH_POWER_OFF
 		//hud_power_control?.queue_icon_update()
 	else
-		to_chat(user, SPAN_WARNING("Error: No power cell was detected."))
+		to_chat(user, span_warning("Error: No power cell was detected."))
 
 
 
@@ -115,7 +115,7 @@
 	. = (body && body.pilot_coverage >= 100 && hatch_closed) ? FALSE : ..()
 */
 
-/mob/living/exosuit/Initialize(mapload, var/obj/structure/heavy_vehicle_frame/source_frame)
+/mob/living/exosuit/Initialize(mapload, obj/structure/heavy_vehicle_frame/source_frame)
 	. = ..()
 
 	material = get_material_by_name("[material]")
@@ -217,27 +217,27 @@
 		var/damage_string = thing.get_damage_string()
 		extra_description += "\nIts [thing.name] [thing.gender == PLURAL ? "are" : "is"] [damage_string]."
 	extra_description += "\nIt menaces with reinforcements of [material]."
-	extra_description += SPAN_NOTICE("\nYou can remove people inside by HARM intent clicking with your hand. The hatch must be opened.")
-	extra_description += SPAN_NOTICE("\nYou can eject any module from its UI by CtrlClicking the hardpoint button.")
-	extra_description += SPAN_NOTICE("\nA multitool can be used on HELP intent to remove module from hardpoints, or on any other intent to start unlocking the mech through hacking.")
+	extra_description += span_notice("\nYou can remove people inside by HARM intent clicking with your hand. The hatch must be opened.")
+	extra_description += span_notice("\nYou can eject any module from its UI by CtrlClicking the hardpoint button.")
+	extra_description += span_notice("\nA multitool can be used on HELP intent to remove module from hardpoints, or on any other intent to start unlocking the mech through hacking.")
 	if(body.storage_compartment)
-		extra_description += SPAN_NOTICE("\nYou can acces its internal storage by click-dragging onto your character.")
+		extra_description += span_notice("\nYou can acces its internal storage by click-dragging onto your character.")
 	if(body && body.cell_charge_rate)
-		extra_description += SPAN_NOTICE("\nThis mech can recharge any cell storaged in its internal storage at a rate of [body.cell_charge_rate].")
+		extra_description += span_notice("\nThis mech can recharge any cell storaged in its internal storage at a rate of [body.cell_charge_rate].")
 	if(arms && arms.can_force_doors)
-		extra_description += SPAN_NOTICE("\nThe arms on this mech can force open any unbolted door.")
+		extra_description += span_notice("\nThe arms on this mech can force open any unbolted door.")
 	if(locate(/obj/item/mech_equipment/mounted_system/ballistic) in contents)
-		extra_description += SPAN_NOTICE("\nYou can insert ammo into any ballistic weapon by attacking this with ammunition.")
+		extra_description += span_notice("\nYou can insert ammo into any ballistic weapon by attacking this with ammunition.")
 	if(locate(/obj/item/mech_equipment/auto_mender) in contents)
-		extra_description += SPAN_NOTICE("\nYou can refill its auto mender by attacking the mech with trauma kits.")
+		extra_description += span_notice("\nYou can refill its auto mender by attacking the mech with trauma kits.")
 	if(locate(/obj/item/mech_equipment/forklifting_system) in contents)
-		extra_description += SPAN_NOTICE("\nYou can remove objects from this mech's forklifting system by using grab intent.")
+		extra_description += span_notice("\nYou can remove objects from this mech's forklifting system by using grab intent.")
 	if(locate(/obj/item/mech_equipment/towing_hook) in contents)
-		extra_description += SPAN_NOTICE("\nYou can remove objects from this mech's towing system by using grab intent.")
+		extra_description += span_notice("\nYou can remove objects from this mech's towing system by using grab intent.")
 	if(locate(/obj/item/mech_equipment/power_generator/fueled) in contents)
-		extra_description += SPAN_NOTICE("\nYou can refill the mounted power generators by attacking \the [src] with the fuel they use.")
+		extra_description += span_notice("\nYou can refill the mounted power generators by attacking \the [src] with the fuel they use.")
 	if(locate(/obj/item/mech_equipment/power_generator/fueled/welding) in contents)
-		extra_description += SPAN_NOTICE("\nYou can drain from the mounted fuel welding fuel generator by attacking with a beaker on GRAB intent")
+		extra_description += span_notice("\nYou can drain from the mounted fuel welding fuel generator by attacking with a beaker on GRAB intent")
 	..(user, extra_description)
 
 /mob/living/exosuit/return_air()

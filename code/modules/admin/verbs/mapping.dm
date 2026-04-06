@@ -26,15 +26,15 @@ var/intercom_range_display_status = 0
 	icon = 'icons/480x480.dmi'
 	icon_state = "25percent"
 
-	New()
-		src.pixel_x = -224
-		src.pixel_y = -224
+/obj/effect/debugging/camera_range/New()
+	src.pixel_x = -224
+	src.pixel_y = -224
 
 /obj/effect/debugging/marker
 	icon = 'icons/turf/areas.dmi'
 	icon_state = "yellow"
 
-/obj/effect/debugging/marker/Move(NewLoc, Dir = 0, step_x = 0, step_y = 0, var/glide_size_override = 0)
+/obj/effect/debugging/marker/Move(NewLoc, Dir = 0, step_x = 0, step_y = 0, glide_size_override = 0)
 	return 0
 
 /client/proc/do_not_use_these()
@@ -56,7 +56,7 @@ var/intercom_range_display_status = 0
 		qdel(C)
 
 	if(camera_range_display_status)
-		for(var/obj/machinery/camera/C in cameranet.cameras)
+		for(var/obj/machinery/camera/C in GLOB.cameranet.cameras)
 			new/obj/effect/debugging/camera_range(C.loc)
 
 
@@ -68,7 +68,7 @@ var/intercom_range_display_status = 0
 
 	var/list/obj/machinery/camera/CL = list()
 
-	for(var/obj/machinery/camera/C in cameranet.cameras)
+	for(var/obj/machinery/camera/C in GLOB.cameranet.cameras)
 		CL += C
 
 	var/output = {"<B>CAMERA ANNOMALITIES REPORT</B><HR>
@@ -95,7 +95,7 @@ var/intercom_range_display_status = 0
 					output += "<li><font color='red'>Camera not connected to wall at \[[C1.x], [C1.y], [C1.z]\] ([C1.loc.loc]) Network: [C1.network]</color></li>"
 
 	output += "</ul>"
-	usr << browse(output,"window=airreport;size=1000x500")
+	usr << browse(HTML_SKELETON_TITLE("Security Camera Report", output),"window=airreport;size=1000x500")
 
 
 /client/proc/intercom_view()
@@ -138,7 +138,7 @@ var/intercom_range_display_status = 0
 	var/usedZAScolors = 0
 	var/list/image/ZAScolors = list()
 
-/client/proc/recurse_zone(var/zone/Z, var/recurse_level =1)
+/client/proc/recurse_zone(datum/zone/Z, recurse_level =1)
 	testZAScolors_zones += Z
 	if(recurse_level > 10)
 		return
@@ -147,8 +147,8 @@ var/intercom_range_display_status = 0
 	for(var/turf/T in Z.contents)
 		images += image(yellow, T, "zasdebug", LIGHTING_LAYER)
 		testZAScolors_turfs += T
-	for(var/connection_edge/zone/edge in Z.edges)
-		var/zone/connected = edge.get_connected_zone(Z)
+	for(var/datum/connection_edge/zone/edge in Z.edges)
+		var/datum/zone/connected = edge.get_connected_zone(Z)
 		if(connected in testZAScolors_zones)
 			continue
 		recurse_zone(connected,recurse_level+1)
@@ -164,7 +164,7 @@ var/intercom_range_display_status = 0
 	var/turf/location = get_turf(usr)
 
 	if(!istype(location, /turf)) // We're in space, let's not cause runtimes.
-		to_chat(usr, "\red this debug tool cannot be used from space")
+		to_chat(usr, span_red("this debug tool cannot be used from space"))
 		return
 
 	var/icon/red = new('icons/misc/debug_group.dmi', "red")		//created here so we don't have to make thousands of these.
@@ -183,14 +183,14 @@ var/intercom_range_display_status = 0
 	for(var/turf/T in location.zone.contents)
 		images += image(green, T, "zasdebug", LIGHTING_LAYER)
 		testZAScolors_turfs += T
-	for(var/connection_edge/zone/edge in location.zone.edges)
-		var/zone/Z = edge.get_connected_zone(location.zone)
+	for(var/datum/connection_edge/zone/edge in location.zone.edges)
+		var/datum/zone/Z = edge.get_connected_zone(location.zone)
 		testZAScolors_zones += Z
 		for(var/turf/T in Z.contents)
 			images += image(blue, T, "zasdebug", LIGHTING_LAYER)
 			testZAScolors_turfs += T
-		for(var/connection_edge/zone/z_edge in Z.edges)
-			var/zone/connected = z_edge.get_connected_zone(Z)
+		for(var/datum/connection_edge/zone/z_edge in Z.edges)
+			var/datum/zone/connected = z_edge.get_connected_zone(Z)
 			if(connected in testZAScolors_zones)
 				continue
 			recurse_zone(connected,1)
@@ -282,80 +282,18 @@ var/intercom_range_display_status = 0
 
 	to_chat(world, "There are [count] objects of type [type_path] in the game world")
 
-
-
-var/global/prevent_airgroup_regroup = 0
-
-/client/proc/break_all_air_groups()
-	set category = "Mapping"
-	set name = "Break All Airgroups"
-
-	/*prevent_airgroup_regroup = 1
-	for(var/datum/air_group/AG in SSair.air_groups)
-		AG.suspend_group_processing()
-	message_admins("[src.ckey] used 'Break All Airgroups'")*/
-
-/client/proc/regroup_all_air_groups()
-	set category = "Mapping"
-	set name = "Regroup All Airgroups Attempt"
-
-	to_chat(usr, "\red Proc disabled.")
-
-	/*prevent_airgroup_regroup = 0
-	for(var/datum/air_group/AG in SSair.air_groups)
-		AG.check_regroup()
-	message_admins("[src.ckey] used 'Regroup All Airgroups Attempt'")*/
-
-/client/proc/kill_pipe_processing()
-	set category = "Mapping"
-	set name = "Kill pipe processing"
-
-	to_chat(usr, "\red Proc disabled.")
-
-	/*pipe_processing_killed = !pipe_processing_killed
-	if(pipe_processing_killed)
-		message_admins("[src.ckey] used 'kill pipe processing', stopping all pipe processing.")
-	else
-		message_admins("[src.ckey] used 'kill pipe processing', restoring all pipe processing.")*/
-
-/client/proc/kill_air_processing()
-	set category = "Mapping"
-	set name = "Kill air processing"
-
-	to_chat(usr, "\red Proc disabled.")
-
-	/*air_processing_killed = !air_processing_killed
-	if(air_processing_killed)
-		message_admins("[src.ckey] used 'kill air processing', stopping all air processing.")
-	else
-		message_admins("[src.ckey] used 'kill air processing', restoring all air processing.")*/
-
-//This proc is intended to detect lag problems relating to communication procs
-var/global/say_disabled = 0
-/client/proc/disable_communication()
-	set category = "Mapping"
-	set name = "Disable all communication verbs"
-
-	to_chat(usr, "\red Proc disabled.")
-
-	/*say_disabled = !say_disabled
-	if(say_disabled)
-		message_admins("[src.ckey] used 'Disable all communication verbs', killing all communication methods.")
-	else
-		message_admins("[src.ckey] used 'Disable all communication verbs', restoring all communication methods.")*/
+GLOBAL_VAR_INIT(say_disabled, FALSE)
 
 //This proc is intended to detect lag problems relating to movement
-var/global/movement_disabled = 0
-var/global/movement_disabled_exception //This is the client that calls the proc, so he can continue to run around to gauge any change to lag.
+GLOBAL_VAR_INIT(movement_disabled, FALSE)
+GLOBAL_VAR(movement_disabled_exception) //This is the client that calls the proc, so he can continue to run around to gauge any change to lag.
 /client/proc/disable_movement()
 	set category = "Mapping"
 	set name = "Disable all movement"
 
-	to_chat(usr, "\red Proc disabled.")
-
-	/*movement_disabled = !movement_disabled
-	if(movement_disabled)
+	GLOB.movement_disabled = !GLOB.movement_disabled
+	if(GLOB.movement_disabled)
 		message_admins("[src.ckey] used 'Disable all movement', killing all movement.")
-		movement_disabled_exception = usr.ckey
+		GLOB.movement_disabled_exception = usr.ckey
 	else
-		message_admins("[src.ckey] used 'Disable all movement', restoring all movement.")*/
+		message_admins("[src.ckey] used 'Disable all movement', restoring all movement.")

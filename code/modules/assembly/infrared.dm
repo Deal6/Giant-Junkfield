@@ -75,7 +75,7 @@
 	..()
 
 
-/obj/item/device/assembly/infra/Move(NewLoc, Dir = 0, step_x = 0, step_y = 0, var/glide_size_override = 0)
+/obj/item/device/assembly/infra/Move(NewLoc, Dir = 0, step_x = 0, step_y = 0, glide_size_override = 0)
 	var/t = dir
 	. = ..()
 	set_dir(t)
@@ -92,7 +92,7 @@
 	if((!secured)||(!on)||(cooldown > 0))	return 0
 	pulse(0)
 	if(!holder)
-		visible_message("\icon[src] *beep* *beep*")
+		visible_message("[icon2html(src, hearers(get_turf(src)))] *beep* *beep*")
 	cooldown = 2
 	spawn(10)
 		process_cooldown()
@@ -109,7 +109,7 @@
 		<br><br><a href='byond://?src=\ref[src];refresh=1'>Refresh</a>
 		<br><br><a href='byond://?src=\ref[src];close=1'>Close</a>
 	"}
-	user << browse(dat, "window=infra")
+	user << browse(HTML_SKELETON_TITLE("Infrared Laser", dat), "window=infra")
 	onclose(user, "infra")
 
 

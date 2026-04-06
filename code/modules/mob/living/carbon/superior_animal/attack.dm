@@ -7,12 +7,13 @@
 
 	var/damage
 
-	if(attackdamage) // this allows damage to be overridden, for special cases like the end of the platinum golem's charge
+	// attackdamage is actulaly params passed from Clickon which is a string, that is not useful to us, so only check if this is a number
+	if(isnum(attackdamage)) // this allows damage to be overridden, for special cases like the end of the platinum golem's charge
 		damage = attackdamage
 	else
 		damage = rand(melee_damage_lower, melee_damage_upper)
 
-	. = A.attack_generic(src, damage, pick(attacktext), environment_smash, melee_sharp, melee_edge, wound_mult)
+	. = A.attack_generic(src, damage, pick(attacktext), environment_smash, melee_sharp, melee_edge, wound_mult, FALSE)
 	if(.)
 		if (attack_sound && loc && prob(attack_sound_chance))
 			playsound(loc, attack_sound, attack_sound_volume, 1)
@@ -46,7 +47,7 @@
 
 /mob/living/carbon/superior_animal/proc/OpenFire(target_mob)
 	var/target = target_mob
-	visible_message(SPAN_DANGER("<b>[src]</b> [fire_verb] at [target]!"), 1)
+	visible_message(span_danger("<b>[src]</b> [fire_verb] at [target]!"), 1)
 
 	if(rapid)
 		spawn(1)
@@ -70,7 +71,7 @@
 	target_mob = null
 	return
 
-/mob/living/carbon/superior_animal/proc/Shoot(var/target, var/start, var/user, var/bullet = 0)
+/mob/living/carbon/superior_animal/proc/Shoot(target, start, user, bullet = 0)
 	if(target == start)
 		return
 

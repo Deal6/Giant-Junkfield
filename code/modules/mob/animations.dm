@@ -7,22 +7,16 @@ currently only humans get dizzy
 value of dizziness ranges from 0 to 1000
 below 100 is not dizzy
 */
-
-/mob/proc/make_dizzy(var/amount)
+/mob/proc/make_dizzy(amount)
 	return
 
 // for the moment, only humans get dizzy
-/mob/living/carbon/human/make_dizzy(var/amount)
+/mob/living/carbon/human/make_dizzy(amount)
 	dizziness = min(1000, dizziness + amount)	// store what will be new value
 													// clamped to max 1000
 	if(dizziness > 100 && !is_dizzy)
 		spawn(0)
 			dizzy_process()
-
-
-/mob/living/carbon
-	var/dizziness = 0
-	var/is_dizzy = 0
 
 /*
 dizzy process - wiggles the client's pixel offset over time
@@ -33,26 +27,27 @@ note dizziness decrements automatically in the mob's Life() proc.
 	is_dizzy = 1
 	while(dizziness > 100)
 		if(client)
-			var/amplitude = dizziness*(sin(dizziness * 0.044 * world.time) + 1) / 70
-			client.pixel_x = amplitude * sin(0.008 * dizziness * world.time)
-			client.pixel_y = amplitude * cos(0.008 * dizziness * world.time)
+			var/amplitude = dizziness * (sin(dizziness * 0.044 * world.time) + 1) / 70
+			var/iforgor = 0.004
+			if(resting)
+				iforgor *= 1.5
+				dizziness -= 2
 
+			var/target_x = amplitude * sin(iforgor * dizziness * world.time)
+			var/target_y = amplitude * cos(iforgor * dizziness * world.time)
+			animate(client, pixel_x = target_x, pixel_y = target_y, time = 1, easing = QUAD_EASING | EASE_OUT)
 		sleep(1)
 	//endwhile - reset the pixel offsets to zero
 	is_dizzy = 0
 	if(client)
-		client.pixel_x = 0
-		client.pixel_y = 0
+		animate(client, pixel_x = 0, pixel_y = 0, time = 2, easing = QUAD_EASING | EASE_OUT)
+
 
 // jitteriness - copy+paste of dizziness
-/mob/proc/make_jittery(var/amount)
+/mob/proc/make_jittery(amount)
 	return
 
-/mob/living/carbon
-	var/is_jittery = 0
-	var/jitteriness = 0
-
-/mob/living/carbon/human/make_jittery(var/amount)
+/mob/living/carbon/human/make_jittery(amount)
 	jitteriness = min(1000, jitteriness + amount)	// store what will be new value
 													// clamped to max 1000
 	if(jitteriness > 100 && !is_jittery)
@@ -79,9 +74,11 @@ note dizziness decrements automatically in the mob's Life() proc.
 /mob/var/is_floating = 0
 /mob/var/floatiness = 0
 
-//You can pass in true or false in a case where you've already done the calculations and can skip some checking here
-//Its perfectly fine to call this proc with no input, it will figure out what it needs to do
-/mob/proc/update_floating(var/setstate = null)
+/**
+ * You can pass in true or false in a case where you've already done the calculations and can skip some checking here
+ * Its perfectly fine to call this proc with no input, it will figure out what it needs to do
+ */
+/mob/proc/update_floating(setstate = null)
 	if (!isnull(setstate))
 		make_floating(setstate)
 		return
@@ -97,7 +94,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 	make_floating(1)
 	return
 
-/mob/proc/make_floating(var/n)
+/mob/proc/make_floating(n)
 	floatiness = n
 
 	if(floatiness && !is_floating)
@@ -109,8 +106,10 @@ note dizziness decrements automatically in the mob's Life() proc.
 
 	is_floating = 1
 
-	var/amplitude = 2 //maximum displacement from original position
-	var/period = 36 //time taken for the mob to go up >> down >> original position, in deciseconds. Should be multiple of 4
+	/// maximum displacement from original position
+	var/amplitude = 2
+	/// time taken for the mob to go up >> down >> original position, in deciseconds. Should be multiple of 4
+	var/period = 36
 
 	var/top = default_pixel_y + amplitude
 	var/bottom = default_pixel_y - amplitude
@@ -126,7 +125,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 	//reset the pixel offsets to zero
 	is_floating = 0
 
-/atom/movable/proc/do_attack_animation(atom/A, var/use_item = TRUE, var/depth = 8)
+/atom/movable/proc/do_attack_animation(atom/A, use_item = TRUE, depth = 8)
 	var/prev_x = pixel_x
 	var/prev_y = pixel_y
 	var/pixel_x_diff = 0
@@ -156,7 +155,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 	animate(src, pixel_x = pixel_x + pixel_x_diff, pixel_y = pixel_y + pixel_y_diff, time = 2)
 	animate(pixel_x = prev_x, pixel_y = prev_y, time = 2)
 
-/mob/do_attack_animation(atom/A, var/use_item = TRUE)
+/mob/do_attack_animation(atom/A, use_item = TRUE)
 	..()
 	is_floating = 0 // If we were without gravity, the bouncing animation got stopped, so we make sure we restart the bouncing after the next movement.
 
@@ -166,7 +165,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 
 	// What icon do we use for the attack?
 	var/image/I
-	var/obj/item/T = get_active_hand()
+	var/obj/item/T = get_active_held_item()
 	if (T && T.icon)
 		I = image(T.icon, A, T.icon_state, A.layer + 1)
 	else // Attacked with a fist?
@@ -199,82 +198,66 @@ note dizziness decrements automatically in the mob's Life() proc.
 	// And animate the attack!
 	animate(I, alpha = 175, pixel_x = 0, pixel_y = 0, pixel_z = 0, time = 3)
 
-
-
-
-/atom/proc/SpinAnimation(speed = 10, loops = -1)
-	var/matrix/m120 = matrix(transform)
-	m120.Turn(120)
-	var/matrix/m240 = matrix(transform)
-	m240.Turn(240)
-	var/matrix/m360 = matrix(transform)
-	speed /= 3      //Gives us 3 equal time segments for our three turns.
-	                //Why not one turn? Because byond will see that the start and finish are the same place and do nothing
-	                //Why not two turns? Because byond will do a flip instead of a turn
-	animate(src, transform = m120, time = speed, loops)
-	animate(transform = m240, time = speed)
-	animate(transform = m360, time = speed)
-
-
-
-//Shakes the mob's camera
-//Strength is not recommended to set higher than 4, and even then its a bit wierd
-/proc/shake_camera(mob/M, duration, strength = 1, var/taper = 0.25)
-	if(!M || !M.client || M.shakecamera || M.stat || isEye(M) || isAI(M))
+#define TILES_PER_SECOND 0.7
+///Shake the camera of the person viewing the mob SO REAL!
+///Takes the mob to shake, the time span to shake for, and the amount of tiles we're allowed to shake by in tiles
+///Duration isn't taken as a strict limit, since we don't trust our coders to not make things feel shitty. So it's more like a soft cap.
+/proc/shake_camera(mob/M, duration, strength=1)
+	if(!M || !M.client || duration < 1)
 		return
+	var/client/C = M.client
+	var/oldx = C.pixel_x
+	var/oldy = C.pixel_y
+	var/max = strength*world.icon_size
+	var/min = -(strength*world.icon_size)
 
-	M.shakecamera = 1
-	spawn(2)
-		if(!M.client)
-			return
+	//How much time to allot for each pixel moved
+	var/time_scalar = (1 / world.icon_size) * TILES_PER_SECOND
+	var/last_x = oldx
+	var/last_y = oldy
 
-		var/atom/oldeye=M.client.eye
-		var/aiEyeFlag = 0
-		if(istype(oldeye, /mob/observer/eye/aiEye))
-			aiEyeFlag = 1
+	var/time_spent = 0
+	while(time_spent < duration)
+		//Get a random pos in our box
+		var/x_pos = rand(min, max) + oldx
+		var/y_pos = rand(min, max) + oldy
 
-		var/x
-		for(x=0, x<duration, x++)
-			if(aiEyeFlag)
-				M.client.eye = locate(dd_range(1,oldeye.loc.x+rand(-strength,strength),world.maxx),dd_range(1,oldeye.loc.y+rand(-strength,strength),world.maxy),oldeye.loc.z)
-			else
-				M.client.eye = locate(dd_range(1,M.loc.x+rand(-strength,strength),world.maxx),dd_range(1,M.loc.y+rand(-strength,strength),world.maxy),M.loc.z)
-			sleep(1)
+		//We take the smaller of our two distances so things still have the propencity to feel somewhat jerky
+		var/time = round(max(min(abs(last_x - x_pos), abs(last_y - y_pos)) * time_scalar, 1))
 
-		//Taper code added by nanako.
-		//Will make the strength falloff after the duration.
-		//This helps to reduce jarring effects of major screenshaking suddenly returning to stability
-		//Recommended taper values are 0.05-0.1
-		if (taper > 0)
-			while (strength > 0)
-				strength -= taper
-				if(aiEyeFlag)
-					M.client.eye = locate(dd_range(1,oldeye.loc.x+rand(-strength,strength),world.maxx),dd_range(1,oldeye.loc.y+rand(-strength,strength),world.maxy),oldeye.loc.z)
-				else
-					M.client.eye = locate(dd_range(1,M.loc.x+rand(-strength,strength),world.maxx),dd_range(1,M.loc.y+rand(-strength,strength),world.maxy),M.loc.z)
-				sleep(1)
+		if (time_spent == 0)
+			animate(C, pixel_x=x_pos, pixel_y=y_pos, time=time)
+		else
+			animate(pixel_x=x_pos, pixel_y=y_pos, time=time)
 
-		M.client.eye=oldeye
-		M.shakecamera = 0
+		last_x = x_pos
+		last_y = y_pos
+		//We go based on time spent, so there is a chance we'll overshoot our duration. Don't care
+		time_spent += time
 
+	animate(pixel_x=oldx, pixel_y=oldy, time=3)
+
+#undef TILES_PER_SECOND
 
 //Deprecated, use SpinAnimation when possible
 /mob/proc/spin(spintime, speed)
-	spawn()
-		var/D = dir
-		while(spintime >= speed)
-			sleep(speed)
-			switch(D)
-				if(NORTH)
-					D = EAST
-				if(SOUTH)
-					D = WEST
-				if(EAST)
-					D = SOUTH
-				if(WEST)
-					D = NORTH
-			set_dir(D)
-			spintime -= speed
+	set waitfor = 0
+	var/D = dir
+	if((spintime < 1) || (speed < 1) || !spintime || !speed)
+		return
+	while(spintime >= speed)
+		sleep(speed)
+		switch(D)
+			if(NORTH)
+				D = EAST
+			if(SOUTH)
+				D = WEST
+			if(EAST)
+				D = SOUTH
+			if(WEST)
+				D = NORTH
+		set_dir(D)
+		spintime -= speed
 	return
 
 /atom/movable/proc/do_pickup_animation(atom/target, atom/old_loc)
@@ -298,7 +281,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 		I.pixel_x += old_loc.pixel_x
 		I.pixel_y += old_loc.pixel_y
 
-	flick_overlay(I, clients, 7)
+	flick_overlay(I, GLOB.clients, 7)
 
 	var/matrix/M = new
 	M.Turn(pick(30, -30))
@@ -336,7 +319,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 		I.pixel_y = 0
 		if (ismob(target))
 			I.dir = target.dir
-		flick_overlay(I, clients, 4)
+		flick_overlay(I, GLOB.clients, 4)
 
 		var/to_x = (target.x - old_turf.x) * 32 + pixel_x
 		var/to_y = (target.y - old_turf.y) * 32 + pixel_y
@@ -364,7 +347,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 	I.layer = ABOVE_MOB_LAYER
 	I.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
 
-	flick_overlay(I, clients, 4)
+	flick_overlay(I, GLOB.clients, 4)
 
 	var/to_x = (target.x - old_turf.x) * 32 + pixel_x
 	var/to_y = (target.y - old_turf.y) * 32 + pixel_y

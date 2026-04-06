@@ -79,9 +79,9 @@ GLOBAL_LIST_INIT(excel_item_targets,list(
 	if(M)
 		M.contracts_completed++
 		if(M.current)
-			to_chat(M.current, SPAN_NOTICE("Contract completed: [name] ([reward] TC)"))
+			to_chat(M.current, span_notice("Contract completed: [name] ([reward] TC)"))
 
-	for(var/obj/item/device/uplink/U in world_uplinks)
+	for(var/obj/item/device/uplink/U in GLOB.world_uplinks)
 		if(U.uplink_owner != M)
 			continue
 		U.uses += reward
@@ -141,7 +141,7 @@ GLOBAL_LIST_INIT(excel_item_targets,list(
 
 		// No check for cruciform because the spying implant can bypass it
 		var/mob/living/carbon/human/H = candidate_mind.current
-		if(!istype(H) || H.stat == DEAD || !IS_SHIP_LEVEL(H.z))
+		if(!istype(H) || H.stat == DEAD || !isOnStationLevel(H))
 			continue
 
 		target_mind = candidate_mind
@@ -172,7 +172,7 @@ GLOBAL_LIST_INIT(excel_item_targets,list(
 	var/list/area/targets = list()
 
 /datum/antag_contract/recon/New()
-	var/list/candidates = SSmapping.main_ship_areas.Copy()
+	var/list/candidates = GLOB.ship_areas.Copy()
 	for(var/datum/antag_contract/recon/C in GLOB.various_antag_contracts)
 		if(C.completed)
 			continue
@@ -227,7 +227,7 @@ GLOBAL_LIST_INIT(excel_item_targets,list(
 	while(candidates.len)
 		target_mind = pick(candidates)
 		var/mob/living/carbon/human/H = target_mind.current
-		if(!istype(H) || H.stat == DEAD || !IS_SHIP_LEVEL(H.z))
+		if(!istype(H) || H.stat == DEAD || !isOnStationLevel(H))
 			candidates -= target_mind
 			continue
 		target = H.get_core_implant(/obj/item/implant/core_implant/cruciform)
@@ -336,7 +336,7 @@ GLOBAL_LIST_INIT(excel_item_targets,list(
 	completed = TRUE
 
 	if(user)
-		to_chat(user, SPAN_NOTICE("Mandate completed: [name] ([reward] energy)"))
+		to_chat(user, span_notice("Mandate completed: [name] ([reward] energy)"))
 
 	excelsior_energy += reward
 	for (var/obj/machinery/complant_teleporter/t in excelsior_teleporters)
@@ -387,7 +387,7 @@ GLOBAL_LIST_INIT(excel_item_targets,list(
 			continue
 
 		var/mob/living/carbon/human/H = candidate_mind.current
-		if(!istype(H) || H.stat == DEAD || !IS_SHIP_LEVEL(H.z))
+		if(!istype(H) || H.stat == DEAD || !isOnStationLevel(H))
 			continue
 
 		if (targets_command)
@@ -431,7 +431,7 @@ GLOBAL_LIST_INIT(excel_item_targets,list(
 	var/list/area/targets = list()
 
 /datum/antag_contract/excel/propaganda/New()
-	var/list/candidates = SSmapping.main_ship_areas.Copy()
+	var/list/candidates = GLOB.ship_areas.Copy()
 	for(var/datum/antag_contract/excel/propaganda/M in GLOB.excel_antag_contracts)
 		if(M.completed)
 			continue

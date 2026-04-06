@@ -12,7 +12,7 @@
 	name = "hardsuit upgrade"
 	desc = "It looks pretty sciency."
 	icon = 'icons/obj/rig_modules.dmi'
-	icon_state = "module"
+	icon_state = "default"
 	matter = list(MATERIAL_STEEL = 15, MATERIAL_PLASTIC = 20, MATERIAL_GLASS = 5)
 	spawn_tags = SPAWN_TAG_RIG_MODULE
 	rarity_value = 5
@@ -57,9 +57,9 @@
 	var/activate_string = "Activate"
 	var/deactivate_string = "Deactivate"
 
-	var/list/stat_rig_module/stat_modules = new()
+	var/list/atom/movable/stat_rig_module/stat_modules = new()
 
-	
+
 
 /obj/item/rig_module/get_cell()
 	holder = get_rig()
@@ -147,31 +147,31 @@
 
 		charges = processed_charges
 
-	stat_modules +=	new/stat_rig_module/activate(src)
-	stat_modules +=	new/stat_rig_module/deactivate(src)
-	stat_modules +=	new/stat_rig_module/engage(src)
-	stat_modules +=	new/stat_rig_module/select(src)
-	stat_modules +=	new/stat_rig_module/charge(src)
+	stat_modules +=	new/atom/movable/stat_rig_module/activate(src)
+	stat_modules +=	new/atom/movable/stat_rig_module/deactivate(src)
+	stat_modules +=	new/atom/movable/stat_rig_module/engage(src)
+	stat_modules +=	new/atom/movable/stat_rig_module/select(src)
+	stat_modules +=	new/atom/movable/stat_rig_module/charge(src)
 
 
 //Called before the module is installed in a suit
 //Return FALSE to deny the installation
-/obj/item/rig_module/proc/can_install(var/obj/item/rig/rig, var/mob/user, var/feedback = FALSE)
+/obj/item/rig_module/proc/can_install(obj/item/rig/rig, mob/user, feedback = FALSE)
 	return TRUE
 
 //Called before the module is removed from a suit
 //Return FALSE to deny the removal
-/obj/item/rig_module/proc/can_uninstall(var/obj/item/rig/rig, var/mob/user, var/feedback = FALSE)
+/obj/item/rig_module/proc/can_uninstall(obj/item/rig/rig, mob/user, feedback = FALSE)
 	return TRUE
 
 // Called after the module is installed into a suit. The holder var is already set to the new suit
-/obj/item/rig_module/proc/installed(var/mob/living/user)
+/obj/item/rig_module/proc/installed(mob/living/user)
 	return
 
 // Called after the module is removed from a suit.
 //The holder var is already set null
 //Former contains the suit we came from
-/obj/item/rig_module/proc/uninstalled(var/obj/item/rig/former, var/mob/living/user)
+/obj/item/rig_module/proc/uninstalled(obj/item/rig/former, mob/living/user)
 	return
 
 
@@ -181,27 +181,27 @@
 /obj/item/rig_module/proc/engage()
 
 	if(damage >= 2)
-		to_chat(usr, SPAN_WARNING("The [interface_name] is damaged beyond use!"))
+		to_chat(usr, span_warning("The [interface_name] is damaged beyond use!"))
 		return 0
 
 	if(world.time < next_use)
-		to_chat(usr, SPAN_WARNING("You cannot use the [interface_name] again so soon."))
+		to_chat(usr, span_warning("You cannot use the [interface_name] again so soon."))
 		return 0
 
 	if(!holder || holder.canremove)
-		to_chat(usr, SPAN_WARNING("The suit is not initialized."))
+		to_chat(usr, span_warning("The suit is not initialized."))
 		return 0
 
 	if(holder.wearer.lying || holder.wearer.stat || holder.wearer.stunned || holder.wearer.paralysis || holder.wearer.weakened)
-		to_chat(usr, SPAN_WARNING("You cannot use the suit in this state."))
+		to_chat(usr, span_warning("You cannot use the suit in this state."))
 		return 0
 
 	if(holder.wearer && holder.wearer.lying)
-		to_chat(usr, SPAN_WARNING("The suit cannot function while the wearer is prone."))
+		to_chat(usr, span_warning("The suit cannot function while the wearer is prone."))
 		return 0
 
 	if(holder.security_check_enabled && !holder.check_suit_access(usr))
-		to_chat(usr, SPAN_DANGER("Access denied."))
+		to_chat(usr, span_danger("Access denied."))
 		return 0
 
 	if(!holder.check_power_cost(usr, use_power_cost, 0, src, (istype(usr,/mob/living/silicon ? 1 : 0) ) ) )
@@ -259,28 +259,27 @@
 /obj/item/rig_module/proc/accepts_item(obj/item/input_device)
 	return FALSE
 
-/stat_rig_module
-	parent_type = /atom/movable
+/atom/movable/stat_rig_module
 	var/module_mode = ""
 	var/obj/item/rig_module/module
 
-/stat_rig_module/New(var/obj/item/rig_module/module)
+/atom/movable/stat_rig_module/New(obj/item/rig_module/module)
 	..()
 	src.module = module
 
-/stat_rig_module/Destroy()
+/atom/movable/stat_rig_module/Destroy()
 	if(module)
 		module.stat_modules -= src
 		module = null
 	return ..()
 
-/stat_rig_module/proc/AddHref(var/list/href_list)
+/atom/movable/stat_rig_module/proc/AddHref(list/href_list)
 	return
 
-/stat_rig_module/proc/CanUse()
+/atom/movable/stat_rig_module/proc/CanUse()
 	return 0
 
-/stat_rig_module/Click()
+/atom/movable/stat_rig_module/Click()
 	if(CanUse())
 		var/list/href_list = list(
 							"interact_module" = module.holder.installed_modules.Find(module),
@@ -290,20 +289,20 @@
 		module.holder.Topic(usr, href_list)
 		return TRUE
 
-/stat_rig_module/DblClick()
+/atom/movable/stat_rig_module/DblClick()
 	return Click()
 
-/stat_rig_module/activate/New(var/obj/item/rig_module/module)
+/atom/movable/stat_rig_module/activate/New(obj/item/rig_module/module)
 	..()
 	name = module.activate_string
 	if(module.active_power_cost)
 		name += " ([module.active_power_cost*10]A)"
 	module_mode = "activate"
 
-/stat_rig_module/activate/CanUse()
+/atom/movable/stat_rig_module/activate/CanUse()
 	return module.toggleable && !module.active
 
-/stat_rig_module/deactivate/New(var/obj/item/rig_module/module)
+/atom/movable/stat_rig_module/deactivate/New(obj/item/rig_module/module)
 	..()
 	name = module.deactivate_string
 	// Show cost despite being 0, if it means changing from an active cost.
@@ -312,36 +311,36 @@
 
 	module_mode = "deactivate"
 
-/stat_rig_module/deactivate/CanUse()
+/atom/movable/stat_rig_module/deactivate/CanUse()
 	return module.toggleable && module.active
 
-/stat_rig_module/engage/New(var/obj/item/rig_module/module)
+/atom/movable/stat_rig_module/engage/New(obj/item/rig_module/module)
 	..()
 	name = module.engage_string
 	if(module.use_power_cost)
 		name += " ([module.use_power_cost*10]E)"
 	module_mode = "engage"
 
-/stat_rig_module/engage/CanUse()
+/atom/movable/stat_rig_module/engage/CanUse()
 	return module.usable
 
-/stat_rig_module/select/New()
+/atom/movable/stat_rig_module/select/New()
 	..()
 	name = "Select"
 	module_mode = "select"
 
-/stat_rig_module/select/CanUse()
+/atom/movable/stat_rig_module/select/CanUse()
 	if(module.selectable)
 		name = module.holder.selected_module == module ? "Selected" : "Select"
 		return 1
 	return 0
 
-/stat_rig_module/charge/New()
+/atom/movable/stat_rig_module/charge/New()
 	..()
 	name = "Change Charge"
 	module_mode = "select_charge_type"
 
-/stat_rig_module/charge/AddHref(var/list/href_list)
+/atom/movable/stat_rig_module/charge/AddHref(list/href_list)
 	var/charge_index = module.charges.Find(module.charge_selected)
 	if(!charge_index)
 		charge_index = 0
@@ -350,7 +349,7 @@
 
 	href_list["charge_type"] = module.charges[charge_index]
 
-/stat_rig_module/charge/CanUse()
+/atom/movable/stat_rig_module/charge/CanUse()
 	if(module.charges && module.charges.len)
 		var/datum/rig_charge/charge = module.charges[module.charge_selected]
 		name = "[charge.display_name] ([charge.charges]C) - Change"

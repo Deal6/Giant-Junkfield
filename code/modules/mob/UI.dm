@@ -1,25 +1,25 @@
 GLOBAL_LIST_EMPTY(ui_styles)
 
 /*
-/datum/interface/createUsingStyle(var/datum/UI_style/style)
+/datum/interface/createUsingStyle(datum/UI_style/style)
 
 /datum/interface/getElementByID()
 
-/datum/interface/hide(var/id)
+/datum/interface/hide(id)
 
-/datum/interface/show(var/id)
+/datum/interface/show(id)
 
 /datum/interface/validate()
 
 /datum/interface/update()
 
-/datum/interface/moveOnTop(var/id)
+/datum/interface/moveOnTop(id)
 
-/datum/interface/moveToBottom(var/id)
+/datum/interface/moveToBottom(id)
 
 
 ###########################################
-/client/proc/create_UI(var/mob_type)
+/client/proc/create_UI(mob_type)
 	used in:
 		/datum/mind/proc/transfer_to(mob/living/new_character)
 		/datum/admins/proc/cmd_ghost_drag(var/mob/observer/ghost/frommob, var/mob/living/tomob)
@@ -56,12 +56,12 @@ TODO: LATER
 	var/mobtype = "interfaceless"
 	var/styleName = "ErisStyle"
 
-	var/list/HUD_element/_elements = list()		//	list of all ui elements
+	var/list/atom/movable/hud_element/_elements = list()		//	list of all ui elements
 	var/client/_observer
 
 	var/list/storageData = list()
 
-/datum/interface/New(var/client/observer)
+/datum/interface/New(client/observer)
 	if(!observer || !istype(observer))
 		error("Passed incorrect observer to interface.")
 		qdel(src)
@@ -82,11 +82,11 @@ TODO: LATER
 	return TRUE
 
 /datum/interface/proc/postBuildUI()
-	for(var/HUD_element/E in _elements)
+	for(var/atom/movable/hud_element/E in _elements)
 		E.alpha = _observer.prefs.UI_style_alpha
 
 	// #####	ADDING HIGHLIGTING FOR BUTTONS    #####
-	for(var/HUD_element/button/E in _elements)
+	for(var/atom/movable/hud_element/button/E in _elements)
 		var/list/iconData = E.getIconAdditionData(HUD_ICON_UNDERLAY, HUD_UNDERLAY_BACKGROUND)
 		iconData["color"] = _observer.prefs.UI_style_color
 		iconData["alpha"] = 80
@@ -96,33 +96,33 @@ TODO: LATER
 		E.setClickedInteraction(TRUE, iconData, 2)
 
 
-/datum/interface/proc/getElementByID(var/id)
-	RETURN_TYPE(/HUD_element)
-	for(var/HUD_element/element in _elements)
+/datum/interface/proc/getElementByID(id)
+	RETURN_TYPE(/atom/movable/hud_element)
+	for(var/atom/movable/hud_element/element in _elements)
 		if(element.getIdentifier() == id)
 			return element
 	error("No element found with id \"[id]\".")
 
-/datum/interface/proc/hide(var/id)
+/datum/interface/proc/hide(id)
 	if (!id)
-		for(var/HUD_element/element in _elements)
+		for(var/atom/movable/hud_element/element in _elements)
 			element.hide()
 	else
-		var/HUD_element/E = getElementByID(id)
+		var/atom/movable/hud_element/E = getElementByID(id)
 		if(E)
 			E.hide()
 		else
 			error("No element with id \"[id]\" found.")
 
-/datum/interface/proc/show(var/id)
+/datum/interface/proc/show(id)
 	if(!_observer)
 		error("Interface has no observer.")
 		return FALSE
 	if (!id)
-		for(var/HUD_element/element in _elements)
+		for(var/atom/movable/hud_element/element in _elements)
 			element.show(_observer)
 	else
-		var/HUD_element/E = getElementByID(id)
+		var/atom/movable/hud_element/E = getElementByID(id)
 		if(E)
 			E.show()
 		else
@@ -132,11 +132,11 @@ TODO: LATER
 /datum/interface/proc/update()
 	//TODO: THIS
 
-/datum/interface/proc/moveOnTop(var/id)
-	var/HUD_element/E = getElementByID(id)
-	if(istype(E, /HUD_element))
+/datum/interface/proc/moveOnTop(id)
+	var/atom/movable/hud_element/E = getElementByID(id)
+	if(istype(E, /atom/movable/hud_element))
 		if(E.getElements())
-			for(var/HUD_element/element in E.getElements())
+			for(var/atom/movable/hud_element/element in E.getElements())
 				E.moveChildOnTop(element.getIdentifier())
 				_elements.Remove(element)
 				_elements.Insert(1,element)
@@ -146,11 +146,11 @@ TODO: LATER
 	else
 		error("moveOnTop(): No element with id \"[id]\" found.")
 
-/datum/interface/proc/moveToBottom(var/id)
-	var/HUD_element/E = getElementByID(id)
-	if(istype(E, /HUD_element))
+/datum/interface/proc/moveToBottom(id)
+	var/atom/movable/hud_element/E = getElementByID(id)
+	if(istype(E, /atom/movable/hud_element))
 		if(E.getElements())
-			for(var/HUD_element/element in E.getElements())
+			for(var/atom/movable/hud_element/element in E.getElements())
 				E.moveChildToBottom(element.getIdentifier())
 				_elements.Remove(element)
 				_elements.Add(element)
@@ -166,7 +166,7 @@ TODO: LATER
 //	To properly align UI to the screen YOU HAVE TO align planes or elements to either main screen or already aligned planes or elements to main screen
 //	STRONGLY KEEP THAT IN MIND otherwise UI will fucked up when client.view var is changed
 
-/datum/interface/proc/newUIElement(var/name, var/ui_type, var/iconData, var/x = 0, var/y = 0, var/list/icon_overlays, var/list/icon_underlays, var/data)
+/datum/interface/proc/newUIElement(name, ui_type, iconData, x = 0, y = 0, list/icon_overlays, list/icon_underlays, data)
 	if(!name || !ui_type)
 		error("interface element will not be created, incorrect data for either name or type")
 		return FALSE
@@ -177,7 +177,7 @@ TODO: LATER
 		error("type var is not a path.")
 		return FALSE
 
-	var/HUD_element/element = new ui_type(name)
+	var/atom/movable/hud_element/element = new ui_type(name)
 	element.setName(name)
 	if(iconData)
 		if(istype(iconData, /list))
@@ -204,7 +204,7 @@ TODO: LATER
 
 	return element
 
-/datum/interface/proc/addUIElement(var/HUD_element/element)
+/datum/interface/proc/addUIElement(atom/movable/hud_element/element)
 	if(!element)
 		error("Passed null element")
 		return
@@ -222,12 +222,12 @@ TODO: LATER
 	if(!_elements || !_elements.len)
 		error("UI style has no elements.")
 		failed = TRUE
-	for(var/HUD_element/E in _elements)
+	for(var/atom/movable/hud_element/E in _elements)
 		if(E.getParent())
 			continue
 		else
 			if(E.getAlignmentHorizontal() == HUD_NO_ALIGNMENT && E.getAlignmentVertical() == HUD_NO_ALIGNMENT)
-				error("YOU DONE GOOFED, i told you that elements without parent should have aligment to screen. Look /datum/UI_style/ docs and /HUD_element/proc/setAlignment(var/horizontal, var/vertical).")
+				error("YOU DONE GOOFED, i told you that elements without parent should have aligment to screen. Look /datum/UI_style/ docs and /atom/movable/hud_element/proc/setAlignment(var/horizontal, var/vertical).")
 				failed = TRUE
 	if(failed)
 		error("UI style \"[styleName]\" for mob \"[mobtype]\" is created incorrectly, see errors above.")
@@ -235,7 +235,7 @@ TODO: LATER
 	return TRUE
 
 /datum/interface/proc/toggleDebugMode()
-	for(var/HUD_element/E in _elements)
+	for(var/atom/movable/hud_element/E in _elements)
 		E.toggleDebugMode()
 
 /hook/startup/proc/generateUIStyles()

@@ -166,7 +166,7 @@
 
 	..()
 
-	if(channel && !(channel.source_z in SSmapping.GetConnectedZlevels(computer.z)))
+	if(channel && !(channel.source_z in GetConnectedZlevels(computer.z)))
 		channel.remove_client(src)
 		channel = null
 
@@ -193,7 +193,7 @@
 /datum/nano_module/program/computer_chatclient
 	name = "NTNet Relay Chat Client"
 
-/datum/nano_module/program/computer_chatclient/nano_ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = NANOUI_FOCUS, var/datum/nano_topic_state/state = GLOB.default_state)
+/datum/nano_module/program/computer_chatclient/nano_ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = NANOUI_FOCUS, datum/nano_topic_state/state = GLOB.default_state)
 	if(!ntnet_global || !ntnet_global.chat_channels)
 		return
 
@@ -219,13 +219,13 @@
 			clients.Add(list(list(
 				"name" = cl.username
 			)))
-		data["clients"] = clients
+		data["clients"] = GLOB.clients
 		C.operator_mode = (C.channel.operator == C) ? 1 : 0
 		data["is_operator"] = C.operator_mode || C.netadmin_mode
 
 	else // Channel selection screen
 		var/list/all_channels[0]
-		var/list/connected_zs = SSmapping.GetConnectedZlevels(C.computer.z)
+		var/list/connected_zs = GetConnectedZlevels(C.computer.z)
 		for(var/datum/ntnet_conversation/conv in ntnet_global.chat_channels)
 			if(conv && conv.title && (conv.source_z in connected_zs))
 				all_channels.Add(list(list(

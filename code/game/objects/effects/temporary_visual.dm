@@ -11,7 +11,7 @@
 /obj/effect/temp_visual/Initialize()
 	. = ..()
 	if(randomdir)
-		dir = (pick(cardinal))
+		dir = (pick(GLOB.cardinal))
 
 	QDEL_IN(src, duration)
 
@@ -24,7 +24,7 @@
 /obj/effect/temp_visual/singularity_pull()
 	return
 
-/obj/effect/temp_visual/explosion_act(target_power, explosion_handler/handler)
+/obj/effect/temp_visual/explosion_act(target_power, datum/explosion_handler/handler)
 	return 0
 
 /obj/effect/temp_visual/dir_setting

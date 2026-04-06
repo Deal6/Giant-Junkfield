@@ -11,16 +11,33 @@
 
 #define isweakref(D) (istype(D, /datum/weakref))
 
+#define isimage(thing) (istype(thing, /image))
+
+GLOBAL_VAR_INIT(magic_appearance_detecting_image, new /image) // appearances are awful to detect safely, but this seems to be the best way ~ninjanomnom
+#define isappearance(thing) (!isimage(thing) && !ispath(thing) && istype(GLOB.magic_appearance_detecting_image, thing))
+#define isappearance_or_image(thing) (isimage(thing) || (!ispath(thing) && istype(GLOB.magic_appearance_detecting_image, thing)))
+
+// The filters list has the same ref type id as a filter, but isnt one and also isnt a list, so we have to check if the thing has Cut() instead
+GLOBAL_VAR_INIT(refid_filter, TYPEID(filter(type="angular_blur")))
+#define isfilter(thing) (!hascall(thing, "Cut") && TYPEID(thing) == GLOB.refid_filter)
+
+#define isgenerator(A) (istype(A, /generator))
 
 #define islist(A) istype(A, /list)
 
 #define ismob(A) istype(A, /mob)
+
+#define isdead(M) (ismob(M) && !istype(M, /mob/living))
+
+#define isclient(A) istype(A, /client)
 
 #define isobserver(A) istype(A, /mob/observer)
 
 #define isghost(A) istype(A, /mob/observer/ghost)
 
 #define isEye(A) istype(A, /mob/observer/eye)
+
+#define isAIEye(A) istype(A, /mob/observer/eye/aiEye)
 
 #define isangel(A) istype(A, /mob/observer/eye/angel)
 
@@ -29,6 +46,10 @@
 #define isbst(A) istype(A, /mob/living/carbon/human/bst)
 
 #define ismech(A) istype(A, /mob/living/exosuit)
+
+#define isdummy(A) istype(A, /mob/living/carbon/human/dummy)
+
+#define ismannequin(A) istype(A, /mob/living/carbon/human/dummy/mannequin)
 
 //++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -78,7 +99,7 @@
 
 #define isobj(A) istype(A, /obj)
 
-#define isHUDobj(A) istype(A, /obj/screen)
+#define isHUDobj(A) istype(A, /atom/movable/screen)
 
 #define isitem(A) istype(A, /obj/item)
 
@@ -86,7 +107,7 @@
 
 #define isgun(A) istype(A, /obj/item/gun)
 
-#define ismodulargun(A) istype(A, /obj/item/gun/projectile/automatic/modular)
+#define ismodulargun(A) istype(A, /obj/item/gun/projectile/modular)
 
 #define istool(A) istype(A, /obj/item/tool)
 
@@ -97,6 +118,8 @@
 #define ismachinery(A) (istype(A, /obj/machinery))
 
 #define isProjectile(A) (istype(A, /obj/item/projectile))
+
+#define isidcard(I) (istype(I, /obj/item/card/id))
 
 // Assembly specific checks
 #define isassembly(A) (istype(A, /obj/item/device/assembly))
@@ -110,3 +133,15 @@
 #define issignaler(A) (istype(A, /obj/item/device/assembly/signaler))
 
 #define istimer(A) (istype(A, /obj/item/device/assembly/timer))
+
+// Turfs
+#define isclosedturf(A) (A.layer == CLOSED_TURF_LAYER)
+
+// Book things
+GLOBAL_LIST_INIT(book_types, typecacheof(list(
+	/obj/item/book,
+	// This really should just be a fucking book child (/obj/item/book/bible) like cmon
+	///obj/item/oddity/common/book_bible
+)))
+
+#define isbook(O) (is_type_in_typecache(O, GLOB.book_types))

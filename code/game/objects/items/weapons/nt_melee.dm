@@ -76,6 +76,10 @@
 	icon_state = "nt_halberd"
 	item_state = "nt_halberd"
 	wielded_icon = "nt_halberd_wielded"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/weapons/polearms_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/weapons/polearms_righthand.dmi',
+		)
 	force = WEAPON_FORCE_BRUTAL
 	hitsound = 'sound/weapons/melee/heavystab.ogg'
 	armor_divisor = ARMOR_PEN_MASSIVE
@@ -106,7 +110,7 @@
 
 /obj/item/tool/sword/nt/scourge/attack_self(mob/user)
 	if(isBroken)
-		to_chat(user, SPAN_WARNING("\The [src] is broken."))
+		to_chat(user, span_warning("\The [src] is broken."))
 		return
 	if(extended)
 		unextend()
@@ -151,6 +155,10 @@
 	icon_state = "nt_spear"
 	item_state = "nt_spear"
 	wielded_icon = "nt_spear_wielded"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/weapons/polearms_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/weapons/polearms_righthand.dmi',
+		)
 	force = 26
 	force_wielded_multiplier = 1.08
 	var/tipbroken = FALSE
@@ -184,26 +192,26 @@
 		tipbroken = TRUE
 		force = force_broken
 		throwforce = throwforce_broken
-		visible_message(SPAN_DANGER("The spear-tip of the [src] bends into a useless shape!"))
+		visible_message(span_danger("The spear-tip of the [src] bends into a useless shape!"))
 
 
 /obj/item/tool/sword/nt/spear/examine(mob/user, extra_description = "")
 	if(tipbroken)
-		extra_description += SPAN_WARNING("\The [src] is broken. It looks like it could be repaired with a hammer.")
+		extra_description += span_warning("\The [src] is broken. It looks like it could be repaired with a hammer.")
 	..(user, extra_description)
 
-/obj/item/tool/sword/nt/spear/attackby(obj/item/I, var/mob/user)
+/obj/item/tool/sword/nt/spear/attackby(obj/item/I, mob/user)
 	..()
 	if (I.has_quality(QUALITY_HAMMERING))
 		if(I.use_tool(user, src, WORKTIME_FAST, QUALITY_HAMMERING, FAILCHANCE_EASY, STAT_MEC))
-			to_chat(user, SPAN_NOTICE("You repair the damaged spear-tip."))
+			to_chat(user, span_notice("You repair the damaged spear-tip."))
 			tipbroken = FALSE
 			force = initial(force)
 			throwforce = initial(throwforce)
 
 /obj/item/shield/riot/nt
 	name = "NT Scutum"
-	desc = "A saintly-looking shield. Too heavy to be held upright while running. The leather straps on the back can hold melee weapons."
+	desc = "A saintly-looking shield. Too heavy to be used properly unless raised. The leather straps on the back can hold melee weapons."
 	icon = 'icons/obj/nt_melee.dmi'
 	icon_state = "nt_shield"
 	item_state = "nt_shield"
@@ -211,8 +219,8 @@
 	aspects = list(SANCTIFIED)
 	spawn_blacklisted = TRUE
 	price_tag = 1000
-	base_block_chance = 45
-	shield_difficulty = 40
+	base_block_chance = 15
+	shield_difficulty = 38
 	item_flags = DRAG_AND_DROP_UNEQUIP
 	shield_integrity = 200
 	var/obj/item/storage/internal/container
@@ -238,7 +246,7 @@
 /obj/item/shield/riot/nt/proc/handle_attack_hand(mob/user as mob)
 	return container.handle_attack_hand(user)
 
-/obj/item/shield/riot/nt/proc/handle_mousedrop(var/mob/user, var/atom/over_object)
+/obj/item/shield/riot/nt/proc/handle_mousedrop(mob/user, atom/over_object)
 	return container.handle_mousedrop(user, over_object)
 
 /obj/item/shield/riot/nt/MouseDrop(obj/over_object)
@@ -272,8 +280,8 @@
 	aspects = list(SANCTIFIED)
 	spawn_blacklisted = TRUE
 	price_tag = 300
-	base_block_chance = 35
-	shield_difficulty = 70
+	base_block_chance = 25
+	shield_difficulty = 60
 	item_flags = DRAG_AND_DROP_UNEQUIP
 	shield_integrity = 180
 	var/obj/item/storage/internal/container
@@ -299,7 +307,7 @@
 /obj/item/shield/buckler/nt/proc/handle_attack_hand(mob/user as mob)
 	return container.handle_attack_hand(user)
 
-/obj/item/shield/buckler/nt/proc/handle_mousedrop(var/mob/user, var/atom/over_object)
+/obj/item/shield/buckler/nt/proc/handle_mousedrop(mob/user, atom/over_object)
 	return container.handle_mousedrop(user, over_object)
 
 /obj/item/shield/buckler/nt/MouseDrop(obj/over_object)
@@ -328,6 +336,10 @@
 	desc = "A saintly-looking sword forged to do God\'s distant work."
 	icon_state = "nt_shortsword"
 	item_state = "nt_shortsword"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/weapons/swords_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/weapons/swords_righthand.dmi',
+		)
 	force = WEAPON_FORCE_DANGEROUS
 	throwforce = WEAPON_FORCE_WEAK
 	armor_divisor = ARMOR_PEN_DEEP
@@ -352,6 +364,10 @@
 	singular_name = "NT Verutum"
 	plural_name = "NT Veruta"
 	wielded_icon = "nt_verutum_wielded"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/weapons/polearms_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/weapons/polearms_righthand.dmi',
+		)
 	force = 20
 	force_wielded_multiplier = 1.08
 

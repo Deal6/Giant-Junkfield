@@ -49,6 +49,8 @@ SUBSYSTEM_DEF(explosions)
 	priority = FIRE_PRIORITY_EXPLOSIONS
 	init_order = INIT_ORDER_EXPLOSIONS
 	flags = SS_KEEP_TIMING
+	init_time_threshold = 0.5 SECONDS
+
 	var/list/explode_queue = list()
 	var/list/current_run = list()
 	var/list/throwing_queue = list()
@@ -94,7 +96,7 @@ SUBSYSTEM_DEF(explosions)
 /datum/controller/subsystem/explosions/fire(resumed = FALSE)
 	var/target_power = 0
 	var/turf_key = null
-	for(var/explosion_handler/explodey as anything in current_run)
+	for(var/datum/explosion_handler/explodey as anything in current_run)
 		var/times_ticked = 0
 		// Go twice, so the stress on ZAS rebuilding zones is reduced.
 		while(times_ticked < 2)
@@ -106,7 +108,7 @@ SUBSYSTEM_DEF(explosions)
 				if(!target || QDELETED(target))
 					explodey.current_turf_queue -= target
 					continue
-				turf_key = "[target.x]_[target.y]"
+				turf_key = EXPLO_HASH(target.x, target.y)
 				target_power = explodey.hashed_power[target.z][turf_key]
 				explodey.current_turf_queue -= target
 				explodey.hashed_visited[target.z][turf_key] = TRUE
@@ -122,7 +124,7 @@ SUBSYSTEM_DEF(explosions)
 						var/turf/next = get_step(target,dir)
 						if(QDELETED(next))
 							continue
-						var/temp_key = "[next.x]_[next.y]"
+						var/temp_key = EXPLO_HASH(next.x, next.y)
 						if(explodey.hashed_visited[next.z][temp_key])
 							continue
 						explodey.turf_queue += next
@@ -131,7 +133,7 @@ SUBSYSTEM_DEF(explosions)
 				// For Up and Down , we use the turf  key since its valid
 				target_power -= EXPLOSION_ZTRANSFER_MINIMUM_THRESHOLD
 				if(target_power > EXPLOSION_ZTRANSFER_MINIMUM_THRESHOLD)
-					var/turf/checking = SSmapping.GetAbove(target)
+					var/turf/checking = GetAbove(target)
 					if(!QDELETED(checking) && istype(checking, /turf/open))
 						// Startup for first time, kind of ineefficient , but better than distributing the lists willy nilly
 						if(explodey.hashed_visited[checking.z] == null)
@@ -145,7 +147,7 @@ SUBSYSTEM_DEF(explosions)
 							explodey.hashed_power[checking.z][turf_key] = target_power
 							explodey.turf_queue += checking
 					if(istype(target, /turf/open))
-						checking = SSmapping.GetBelow(target)
+						checking = GetBelow(target)
 						if(!QDELETED(checking))
 							// Startup for first time
 							if(explodey.hashed_visited[checking.z] == null)
@@ -167,9 +169,15 @@ SUBSYSTEM_DEF(explosions)
 
 			// Explosion is done , nothing else left to iterate , cleanup and etc.
 			if(!length(explodey.turf_queue))
+
 				explode_queue -= explodey
-				explodey.hashed_visited = null
-				explodey.hashed_power = null
+				for(var/cleaner = 1; cleaner <= HASH_MODULO; cleaner++)
+					for(var/cur_z = explodey.minimum_z; cur_z <= explodey.maximum_z; cur_z++)
+						explodey.hashed_visited[cur_z][cleaner] = 0
+						explodey.hashed_power[cur_z][cleaner] = 0
+				for(var/cur_z = explodey.minimum_z; cur_z <= explodey.maximum_z; cur_z++)
+					SSexplosions.returnHashList(explodey.hashed_visited[cur_z])
+					SSexplosions.returnHashList(explodey.hashed_power[cur_z])
 				qdel(explodey)
 				break
 			// If explosion is not done , just copy the turf queue , and keep it for the next run.
@@ -180,7 +188,7 @@ SUBSYSTEM_DEF(explosions)
 
 
 /datum/controller/subsystem/explosions/proc/start_explosion(turf/epicenter, power, falloff, explosion_flags)
-	var/reference = new /explosion_handler(epicenter, power, falloff, explosion_flags)
+	var/reference = new /datum/explosion_handler(epicenter, power, falloff, explosion_flags)
 	explode_queue += reference
 
 /turf/proc/take_damage(target_power, damage_type)
@@ -188,7 +196,7 @@ SUBSYSTEM_DEF(explosions)
 
 // Explosion action proc , should never SLEEP, and should avoid icon updates , overlays and other visual stuff as much as possible , since they cause massive time delays
 // in processing.
-/turf/explosion_act(target_power, explosion_handler/handler)
+/turf/explosion_act(target_power, datum/explosion_handler/handler)
 	var/power_reduction = 0
 	for(var/atom/movable/thing as anything in contents)
 		if(QDELETED(handler))
@@ -197,14 +205,14 @@ SUBSYSTEM_DEF(explosions)
 			power_reduction += thing.explosion_act(target_power, handler)
 			if(!QDELETED(thing) && isobj(thing) && !thing.anchored)
 				thing.throw_at(get_turf_away_from_target_simple(src, islist(handler.epicenter) ? handler.epicenter[1] : handler.epicenter), round(target_power / 30))
-	var/turf/to_propagate = SSmapping.GetAbove(src)
+	var/turf/to_propagate = GetAbove(src)
 	if(to_propagate && target_power - EXPLOSION_ZTRANSFER_MINIMUM_THRESHOLD > EXPLOSION_ZTRANSFER_MINIMUM_THRESHOLD)
 		to_propagate.take_damage(target_power - EXPLOSION_ZTRANSFER_MINIMUM_THRESHOLD, BLAST)
 
 	return power_reduction
 
 
-explosion_handler
+/datum/explosion_handler
 	// Source turf
 	var/turf/epicenter
 	// Starting power
@@ -228,7 +236,7 @@ explosion_handler
 	/// Various flags
 	var/flags
 
-explosion_handler/New(turf/loc, power, falloff, flags)
+/datum/explosion_handler/New(turf/loc, power, falloff, flags)
 	..()
 	src.epicenter = loc
 	src.power = power
@@ -241,7 +249,7 @@ explosion_handler/New(turf/loc, power, falloff, flags)
 		turf_queue += loc
 		hashed_power[loc.z] = SSexplosions.retrieveHashList()
 		hashed_visited[loc.z] = SSexplosions.retrieveHashList()
-		hashed_power[loc.z]["[loc.x]_[loc.y]"] = power
+		hashed_power[loc.z][EXPLO_HASH(loc.x, loc.y)] = power
 	else
 		var/list/locations = loc
 		for(var/turf/target in locations)
@@ -250,7 +258,7 @@ explosion_handler/New(turf/loc, power, falloff, flags)
 				hashed_power[target.z] = SSexplosions.retrieveHashList()
 			if(hashed_visited[target.z] == null)
 				hashed_visited[target.z] = SSexplosions.retrieveHashList()
-			hashed_power[target.z]["[target.x]_[target.y]"] = power
+			hashed_power[target.z][EXPLO_HASH(target.x, target.y)] = power
 	maximum_z = minimum_z = loc.z
 
 /turf/proc/test_explosion()

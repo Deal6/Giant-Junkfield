@@ -13,10 +13,11 @@ SUBSYSTEM_DEF(air)
 	name = "Air"
 
 	init_order    = INIT_ORDER_AIR
-	priority      = SS_PRIORITY_AIR
+	priority      = FIRE_PRIORITY_AIR
 	wait          = 10
 
 	flags = SS_POST_FIRE_TIMING
+	init_time_threshold = 30 SECONDS
 
 	var/next_id       = 1 // Used to keep track of zone UIDs.
 
@@ -46,8 +47,9 @@ SUBSYSTEM_DEF(air)
 	var/list/currentrun = list()
 	var/currentpart = SSAIR_PIPENETS
 
+	var/map_loading = TRUE
 	var/map_init_levels = 0 // number of z-levels initialized under this type of SS.
-	var/list/queued_for_update = list()
+	var/list/queued_for_update
 
 /datum/controller/subsystem/air/stat_entry(msg)
 	msg += "\nC:{"
@@ -74,6 +76,7 @@ SUBSYSTEM_DEF(air)
 
 
 /datum/controller/subsystem/air/Initialize(timeofday)
+	map_loading = FALSE
 	setup_allturfs()
 	setup_atmos_machinery()
 	setup_pipenets()
@@ -237,7 +240,7 @@ SUBSYSTEM_DEF(air)
 	// Cache for sanic speed (lists are references anyways)
 	var/list/currentrun = src.currentrun
 	while (currentrun.len)
-		var/connection_edge/E = currentrun[currentrun.len]
+		var/datum/connection_edge/E = currentrun[currentrun.len]
 		currentrun.len--
 		E.tick()
 		if (MC_TICK_CHECK)
@@ -249,7 +252,7 @@ SUBSYSTEM_DEF(air)
 	// Cache for sanic speed (lists are references anyways)
 	var/list/currentrun = src.currentrun
 	while (currentrun.len)
-		var/zone/Z = currentrun[currentrun.len]
+		var/datum/zone/Z = currentrun[currentrun.len]
 		currentrun.len--
 		Z.process_fire()
 		if (MC_TICK_CHECK)
@@ -269,7 +272,7 @@ SUBSYSTEM_DEF(air)
 
 /datum/controller/subsystem/air/proc/process_zones(resumed = 0)
 	while (zones_to_update.len)
-		var/zone/Z = zones_to_update[zones_to_update.len]
+		var/datum/zone/Z = zones_to_update[zones_to_update.len]
 		zones_to_update.len--
 		Z.tick()
 		Z.needs_update = FALSE
@@ -314,12 +317,12 @@ SUBSYSTEM_DEF(air)
 
 /*********** Procs, which doesn't get involved in processing directly ***********/
 
-/datum/controller/subsystem/air/proc/add_zone(zone/z)
+/datum/controller/subsystem/air/proc/add_zone(datum/zone/z)
 	zones += z
 	z.name = "Zone [next_id++]"
 	mark_zone_update(z)
 
-/datum/controller/subsystem/air/proc/remove_zone(zone/z)
+/datum/controller/subsystem/air/proc/remove_zone(datum/zone/z)
 	zones -= z
 	zones_to_update.Remove(z)
 
@@ -343,7 +346,7 @@ SUBSYSTEM_DEF(air)
 
 	return istype(T) && T.zone && !T.zone.invalid
 
-/datum/controller/subsystem/air/proc/merge(zone/A, zone/B)
+/datum/controller/subsystem/air/proc/merge(datum/zone/A, datum/zone/B)
 	#ifdef ZASDBG
 	ASSERT(istype(A))
 	ASSERT(istype(B))
@@ -397,7 +400,7 @@ SUBSYSTEM_DEF(air)
 		if(A.zone == B.zone)
 			return
 
-	var/connection/c = new /connection(A,B)
+	var/datum/connection/c = new (A,B)
 
 	A.connections.place(c, a_to_b)
 	B.connections.place(c, b_to_a)
@@ -413,7 +416,7 @@ SUBSYSTEM_DEF(air)
 	if(T.needs_air_update)
 		return
 
-	if(T.z > map_init_levels) // we don't want to interupt SS process on other levels
+	if(map_loading && T.z > map_init_levels) // we don't want to interupt SS process on other levels
 		if(queued_for_update)
 			queued_for_update[T] = T
 	else
@@ -423,16 +426,20 @@ SUBSYSTEM_DEF(air)
 		T.add_ZAS_debug_overlay(ZAS_DEBUG_OVERLAY_MARKED_FOR_UPDATE)
 		#endif
 
+/datum/controller/subsystem/air/StartLoadingMap()
+	LAZYINITLIST(queued_for_update)
+	map_loading = TRUE
 
-/datum/controller/subsystem/air/proc/on_map_loaded()
+/datum/controller/subsystem/air/StopLoadingMap()
+	map_loading = FALSE
 	map_init_levels = world.maxz // update z level counting, so air start to work on added levels.
+
 	for(var/T in queued_for_update)
 		mark_for_update(T)
 
 	queued_for_update.Cut()
 
-
-/datum/controller/subsystem/air/proc/mark_zone_update(zone/Z)
+/datum/controller/subsystem/air/proc/mark_zone_update(datum/zone/Z)
 	#ifdef ZASDBG
 	ASSERT(istype(Z))
 	#endif
@@ -443,7 +450,7 @@ SUBSYSTEM_DEF(air)
 	zones_to_update.Add(Z)
 	Z.needs_update = TRUE
 
-/datum/controller/subsystem/air/proc/mark_edge_sleeping(connection_edge/E)
+/datum/controller/subsystem/air/proc/mark_edge_sleeping(datum/connection_edge/E)
 	#ifdef ZASDBG
 	ASSERT(istype(E))
 	#endif
@@ -454,7 +461,7 @@ SUBSYSTEM_DEF(air)
 	active_edges.Remove(E)
 	E.sleeping = TRUE
 
-/datum/controller/subsystem/air/proc/mark_edge_active(connection_edge/E)
+/datum/controller/subsystem/air/proc/mark_edge_active(datum/connection_edge/E)
 	#ifdef ZASDBG
 	ASSERT(istype(E))
 	#endif
@@ -466,36 +473,36 @@ SUBSYSTEM_DEF(air)
 	E.sleeping = FALSE
 
 	#ifdef ZASDBG
-	if(istype(E, /connection_edge/zone))
-		var/connection_edge/zone/ZE = E
+	if(istype(E, /datum/connection_edge/zone))
+		var/datum/connection_edge/zone/ZE = E
 		log_debug("ZASDBG: Active edge! Areas: [get_area(pick(ZE.A.contents))] / [get_area(pick(ZE.B.contents))]")
 	else
 		log_debug("ZASDBG: Active edge! Area: [get_area(pick(E.A.contents))]")
 	#endif
 
-/datum/controller/subsystem/air/proc/equivalent_pressure(zone/A, zone/B)
+/datum/controller/subsystem/air/proc/equivalent_pressure(datum/zone/A, datum/zone/B)
 	return A.air.compare(B.air)
 
-/datum/controller/subsystem/air/proc/get_edge(zone/A, zone/B)
+/datum/controller/subsystem/air/proc/get_edge(datum/zone/A, datum/zone/B)
 
 	if(istype(B))
-		for(var/connection_edge/zone/edge in A.edges)
+		for(var/datum/connection_edge/zone/edge in A.edges)
 			if(edge.contains_zone(B))
 				return edge
-		var/connection_edge/edge = new/connection_edge/zone(A, B)
+		var/datum/connection_edge/edge = new/datum/connection_edge/zone(A, B)
 		edges.Add(edge)
 		edge.recheck()
 		return edge
 	else
-		for(var/connection_edge/unsimulated/edge in A.edges)
+		for(var/datum/connection_edge/unsimulated/edge in A.edges)
 			if(has_same_air(edge.B, B))
 				return edge
-		var/connection_edge/edge = new/connection_edge/unsimulated(A, B)
+		var/datum/connection_edge/edge = new/datum/connection_edge/unsimulated(A, B)
 		edges.Add(edge)
 		edge.recheck()
 		return edge
 
-/datum/controller/subsystem/air/proc/remove_edge(connection_edge/E)
+/datum/controller/subsystem/air/proc/remove_edge(datum/connection_edge/E)
 	edges -= E
 	if(!E.sleeping)
 		active_edges.Remove(E)

@@ -3,7 +3,8 @@
 ****************************************************/
 
 /mob/living/carbon
-	var/datum/reagents/vessel // Container for blood and BLOOD ONLY. Do not transfer other chems here.
+	/// Container for blood and BLOOD ONLY. Do not transfer other chems here.
+	var/datum/reagents/vessel
 
 /mob/living/carbon/human
 	var/var/pale = 0          // Should affect how mob sprite is drawn, but currently doesn't.
@@ -21,8 +22,7 @@
 		return
 
 	vessel.add_reagent("blood",species.blood_volume)
-	spawn(1)
-		fixblood()
+	fixblood()
 
 /mob/living/carbon/proc/get_blood_data()
 	var/data = list()
@@ -31,7 +31,7 @@
 		data["virus2"] = list()
 	data["blood_DNA"] = dna_trace
 	data["blood_type"] = b_type
-	data["species"] = species.name
+	data["species"] = species?.name || null
 	var/list/temp_chem = list()
 	for(var/datum/reagent/R in reagents.reagent_list)
 		temp_chem[R.type] = R.volume
@@ -43,8 +43,6 @@
 
 //Resets blood data
 /mob/living/carbon/human/proc/fixblood()
-	if(QDELETED(src))	// Needed because mannequins will continue this proc and runtime after being qdel'd
-		return
 	for(var/datum/reagent/organic/blood/B in vessel.reagent_list)
 		if(B.id == "blood")
 			var/data = list("donor"=src,"viruses"=null,"species"=species.name,"blood_DNA"=dna_trace,"blood_colour"= species.blood_color,"blood_type"=b_type,	\
@@ -89,7 +87,7 @@
 	drip_blood(blood_max)
 
 //Makes a blood drop, leaking amt units of blood from the mob
-/mob/living/carbon/human/drip_blood(var/amt as num)
+/mob/living/carbon/human/drip_blood(amt as num)
 
 	if(species && species.flags & NO_BLOOD) //TODO: Make drips come from the reagents instead.
 		return
@@ -105,7 +103,7 @@
 ****************************************************/
 
 //Gets blood from mob to the container, preserving all data in it.
-/mob/living/carbon/proc/take_blood(obj/item/reagent_containers/container, var/amount)
+/mob/living/carbon/proc/take_blood(obj/item/reagent_containers/container, amount)
 	var/datum/reagent/B = new /datum/reagent/organic/blood
 	B.holder = container
 	B.volume = amount
@@ -116,7 +114,7 @@
 	return B
 
 //For humans, blood does not appear from blue, it comes from vessels.
-/mob/living/carbon/human/take_blood(obj/item/reagent_containers/container, var/amount)
+/mob/living/carbon/human/take_blood(obj/item/reagent_containers/container, amount)
 
 	if(species && species.flags & NO_BLOOD)
 		return null
@@ -128,7 +126,7 @@
 	vessel.remove_reagent("blood",amount) // Removes blood if human
 
 //Transfers blood from container ot vessels
-/mob/living/carbon/proc/inject_blood(var/datum/reagent/organic/blood/injected, var/amount)
+/mob/living/carbon/proc/inject_blood(datum/reagent/organic/blood/injected, amount)
 	if (!injected || !istype(injected))
 		return
 	var/list/chems = list()
@@ -138,7 +136,7 @@
 	reagents.update_total()
 
 //Transfers blood from reagents to vessel, respecting blood types compatability.
-/mob/living/carbon/human/inject_blood(var/datum/reagent/organic/blood/injected, var/amount)
+/mob/living/carbon/human/inject_blood(datum/reagent/organic/blood/injected, amount)
 
 	if(species.flags & NO_BLOOD)
 		reagents.add_reagent("blood", amount, injected.data)
@@ -167,7 +165,7 @@
 					return D
 	return res
 
-proc/blood_incompatible(donor,receiver,donor_species,receiver_species)
+/proc/blood_incompatible(donor,receiver,donor_species,receiver_species)
 	if(!donor || !receiver) return 0
 
 	if(donor_species && receiver_species)
@@ -190,7 +188,7 @@ proc/blood_incompatible(donor,receiver,donor_species,receiver_species)
 		//AB is a universal receiver.
 	return 0
 
-proc/blood_splatter(var/target,var/datum/reagent/organic/blood/source,var/large)
+/proc/blood_splatter(target,datum/reagent/organic/blood/source,large)
 
 	var/obj/effect/decal/cleanable/blood/B
 	var/decal_type = /obj/effect/decal/cleanable/blood/splatter
@@ -311,7 +309,7 @@ proc/blood_splatter(var/target,var/datum/reagent/organic/blood/source,var/large)
 
 	return min(blood_volume, 100)
 
-/mob/living/carbon/human/proc/regenerate_blood(var/amount)
+/mob/living/carbon/human/proc/regenerate_blood(amount)
 	amount *= (species.blood_volume / SPECIES_BLOOD_DEFAULT)
 	var/blood_volume_raw = vessel.get_reagent_amount("blood")
 	amount = max(0,min(amount, species.blood_volume - blood_volume_raw))

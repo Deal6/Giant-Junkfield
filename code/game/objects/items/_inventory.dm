@@ -30,7 +30,7 @@
 		return FALSE
 	return TRUE
 
-/obj/item/pre_attack(atom/a, mob/user, var/params)
+/obj/item/pre_attack(atom/a, mob/user, params)
 	if(overslot)
 		var/obj/item/clothing/i = a
 		if (istype(i))
@@ -87,6 +87,8 @@
 	remove_hud_actions(user)
 	if(overslot && is_held())
 		remove_overslot_contents(user)
+	if(ready && !no_double_tact)
+		end_tact(user)
 	user.update_on_move -= src
 	if(action_button_name)
 		user.action_button_remove(src)
@@ -124,7 +126,7 @@
 		return FALSE
 
 	if (ismob(loc))
-		return !(equip_slot in unworn_slots)
+		return !(equip_slot in GLOB.unworn_slots)
 
 
 /obj/item/proc/is_held()
@@ -153,8 +155,8 @@
 /obj/item/proc/try_transfer(target, mob/living/user)
 	if(loc == user && ishuman(user))
 		var/mob/living/carbon/human/H = user
-		if(istype(target, /obj/screen/inventory))
-			var/obj/screen/inventory/screen_thing = target
+		if(istype(target, /atom/movable/screen/inventory))
+			var/atom/movable/screen/inventory/screen_thing = target
 			target = screen_thing.slot_id
 		//makes sure that the storage is equipped, so that we can't drag it into our hand from miles away.
 		//there's got to be a better way of doing this.

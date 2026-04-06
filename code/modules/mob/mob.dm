@@ -1,8 +1,11 @@
 /mob/Destroy()//This makes sure that mobs with clients/keys are not just deleted from the game.
+	persistent_client?.set_mob(null)
 	if(ishuman(src))
 		STOP_PROCESSING(SShumans, src)
 	else
 		STOP_PROCESSING(SSmobs, src)
+	if(buckled)
+		buckled.unbuckle_mob()
 	GLOB.dead_mob_list -= src
 	GLOB.living_mob_list -= src
 	GLOB.mob_list -= src
@@ -21,13 +24,24 @@
 /mob/proc/despawn()
 	return
 
-/mob/get_fall_damage(var/turf/from, var/turf/dest)
+/// Assigns a (c)key to this mob.
+/mob/proc/PossessByPlayer(ckey)
+	SHOULD_NOT_OVERRIDE(TRUE)
+	if(isnull(ckey))
+		return
+
+	if(!istext(ckey))
+		CRASH("Tried to assign a mob a non-text ckey, wtf?!")
+
+	src.ckey = ckey(ckey)
+
+/mob/get_fall_damage(turf/from, turf/dest)
 	return 0
 
-/mob/fall_impact(var/turf/from, var/turf/dest)
+/mob/fall_impact(turf/from, turf/dest)
 	return
 
-/mob/proc/take_overall_damage(var/brute, var/burn, var/used_weapon = null)
+/mob/proc/take_overall_damage(brute, burn, used_weapon = null)
 	return
 
 /mob/Initialize()
@@ -48,76 +62,81 @@
  * Generate the tag for this mob
  *
  * This is simply "mob_"+ a global incrementing counter that goes up for every mob
+
  */
 /mob/GenerateTag()
 	tag = "mob_[next_mob_id++]"
 
-/mob/proc/show_message(msg, type, alt, alt_type)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
+/**
+ * Show a message to the src mob
+ * Arguments:
+ * * msg - message output to the src mob
+ * * type - type of message - MSG_VISUAL | MSG_AUDIBLE
+ * * alt_msg - alternative message for when the src mob is blind
+ * * alt_type - type of alternative message MSG_VISUAL | MSG_AUDIBLE
+ * * avoid_highlighting - flag to avoid highlighting the message in the tgui panel
+ * * no_text_limit - flag to avoid limiting the text length
+ */
+/mob/proc/show_message(msg, type, alt_msg, alt_type, avoid_highlighting = FALSE, no_text_limit = FALSE)
 	if(!client)
 		return
 
-	if(type)
-		if(type & 1 && (sdisabilities & BLIND || blinded || paralysis)) //Vision related
-			if(!alt)
-				return
-			else
-				msg = alt
-				type = alt_type
-		if(type & 2 && (sdisabilities & DEAF || ear_deaf)) //Hearing related
-			if(!alt)
-				return
-			else
-				msg = alt
-				type = alt_type
-				if((type & 1 && sdisabilities & BLIND))
-					return
+	if (!no_text_limit)
+		msg = copytext_char(msg, 1, MAX_MESSAGE_LEN)
 
-	// Added voice muffling for Issue 41.
-	if(stat == UNCONSCIOUS || sleeping > 0)
-		to_chat(src, "<I>... You can almost hear someone talking ...</I>")
-	else
-		to_chat(src, msg)
+	if(type)
+		if(type & MSG_VISUAL && is_blind())//Vision related
+			if(!alt_msg)
+				return
+			else
+				msg = alt_msg
+				type = alt_type
+
+		if(type & MSG_AUDIBLE && ear_deaf)//Hearing related
+			if(!alt_msg)
+				return
+			else
+				msg = alt_msg
+				type = alt_type
+				if(type & MSG_VISUAL && is_blind())
+					return
+	// voice muffling
+	if(stat == UNCONSCIOUS || stat == HARDCRIT)
+		if(type & MSG_AUDIBLE) //audio
+			to_chat(src, "<I>... You can almost hear something ...</I>")
+		return
+	to_chat(src, msg, avoid_highlighting = avoid_highlighting)
+
 
 // Show a message to all mobs and objects in sight of this one
-// This would be for visible actions by the src mob
-// message is the message output to anyone who can see e.g. "[src] does something!"
-// self_message (optional) is what the src mob sees  e.g. "You do something!"
-// blind_message (optional) is what blind people will hear e.g. "You hear something!"
+/mob/visible_message(message, self_message, blind_message, vision_distance = DEFAULT_MESSAGE_RANGE, list/ignored_mobs, visible_message_flags = NONE, atom/push_appearance, no_text_limit = FALSE)
+	. = ..()
+	if(self_message)
+		show_message(self_message, MSG_VISUAL, blind_message, MSG_AUDIBLE, no_text_limit = no_text_limit)
 
-/mob/visible_message(var/message, var/self_message, var/blind_message, var/range = world.view)
-	var/list/messageturfs = list()//List of turfs we broadcast to.
-	var/list/messagemobs = list()//List of living mobs nearby who can hear it, and distant ghosts who've chosen to hear it
-	for (var/turf in view(range, get_turf(src)))
+///Returns the client runechat visible messages preference according to the message type.
+/atom/proc/runechat_prefs_check(mob/target, visible_message_flags = NONE)
+	if(!target.client?.prefs.RC_enabled)
+		return FALSE
+	if (!target.client?.prefs.RC_see_chat_non_mob)
+		return FALSE
+	if(visible_message_flags & EMOTE_MESSAGE && !target.client.prefs.RC_see_rc_emotes)
+		return FALSE
+	return TRUE
 
-		messageturfs += turf
-
-
-
-	for(var/mob/M in getMobsInRangeChunked(get_turf(src), range, FALSE, TRUE))
-		if(!M.client)
-			continue
-		messagemobs += M
-
-	for(var/mob/ghosty in GLOB.player_ghost_list)
-		if(ghosty.get_preference_value(/datum/client_preference/ghost_ears) == GLOB.PREF_ALL_EMOTES)
-			messagemobs |= ghosty
-
-	for(var/A in messagemobs)
-		var/mob/M = A
-		if(self_message && M==src)
-			M.show_message(self_message, 1, blind_message, 2)
-		else if(M.see_invisible < invisibility)  // Cannot view the invisible, but you can hear it.
-			if(blind_message)
-				M.show_message(blind_message, 2)
-		else
-			M.show_message(message, 1, blind_message, 2)
+/mob/runechat_prefs_check(mob/target, visible_message_flags = NONE)
+	if(!target.client?.prefs.RC_enabled)
+		return FALSE
+	if(visible_message_flags & EMOTE_MESSAGE && !target.client.prefs.RC_see_rc_emotes)
+		return FALSE
+	return TRUE
 
 
 // Returns an amount of power drawn from the object (-1 if it's not viable).
 // If drain_check is set it will not actually drain power, just return a value.
 // If surge is set, it will destroy/damage the recipient and not return any power.
 // Not sure where to define this, so it can sit here for the rest of time.
-/atom/proc/drain_power(var/drain_check,var/surge, var/amount = 0)
+/atom/proc/drain_power(drain_check,surge, amount = 0)
 	return -1
 
 // Show a message to all mobs and objects in earshot of this one
@@ -126,7 +145,7 @@
 // self_message (optional) is what the src mob hears.
 // deaf_message (optional) is what deaf people will see.
 // hearing_distance (optional) is the range, how many tiles away the message can be heard.
-/mob/audible_message(var/message, var/deaf_message, var/hearing_distance, var/self_message)
+/mob/audible_message(message, deaf_message, hearing_distance, self_message)
 
 	var/range = world.view
 	if(hearing_distance)
@@ -189,7 +208,7 @@
 /mob/proc/is_physically_disabled()
 	return incapacitated(INCAPACITATION_DISABLED)
 
-/mob/proc/incapacitated(var/incapacitation_flags = INCAPACITATION_DEFAULT)
+/mob/proc/incapacitated(incapacitation_flags = INCAPACITATION_DEFAULT)
 	if ((incapacitation_flags & INCAPACITATION_STUNNED) && stunned)
 		return 1
 
@@ -259,9 +278,9 @@
 
 /mob/proc/run_examinate(atom/examinify)
 	if((is_blind(src) || stat) && !isobserver(src))
-		to_chat(src, SPAN_NOTICE("Something is there but you can't see it."))
+		to_chat(src, span_notice("Something is there but you can't see it."))
 		return
-	if(!istype(examinify, /obj/screen))
+	if(!istype(examinify, /atom/movable/screen))
 		face_atom(examinify)
 	var/obj/item/device/lighting/toggleable/flashlight/FL = locate() in src
 	if (FL?.on && stat != DEAD && !incapacitated())
@@ -364,7 +383,7 @@
 	if(incapacitated())
 		return
 
-	var/obj/item/W = get_active_hand()
+	var/obj/item/W = get_active_held_item()
 	if (W)
 		W.attack_self(src)
 
@@ -376,7 +395,7 @@
 	if(incapacitated())
 		return
 
-	var/obj/item/item = get_active_hand()
+	var/obj/item/item = get_active_held_item()
 	if(!item)
 		return
 
@@ -442,7 +461,7 @@
 	if(msg != null)
 		flavor_text = msg
 
-/mob/proc/print_flavor_text()
+/mob/proc/get_flavor_text()
 	if (flavor_text && flavor_text != "")
 		var/msg = trim(replacetext(flavor_text, "\n", " "))
 		if(!msg) return ""
@@ -463,10 +482,10 @@
 	set category = "OOC"
 	var/is_admin = 0
 
-	if(client.holder && (client.holder.rights & R_ADMIN))
+	if(client.holder && (client.holder.rank_flags() & R_ADMIN))
 		is_admin = 1
 	else if(stat != DEAD || isnewplayer(src))
-		to_chat(usr, "\blue You must be observing to use this!")
+		to_chat(usr, span_blue("You must be observing to use this!"))
 		return
 
 	if(is_admin && stat == DEAD)
@@ -555,12 +574,7 @@
 
 	if(href_list["flavor_more"])
 		if(src in view(usr))
-			var/dat = {"
-				<html><meta charset=\"utf-8\"><head><title>[name]</title></head>
-				<body><tt>[replacetext(flavor_text, "\n", "<br>")]</tt></body>
-				</html>
-			"}
-			usr << browse(dat, "window=[name];size=500x200")
+			usr << browse(HTML_SKELETON_TITLE(name, "<tt>[replacetext(flavor_text, "\n", "<br>")]</tt>"), "window=[name];size=500x200")
 			onclose(usr, "[name]")
 	if(href_list["flavor_change"])
 		update_flavor_text()
@@ -571,7 +585,7 @@
 /mob/proc/pull_damage()
 	if(ishuman(src))
 		var/mob/living/carbon/human/H = src
-		if(H.health - H.halloss <= HEALTH_THRESHOLD_SOFTCRIT)
+		if(H.health - H.halloss <= CONFIG_GET(number/health_threshold_softcrit))
 			for(var/name in H.organs_by_name)
 				var/obj/item/organ/external/e = H.organs_by_name[name]
 				if(e && H.lying)
@@ -594,24 +608,25 @@
 	set category = "IC"
 
 	if(pulling)
+		animate_interact(pulling, INTERACT_UNPULL)
 		pulling.pulledby = null
 		pulling = null
 		if(HUDneed.Find("pull"))
-			var/obj/screen/HUDthrow/HUD = HUDneed["pull"]
+			var/atom/movable/screen/HUDthrow/HUD = HUDneed["pull"]
 			HUD.update_icon()
 
 
-/mob/proc/start_pulling(var/atom/movable/AM)
+/mob/proc/start_pulling(atom/movable/AM)
 
 	if ( !AM || !usr || src==AM || !isturf(src.loc) )	//if there's no person pulling OR the person is pulling themself OR the object being pulled is inside something: abort!
 		return
 
 	if (AM.anchored)
-		to_chat(src, "<span class='warning'>It won't budge!</span>")
+		to_chat(src, span_warning("It won't budge!"))
 		return
 
 	if(SEND_SIGNAL(AM, COMSIG_ATTEMPT_PULLING) == COMSIG_PULL_CANCEL)
-		to_chat(src, SPAN_WARNING("It won't budge!"))
+		to_chat(src, span_warning("It won't budge!"))
 		return
 
 
@@ -619,19 +634,19 @@
 	if(ismob(AM))
 
 		if(M.mob_size >=  MOB_GIGANTIC)
-			to_chat(src, SPAN_WARNING("It won't budge!"))
+			to_chat(src, span_warning("It won't budge!"))
 			return
 
 		if(!can_pull_mobs || !can_pull_size)
-			to_chat(src, SPAN_WARNING("It won't budge!"))
+			to_chat(src, span_warning("It won't budge!"))
 			return
 
 		if((mob_size < M.mob_size) && (can_pull_mobs != MOB_PULL_LARGER))
-			to_chat(src, SPAN_WARNING("It won't budge!"))
+			to_chat(src, span_warning("It won't budge!"))
 			return
 
 		if((mob_size == M.mob_size) && (can_pull_mobs == MOB_PULL_SMALLER))
-			to_chat(src, SPAN_WARNING("It won't budge!"))
+			to_chat(src, span_warning("It won't budge!"))
 			return
 
 		// If your size is larger than theirs and you have some
@@ -646,7 +661,7 @@
 	else if(isobj(AM))
 		var/obj/I = AM
 		if(!can_pull_size || can_pull_size < I.w_class)
-			to_chat(src, "<span class='warning'>It won't budge!</span>")
+			to_chat(src, span_warning("It won't budge!"))
 			return
 
 	if(pulling)
@@ -659,13 +674,12 @@
 	src.pulling = AM
 	AM.pulledby = src
 
-	/*if(pullin)
-		pullin.icon_state = "pull1"*/
+	animate_interact(AM, INTERACT_PULL)
 
 	if(ishuman(AM))
 		var/mob/living/carbon/human/H = AM
 		if(H.pull_damage())
-			to_chat(src, "\red <B>Pulling \the [H] in their current condition would probably be a bad idea.</B>")
+			to_chat(src, span_boldwarning("Pulling \the [H] in their current condition would probably be a bad idea."))
 
 	//Attempted fix for people flying away through space when cuffed and dragged.
 	if(ismob(AM))
@@ -778,7 +792,7 @@ All Canmove setting in this proc is temporary. This var should not be set from h
 	else
 		reset_plane_and_layer()
 
-/mob/facedir(var/ndir)
+/mob/facedir(ndir)
 	if(!canface() || client.moving)
 		return 0
 	set_dir(ndir)
@@ -926,7 +940,7 @@ All Canmove setting in this proc is temporary. This var should not be set from h
 /mob/proc/embedded_needs_process()
 	return (embedded.len > 0)
 
-mob/proc/yank_out_object()
+/mob/proc/yank_out_object()
 	set category = "Object"
 	set name = "Yank out object"
 	set desc = "Remove an embedded item at the cost of bleeding and pain."
@@ -963,9 +977,9 @@ mob/proc/yank_out_object()
 	var/obj/item/selection = input("What do you want to yank out?", "Embedded objects") in valid_objects
 
 	if(self)
-		to_chat(src, "<span class='warning'>You attempt to get a good grip on [selection] in your body.</span>")
+		to_chat(src, span_warning("You attempt to get a good grip on [selection] in your body."))
 	else
-		to_chat(U, "<span class='warning'>You attempt to get a good grip on [selection] in [S]'s body.</span>")
+		to_chat(U, span_warning("You attempt to get a good grip on [selection] in [S]'s body."))
 
 	if(!do_mob(U, S, 30))
 		return
@@ -973,9 +987,9 @@ mob/proc/yank_out_object()
 		return
 
 	if(self)
-		visible_message("<span class='warning'><b>[src] rips [selection] out of their body.</b></span>","<span class='warning'><b>You rip [selection] out of your body.</b></span>")
+		visible_message(span_warning("<b>[src] rips [selection] out of their body.</b>"),span_warning("<b>You rip [selection] out of your body.</b>"))
 	else
-		visible_message("<span class='warning'><b>[usr] rips [selection] out of [src]'s body.</b></span>","<span class='warning'><b>[usr] rips [selection] out of your body.</b></span>")
+		visible_message(span_warning("<b>[usr] rips [selection] out of [src]'s body.</b>"),span_warning("<b>[usr] rips [selection] out of your body.</b>"))
 	valid_objects = get_visible_implants()
 	if(valid_objects.len == 1) //Yanking out last object - removing verb.
 		remove_verb(src, /mob/proc/yank_out_object)
@@ -1108,7 +1122,7 @@ mob/proc/yank_out_object()
 
 	stats?.ui_interact(usr)
 
-/mob/proc/set_face_dir(var/newdir)
+/mob/proc/set_face_dir(newdir)
 	if(!isnull(facing_dir) && newdir == facing_dir)
 		facing_dir = null
 	else if(newdir)
@@ -1171,7 +1185,7 @@ mob/proc/yank_out_object()
 	set src = usr
 
 	if(HUDneed["move intent"])
-		var/obj/screen/mov_intent/mov_intent = HUDneed["move intent"]
+		var/atom/movable/screen/mov_intent/mov_intent = HUDneed["move intent"]
 		mov_intent.Click()  // Yep , this is all.
 
 /mob/proc/adjustEarDamage()
@@ -1190,7 +1204,7 @@ mob/proc/yank_out_object()
 
 /mob/proc/throw_mode_off()
 	src.in_throw_mode = 0
-	/*for (var/obj/screen/HUDthrow/HUD in src.client.screen.)
+	/*for (var/atom/movable/screen/HUDthrow/HUD in src.client.screen.)
 		if(HUD.name == "throw") //in case we don't have the HUD and we use the hotkey
 			//src.throw_icon.icon_state = "act_throw_off"
 			HUD.toggle_throw_mode()
@@ -1200,7 +1214,7 @@ mob/proc/yank_out_object()
 	src.in_throw_mode = 1
 	/*if(src.throw_icon)
 		src.throw_icon.icon_state = "act_throw_on"*/
-	/*for (var/obj/screen/HUDthrow/HUD in src.client.screen.)
+	/*for (var/atom/movable/screen/HUDthrow/HUD in src.client.screen.)
 		if(HUD.name == "throw") //in case we don't have the HUD and we use the hotkey
 			//src.throw_icon.icon_state = "act_throw_off"
 			HUD.toggle_throw_mode()
@@ -1209,17 +1223,17 @@ mob/proc/yank_out_object()
 /mob/proc/swap_hand()
 	return
 
-/mob/proc/check_CH(CH_name as text, var/CH_type, var/second_arg = null)
+/mob/proc/check_CH(CH_name as text, CH_type, second_arg = null)
 	if(!src.client.CH || !istype(src.client.CH, CH_type))//(src.client.CH.handler_name != CH_name))
 		src.client.CH = new CH_type(client, second_arg)
-		to_chat(src, SPAN_WARNING("You prepare [CH_name]."))
+		to_chat(src, span_warning("You prepare [CH_name]."))
 	else
 		kill_CH()
 	return
 
 /mob/proc/kill_CH()
 	if (src.client.CH)
-		to_chat(src, SPAN_NOTICE ("You unprepare [src.client.CH.handler_name]."))
+		to_chat(src, span_notice ("You unprepare [src.client.CH.handler_name]."))
 		qdel(src.client.CH)
 
 
@@ -1275,11 +1289,201 @@ mob/proc/yank_out_object()
 /client/proc/toggle_zone_sel(list/zones)
 	if(!check_has_body_select())
 		return
-	var/obj/screen/zone_sel/selector = mob.HUDneed["damage zone"]
+	var/atom/movable/screen/zone_sel/selector = mob.HUDneed["damage zone"]
 	selector.set_selected_zone(next_list_item(mob.targeted_organ,zones))
-/mob/proc/set_stat(var/new_stat)
+	logger.Log(
+		LOG_CATEGORY_TARGET_ZONE_SWITCH,
+		"[key_name(src)] manually changed selected zone",
+		data = zones
+	)
+
+/// Cleanup proc that's called when a mob loses a client, either through client destroy or logout
+/// Logout happens post client del, so we can't just copypaste this there. This keeps things clean and consistent
+/mob/proc/become_uncliented()
+	if(!canon_client)
+		return
+
+	for(var/datum/callback/callback as anything in persistent_client?.post_logout_callbacks)
+		callback.Invoke()
+
+	canon_client = null
+
+/mob/proc/set_stat(new_stat)
 	. = stat != new_stat
 	stat = new_stat
 
 /mob/proc/ssd_check()
 	return !client && !teleop
+
+
+/**
+ * Checks if there is enough light where the mob is located
+ *
+ * Args:
+ *  light_amount (optional) - A decimal amount between 1.0 through 0.0 (default is 0.2)
+**/
+/mob/proc/has_light_nearby(light_amount = LIGHTING_TILE_IS_DARK)
+	var/turf/mob_location = get_turf(src)
+	return mob_location.get_lumcount() > light_amount
+
+
+/// Returns if the user has night vision or not.
+/mob/proc/has_nightvision()
+	return !!get_active_mutation(src, MUTATION_NIGHT_VISION)
+
+/// This mob is able to read books
+/mob/proc/is_literate()
+	// I have no idea what to check here. There is no such thing as illiterate in this codebase but maybe in the future...
+	return TRUE
+
+/// Can this mob read
+/mob/proc/can_read(atom/viewed_atom, reading_check_flags = (READING_CHECK_LITERACY|READING_CHECK_LIGHT), silent = FALSE)
+	if((reading_check_flags & READING_CHECK_LITERACY) && !is_literate())
+		if(!silent)
+			to_chat(src, span_warning("You try to read [viewed_atom], but can't comprehend any of it."))
+		return FALSE
+
+	if((reading_check_flags & READING_CHECK_LIGHT) && !has_light_nearby() && !has_nightvision())
+		if(!silent)
+			to_chat(src, span_warning("It's too dark in here to read!"))
+		return FALSE
+
+	return TRUE
+
+/**
+ * Get the mob VV dropdown extras
+ */
+/mob/vv_get_dropdown()
+	. = ..()
+	VV_DROPDOWN_OPTION("", VV_HK_SPACER)
+	VV_DROPDOWN_OPTION(VV_HK_GIB, "Gib")
+	VV_DROPDOWN_OPTION(VV_HK_GODMODE, "Toggle Godmode")
+	VV_DROPDOWN_OPTION(VV_HK_DROP_ALL, "Drop Everything")
+	VV_DROPDOWN_OPTION(VV_HK_REGEN_ICONS, "Regenerate Icons")
+	VV_DROPDOWN_OPTION(VV_HK_PLAYER_PANEL, "Show player panel")
+	VV_DROPDOWN_OPTION(VV_HK_BUILDMODE, "Toggle Buildmode")
+	VV_DROPDOWN_OPTION(VV_HK_DIRECT_CONTROL, "Assume Direct Control")
+	VV_DROPDOWN_OPTION(VV_HK_GIVE_DIRECT_CONTROL, "Give Direct Control")
+	VV_DROPDOWN_OPTION(VV_HK_MODIFY_LANGUAGES, "Modify Languages")
+	// VV_DROPDOWN_OPTION(VV_HK_OFFER_GHOSTS, "Offer Control to Ghosts")
+
+/mob/vv_do_topic(list/href_list)
+	. = ..()
+	if(href_list[VV_HK_REGEN_ICONS])
+		if(!check_rights(NONE))
+			return
+		regenerate_icons()
+	if(href_list[VV_HK_PLAYER_PANEL])
+		if(!check_rights(NONE))
+			return
+		usr.client.holder.show_player_panel(src)
+
+	if(href_list[VV_HK_GODMODE])
+		if(!check_rights(R_ADMIN))
+			return
+		usr.client.cmd_admin_godmode(src)
+	// if(href_list[VV_HK_GIVE_SPELL])
+	// 	if(!check_rights(NONE))
+	// 		return
+	// 	usr.client.give_spell(src)
+	// if(href_list[VV_HK_REMOVE_SPELL])
+	// 	if(!check_rights(NONE))
+	// 		return
+	// 	usr.client.remove_spell(src)
+	// if(href_list[VV_HK_GIVE_DISEASE])
+	// 	if(!check_rights(NONE))
+	// 		return
+	// 	usr.client.give_disease(src)
+	if(href_list[VV_HK_GIB])
+		if(!check_rights(R_FUN))
+			return
+		usr.client.cmd_admin_gib(src)
+	if(href_list[VV_HK_BUILDMODE])
+		if(!check_rights(R_BUILD))
+			return
+		togglebuildmode(src)
+	if(href_list[VV_HK_DROP_ALL])
+		if(!check_rights(NONE))
+			return
+		usr.client.cmd_admin_drop_everything(src)
+	if(href_list[VV_HK_DIRECT_CONTROL])
+		if(!check_rights(NONE))
+			return
+		usr.client.cmd_assume_direct_control(src)
+	if(href_list[VV_HK_GIVE_DIRECT_CONTROL])
+		if(!check_rights(NONE))
+			return
+		usr.client.cmd_give_direct_control(src)
+	if(href_list[VV_HK_MODIFY_LANGUAGES] && check_rights(R_FUN))
+		var/langoption = input(usr, "What do you want to do?", "Modify Languages", null) as null|anything in list("Add Language", "Remove Language")
+		if(isnull(langoption))
+			return
+		if(langoption == "Add Language")
+			var/new_language = input("Please choose a language to add.","Language",null) as null|anything in GLOB.all_languages
+			if(!new_language)
+				return
+			if(!src)
+				to_chat(usr, "Mob doesn't exist anymore")
+				return
+			if(src.add_language(new_language))
+				to_chat(usr, "Added [new_language] to [src].")
+			else
+				to_chat(usr, "Mob already knows that language.")
+		if(langoption == "Remove Language")
+			if(!length(src.languages))
+				to_chat(usr, "This mob knows no languages.")
+				return
+			var/datum/language/rem_language = input("Please choose a language to remove.","Language",null) as null|anything in src.languages
+			if(!rem_language)
+				return
+			if(!src)
+				to_chat(usr, "Mob doesn't exist anymore")
+				return
+
+			if(src.remove_language(rem_language.name))
+				to_chat(usr, "Removed [rem_language] from [src].")
+			else
+				to_chat(usr, "Mob doesn't know that language.")
+
+/mob/vv_auto_rename(new_name)
+	//Do not do parent's actions, as we *usually* do this differently.
+	fully_replace_character_name(real_name, new_name)
+
+/// Makes a client temporarily aware of an appearance via and invisible vis contents object.
+/mob/proc/send_appearance(mutable_appearance/appearance) as /atom/movable/screen
+	RETURN_TYPE(/atom/movable/screen)
+	if(!hud_used || isnull(appearance))
+		return
+
+	var/atom/movable/screen/container = new
+	container.appearance = appearance
+
+	hud_used.vis_holder.vis_contents += container
+	addtimer(CALLBACK(src, PROC_REF(remove_appearance), container), 5 SECONDS, TIMER_DELETE_ME)
+
+	return container
+
+/mob/proc/remove_appearance(container)
+	if(!hud_used)
+		return
+
+	hud_used.vis_holder.vis_contents -= container
+
+/proc/ma2html(mutable_appearance/appearance, mob/viewer, extra_classes = "")
+	if(isatom(appearance))
+		var/atom/atom = appearance
+		appearance = copy_appearance_filter_overlays(atom.appearance)
+	else if(isappearance_or_image(appearance) || isicon(appearance))
+		appearance = copy_appearance_filter_overlays(appearance)
+	else
+		CRASH("Invalid appearance passed to ma2html - either a appearance, image, icon, or atom must be passed!")
+
+	if(IS_CLIENT_OR_MOCK(viewer))
+		var/datum/client_interface/client = viewer
+		viewer = client.mob
+	if(!ismob(viewer))
+		CRASH("Invalid viewer passed to ma2html")
+	var/atom/movable/screen/container = viewer.send_appearance(appearance)
+	if(QDELETED(container))
+		CRASH("Failed to send appearance to client")
+	return "<img class='icon [extra_classes]' src='\ref[container]' style='image-rendering: pixelated; -ms-interpolation-mode: nearest-neighbor'>"

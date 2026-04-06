@@ -31,7 +31,7 @@
 		return 1
 
 
-/obj/machinery/containment_field/explosion_act(target_power, explosion_handler/handler)
+/obj/machinery/containment_field/explosion_act(target_power, datum/explosion_handler/handler)
 	return target_power
 
 /obj/machinery/containment_field/HasProximity(atom/movable/AM as mob|obj)
@@ -64,7 +64,7 @@
 		hasShocked = 0
 	return
 
-/obj/machinery/containment_field/proc/set_master(var/master1,var/master2)
+/obj/machinery/containment_field/proc/set_master(master1,master2)
 	if(!master1 || !master2)
 		return 0
 	FG1 = master1

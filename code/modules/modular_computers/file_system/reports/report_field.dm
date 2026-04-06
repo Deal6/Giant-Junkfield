@@ -1,14 +1,24 @@
 /datum/report_field
-	var/datum/computer_file/report/owner //The report to which this field belongs.
-	var/name = "generic field"     //The name the field will be labeled with.
-	var/value                      //Only used internally.
-	var/can_edit = 1               //Whether the field gives the user the option to edit it.
-	var/required = 0               //Whether the field is required to submit the report.
-	var/ID                         //A unique (per report) id; don't set manually.
-	var/needs_big_box = 0          //Suggests that the output won't look good in-line. Useful in nanoui logic.
-	var/ignore_value = 0           //Suggests that the value should not be displayed.
-	var/list/access_edit = list(list())  //The access required to edit the field.
-	var/list/access = list(list())       //The access required to view the field.
+	/// The report to which this field belongs.
+	var/datum/computer_file/report/owner
+	/// The name the field will be labeled with.
+	var/name = "generic field"
+	/// Only used internally.
+	var/value
+	/// Whether the field gives the user the option to edit it.
+	var/can_edit = 1
+	/// Whether the field is required to submit the report.
+	var/required = 0
+	/// A unique (per report) id; don't set manually.
+	var/ID
+	/// Suggests that the output won't look good in-line. Useful in nanoui logic.
+	var/needs_big_box = 0
+	/// Suggests that the value should not be displayed.
+	var/ignore_value = 0
+	/// The access required to edit the field.
+	var/list/access_edit = list(list())
+	/// The access required to view the field.
+	var/list/access = list(list())
 
 /datum/report_field/New(datum/computer_file/report/report)
 	owner = report
@@ -18,7 +28,7 @@
 	owner = null
 	. = ..()
 
-//Access stuff. Can be given access constants or lists. See report access procs for documentation.
+/// Access stuff. Can be given access constants or lists. See report access procs for documentation.
 /datum/report_field/proc/set_access(access, access_edit, override = 1)
 	if(access)
 		if(!islist(access))
@@ -37,24 +47,24 @@
 		return
 	return has_access_pattern(access_edit, given_access)
 
-//Assumes the old and new fields are of the same type. Override if the field stores information differently.
+/// Assumes the old and new fields are of the same type. Override if the field stores information differently.
 /datum/report_field/proc/copy_value(datum/report_field/old_field)
 	value = old_field.value
 	access = old_field.access
 	access_edit = old_field.access_edit
 
-//Gives the user prompts to fill out the field.
+/// Gives the user prompts to fill out the field.
 /datum/report_field/proc/ask_value(mob/user)
 
-//Sanitizes and sets the value from input.
+/// Sanitizes and sets the value from input.
 /datum/report_field/proc/set_value(given_value)
 	value = given_value
 
-//Exports the contents of the field into html for viewing.
+/// Exports the contents of the field into html for viewing.
 /datum/report_field/proc/get_value()
 	return value
 
-//In case the name needs to be displayed dynamically.
+/// In case the name needs to be displayed dynamically.
 /datum/report_field/proc/display_name()
 	return name
 
@@ -62,12 +72,12 @@
 Basic field subtypes.
 */
 
-//For information between fields.
+/// For information between fields.
 /datum/report_field/instruction
 	can_edit = 0
 	ignore_value = 1
 
-//Basic text field, for short strings.
+/// Basic text field, for short strings.
 /datum/report_field/simple_text
 	value = ""
 
@@ -79,7 +89,7 @@ Basic field subtypes.
 	var/input = input(user, "[display_name()]:", "Form Input", get_value()) as null|text
 	set_value(input)
 
-//Inteded for sizable text blocks.
+/// Inteded for sizable text blocks.
 /datum/report_field/pencode_text
 	value = ""
 	needs_big_box = 1
@@ -94,7 +104,7 @@ Basic field subtypes.
 /datum/report_field/pencode_text/ask_value(mob/user)
 	set_value(input(user, "[display_name()] (You may use HTML paper formatting tags):", "Form Input", replacetext(html_decode(value), "\[br\]", "\n")) as null|message)
 
-//Uses hh:mm format for times.
+/// Uses hh:mm format for times.
 /datum/report_field/time
 	value = "00:00"
 
@@ -104,7 +114,7 @@ Basic field subtypes.
 /datum/report_field/time/ask_value(mob/user)
 	set_value(input(user, "[display_name()] (time as hh:mm):", "Form Input", get_value()) as null|text)
 
-//Uses YYYY-MM-DD format for dates.
+/// Uses YYYY-MM-DD format for dates.
 /datum/report_field/date/New()
 	..()
 	value = stationdate2text()
@@ -115,7 +125,7 @@ Basic field subtypes.
 /datum/report_field/date/ask_value(mob/user)
 	set_value(input(user, "[display_name()] (date as YYYY-MM-DD):", "Form Input", get_value()) as null|text)
 
-//Will prompt for numbers.
+/// Will prompt for numbers.
 /datum/report_field/number
 	value = 0
 
@@ -127,20 +137,23 @@ Basic field subtypes.
 	var/input_value = input(user, "[display_name()]:", "Form Input", get_value()) as null|num
 
 	if(input_value < 0)
-		to_chat(user,SPAN_WARNING("Value has to be positive."))
+		to_chat(user,span_warning("Value has to be positive."))
 		return
 	var/obj/item/card/id/held_card = user.GetIdCard()
 	if(!held_card)
-		to_chat(user, SPAN_WARNING("Your ID is missing."))
+		to_chat(user, span_warning("Your ID is missing."))
 		return
 	var/datum/money_account/used_account = get_account(held_card.associated_account_number)
+	if(!used_account)
+		to_chat(user, span_warning("Your account does not exist."))
+		return
 	var/datum/transaction/T_post = new(-input_value, used_account.owner_name, "Bounty Edited", "Bounty board system")
 	if(T_post.apply_to(used_account)) //Charges the new money
-		to_chat(user, SPAN_WARNING("Bounty modified. Your previous funds have been refunded."))
+		to_chat(user, span_warning("Bounty modified. Your previous funds have been refunded."))
 		var/datum/transaction/T_pre = new(value, used_account.owner_name, "Bounty Refund", "Bounty board system")
 		T_pre.apply_to(used_account) //Refunds the old money
 	else
-		to_chat(user, SPAN_WARNING("You don't have enough funds to do that!"))
+		to_chat(user, span_warning("You don't have enough funds to do that!"))
 		return
 
 	set_value(input_value)
@@ -152,7 +165,7 @@ Basic field subtypes.
 /datum/report_field/number/ask_value(mob/user)
 	set_value(input(user, "[display_name()]:", "Form Input", get_value()) as null|num)
 
-//Gives a list of choices to pick one from.
+/// Gives a list of choices to pick one from.
 /datum/report_field/options/proc/get_options()
 
 /datum/report_field/options/set_value(given_value)
@@ -162,14 +175,14 @@ Basic field subtypes.
 /datum/report_field/options/ask_value(mob/user)
 	set_value(input(user, "[display_name()] (select one):", "Form Input", get_value()) as null|anything in get_options())
 
-//Yes or no field.
+/// Yes or no field.
 /datum/report_field/options/yes_no
 	value = "No"
 
 /datum/report_field/options/yes_no/get_options()
 	return list("Yes", "No")
 
-//Signature field; ask_value will obtain the user's signature.
+/// Signature field; ask_value will obtain the user's signature.
 /datum/report_field/signature/get_value()
 	return "<font face=\"Times New Roman\"><i>[value]</i></font>"
 
@@ -186,7 +199,7 @@ Basic field subtypes.
 /datum/report_field/array
 	var/list/value_list = list()
 
-/datum/report_field/array/proc/get_raw(var/position)
+/datum/report_field/array/proc/get_raw(position)
 	if(position)
 		return value_list[position]
 	else
@@ -194,7 +207,7 @@ Basic field subtypes.
 
 /datum/report_field/array/get_value()
 	var/dat = ""
-	for(var/i = 1, i<=value_list.len, i++)
+	for(var/i = 1; i<=value_list.len; i++)
 		if(i > 1)
 			dat += "<br>"
 		dat += "[value_list[i]]"
@@ -204,158 +217,11 @@ Basic field subtypes.
 	error("Use add_value()")
 	return
 
-/datum/report_field/array/proc/add_value(var/given_value)
+/datum/report_field/array/proc/add_value(given_value)
 	value_list.Add(given_value)
 
-/datum/report_field/array/proc/remove_value(var/given_value)
+/datum/report_field/array/proc/remove_value(given_value)
 	value_list.Remove(given_value)
 
 /datum/report_field/array/ask_value(mob/user)
-	var/inputchoice = input(user, "Add or Remove value", "Field Edit", "Add") in list("Add", "Remove")
-	if(inputchoice == "Add")
-		var/toadd = input(user, "Add value", "Field Input") as null|text
-		if(!isnull(toadd))
-			add_value(toadd)
-	else if(inputchoice == "Remove")
-		remove_value(input(user, "Choose value to remove", "Field Reduce") as null|anything in value_list )
-
-	
-
-/datum/report_field/arraylinkage
-	var/list/arrays = list()
-	ignore_value = TRUE // value is too generic to use
-
-// retrieves index of key
-// can retrieve additional entries of same index using additionalarrays param
-/datum/report_field/arraylinkage/proc/retrieve_index_of_array(key, index = 0, additionalarrays = list())
-	if(!(key && (arrays.len > 0) && index > 0)) // can we access?
-		return FALSE
-	var/primeretrieved = arrays[key] // key's array
-	if(!(index && primeretrieved && length(primeretrieved) >= index)) // can we access the index asked for using the key?
-		return FALSE
-	var/list/toreturn = list(primeretrieved[index])
-	for(var/arrayexists in additionalarrays) // all linked arrays we also want index of
-		if((arrayexists in arrays) && length(arrays[arrayexists]) >= index)
-			var/list/toadd = arrays[arrayexists]
-			toreturn.Add(toadd[index])
-		else
-			return FALSE // we really don't want input from bad sources.
-	. = toreturn // succeeded all the checks? caller's will be done.
-
-// adds one index to the end of each list
-// sets the contents of each list for the created index on demand using either keys or arrangement of any given input of proper size
-/datum/report_field/arraylinkage/proc/add_index(list/new_entries, keyed = FALSE)
-	if(!new_entries || new_entries.len > arrays.len)
-		return FALSE
-	if(new_entries.len != arrays.len) // only accept using list-order based indexing when it has a 1 to 1 ratio
-		keyed = TRUE
-	var/count = 1
-	if(keyed)
-		for(var/key in arrays) // unfitting keys are discarded, but can still disqualify a list.
-			var/list/currentarray = arrays[key]
-			if(new_entries[key])
-				currentarray.Add(new_entries[key])
-			else
-				currentarray.Add(null) // all arrays must have the same indexing for the linkage to work.
-		. = TRUE
-	else
-		for(var/entry in new_entries) // sanitize before it's t oo late
-			if(new_entries[entry])
-				CRASH("keyed outside of key mode in add_index")
-		for(var/entry in new_entries)
-			var/list/currentarray = arrays?[count]
-			if(!currentarray) // in case a check breaks
-				return
-			count ++
-			currentarray.Add(entry)
-		. = TRUE
-
-// set one entry in one list
-/datum/report_field/arraylinkage/proc/edit_index(key, setto, index)
-	if(!arrays[key] || length(arrays[key]) < index || !islist(arrays[key]))
-		return FALSE
-	var/list/accessed = arrays[key]
-	if(accessed)
-		accessed[index] = setto
-		. = TRUE
-
-// delete one index of all lists in arraylinkage
-/datum/report_field/arraylinkage/proc/remove_index(index)
-	if(!length(arrays) || length(arrays[1]) < index) // check if there are arrays and the first one is long enough
-		return FALSE // hopefully all arrays have the same length as the first one 
-	for(var/list/arraytocut in arrays)
-		arraytocut.Cut(index, index+1)
-	. = TRUE
-
-/datum/report_field/arraylinkage/ask_value(mob/user)
-
-/datum/report_field/arrayclump // these arrays are explicitly unlinked and are stored here for categorization
-	value = list() // only input key=array as entry
-
-/datum/report_field/arrayclump/set_value(given_value)
-	if(!islist(given_value))
-		return FALSE
-	. = ..()
-
-/datum/report_field/arrayclump/ask_value(mob/user)
-	. = TRUE
-	var/list/clumpvalue = value
-	if(!istype(clumpvalue))
-		return FALSE
-	var/list/entries = clumpvalue.Copy() 
-	entries.Add("<NEW>")
-	
-	var/entrychoice = input(user, "Choose Entry Category", "Entry Category") as null | anything in entries
-	if(entrychoice == "<NEW>" )
-		var/entryname = input(user, "Choose Entry Name", "Entry Name") as text | null
-		entryname = sanitizeSafe(entryname)
-		if(!istext(entryname))
-			to_chat(user, SPAN_NOTICE("Edit canceled successfully."))
-			return FALSE
-		if(clumpvalue[entryname]) // only replace entry with alert
-			if(alert(user, "Replace old entry?", "Entry Replacement", "Yes", "No") == "No")
-				to_chat(user, SPAN_NOTICE("Edit canceled successfully."))
-				return FALSE
-		var/startingvalue = input(user, "Create Entry", "Entry Creation") as text | null
-		startingvalue = sanitizeSafe(startingvalue)
-		if(!istext(startingvalue))
-			to_chat(user, SPAN_NOTICE("Edit canceled successfully."))
-			return FALSE
-		to_chat(user, SPAN_NOTICE("You have successfully added an entry to [name]."))
-		value[entryname] = list(startingvalue)
-	
-	else if(entrychoice)
-		var/list/selections = clumpvalue[entrychoice]
-		selections = selections.Copy() // don't edit the original list
-		selections.Add("<NEW>")
-		var/selectionchoice = input(user, "Select Entry", "Entry") as null | anything in selections
-		if(!istext(selectionchoice))
-			return FALSE
-		if(selectionchoice == "<NEW>")
-			var/nextvalue = input(user, "Add Value", "Value") as text | null
-			nextvalue = sanitizeSafe(nextvalue)
-			if(!istext(nextvalue))
-				to_chat(user, SPAN_NOTICE("Addition canceled successfully."))
-				return FALSE
-			else
-				var/list/entrytoaddto = clumpvalue[entrychoice]
-				if(istype(entrytoaddto))
-					entrytoaddto.Add(nextvalue)
-				else
-					CRASH("Type Mismatch in clump list")
-		
-		else
-			var/newvalue = input(user, "New Value", "Value") as text | null
-			newvalue = sanitizeSafe(newvalue)
-			if(!istext(newvalue))
-				to_chat(user, SPAN_NOTICE("Replacement canceled successfully."))
-				return FALSE
-			var/list/intermediaryvalue = clumpvalue[entrychoice]
-			if(istype(intermediaryvalue))
-				var/indexhound = clumpvalue.Find(intermediaryvalue) // the Hound finds the value we splice
-				intermediaryvalue.Splice(indexhound, indexhound+1, newvalue) 
-			else
-				CRASH("Type Mismatch in clump list")
-			
-
-
+	add_value(input(user, "Add value", "") as null|text)

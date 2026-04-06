@@ -35,6 +35,10 @@
 	icon = 'icons/obj/toy.dmi'
 	icon_state = "waterballoon-e"
 	item_state = "balloon-empty"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/misc/balloons_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/misc/balloons_righthand.dmi',
+		)
 	preloaded_reagents = list()
 
 /obj/item/toy/balloon/New()
@@ -48,7 +52,7 @@
 	if(!proximity) return
 	if (istype(A, /obj/structure/reagent_dispensers/watertank) && get_dist(src,A) <= 1)
 		A.reagents.trans_to_obj(src, 10)
-		to_chat(user, SPAN_NOTICE("You fill the balloon with the contents of [A]."))
+		to_chat(user, span_notice("You fill the balloon with the contents of [A]."))
 		src.desc = "A translucent balloon with some form of liquid sloshing around in it."
 		src.update_icon()
 	return
@@ -65,14 +69,14 @@
 					qdel(src)
 				else
 					src.desc = "A translucent balloon with some form of liquid sloshing around in it."
-					to_chat(user, SPAN_NOTICE("You fill the balloon with the contents of [O]."))
+					to_chat(user, span_notice("You fill the balloon with the contents of [O]."))
 					O.reagents.trans_to_obj(src, 10)
 	src.update_icon()
 	return
 
 /obj/item/toy/balloon/throw_impact(atom/hit_atom)
 	if(src.reagents.total_volume >= 1)
-		src.visible_message(SPAN_WARNING("\The [src] bursts!"),"You hear a pop and a splash.")
+		src.visible_message(span_warning("\The [src] bursts!"),"You hear a pop and a splash.")
 		src.reagents.touch_turf(get_turf(hit_atom))
 		for(var/atom/A in get_turf(hit_atom))
 			src.reagents.touch(A)
@@ -99,7 +103,10 @@
 	icon = 'icons/obj/radio.dmi'
 	icon_state = "beacon"
 	item_state = "signaler"
-
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/misc/devices_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/misc/devices_righthand.dmi',
+		)
 /*
  * Fake singularity
  */
@@ -118,30 +125,34 @@
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "sword0"
 	item_state = "sword0"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/weapons/swords_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/weapons/swords_righthand.dmi',
+		)
 	w_class = ITEM_SIZE_SMALL
 	attack_verb = list("attacked", "struck", "hit")
 	spawn_tags = SPAWN_TAG_TOY_WEAPON
 	var/active = 0
 
-	attack_self(mob/user)
-		src.active = !( src.active )
-		if (src.active)
-			to_chat(user, SPAN_NOTICE("You extend the plastic blade with a quick flick of your wrist."))
-			playsound(user, 'sound/weapons/saberon.ogg', 50, 1)
-			src.icon_state = "swordblue"
-			src.item_state = "swordblue"
-			src.w_class = ITEM_SIZE_BULKY
-		else
-			to_chat(user, SPAN_NOTICE("You push the plastic blade back down into the handle."))
-			playsound(user, 'sound/weapons/saberoff.ogg', 50, 1)
-			src.icon_state = "sword0"
-			src.item_state = "sword0"
-			src.w_class = ITEM_SIZE_SMALL
+/obj/item/toy/sword/attack_self(mob/user)
+	src.active = !( src.active )
+	if (src.active)
+		to_chat(user, span_notice("You extend the plastic blade with a quick flick of your wrist."))
+		playsound(user, 'sound/weapons/saberon.ogg', 50, 1)
+		src.icon_state = "swordblue"
+		src.item_state = "swordblue"
+		src.w_class = ITEM_SIZE_BULKY
+	else
+		to_chat(user, span_notice("You push the plastic blade back down into the handle."))
+		playsound(user, 'sound/weapons/saberoff.ogg', 50, 1)
+		src.icon_state = "sword0"
+		src.item_state = "sword0"
+		src.w_class = ITEM_SIZE_SMALL
 
-		update_wear_icon()
+	update_wear_icon()
 
-		src.add_fingerprint(user)
-		return
+	src.add_fingerprint(user)
+	return
 
 /obj/item/toy/katana
 	name = "replica katana"
@@ -149,6 +160,10 @@
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "katana"
 	item_state = "katana"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/weapons/swords_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/weapons/swords_righthand.dmi',
+		)
 	flags = CONDUCT
 	slot_flags = SLOT_BELT | SLOT_BACK
 	force = WEAPON_FORCE_WEAK
@@ -167,27 +182,27 @@
 	icon_state = "snappop"
 	w_class = ITEM_SIZE_TINY
 
-	throw_impact(atom/hit_atom)
-		..()
-		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
-		s.set_up(3, 1, src)
-		s.start()
-		new /obj/effect/decal/cleanable/ash(src.loc)
-		src.visible_message(SPAN_WARNING("The [src.name] explodes!"),SPAN_WARNING("You hear a snap!"))
-		playsound(src, 'sound/effects/snap.ogg', 50, 1)
-		qdel(src)
+/obj/item/toy/snappop/throw_impact(atom/hit_atom)
+	..()
+	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
+	s.set_up(3, 1, src)
+	s.start()
+	new /obj/effect/decal/cleanable/ash(src.loc)
+	src.visible_message(span_warning("The [src.name] explodes!"),span_warning("You hear a snap!"))
+	playsound(src, 'sound/effects/snap.ogg', 50, 1)
+	qdel(src)
 
 /obj/item/toy/snappop/Crossed(H as mob|obj)
 	if((ishuman(H))) //i guess carp and shit shouldn't set them off
 		var/mob/living/carbon/M = H
 		if(MOVING_QUICKLY(M))
-			to_chat(M, SPAN_WARNING("You step on the snap pop!"))
+			to_chat(M, span_warning("You step on the snap pop!"))
 
 			var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 			s.set_up(2, 0, src)
 			s.start()
 			new /obj/effect/decal/cleanable/ash(src.loc)
-			src.visible_message(SPAN_WARNING("The [src.name] explodes!"),SPAN_WARNING("You hear a snap!"))
+			src.visible_message(span_warning("The [src.name] explodes!"),span_warning("You hear a snap!"))
 			playsound(src, 'sound/effects/snap.ogg', 50, 1)
 			qdel(src)
 
@@ -208,8 +223,7 @@
 	return
 
 /obj/item/toy/waterflower/afterattack(atom/A as mob|obj, mob/user)
-
-	if (istype(A, /obj/item/storage/backpack ))
+	if (istype(A, /obj/item/storage/backpack))
 		return
 
 	else if (locate (/obj/structure/table, src.loc))
@@ -217,12 +231,12 @@
 
 	else if (istype(A, /obj/structure/reagent_dispensers/watertank) && get_dist(src,A) <= 1)
 		A.reagents.trans_to(src, 10)
-		to_chat(user, SPAN_NOTICE("You refill your flower!"))
+		to_chat(user, span_notice("You refill your flower!"))
 		return
 
 	else if (src.reagents.total_volume < 1)
 		src.empty = 1
-		to_chat(user, SPAN_NOTICE("Your flower has run dry!"))
+		to_chat(user, span_notice("Your flower has run dry!"))
 		return
 
 	else
@@ -238,13 +252,13 @@
 		playsound(src.loc, 'sound/effects/spray3.ogg', 50, 1, -6)
 
 		spawn(0)
-			for(var/i=0, i<1, i++)
+			for(var/i=0; i<1; i++)
 				step_towards(D,A)
 				D.reagents.touch_turf(get_turf(D))
 				for(var/atom/T in get_turf(D))
 					D.reagents.touch(T)
 					if(ismob(T) && T:client)
-						to_chat(T:client, SPAN_WARNING("\The [user] has sprayed you with water!"))
+						to_chat(T:client, span_warning("\The [user] has sprayed you with water!"))
 				sleep(4)
 			qdel(D)
 
@@ -252,7 +266,7 @@
 
 /obj/item/toy/waterflower/examine(mob/user, extra_description = "")
 	if(get_dist(user, src) < 2)
-		extra_description += "\icon[src] [reagents.total_volume] units of water left!"
+		extra_description += "[icon2html(src, user)] [reagents.total_volume] units of water left!"
 	..(user, extra_description)
 
 /*
@@ -270,7 +284,7 @@
 
 /obj/item/toy/bosunwhistle/attack_self(mob/user)
 	if(cooldown < world.time - 35)
-		to_chat(user, SPAN_NOTICE("You blow on [src], creating an ear-splitting noise!"))
+		to_chat(user, span_notice("You blow on [src], creating an ear-splitting noise!"))
 		playsound(user, 'sound/misc/boatswain.ogg', 20, 1)
 		cooldown = world.time
 
@@ -286,14 +300,14 @@
 //all credit to skasi for toy mech fun ideas
 /obj/item/toy/prize/attack_self(mob/user)
 	if(cooldown < world.time - 8)
-		to_chat(user, SPAN_NOTICE("You play with [src]."))
+		to_chat(user, span_notice("You play with [src]."))
 		playsound(user, 'sound/mechs/mechstep.ogg', 20, 1)
 		cooldown = world.time
 
 /obj/item/toy/prize/attack_hand(mob/user)
 	if(loc == user)
 		if(cooldown < world.time - 8)
-			to_chat(user, SPAN_NOTICE("You play with [src]."))
+			to_chat(user, span_notice("You play with [src]."))
 			playsound(user, 'sound/mechs/mechturn.ogg', 20, 1)
 			cooldown = world.time
 			return
@@ -451,13 +465,13 @@
 
 /obj/structure/plushie/attack_hand(mob/user)
 	if(user.a_intent == I_HELP)
-		user.visible_message(SPAN_NOTICE("<b>\The [user]</b> hugs [src]!"),SPAN_NOTICE("You hug [src]!"))
+		user.visible_message(span_notice("<b>\The [user]</b> hugs [src]!"),span_notice("You hug [src]!"))
 	else if (user.a_intent == I_HURT)
-		user.visible_message(SPAN_WARNING("<b>\The [user]</b> punches [src]!"),SPAN_WARNING("You punch [src]!"))
+		user.visible_message(span_warning("<b>\The [user]</b> punches [src]!"),span_warning("You punch [src]!"))
 	else if (user.a_intent == I_GRAB)
-		user.visible_message(SPAN_WARNING("<b>\The [user]</b> attempts to strangle [src]!"),SPAN_WARNING("You attempt to strangle [src]!"))
+		user.visible_message(span_warning("<b>\The [user]</b> attempts to strangle [src]!"),span_warning("You attempt to strangle [src]!"))
 	else
-		user.visible_message(SPAN_NOTICE("<b>\The [user]</b> pokes the [src]."),SPAN_NOTICE("You poke the [src]."))
+		user.visible_message(span_notice("<b>\The [user]</b> pokes the [src]."),span_notice("You poke the [src]."))
 		visible_message("[src] says, \"[phrase]\"")
 
 /obj/structure/plushie/ian
@@ -495,13 +509,13 @@
 
 /obj/item/toy/plushie/attack_self(mob/user)
 	if(user.a_intent == I_HELP)
-		user.visible_message(SPAN_NOTICE("<b>\The [user]</b> hugs [src]!"),SPAN_NOTICE("You hug [src]!"))
+		user.visible_message(span_notice("<b>\The [user]</b> hugs [src]!"),span_notice("You hug [src]!"))
 	else if (user.a_intent == I_HURT)
-		user.visible_message(SPAN_WARNING("<b>\The [user]</b> punches [src]!"),SPAN_WARNING("You punch [src]!"))
+		user.visible_message(span_warning("<b>\The [user]</b> punches [src]!"),span_warning("You punch [src]!"))
 	else if (user.a_intent == I_GRAB)
-		user.visible_message(SPAN_WARNING("<b>\The [user]</b> attempts to strangle [src]!"),SPAN_WARNING("You attempt to strangle [src]!"))
+		user.visible_message(span_warning("<b>\The [user]</b> attempts to strangle [src]!"),span_warning("You attempt to strangle [src]!"))
 	else
-		user.visible_message(SPAN_NOTICE("<b>\The [user]</b> pokes the [src]."),SPAN_NOTICE("You poke the [src]."))
+		user.visible_message(span_notice("<b>\The [user]</b> pokes the [src]."),span_notice("You poke the [src]."))
 
 /obj/item/toy/plushie/mouse
 	name = "mouse plush"
@@ -545,6 +559,10 @@
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "cultblade"
 	item_state = "cultblade"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/weapons/swords_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/weapons/swords_righthand.dmi',
+		)
 	w_class = ITEM_SIZE_BULKY
 	attack_verb = list("attacked", "slashed", "stabbed", "poked")
 	spawn_tags = SPAWN_TAG_TOY_WEAPON
@@ -586,7 +604,7 @@
 
 /obj/item/toy/rubber_pig/proc/user_oink(mob/user)
 	if(oink())
-		user.visible_message(SPAN_NOTICE("<b>\The [user]</b> squeezes a pig. It makes a loud funny oink!"), SPAN_NOTICE("You squeeze a pig. It makes a loud funny oink!"))
+		user.visible_message(span_notice("<b>\The [user]</b> squeezes a pig. It makes a loud funny oink!"), span_notice("You squeeze a pig. It makes a loud funny oink!"))
 
 // All the oink situtions
 /obj/item/toy/rubber_pig/attack_self(mob/user)
@@ -596,7 +614,7 @@
 	user_oink(user)
 
 /obj/item/toy/rubber_pig/throw_impact(atom/impact_atom)
-	visible_message(SPAN_NOTICE("Rubber pig oinks, as it impacts with surface."))
+	visible_message(span_notice("Rubber pig oinks, as it impacts with surface."))
 	oink()
 
 // Oinker pick up

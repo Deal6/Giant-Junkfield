@@ -34,18 +34,18 @@
 		if(integrity < 100) //Damaged, let's repair!
 			if(T.use(1))
 				integrity = between(0, integrity + rand(10,20), 100)
-				to_chat(usr, SPAN_WARNING("You apply nanopaste to [src], repairing some of the damage."))
+				to_chat(usr, span_warning("You apply nanopaste to [src], repairing some of the damage."))
 		else
-			to_chat(usr, SPAN_WARNING("This machine is already in perfect condition."))
+			to_chat(usr, span_warning("This machine is already in perfect condition."))
 		return
 
 
-/obj/machinery/telecomms/attack_hand(var/mob/user as mob)
+/obj/machinery/telecomms/attack_hand(mob/user as mob)
 
 	// You need a multitool to use this, or be silicon
 	if(!issilicon(user))
 		// istype returns false if the value is null
-		if(!istype(user.get_active_hand(), /obj/item/tool/multitool))
+		if(!istype(user.get_active_held_item(), /obj/item/tool/multitool))
 			return
 
 	if(stat & (BROKEN|NOPOWER))
@@ -105,7 +105,7 @@
 
 	dat += "</font>"
 	temp = ""
-	user << browse(dat, "window=tcommachine;size=520x500;can_resize=0")
+	user << browse(HTML_SKELETON(dat), "window=tcommachine;size=520x500;can_resize=0")
 	onclose(user, "dormitory")
 
 
@@ -134,14 +134,14 @@
 
 	var/obj/item/tool/multitool/P = null
 	// Let's double check
-	if(!issilicon(user) && istype(user.get_active_hand(), /obj/item/tool/multitool))
-		P = user.get_active_hand()
+	if(!issilicon(user) && istype(user.get_active_held_item(), /obj/item/tool/multitool))
+		P = user.get_active_held_item()
 	else if(isAI(user))
 		var/mob/living/silicon/ai/U = user
 		P = U.aiMulti
 	else if(isrobot(user) && in_range(user, src))
-		if(istype(user.get_active_hand(), /obj/item/tool/multitool))
-			P = user.get_active_hand()
+		if(istype(user.get_active_held_item(), /obj/item/tool/multitool))
+			P = user.get_active_held_item()
 	return P
 
 // Additional Options for certain machines. Use this when you want to add an option to a specific machine.
@@ -153,7 +153,7 @@
 /*
 // Add an option to the processor to switch processing mode. (COMPRESS -> UNCOMPRESS or UNCOMPRESS -> COMPRESS)
 /obj/machinery/telecomms/processor/Options_Menu()
-	var/dat = "<br>Processing Mode: <a href='byond://?src=\ref[src];process=1'>[process_mode ? "UNCOMPRESS" : "COMPRESS"]</a>"
+	var/dat = "<br>Processing Mode: <A href='byond://?src=\ref[src];process=1'>[process_mode ? "UNCOMPRESS" : "COMPRESS"]</a>"
 	return dat
 */
 // The topic for Additional Options. Use this for checking href links for your specific option.
@@ -175,10 +175,10 @@
 	var/dat = ""
 /*
 	if(src.z == TELECOMM_Z)
-		dat += "<br>Signal Locked to Station: <a href='byond://?src=\ref[src];change_listening=1'>[listening_levels == STATION_Z ? "TRUE" : "FALSE"]</a>"
+		dat += "<br>Signal Locked to Station: <A href='byond://?src=\ref[src];change_listening=1'>[listening_levels == STATION_Z ? "TRUE" : "FALSE"]</a>"
 */
-	dat += "<br>Broadcasting: <a href='byond://?src=\ref[src];broadcast=1'>[broadcasting ? "YES" : "NO"]</a>"
-	dat += "<br>Receiving:    <a href='byond://?src=\ref[src];receive=1'>[receiving ? "YES" : "NO"]</a>"
+	dat += "<br>Broadcasting: <A href='byond://?src=\ref[src];broadcast=1'>[broadcasting ? "YES" : "NO"]</a>"
+	dat += "<br>Receiving:    <A href='byond://?src=\ref[src];receive=1'>[receiving ? "YES" : "NO"]</a>"
 	return dat
 
 /obj/machinery/telecomms/relay/Options_Topic(href, href_list)
@@ -202,7 +202,7 @@
 // BUS
 
 /obj/machinery/telecomms/bus/Options_Menu()
-	var/dat = "<br>Change Signal Frequency: <a href='byond://?src=\ref[src];change_freq=1'>[change_frequency ? "YES ([change_frequency])" : "NO"]</a>"
+	var/dat = "<br>Change Signal Frequency: <A href='byond://?src=\ref[src];change_freq=1'>[change_frequency ? "YES ([change_frequency])" : "NO"]</a>"
 	return dat
 
 /obj/machinery/telecomms/bus/Options_Topic(href, href_list)
@@ -225,7 +225,7 @@
 /obj/machinery/telecomms/Topic(href, href_list)
 
 	if(!issilicon(usr))
-		if(!istype(usr.get_active_hand(), /obj/item/tool/multitool))
+		if(!istype(usr.get_active_held_item(), /obj/item/tool/multitool))
 			return
 
 	if(stat & (BROKEN|NOPOWER))
@@ -335,7 +335,7 @@
 
 	updateUsrDialog()
 
-/obj/machinery/telecomms/proc/canAccess(var/mob/user)
+/obj/machinery/telecomms/proc/canAccess(mob/user)
 	if(issilicon(user) || in_range(user, src))
 		return 1
 	return 0

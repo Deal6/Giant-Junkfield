@@ -39,7 +39,7 @@
 
 /obj/item/gun/projectile/shotgun/pump/grenade/proc/load_underslung(obj/item/ammo_casing/grenade/G, mob/user)
 	if(chambered)
-		to_chat(user, SPAN_WARNING("[src] is full!"))
+		to_chat(user, span_warning("[src] is full!"))
 		return
 	user.remove_from_mob(G)
 	G.forceMove(src)
@@ -114,7 +114,7 @@
 		..()
 
 /obj/item/gun/projectile/shotgun/pump/grenade/makeshift/attack_hand(mob/user)
-	if(user.get_inactive_hand() == src)
+	if(user.get_inactive_held_item() == src)
 		unload_underslung(user)
 	else
 		..()

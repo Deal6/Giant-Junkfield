@@ -6,7 +6,7 @@
 	do_tick = FALSE //Jumping doesn't need to tick, it can't be interrupted.
 	//Once you start you will finish, even if you die in mid air
 
-/datum/vertical_travel_method/jump/can_perform(var/dir)
+/datum/vertical_travel_method/jump/can_perform(dir)
 	.=..()
 	if (.)
 		if (isrobot(M))
@@ -29,7 +29,7 @@
 			testdir = DOWN
 		else
 			//Or in the case of pushing downwards, you need a ceiling above you
-			T = SSmapping.GetAbove(origin)
+			T = GetAbove(origin)
 			testdir = UP
 
 		//Can't push off of nothing

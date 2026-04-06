@@ -2,16 +2,6 @@
 	var/datum/category_item/setup_option/selected_option
 	var/datum/category_group/setup_option_category/option_category
 	var/topic_onset = TOPIC_REFRESH
-	var/allowed_jobs = list(/datum/job/captain, /datum/job/rd, /datum/job/hop, /datum/job/cmo, /datum/job/chief_engineer, /datum/job/ihc,
-					/datum/job/gunserg, /datum/job/inspector, /datum/job/medspec, /datum/job/ihoper,
-					/datum/job/doctor, /datum/job/chemist, /datum/job/paramedic, /datum/job/bioengineer,
-					/datum/job/technomancer,
-					/datum/job/cargo_tech, /datum/job/mining, /datum/job/merchant,
-					/datum/job/clubworker, /datum/job/clubmanager, /datum/job/artist,
-					/datum/job/chaplain, /datum/job/acolyte, /datum/job/janitor, /datum/job/hydro,
-					/datum/job/scientist, /datum/job/roboticist, /datum/job/psychiatrist,
-					/datum/job/ai, /datum/job/cyborg,
-					/datum/job/assistant)
 
 /datum/category_item/player_setup_item/proc/get_options()
 	return option_category.items
@@ -65,6 +55,10 @@
 			return topic_onset
 		return TOPIC_NOACTION
 
+	if(href_list["toggle_preview_value"])
+		pref.equip_preview_mob ^= text2num(href_list["toggle_preview_value"])
+		return TOPIC_REFRESH_UPDATE_PREVIEW
+
 	return ..()
 
 /datum/category_item/player_setup_item/proc/show_popup(move_to_top=FALSE)
@@ -112,7 +106,7 @@
 		for(var/perk in selected_option.perks)
 			var/datum/perk/P = perk
 			if(initial(P.icon))
-				dat += "<img style='vertical-align: middle;width=18px;height=18px;' src='[SSassets.transport.get_asset_url(sanitizeFileName("[P].png"))]'/>"
+				dat += "<img style='vertical-align: middle;width: 18px;height: 18px;' src='[SSassets.transport.get_asset_url(SANITIZE_FILENAME("[P].png"))]'/>"
 			dat += " [initial(P.name)]<br>"
 		dat += "<br>"
 

@@ -17,7 +17,7 @@
 		var/mob/living/L = target
 		shake_camera(L, 1, 1, 0.5)
 
-/obj/item/projectile/bullet/attack_mob(var/mob/living/target_mob, distance, miss_modifier)
+/obj/item/projectile/bullet/attack_mob(mob/living/target_mob, distance, miss_modifier)
 	if(damage_types[BRUTE] > 20 && prob(damage_types[BRUTE]*penetrating/2))
 		mob_passthrough_check = 1
 	else
@@ -85,7 +85,7 @@
 
 		if(A.opacity || istype(A, /obj/item/shield))
 			//display a message so that people on the other side aren't so confused
-			A.visible_message(SPAN_WARNING("\The [src] pierces through \the [A]!"))
+			A.visible_message(span_warning("\The [src] pierces through \the [A]!"))
 			playsound(A.loc, 'sound/weapons/shield/shieldpen.ogg', 50, 1)
 		return TRUE
 
@@ -95,34 +95,41 @@
 	damage_types = list(BRUTE = 15)
 	//icon_state = "bullet" //TODO: would be nice to have it's own icon state
 	var/pellets = 4			//number of pellets
-	var/range_step = 2		//projectile will lose a fragment each time it travels this distance.
+	var/range_step = 2		//projectile will lose a fragment each time it travels this distance. Can be a non-integer.
 	var/base_spread = 90	//lower means the pellets spread more across body parts. If zero then this is considered a shrapnel explosion instead of a shrapnel cone
-	var/entropy = 10	//higher means the pellets divide more across body parts with distance
+	var/spread_step = 10	//higher means the pellets spread more across body parts with distance
 	var/pellet_to_knockback_ratio = 0
 	wounding_mult = WOUNDING_SMALL
-	matter = list(MATERIAL_STEEL = 0.1)
+	matter = list(MATERIAL_STEEL = 0.4)
 
-/obj/item/projectile/bullet/pellet/get_matter()
+/obj/item/projectile/bullet/pellet/launch_from_gun(atom/target, mob/user, obj/item/gun/launcher, target_zone, x_offset=0, y_offset=0, angle_offset)
+	for(var/entry in matter) // this allows for the projectile in the casing having the correct matter
+		matter[entry] /= pellets // yet disallows for pellet shrapnel created on impact multiplying the matter count
 	. = ..()
-	for(var/entry in matter) // this results in the projectile in the casing sending correct data
-		.[entry] *= pellets
 
 /obj/item/projectile/bullet/pellet/Bumped()
 	. = ..()
 	bumped = 0 //can hit all mobs in a tile. pellets is decremented inside attack_mob so this should be fine.
 
-/obj/item/projectile/bullet/pellet/attack_mob(var/mob/living/target_mob, var/distance, var/miss_modifier)
+/obj/item/projectile/bullet/pellet/proc/get_pellets(distance)
+	var/pellet_loss = round((distance - 1)/range_step) //pellets lost due to distance
+	var/remaining = pellets - pellet_loss
+	if (remaining < 0)
+		return 0
+	return ROUND_PROB(remaining)
+
+/obj/item/projectile/bullet/pellet/attack_mob(mob/living/target_mob, distance, miss_modifier)
 
 
-	var/total_pellets = pellets
+	var/total_pellets = get_pellets(distance)
 	if (total_pellets <= 0)
 		return 1
-	var/spread = max(base_spread - (entropy*distance), 0)
+	var/spread = max(base_spread - (spread_step*distance), 0)
 
 	//shrapnel explosions miss prone mobs with a chance that increases with distance
 	var/prone_chance = 0
 	if(!base_spread)
-		prone_chance = max(entropy*(distance - 2), 0)
+		prone_chance = max(spread_step*(distance - 2), 0)
 
 	var/hits = 0
 	for (var/i in 1 to total_pellets)
@@ -147,32 +154,11 @@
 	return 0
 
 /obj/item/projectile/bullet/pellet/get_structure_damage()
-	return ..() * pellets
-
-/obj/item/projectile/bullet/pellet/Move(NewLoc, Dir = 0, step_x = 0, step_y = 0, var/glide_size_override = 0)
-	. = ..()
 	var/distance = get_dist(loc, starting)
-	if(distance && (distance % range_step == 0))
-		if(pellets >= 3)
-			var/dividedpellets = round(pellets/3)
-			for(var/num in 1 to 2)
-				var/obj/item/projectile/bullet/pellet/newbullet = new type(loc)
-				newbullet.pellets = dividedpellets
-				for(var/i in newbullet.damage_types)
-					newbullet.damage_types[i] = damage_types[i]
-				newbullet.armor_divisor = armor_divisor
-				newbullet.penetrating = penetrating
-				newbullet.ricochet_ability = ricochet_ability
-				newbullet.step_delay = step_delay
-				newbullet.location = trajectory.return_location() // will produce pixel loc datum
-				newbullet.original = original
-				newbullet.def_zone = def_zone
-				newbullet.kill_count = kill_count // they all hit the floor
-				newbullet.muzzle_type = null //fixes redundant muzzle flare
-				var/newoffset = rand(1,8) * (num == 1 ? 1 : -1) // up to 8 degrees in both directions, applied randomly each time
-				newbullet.setup_trajectory(get_turf(src), get_turf(original), 0, 0, newoffset)
-				newbullet.Process()
-			pellets -= dividedpellets*2
+	return ..() * get_pellets(distance)
+
+/obj/item/projectile/bullet/pellet/Move(NewLoc, Dir = 0, step_x = 0, step_y = 0, glide_size_override = 0)
+	. = ..()
 
 	//If this is a shrapnel explosion, allow mobs that are prone to get hit, too
 	if(. && !base_spread && isturf(loc))
@@ -181,7 +167,7 @@
 				if(Bump(M)) //Bump will make sure we don't hit a mob multiple times
 					return
 
-/obj/item/projectile/bullet/pellet/adjust_damages(var/list/newdamages)
+/obj/item/projectile/bullet/pellet/adjust_damages(list/newdamages)
 	if(!newdamages.len)
 		return
 	for(var/damage_type in newdamages)

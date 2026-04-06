@@ -74,14 +74,17 @@
 	return
 
 
-/datum/poll/proc/vote(datum/vote_choice/choice, client/CL)
-	var/key = CL.key
+/datum/poll/proc/vote(datum/vote_choice/choice, client/voter)
+	if(CONFIG_GET(flag/vote_no_dead) && voter.mob.stat == DEAD && !voter?.holder)
+		return
+
+	var/key = voter.key
 	if(key in choice.voters)
 		if(can_revote && can_unvote)
 			choice.voters.Remove(key)
 	else
 		if(multiple_votes)
-			choice.voters[key] = get_vote_power(CL)
+			choice.voters[key] = get_vote_power(voter)
 		else
 			var/already_voted = FALSE
 			for(var/datum/vote_choice/C in choices)
@@ -91,11 +94,11 @@
 						C.voters.Remove(key)
 
 			if(can_revote || !already_voted)
-				choice.voters[key] = get_vote_power(CL)
+				choice.voters[key] = get_vote_power(voter)
 
 
 //How much does this person's vote count for?
-/datum/poll/proc/get_vote_power(var/client/C)
+/datum/poll/proc/get_vote_power(client/C)
 	return 1
 
 //How many unique people have cast votes?
@@ -161,12 +164,11 @@
 		if(winners.len)
 			winner = pick(winners)
 
-	var/non_voters = clients.len - all_voters.len
+	var/non_voters = GLOB.clients.len - all_voters.len
 
 
 
 
-	text += "<b>Votes:</b><br>"
 	for(var/datum/vote_choice/ch in choice_votes)
 		if(ch == winner)
 			text += "<b>"
@@ -175,11 +177,11 @@
 			text += "</b>"
 
 	if(!winner)
-		text += "\t<b>Did not vote - [non_voters]</b><br>"
+		text += "\<b>Did not vote - [non_voters]</b><br>"
 	else
 		text += "\tDid not vote - [non_voters]<br>"
 		winner.on_win()
 
-
 	log_vote(text)
-	to_chat(world, "<font color='purple'>[text]</font>")
+	to_chat(world, vote_font(fieldset_block("Vote Results: [name] ", text, "boxed_message purple_box")))
+	return

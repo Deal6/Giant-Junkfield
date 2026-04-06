@@ -73,9 +73,11 @@
 
 /datum/computer/file/embedded_program/docking/New()
 	..()
+
 	var/datum/existing = locate(id_tag) //in case a datum already exists with our tag
 	if(existing)
 		existing.tag = null //take it from them
+
 
 	tag = id_tag //Greatly simplifies shuttle initialization
 
@@ -187,7 +189,7 @@
 		control_mode = MODE_NONE
 
 
-/datum/computer/file/embedded_program/docking/proc/initiate_docking(var/target)
+/datum/computer/file/embedded_program/docking/proc/initiate_docking(target)
 	if (dock_state != STATE_UNDOCKED || control_mode == MODE_SERVER)	//must be undocked and not serving another request to begin a new docking handshake
 		return
 
@@ -263,7 +265,7 @@
 /datum/computer/file/embedded_program/docking/proc/can_launch()
 	return undocked()
 
-/datum/computer/file/embedded_program/docking/proc/send_docking_command(var/recipient, var/command)
+/datum/computer/file/embedded_program/docking/proc/send_docking_command(recipient, command)
 	var/datum/signal/signal = new
 	signal.data["tag"] = id_tag
 	signal.data["command"] = command

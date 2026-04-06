@@ -57,7 +57,7 @@
 			to_chat(user, "You already control this APC!")
 			return
 		else if(A.aidisabled)
-			to_chat(user, SPAN_NOTICE("Unable to connect to APC. Please verify wire connection and try again."))
+			to_chat(user, span_notice("Unable to connect to APC. Please verify wire connection and try again."))
 			return
 	else
 		return
@@ -77,9 +77,9 @@
 		if(A.hacker == user)
 			to_chat(user, "Hack successful. You now have full control over the APC.")
 		else
-			to_chat(user, SPAN_NOTICE("Hack failed. Connection to APC has been lost. Please verify wire connection and try again."))
+			to_chat(user, span_notice("Hack failed. Connection to APC has been lost. Please verify wire connection and try again."))
 	else
-		to_chat(user, SPAN_NOTICE("Hack failed. Unable to locate APC. Please verify the APC still exists."))
+		to_chat(user, span_notice("Hack failed. Unable to locate APC. Please verify the APC still exists."))
 	user.hacking = 0
 
 
@@ -106,7 +106,7 @@
 			announce_hack_failure(user, "quantum message relay")
 		return
 
-	command_announcement.Announce(text, title, use_text_to_speech = TRUE)
+	priority_announce(text, title, use_text_to_speech = TRUE)
 
 /datum/game_mode/malfunction/verb/elite_encryption_hack()
 	set category = "Software"
@@ -117,7 +117,7 @@
 	if(!ability_prechecks(user, price))
 		return
 
-	var/decl/security_state/security_state = decls_repository.get_decl(SSmapping.security_state)
+	var/decl/security_state/security_state = decls_repository.get_decl(GLOB.maps_data.security_state)
 	var/alert_target = input("Select new alert level:") as null|anything in (security_state.all_security_levels - security_state.current_security_level)
 	if(!alert_target || !ability_pay(user, price) || alert_target == "CANCEL")
 		to_chat(user, "Hack Aborted")
@@ -146,7 +146,7 @@
 		return
 	var/list/remaining_apcs = list()
 	for(var/obj/machinery/power/apc/A in GLOB.apc_list)
-		if(!IS_SHIP_LEVEL(A.z))
+		if(isNotStationLevel(A.z))
 			continue
 		if(A.hacker == user || A.aidisabled) 	// This one is already hacked, or AI control is disabled on it.
 			continue
@@ -158,13 +158,13 @@
 			sleep(duration/3)
 			if(!user || user.stat == DEAD)
 				return
-			command_announcement.Announce("Caution, [station_short]. Abnormal behaviour detected in network, initiating troubleshoot for more information.", "Network Monitoring")
+			priority_announce("Caution, [GLOB.station_short]. Abnormal behaviour detected in network, initiating troubleshoot for more information.", "Network Monitoring")
 			sleep(duration/3)
 			if(!user || user.stat == DEAD)
 				return
-			command_announcement.Announce("Troubleshoot complet#, it seem& t( e yo3r AI s7stem, it &# *#ck@ng th$ sel$ destru$t mechani&m, unplug i# bef*@!)$#&&@@", "Network Monitoring")
+			priority_announce("Troubleshoot complet#, it seem& t( e yo3r AI s7stem, it &# *#ck@ng th$ sel$ destru$t mechani&m, unplug i# bef*@!)$#&&@@", "Network Monitoring")
 	else
-		command_announcement.Announce("Detected brute-force attack on network firewall originating from AI system. Control over majority of whole network compromised, firewall for Self-Destruct Control in threat. Success of hostile intrusion likely, eliminate origin immediately.", "Network Monitoring")
+		priority_announce("Detected brute-force attack on network firewall originating from AI system. Control over majority of whole network compromised, firewall for Self-Destruct Control in threat. Success of hostile intrusion likely, eliminate origin immediately.", "Network Monitoring")
 	to_chat(user, "## BEGINNING SYSTEM OVERRIDE.")
 	to_chat(user, "## ESTIMATED DURATION: [round((duration+300)/600)] MINUTES")
 	user.hacking = 1
@@ -184,12 +184,12 @@
 	sleep(300)
 	// Hack all APCs, including those built during hack sequence.
 	for(var/obj/machinery/power/apc/A in GLOB.apc_list)
-		if((!A.hacker || A.hacker != src) && !A.aidisabled && IS_SHIP_LEVEL(A.z))
+		if((!A.hacker || A.hacker != src) && !A.aidisabled && isStationLevel(A.z))
 			A.ai_hack(src)
 
 
 	to_chat(user, "## PRIMARY FIREWALL BYPASSED. YOU NOW HAVE FULL SYSTEM CONTROL.")
-	command_announcement.Announce("System administrator is no longer able to access control network, control of ship's systems has been unilaterally compromised. Unidentified user now expressing kernel access to the ship's systems.", "Network Monitoring")
+	priority_announce("System administrator is no longer able to access control network, control of ship's systems has been unilaterally compromised. Unidentified user now expressing kernel access to the ship's systems.", "Network Monitoring")
 	user.hack_can_fail = 0
 	user.hacking = 0
 	user.system_override = 2

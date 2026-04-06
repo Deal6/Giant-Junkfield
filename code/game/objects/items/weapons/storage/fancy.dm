@@ -188,7 +188,7 @@
 
 /obj/item/storage/fancy/cigarettes/can_be_inserted(obj/item/W, stop_messages = 0)
 	if(!open)
-		to_chat(usr, SPAN_WARNING("Open [src] first!"))
+		to_chat(usr, span_warning("Open [src] first!"))
 		return FALSE
 	return ..()
 
@@ -208,7 +208,7 @@
 		var/obj/item/clothing/mask/smokable/cigarette/cig = locate() in src
 
 		if(!cig)
-			to_chat(user, SPAN_NOTICE("Looks like the packet is out of cigarettes."))
+			to_chat(user, span_notice("Looks like the packet is out of cigarettes."))
 			return
 
 		user.equip_to_slot_if_possible(cig, slot_wear_mask)
@@ -348,7 +348,7 @@
 
 		open_close(user)
 	else
-		to_chat(user, SPAN_NOTICE("You cannot open \the [src] while it\'s equipped!"))
+		to_chat(user, span_notice("You cannot open \the [src] while it\'s equipped!"))
 
 /obj/item/storage/fancy/cigar/AltClick(mob/user)
 	if(!is_worn())
@@ -358,38 +358,38 @@
 			return
 
 		if(able == 2)
-			to_chat(user, SPAN_NOTICE("You cannot open \the [src] while it\'s in a container."))
+			to_chat(user, span_notice("You cannot open \the [src] while it\'s in a container."))
 			return
 
 		open_close(user)
 	else
-		to_chat(user, SPAN_NOTICE("You cannot open \the [src] while it\'s equipped!"))
+		to_chat(user, span_notice("You cannot open \the [src] while it\'s equipped!"))
 
 /obj/item/storage/fancy/cigar/proc/open_close(mob/living/carbon/human/H, user)
 	close_all()
 	if(!is_worn())
 		if(!open)
-			to_chat(user, SPAN_NOTICE("You open \the [src]."))
+			to_chat(user, span_notice("You open \the [src]."))
 			w_class = ITEM_SIZE_SMALL
 			open = TRUE
 		else
-			to_chat(user, SPAN_NOTICE("You close \the [src]."))
+			to_chat(user, span_notice("You close \the [src]."))
 			w_class = ITEM_SIZE_TINY
 			open = FALSE
 		playsound(loc, 'sound/machines/click.ogg', 100, 1)
 		update_icon()
 	else
-		to_chat(user, SPAN_NOTICE("You cannot open \the [src] while it\'s equipped!"))
+		to_chat(user, span_notice("You cannot open \the [src] while it\'s equipped!"))
 
-obj/item/storage/fancy/cigar/attackby(obj/item/W, mob/user)
+/obj/item/storage/fancy/cigar/attackby(obj/item/W, mob/user)
 	if(!open)
-		to_chat(user, SPAN_NOTICE("You try to access \the [src] but it\'s closed!"))
+		to_chat(user, span_notice("You try to access \the [src] but it\'s closed!"))
 		return
 	. = ..()
 
 /obj/item/storage/fancy/cigar/open(mob/user)
 	if(!open)
-		to_chat(user, SPAN_NOTICE("\The [src] is closed."))
+		to_chat(user, span_notice("\The [src] is closed."))
 		return
 
 	. = ..()
@@ -434,7 +434,11 @@ obj/item/storage/fancy/cigar/attackby(obj/item/W, mob/user)
 	desc = "A locked box for keeping things away from children."
 	icon = 'icons/obj/vialbox.dmi'
 	icon_state = "vialbox0"
-	item_state = "syringe_kit"
+	item_state = "lockbox"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/equipment/briefcase_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/equipment/briefcase_righthand.dmi',
+		)
 	max_w_class = ITEM_SIZE_SMALL
 	can_hold = list(/obj/item/reagent_containers/glass/beaker/vial)
 	max_storage_space = 12 //The sum of the w_classes of all the items in this storage item.
@@ -445,7 +449,7 @@ obj/item/storage/fancy/cigar/attackby(obj/item/W, mob/user)
 	. = ..()
 	update_icon()
 
-/obj/item/storage/lockbox/vials/update_icon(var/itemremoved = 0)
+/obj/item/storage/lockbox/vials/update_icon(itemremoved = 0)
 	var/total_contents = src.contents.len - itemremoved
 	src.icon_state = "vialbox[total_contents]"
 	src.cut_overlays()

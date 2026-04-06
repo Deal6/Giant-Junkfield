@@ -5,7 +5,7 @@
 	var/require_comms_key = FALSE
 
 /datum/world_topic/proc/TryRun(list/input)
-	key_valid = !config || config.comms_password != input["key"]
+	key_valid = !config || CONFIG_GET(string/comms_key) != input["key"]
 	if(require_comms_key && !key_valid)
 		return "Bad Key"
 	input -= "key"
@@ -26,7 +26,7 @@
 
 /datum/world_topic/ping/Run(list/input)
 	var/x = 0
-	for(var/client/C in clients)
+	for(var/client/C in GLOB.clients)
 		x++
 	return x
 
@@ -41,39 +41,36 @@
 			return GLOB.topic_status_cache
 		GLOB.topic_status_lastcache = world.time + 5
 	var/list/s = list()
-	s["version"] = game_version
+	s["version"] = GLOB.game_version
 	s["storyteller"] = master_storyteller
-	s["respawn"] = config.abandon_allowed
-	s["enter"] = config.enter_allowed
-	s["vote"] = config.allow_vote_mode
-	s["ai"] = config.allow_ai
+	s["respawn"] = CONFIG_GET(flag/abandon_allowed)
+	s["enter"] = GLOB.enter_allowed
+	s["vote"] = CONFIG_GET(flag/allow_vote_mode)
+	s["ai"] = CONFIG_GET(flag/allow_ai)
 	s["host"] = host ? host : null
-
 	// This is dumb, but spacestation13.com's banners break if player count isn't the 8th field of the reply, so... this has to go here.
-	s["players"] = 0
+	s["players"] = GLOB.clients.len
 	s["shiptime"] = stationtime2text()
-	s["roundduration"] = roundduration2text()
+	s["roundduration"] = SSticker ? round((world.time-(SSticker.round_start_time || 0))/10) : 0
 
 	if(input["status"] == "2")
 		var/list/players = list()
-		var/list/admins = list()
 
-		for(var/client/C in clients)
-			if(C.holder)
-				if(C.holder.fakekey)
-					continue
-				admins[C.key] = C.holder.rank
+		for(var/client/C in GLOB.clients)
 			players += C.key
 
+		var/list/adm = get_admin_counts()
+		var/list/presentmins = adm["present"]
+		var/list/afkmins = adm["afk"]
 		s["players"] = players.len
 		s["playerlist"] = list2params(players)
-		s["admins"] = admins.len
-		s["adminlist"] = list2params(admins)
+		s["admins"] = presentmins.len + afkmins.len
+		s["adminlist"] = list2params(GLOB.admins)
 	else
 		var/n = 0
 		var/admins = 0
 
-		for(var/client/C in clients)
+		for(var/client/C in GLOB.clients)
 			if(C.holder)
 				if(C.holder.fakekey)
 					continue	//so stealthmins aren't revealed by the hub
@@ -83,6 +80,11 @@
 
 		s["players"] = n
 		s["admins"] = admins
+
+	s["soft_popcap"] = CONFIG_GET(number/soft_popcap) || 0
+	s["hard_popcap"] = CONFIG_GET(number/hard_popcap) || 0
+	s["extreme_popcap"] = CONFIG_GET(number/extreme_popcap) || 0
+	s["popcap"] = max(CONFIG_GET(number/soft_popcap), CONFIG_GET(number/hard_popcap), CONFIG_GET(number/extreme_popcap)) //generalized field for this concept for use across ss13 codebases
 
 	if(!key_valid)
 		GLOB.topic_status_cache = .
@@ -94,16 +96,31 @@
 
 /datum/world_topic/manifest/Run(list/input)
 	var/list/positions = list()
+	var/list/set_names = list(
+			"heads" = command_positions,
+			"sec" = security_positions,
+			"eng" = engineering_positions,
+			"med" = medical_positions,
+			"sci" = science_positions,
+			"car" = cargo_positions,
+			"civ" = civilian_positions,
+			"chr" = church_positions,
+			"bot" = nonhuman_positions
+		)
 
-	for(var/datum/computer_file/report/crew_record/t in GLOB.all_crew_records)
-		var/name = t.get_name()
-		var/rank = t.get_job()
+	for(var/datum/data/record/t in data_core.general)
+		var/name = t.fields["name"]
+		var/rank = t.fields["rank"]
+		var/real_rank = make_list_rank(t.fields["real_rank"])
 
-		var/department = t.get_department()
-
-		if(department && department != "Unset")
-			positions[department][name] = rank
-		else
+		var/department = FALSE
+		for(var/k in set_names)
+			if(real_rank in set_names[k])
+				if(!positions[k])
+					positions[k] = list()
+				positions[k][name] = rank
+				department = TRUE
+		if(!department)
 			if(!positions["misc"])
 				positions["misc"] = list()
 			positions["misc"][name] = rank
@@ -118,8 +135,8 @@
 	keyword = "revision"
 
 /datum/world_topic/revision/Run(list/input)
-	if(revdata.revision)
-		return list(branch = revdata.branch, date = revdata.date, revision = revdata.revision)
+	if(GLOB.revdata.commit)
+		return list(commit = GLOB.revdata.commit, originmastercommit = GLOB.revdata.originmastercommit, date = GLOB.revdata.date, testmerge = GLOB.revdata.testmerge)
 	else
 		return "unknown"
 
@@ -163,7 +180,6 @@
 		info["name"] = M.name == M.real_name ? M.name : "[M.name] ([M.real_name])"
 		info["role"] = M.mind ? (M.mind.assigned_role ? M.mind.assigned_role : "No role") : "No mind"
 		info["antag"] = M.mind ? (M.mind.antagonist.len ? "Antag" : "Not antag") : "No mind"
-		info["hasbeenrev"] = M.mind ? M.mind.has_been_rev : "No mind"
 		info["stat"] = M.stat
 		info["type"] = M.type
 		if(isliving(M))
@@ -204,7 +220,7 @@
 	var/client/C
 	var/req_ckey = ckey(input["adminmsg"])
 
-	for(var/client/K in clients)
+	for(var/client/K in GLOB.clients)
 		if(K.ckey == req_ckey)
 			C = K
 			break
@@ -225,7 +241,7 @@
 	to_chat(C, message)
 
 
-	for(var/client/A in admins)
+	for(var/client/A in GLOB.admins)
 		if(A != C)
 			to_chat(A, amessage)
 

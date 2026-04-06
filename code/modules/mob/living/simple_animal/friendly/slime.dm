@@ -4,6 +4,7 @@
 	icon = 'icons/mob/slimes.dmi'
 	icon_state = "grey baby slime"
 	icon_dead = "grey baby slime dead"
+	bubble_icon = "slime"
 	speak_emote = list("chirps")
 	health = 100
 	maxHealth = 100
@@ -15,7 +16,7 @@
 	can_burrow = TRUE
 	injury_type = INJURY_TYPE_HOMOGENOUS
 
-/mob/living/simple_animal/slime/can_force_feed(var/feeder, var/food, var/feedback)
+/mob/living/simple_animal/slime/can_force_feed(feeder, food, feedback)
 	if(feedback)
 		to_chat(feeder, "Where do you intend to put \the [food]? \The [src] doesn't have a mouth!")
 	return 0
@@ -28,6 +29,7 @@
 	maxHealth = 200
 	icon_state = "grey adult slime"
 	icon_dead = "grey baby slime dead"
+	bubble_icon = "slime"
 	response_help  = "pets"
 	response_disarm = "shoos"
 	response_harm   = "stomps on"

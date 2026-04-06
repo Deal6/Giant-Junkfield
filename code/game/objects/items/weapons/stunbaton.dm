@@ -4,7 +4,11 @@
 	desc = "A stun baton for incapacitating people with."
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "stunbaton"
-	item_state = "baton"
+	item_state = "stunbaton"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/inhands/weapons/batons_lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/weapons/batons_righthand.dmi',
+		)
 	slot_flags = SLOT_BELT
 	description_info = "Highly effective against uninsulated people. High change to disarm when aimed at arms."
 	description_antag = "Can be sabotaged by inserting plasma into its battery cell. Upon being turned on it will blow"
@@ -50,7 +54,7 @@
 		cell = null
 		update_icon()
 
-/obj/item/melee/baton/proc/deductcharge(var/power_drain)
+/obj/item/melee/baton/proc/deductcharge(power_drain)
 	if(cell)
 		. = cell.checked_use(power_drain) //try to use enough power
 		if(!cell.check_charge(hitcost))	//do we have enough power for another hit?
@@ -69,37 +73,42 @@
 	else
 		set_light(0)
 
+/obj/item/melee/baton/set_status(s)
+	..()
+	item_state = initial(item_state) + (status ? "_active" : "")
+	update_wear_icon()
+
 /obj/item/melee/baton/examine(mob/user, extra_description = "")
 	if(get_dist(user, src) < 2)
 		if(cell)
-			extra_description += SPAN_NOTICE("The baton is [round(cell.percent())]% charged.")
+			extra_description += span_notice("The baton is [round(cell.percent())]% charged.")
 		else
-			extra_description += SPAN_WARNING("The baton does not have a power source installed.")
+			extra_description += span_warning("The baton does not have a power source installed.")
 	..(user, extra_description)
 
 /obj/item/melee/baton/attack_self(mob/user)
 	if(cell && cell.check_charge(hitcost))
 		set_status(!status)
-		to_chat(user, SPAN_NOTICE("[src] is now [status ? "on" : "off"]."))
+		to_chat(user, span_notice("[src] is now [status ? "on" : "off"]."))
 		playsound(loc, "sparks", 75, 1, -1)
 	else
 		set_status(FALSE)
 		if(!cell)
-			to_chat(user, SPAN_WARNING("[src] does not have a power source!"))
+			to_chat(user, span_warning("[src] does not have a power source!"))
 		else
-			to_chat(user, SPAN_WARNING("[src] is out of charge."))
+			to_chat(user, span_warning("[src] is out of charge."))
 	add_fingerprint(user)
 
 /obj/item/melee/baton/attack(mob/M, mob/user)
 /*	if(status && (CLUMSY in user.mutations) && prob(50))
-		to_chat(user, SPAN_DANGER("You accidentally hit yourself with the [src]!"))
+		to_chat(user, span_danger("You accidentally hit yourself with the [src]!"))
 		user.Weaken(30)
 		deductcharge(hitcost)
 		return
 */
 	return ..()
 
-/obj/item/melee/baton/apply_hit_effect(mob/living/target, mob/living/user, var/hit_zone)
+/obj/item/melee/baton/apply_hit_effect(mob/living/target, mob/living/user, hit_zone)
 	if(isrobot(target))
 		return ..()
 
@@ -124,14 +133,14 @@
 		//we can't really extract the actual hit zone from ..(), unfortunately. Just act like they attacked the area they intended to.
 	else if(!status)
 		if(affecting)
-			target.visible_message(SPAN_WARNING("[target] has been prodded in the [affecting.name] with [src] by [user]. Luckily it was off."))
+			target.visible_message(span_warning("[target] has been prodded in the [affecting.name] with [src] by [user]. Luckily it was off."))
 		else
-			target.visible_message(SPAN_WARNING("[target] has been prodded with [src] by [user]. Luckily it was off."))
+			target.visible_message(span_warning("[target] has been prodded with [src] by [user]. Luckily it was off."))
 	else
 		if(affecting)
-			target.visible_message(SPAN_DANGER("[target] has been prodded in the [affecting.name] with [src] by [user]!"))
+			target.visible_message(span_danger("[target] has been prodded in the [affecting.name] with [src] by [user]!"))
 		else
-			target.visible_message(SPAN_DANGER("[target] has been prodded with [src] by [user]!"))
+			target.visible_message(span_danger("[target] has been prodded with [src] by [user]!"))
 		playsound(loc, 'sound/weapons/Egloves.ogg', 50, 1, -1)
 
 	//stun effects
@@ -141,7 +150,7 @@
 
 		if(ishuman(target))
 			var/mob/living/carbon/human/H = target
-			H.forcesay(hit_appends)
+			H.forcesay(GLOB.hit_appends)
 
 /obj/item/melee/baton/emp_act(severity)
 	if(cell)
@@ -186,7 +195,7 @@
 	return
 
 /obj/item/melee/baton/MouseDrop(over_object)
-	if((loc == usr) && istype(over_object, /obj/screen/inventory/hand) && eject_item(cell, usr))
+	if((loc == usr) && istype(over_object, /atom/movable/screen/inventory/hand) && eject_item(cell, usr))
 		cell = null
 		set_status(FALSE)
 		update_icon()
@@ -201,7 +210,7 @@
 	name = "stunprod"
 	desc = "An improvised stun baton."
 	icon_state = "stunprod"
-	item_state = "prod"
+	item_state = "stunprod"
 	force = WEAPON_FORCE_NORMAL
 	throwforce = WEAPON_FORCE_NORMAL
 	stunforce = 0
@@ -228,9 +237,3 @@
 	structure_damage_factor = STRUCTURE_DAMAGE_NORMAL
 	matter = list(MATERIAL_STEEL = 15, MATERIAL_PLASTEEL = 5)
 	starting_cell = /obj/item/cell/medium/excelsior
-
-//excelsior baton has 2 inhand sprites
-/obj/item/melee/baton/excelbaton/set_status(s)
-	..()
-	item_state = initial(item_state) + (status ? "_active" : "")
-	update_wear_icon()

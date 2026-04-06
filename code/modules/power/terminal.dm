@@ -12,11 +12,11 @@
 	var/obj/machinery/power/master = null
 
 
-/obj/machinery/power/terminal/LateInitialize()
-	var/turf/T = loc
-	if(level == 1 && T)
-		hide(!T.is_plating())
+/obj/machinery/power/terminal/New()
 	..()
+	var/turf/T = src.loc
+	if(level==1 && T) hide(!T.is_plating())
+	return
 
 /obj/machinery/power/terminal/Destroy()
 	if(master)
@@ -24,7 +24,7 @@
 		master = null
 	return ..()
 
-/obj/machinery/power/terminal/hide(var/i)
+/obj/machinery/power/terminal/hide(i)
 	invisibility = i ? 101 : initial(invisibility)
 	icon_state = i ? "term-f" : "term"
 

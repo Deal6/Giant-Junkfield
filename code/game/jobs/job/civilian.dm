@@ -7,8 +7,11 @@
 	flag = CLUBMANAGER
 	department = DEPARTMENT_CIVILIAN
 	department_flag = SERVICE
+	exp_required_type_department = DEPARTMENT_CIVILIAN
+	exp_granted_type = EXP_TYPE_CREW
 	faction = "CEV Eris"
 	total_positions = 1
+	spawn_positions = 1
 	supervisors = "the First Officer"
 	selection_color = "#dddddd"
 	also_known_languages = list(LANGUAGE_CYRILLIC = 25, LANGUAGE_SERBIAN = 15, LANGUAGE_JIVE = 80)
@@ -43,8 +46,10 @@
 	flag = CLUBWORKER
 	department = DEPARTMENT_CIVILIAN
 	department_flag = SERVICE
+	exp_granted_type = EXP_TYPE_CREW
 	faction = "CEV Eris"
 	total_positions = 2
+	spawn_positions = 2
 	supervisors = "the Club Manager"
 	selection_color = "#dddddd"
 	also_known_languages = list(LANGUAGE_CYRILLIC = 10, LANGUAGE_JIVE = 60)
@@ -82,8 +87,10 @@
 	flag = ARTIST
 	department = DEPARTMENT_CIVILIAN
 	department_flag = SERVICE
+	exp_granted_type = EXP_TYPE_CREW
 	faction = "CEV Eris"
-	total_positions = 1
+	total_positions = 2
+	spawn_positions = 1
 	supervisors = "the Club Manager"
 	selection_color = "#dddddd"
 	also_known_languages = list(LANGUAGE_CYRILLIC = 10, LANGUAGE_JIVE = 40, LANGUAGE_MONKEY = 20)

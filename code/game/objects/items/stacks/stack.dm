@@ -36,7 +36,7 @@
 	//IE, if this is 0.2 a stack of 120 will deal 24 base damage when falling on a mob
 	var/fall_damage_per_amount = 0.2
 
-/obj/item/stack/New(var/loc, var/amount=null)
+/obj/item/stack/New(loc, amount=null)
 	.=..()
 	if (amount)
 		src.amount = amount
@@ -94,8 +94,8 @@
 	if (recipes_sublist && recipe_list[recipes_sublist] && istype(recipe_list[recipes_sublist], /datum/stack_recipe_list))
 		var/datum/stack_recipe_list/srl = recipe_list[recipes_sublist]
 		recipe_list = srl.recipes
-	var/t1 = text("<HTML><HEAD><title>Constructions from []</title></HEAD><body><TT>Amount Left: []<br>", src, src.get_amount())
-	for(var/i=1,i<=recipe_list.len,i++)
+	var/t1 = ""
+	for(var/i=1,i<=recipe_list.len, i++)
 		var/E = recipe_list[i]
 		if (isnull(E))
 			t1 += "<hr>"
@@ -120,7 +120,7 @@
 				title+= "[R.title]"
 			title+= " ([R.req_amount] [src.singular_name]\s)"
 			if (can_build)
-				t1 += text("<a href='byond://?src=\ref[src];sublist=[recipes_sublist];make=[i];multiplier=1'>[title]</A>  ")
+				t1 += text("<A href='byond://?src=\ref[src];sublist=[recipes_sublist];make=[i];multiplier=1'>[title]</A>  ")
 			else
 				t1 += text("[]", title)
 				continue
@@ -130,36 +130,36 @@
 				var/list/multipliers = list(5,10,25)
 				for (var/n in multipliers)
 					if (max_multiplier>=n)
-						t1 += " <a href='byond://?src=\ref[src];make=[i];multiplier=[n]'>[n*R.res_amount]x</A>"
+						t1 += " <A href='byond://?src=\ref[src];make=[i];multiplier=[n]'>[n*R.res_amount]x</A>"
 				if (!(max_multiplier in multipliers))
-					t1 += " <a href='byond://?src=\ref[src];make=[i];multiplier=[max_multiplier]'>[max_multiplier*R.res_amount]x</A>"
+					t1 += " <A href='byond://?src=\ref[src];make=[i];multiplier=[max_multiplier]'>[max_multiplier*R.res_amount]x</A>"
 
-	t1 += "</TT></body></HTML>"
-	user << browse(t1, "window=stack")
+	t1 += "</TT>"
+	user << browse(HTML_SKELETON_TITLE("Constructions from [src]</title></HEAD><body><TT>Amount Left: [src.get_amount()]<br>", t1), "window=stack")
 	onclose(user, "stack")
 	return
 
-/obj/item/stack/proc/produce_recipe(datum/stack_recipe/recipe, var/quantity, mob/user)
+/obj/item/stack/proc/produce_recipe(datum/stack_recipe/recipe, quantity, mob/user)
 	var/required = quantity*recipe.req_amount
 	var/produced = min(quantity*recipe.res_amount, recipe.max_res_amount)
 
 	if (!can_use(required))
 		if (produced>1)
-			to_chat(user, SPAN_WARNING("You haven't got enough [src] to build \the [produced] [recipe.title]\s!"))
+			to_chat(user, span_warning("You haven't got enough [src] to build \the [produced] [recipe.title]\s!"))
 		else
-			to_chat(user, SPAN_WARNING("You haven't got enough [src] to build \the [recipe.title]!"))
+			to_chat(user, span_warning("You haven't got enough [src] to build \the [recipe.title]!"))
 		return
 
 	if (recipe.one_per_turf && (locate(recipe.result_type) in user.loc))
-		to_chat(user, SPAN_WARNING("There is another [recipe.title] here!"))
+		to_chat(user, span_warning("There is another [recipe.title] here!"))
 		return
 
 	if (recipe.on_floor && !isfloor(user.loc))
-		to_chat(user, SPAN_WARNING("\The [recipe.title] must be constructed on the floor!"))
+		to_chat(user, span_warning("\The [recipe.title] must be constructed on the floor!"))
 		return
 
 	if (recipe.time)
-		to_chat(user, SPAN_NOTICE("Building [recipe.title] ..."))
+		to_chat(user, span_notice("Building [recipe.title] ..."))
 		if (!do_after(user, recipe.time, user))
 			return
 
@@ -192,7 +192,7 @@
 
 /obj/item/stack/Topic(href, href_list)
 	..()
-	if ((usr.restrained() || usr.stat || usr.get_active_hand() != src))
+	if ((usr.restrained() || usr.stat || usr.get_active_held_item() != src))
 		return
 
 	if (href_list["sublist"] && !href_list["make"])
@@ -221,12 +221,12 @@
 
 //Return 1 if an immediate subsequent call to use() would succeed.
 //Ensures that code dealing with stacks uses the same logic
-/obj/item/stack/proc/can_use(var/used)
+/obj/item/stack/proc/can_use(used)
 	if (get_amount() < used)
 		return 0
 	return 1
 
-/obj/item/stack/proc/use(var/used)
+/obj/item/stack/proc/use(used)
 	if (!can_use(used))
 		return 0
 	if(!uses_charge)
@@ -245,7 +245,7 @@
 			S.use_charge(charge_costs[i] * used) // Doesn't need to be deleted
 		return 1
 
-/obj/item/stack/proc/add(var/extra)
+/obj/item/stack/proc/add(extra)
 	if(!uses_charge)
 		if(amount + extra > get_max_amount())
 			return 0
@@ -267,7 +267,7 @@
 */
 
 //attempts to transfer amount to S, and returns the amount actually transferred
-/obj/item/stack/proc/transfer_to(obj/item/stack/S, var/tamount=null, var/type_verified)
+/obj/item/stack/proc/transfer_to(obj/item/stack/S, tamount=null, type_verified)
 	if (!get_amount())
 		return 0
 
@@ -292,7 +292,7 @@
 	return 0
 
 //creates a new stack with the specified amount
-/obj/item/stack/proc/split(var/tamount)
+/obj/item/stack/proc/split(tamount)
 	if (!splittable)
 		return null
 	if (!amount)
@@ -349,12 +349,12 @@
 			continue
 		var/transfer = src.transfer_to(item)
 		if (transfer)
-			to_chat(user, SPAN_NOTICE("You add a new [item.singular_name] to the stack. It now contains [item.amount] [item.singular_name]\s."))
+			to_chat(user, span_notice("You add a new [item.singular_name] to the stack. It now contains [item.amount] [item.singular_name]\s."))
 		if(!amount)
 			break
 
 /obj/item/stack/attack_hand(mob/user as mob)
-	if (user.get_inactive_hand() == src)
+	if (user.get_inactive_held_item() == src)
 		var/obj/item/stack/F = src.split(1)
 		if (F)
 			user.put_in_hands(F)
@@ -371,7 +371,7 @@
 	if (istype(W, /obj/item/stack))
 		var/obj/item/stack/S = W
 
-		if (user.get_inactive_hand()==src)
+		if (user.get_inactive_held_item()==src)
 			src.transfer_to(S, 1)
 		else
 			src.transfer_to(S)
@@ -401,7 +401,7 @@
 	The new stack will be put into your hands if possible", "Split Stack", round(amount * 0.5)) as null|num
 
 	if (!Adjacent(usr))
-		to_chat(usr, SPAN_WARNING("You need to be in arm's reach for that!"))
+		to_chat(usr, span_warning("You need to be in arm's reach for that!"))
 		return
 
 	if (usr.incapacitated())
@@ -444,16 +444,16 @@
 	var/on_floor = 0
 	var/use_material
 
-	New(title, result_type, req_amount = 1, res_amount = 1, max_res_amount = 1, time = 0, one_per_turf = 0, on_floor = 0, supplied_material = null)
-		src.title = title
-		src.result_type = result_type
-		src.req_amount = req_amount
-		src.res_amount = res_amount
-		src.max_res_amount = max_res_amount
-		src.time = time
-		src.one_per_turf = one_per_turf
-		src.on_floor = on_floor
-		src.use_material = supplied_material
+/datum/stack_recipe/New(title, result_type, req_amount = 1, res_amount = 1, max_res_amount = 1, time = 0, one_per_turf = 0, on_floor = 0, supplied_material = null)
+	src.title = title
+	src.result_type = result_type
+	src.req_amount = req_amount
+	src.res_amount = res_amount
+	src.max_res_amount = max_res_amount
+	src.time = time
+	src.one_per_turf = one_per_turf
+	src.on_floor = on_floor
+	src.use_material = supplied_material
 
 /*
  * Recipe list datum
@@ -461,6 +461,7 @@
 /datum/stack_recipe_list
 	var/title = "ERROR"
 	var/list/recipes = null
-	New(title, recipes)
-		src.title = title
-		src.recipes = recipes
+
+/datum/stack_recipe_list/New(title, recipes)
+	src.title = title
+	src.recipes = recipes
