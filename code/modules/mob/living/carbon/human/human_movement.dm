@@ -1,79 +1,80 @@
 /mob/living/carbon/human/movement_delay()
+	//bye bye movement delay!!!
+	return ..()
+	// var/tally = ..()
+	// if(species.slowdown)
+	// 	tally += species.slowdown
+	// if (istype(loc, /turf/space)) // It's hard to be slowed down in space by... anything
+	// 	return tally
+	// /// No slowdown for mech pilots , mech already handles movement.
+	// if(ismech(loc))
+	// 	return 0
 
-	var/tally = ..()
-	if(species.slowdown)
-		tally += species.slowdown
-	if (istype(loc, /turf/space)) // It's hard to be slowed down in space by... anything
-		return tally
-	/// No slowdown for mech pilots , mech already handles movement.
-	if(ismech(loc))
-		return 0
+	// if(embedded_flag)
+	// 	handle_embedded_objects() //Moving with objects stuck in you can cause bad times.
+	// if(CE_SPEEDBOOST in chem_effects)
+	// 	tally -= chem_effects[CE_SPEEDBOOST]
+	// if(isturf(loc))
+	// 	var/turf/T = loc
+	// 	if(T.get_lumcount() < 0.6)
+	// 		if(stats.getPerk(PERK_NIGHTCRAWLER))
+	// 			tally -= 0.5
+	// 		else if(see_invisible != SEE_INVISIBLE_NOLIGHTING)
+	// 			tally += 0.5
+	// if(stats.getPerk(PERK_FAST_WALKER))
+	// 	tally -= 0.5
+	// if(blocking)
+	// 	tally += 1
 
-	if(embedded_flag)
-		handle_embedded_objects() //Moving with objects stuck in you can cause bad times.
-	if(CE_SPEEDBOOST in chem_effects)
-		tally -= chem_effects[CE_SPEEDBOOST]
-	if(isturf(loc))
-		var/turf/T = loc
-		if(T.get_lumcount() < 0.6)
-			if(stats.getPerk(PERK_NIGHTCRAWLER))
-				tally -= 0.5
-			else if(see_invisible != SEE_INVISIBLE_NOLIGHTING)
-				tally += 0.5
-	if(stats.getPerk(PERK_FAST_WALKER))
-		tally -= 0.5
-	if(blocking)
-		tally += 1
+	// if(recoil)
+	// 	var/obj/item/gun/GA = get_active_hand()
+	// 	var/obj/item/gun/GI = get_inactive_hand()
 
-	if(recoil)
-		var/obj/item/gun/GA = get_active_hand()
-		var/obj/item/gun/GI = get_inactive_hand()
+	// 	var/brace_recoil = 0
+	// 	if(istype(GA))
+	// 		var/datum/recoil/R = GA.recoil
+	// 		brace_recoil = R.getRating(RECOIL_TWOHAND)
+	// 	if(istype(GI))
+	// 		var/datum/recoil/R = GI.recoil
+	// 		brace_recoil = max(brace_recoil, R.getRating(RECOIL_TWOHAND))
 
-		var/brace_recoil = 0
-		if(istype(GA))
-			var/datum/recoil/R = GA.recoil
-			brace_recoil = R.getRating(RECOIL_TWOHAND)
-		if(istype(GI))
-			var/datum/recoil/R = GI.recoil
-			brace_recoil = max(brace_recoil, R.getRating(RECOIL_TWOHAND))
+	// 	if(brace_recoil)
+	// 		tally += CLAMP(round(recoil) / (60 / brace_recoil), 0, 8) // Scales with the size of the gun - bigger guns slow you more
+	// 	else
+	// 		tally += CLAMP(round(recoil) / 20, 0, 8) // Lowest possible while holding a gun
 
-		if(brace_recoil)
-			tally += CLAMP(round(recoil) / (60 / brace_recoil), 0, 8) // Scales with the size of the gun - bigger guns slow you more
-		else
-			tally += CLAMP(round(recoil) / 20, 0, 8) // Lowest possible while holding a gun
+	// var/obj/item/implant/core_implant/cruciform/C = get_core_implant(/obj/item/implant/core_implant/cruciform)
+	// if(C && C.active)
+	// 	var/obj/item/cruciform_upgrade/upgrade = C.upgrade
+	// 	if(upgrade && upgrade.active && istype(upgrade, CUPGRADE_SPEED_OF_THE_CHOSEN))
+	// 		var/obj/item/cruciform_upgrade/speed_of_the_chosen/sotc = upgrade
+	// 		tally -= sotc.speed_increase
 
-	var/obj/item/implant/core_implant/cruciform/C = get_core_implant(/obj/item/implant/core_implant/cruciform)
-	if(C && C.active)
-		var/obj/item/cruciform_upgrade/upgrade = C.upgrade
-		if(upgrade && upgrade.active && istype(upgrade, CUPGRADE_SPEED_OF_THE_CHOSEN))
-			var/obj/item/cruciform_upgrade/speed_of_the_chosen/sotc = upgrade
-			tally -= sotc.speed_increase
+	// var/hunger_deficiency = (MOB_BASE_MAX_HUNGER - nutrition)
+	// if(hunger_deficiency >= 200) tally += (hunger_deficiency / 100) //If youre starving, movement slowdown can be anything up to 4.
 
-	var/hunger_deficiency = (MOB_BASE_MAX_HUNGER - nutrition)
-	if(hunger_deficiency >= 200) tally += (hunger_deficiency / 100) //If youre starving, movement slowdown can be anything up to 4.
+	// if(istype(buckled, /obj/structure/bed/chair/wheelchair))
+	// 	//Not porting bay's silly organ checking code here
+	// 	tally += 1 //Small slowdown so wheelchairs aren't turbospeed
+	// else
+	// 	if(wear_suit)
+	// 		tally += wear_suit.slowdown
+	// 	if(shoes)
+	// 		tally += shoes.slowdown
 
-	if(istype(buckled, /obj/structure/bed/chair/wheelchair))
-		//Not porting bay's silly organ checking code here
-		tally += 1 //Small slowdown so wheelchairs aren't turbospeed
-	else
-		if(wear_suit)
-			tally += wear_suit.slowdown
-		if(shoes)
-			tally += shoes.slowdown
+	// //tally += min((shock_stage / 100) * 3, 3) //Scales from 0 to 3 over 0 to 100 shock stage
+	// tally += clamp((get_dynamic_pain() - get_painkiller()) / 40, 0, 3) // Scales from 0 to 3,
 
-	//tally += min((shock_stage / 100) * 3, 3) //Scales from 0 to 3 over 0 to 100 shock stage
-	tally += clamp((get_dynamic_pain() - get_painkiller()) / 40, 0, 3) // Scales from 0 to 3,
+	// if (bodytemperature < 283.222)
+	// 	tally += (283.222 - bodytemperature) / 10 * 1.75
+	// tally += stance_damage // missing/damaged legs or augs affect speed
 
-	if (bodytemperature < 283.222)
-		tally += (283.222 - bodytemperature) / 10 * 1.75
-	tally += stance_damage // missing/damaged legs or augs affect speed
+	// if(slowdown)
+	// 	tally += 1
 
-	if(slowdown)
-		tally += 1
+	// tally += (r_hand?.slowdown_hold + l_hand?.slowdown_hold)
 
-	tally += (r_hand?.slowdown_hold + l_hand?.slowdown_hold)
-
-	return tally
+	// return tally
 
 
 /mob/living/carbon/human/allow_spacemove()
