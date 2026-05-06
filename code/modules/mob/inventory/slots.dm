@@ -106,13 +106,15 @@
 /datum/inventory_slot/hand/left
 	name = "Left hand"
 	id = slot_l_hand
-	req_organ = list(BP_L_ARM = ORGAN_SHOULD_BE_FINE)
+	#warn return req_organ check when we have hands or make something like it in slots.dm:33
+	//req_organ = list(BP_L_ARM = ORGAN_SHOULD_BE_FINE)
 	update_proc = TYPE_PROC_REF(/mob, update_inv_l_hand)
 
 /datum/inventory_slot/hand/rigth
 	name = "Right hand"
 	id = slot_r_hand
-	req_organ = list(BP_R_ARM = ORGAN_SHOULD_BE_FINE)
+	#warn return req_organ check when we have hands or make something like it in slots.dm:33
+	//req_organ = list(BP_R_ARM = ORGAN_SHOULD_BE_FINE)
 	update_proc = TYPE_PROC_REF(/mob, update_inv_r_hand)
 
 /datum/inventory_slot/belt
