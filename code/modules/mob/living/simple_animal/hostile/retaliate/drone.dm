@@ -43,7 +43,6 @@
 	max_co2 = 0
 	min_n2 = 0
 	max_n2 = 0
-	minbodytemp = 0
 
 	var/has_loot = 1
 	faction = "malf_drone"

@@ -91,29 +91,30 @@
 	coretype = text2path("/obj/item/slime_extract/[sanitizedcolour]")
 	regenerate_icons()
 
+#warn slimes were interacting with temperatures huge
 /mob/living/carbon/slime/movement_delay()
-	if (bodytemperature >= 330.23) // 135 F
-		return 0	// slimes become supercharged at high temperatures
+	// if (bodytemperature >= 330.23) // 135 F
+	// 	return 0	// slimes become supercharged at high temperatures
 
-	var/tally = MOVE_DELAY_BASE
+	// var/tally = MOVE_DELAY_BASE
 
-	var/health_deficiency = (maxHealth - health)
-	if(health_deficiency >= 30) tally += (health_deficiency / 25)
+	// var/health_deficiency = (maxHealth - health)
+	// if(health_deficiency >= 30) tally += (health_deficiency / 25)
 
-	if (bodytemperature < 183.222)
-		tally += (283.222 - bodytemperature) / 10 * 1.75
+	// if (bodytemperature < 183.222)
+	// 	tally += (283.222 - bodytemperature) / 10 * 1.75
 
-	if(reagents)
-		if(reagents.has_reagent("hyperzine")) // Hyperzine slows slimes down
-			tally *= 2
+	// if(reagents)
+	// 	if(reagents.has_reagent("hyperzine")) // Hyperzine slows slimes down
+	// 		tally *= 2
 
-		if(reagents.has_reagent("frostoil")) // Frostoil also makes them move VEEERRYYYYY slow
-			tally *= 5
+	// 	if(reagents.has_reagent("frostoil")) // Frostoil also makes them move VEEERRYYYYY slow
+	// 		tally *= 5
 
-	if(health <= 0) // if damaged, the slime moves twice as slow
-		tally *= 2
+	// if(health <= 0) // if damaged, the slime moves twice as slow
+	// 	tally *= 2
 
-	return tally
+	// return tally
 
 /mob/living/carbon/slime/Bump(atom/movable/AM as mob|obj, yes)
 	if ((!(yes) || now_pushing))

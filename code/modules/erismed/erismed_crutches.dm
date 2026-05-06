@@ -14,6 +14,7 @@
 /obj/item/grenade/chem_grenade/cleaner/nt_cleaner
 /obj/item/grenade/chem_grenade/incendiary
 /obj/item/organ_module/active/simple/armblade/energy_blade
+/obj/item/device/suit_cooling_unit
 
 /obj/item/reagent_containers/syringe/large/antitoxin
 /obj/item/reagent_containers/syringe/large/dexalin_plus

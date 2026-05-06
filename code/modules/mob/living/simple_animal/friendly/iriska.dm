@@ -17,8 +17,6 @@
 	response_disarm = "rubs"
 	response_harm = "makes terrible mistake by kicking"
 	min_oxy = 16
-	minbodytemp = 223
-	maxbodytemp = 323
 	mob_size = MOB_HUGE
 	harm_intent_damage = 20
 	melee_damage_lower = 10

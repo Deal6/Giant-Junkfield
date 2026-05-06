@@ -30,16 +30,16 @@ var/image/contamination_overlay = image('icons/effects/contamination.dmi')
 	var/N2O_HALLUCINATION_DESC = "Does being in sleeping gas cause you to hallucinate?"
 
 
-/mob/proc/pl_effects()
+/mob/proc/plasma_toxic_damage()
 
-/mob/living/carbon/human/pl_effects()
+/mob/living/carbon/human/plasma_toxic_damage()
 	//Handles all the bad things plasma can do.
 	if(stat >= DEAD)
 		return
 
 	//Burn skin if exposed.
 	if(vsc.plc.SKIN_BURNS)
-		if(!pl_head_protected() || !pl_suit_protected())
+		if(!head_protected_from_plasma() || !suit_protected_from_plasma())
 			burn_skin(0.75)
 			if(prob(20)) to_chat(src, SPAN_DANGER("Your skin burns!"))
 			updatehealth()
@@ -74,13 +74,13 @@ var/image/contamination_overlay = image('icons/effects/contamination.dmi')
 	// 		to_chat(src, SPAN_DANGER("You are blinded!"))
 	// 		eye_blind += 20
 
-/mob/living/carbon/human/proc/pl_head_protected()
+/mob/living/carbon/human/proc/head_protected_from_plasma()
 	//Checks if the head is adequately sealed.
 	if(head && (head.body_parts_covered & EYES))
 		return 1
 	return 0
 
-/mob/living/carbon/human/proc/pl_suit_protected()
+/mob/living/carbon/human/proc/suit_protected_from_plasma()
 	//Checks if the suit is adequately sealed.
 	var/coverage = 0
 	for(var/obj/item/protection in list(wear_suit, gloves, shoes))

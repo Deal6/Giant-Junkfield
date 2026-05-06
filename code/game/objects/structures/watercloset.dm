@@ -180,7 +180,6 @@
 	if(on)
 		if (M.loc == loc)
 			wash(M)
-			process_heat(M)
 		for (var/atom/movable/G in loc)
 			G.clean_blood()
 
@@ -322,10 +321,9 @@
 		var/mob/living/L = thing
 		if(istype(AM) && AM.simulated)
 			wash(AM)
-			if(istype(L))
-				process_heat(L)
 	wash_floor()
-	reagents.add_reagent("water", reagents.get_free_space())
+#warn waer
+	// reagents.add_reagent("water", reagents.get_free_space())
 
 /obj/machinery/shower/proc/wash_floor()
 	if(!ismist && is_washing)
@@ -336,20 +334,6 @@
 	T.clean(src)
 	spawn(100)
 		is_washing = 0
-
-/obj/machinery/shower/proc/process_heat(mob/living/M)
-	if(!on || !istype(M)) return
-
-	var/temperature = temperature_settings[watertemp]
-	var/temp_adj = between(BODYTEMP_COOLING_MAX, temperature - M.bodytemperature, BODYTEMP_HEATING_MAX)
-	M.bodytemperature += temp_adj
-
-	if(ishuman(M))
-		var/mob/living/carbon/human/H = M
-		if(temperature >= H.species.heat_level_1)
-			to_chat(H, SPAN_DANGER("The water is searing hot!"))
-		else if(temperature <= H.species.cold_level_1)
-			to_chat(H, SPAN_WARNING("The water is freezing cold!"))
 
 /obj/item/bikehorn/rubberducky
 	name = "rubber ducky"

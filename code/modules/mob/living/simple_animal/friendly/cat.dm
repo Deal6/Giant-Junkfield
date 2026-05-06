@@ -15,8 +15,6 @@
 	response_harm   = "kicks"
 	var/mob/flee_target
 	min_oxy = 16 //Require atleast 16kPA oxygen
-	minbodytemp = 223		//Below -50 Degrees Celcius
-	maxbodytemp = 323	//Above 50 Degrees Celcius
 	holder_type = /obj/item/holder/cat
 	mob_size = MOB_SMALL
 	possession_candidate = 1
@@ -288,8 +286,6 @@ var/cat_number = 0
 
 	status_flags = GODMODE // Bluespace cat
 	min_oxy = 0
-	minbodytemp = 0
-	maxbodytemp = INFINITY
 	autoseek_food = 0
 	metabolic_factor = 0.0
 

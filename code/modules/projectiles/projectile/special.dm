@@ -114,11 +114,11 @@
 	check_armour = ARMOR_ENERGY
 	var/temperature = 300
 
-
+#warn temp gun, temp deleted, replace with effects
 /obj/item/projectile/temp/on_hit(atom/target)//These two could likely check temp protection on the mob
-	if(isliving(target))
-		var/mob/M = target
-		M.bodytemperature = temperature
+	// if(isliving(target))
+	// 	var/mob/M = target
+	// 	M.bodytemperature = temperature
 	return TRUE
 
 /obj/item/projectile/meteor
@@ -251,7 +251,7 @@
 	sharp = FALSE
 	embed = FALSE	// plasma is not directly destroyed as projectile does not survive impact
 	recoil = 4
-	matter = list(MATERIAL_PLASTIC = 0.5, MATERIAL_PLASMA = 1) 
+	matter = list(MATERIAL_PLASTIC = 0.5, MATERIAL_PLASMA = 1)
 
 /obj/item/projectile/bullet/flare/on_hit(atom/target, blocked = FALSE)
 	. = ..()

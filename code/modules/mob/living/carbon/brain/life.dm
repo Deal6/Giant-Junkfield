@@ -47,26 +47,22 @@
 
 		handle_temperature_damage(HEAD, environment.temperature, environment_heat_capacity*transfer_coefficient)
 
-	if(stat==2)
-		bodytemperature += 0.1*(environment.temperature - bodytemperature)*environment_heat_capacity/(environment_heat_capacity + 270000)
-
 	//Account for massive pressure differences
 
 	return //TODO: DEFERRED
 
+#warn delete this shit below, im just not doing it for saner minds to decide
 /mob/living/carbon/brain/proc/handle_temperature_damage(body_part, exposed_temperature, exposed_intensity)
-	if(status_flags & GODMODE) return
+	// if(status_flags & GODMODE) return
 
-	if(exposed_temperature > bodytemperature)
-		var/discomfort = min( abs(exposed_temperature - bodytemperature)*(exposed_intensity)/2000000, 1)
-		//adjustFireLoss(2.5*discomfort)
-		//adjustFireLoss(5*discomfort)
-		adjustFireLoss(20*discomfort)
+	// 	//adjustFireLoss(2.5*discomfort)
+	// 	//adjustFireLoss(5*discomfort)
+	// 	adjustFireLoss(20*discomfort)
 
-	else
-		var/discomfort = min( abs(exposed_temperature - bodytemperature)*(exposed_intensity)/2000000, 1)
-		//adjustFireLoss(2.5*discomfort)
-		adjustFireLoss(5*discomfort)
+	// else
+	// 	var/discomfort = min( abs(exposed_temperature - bodytemperature)*(exposed_intensity)/2000000, 1)
+	// 	//adjustFireLoss(2.5*discomfort)
+	// 	adjustFireLoss(5*discomfort)
 
 #warn no metabolism 76-79
 /mob/living/carbon/brain/handle_chemicals_in_body()

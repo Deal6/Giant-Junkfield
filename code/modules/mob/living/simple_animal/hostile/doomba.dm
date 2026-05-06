@@ -15,7 +15,6 @@
 	max_n2 = 0
 	move_to_delay = 2
 	turns_per_move = 5
-	minbodytemp = 0
 	speed = 4
 	light_range = 3
 	light_color = COLOR_LIGHTING_BLUE_BRIGHT

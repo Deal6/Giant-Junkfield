@@ -225,11 +225,11 @@
 	animals lunging, etc.
 */
 /mob/proc/RangedAttack(atom/A, params)
-	if(!active_mutations.len)
-		return
+	// if(!active_mutations.len)
+	// 	return
 //	if((LASER in mutations) && a_intent == I_HURT)
 //		LaserEyes(A) // moved into a proc below
-#warn bad below 2 lines
+#warn bad below 2 lines and commented above I guess
 	// if(get_active_mutation(src, MUTATION_TELEKINESIS) && get_dist(src, A) <= tk_maxrange)
 	// 	A.attack_tk(src)
 

@@ -531,7 +531,7 @@
 // 	//Check for contaminants before anything else because we don't want to skip it.
 // 	for(var/g in environment.gas)
 // 		if(gas_data.flags[g] & XGM_GAS_CONTAMINANT && environment.gas[g] > gas_data.overlay_limit[g] + 1)
-// 			pl_effects()
+// 			plasma_toxic_damage()
 // 			break
 
 // 	if(istype(get_turf(src), /turf/space))

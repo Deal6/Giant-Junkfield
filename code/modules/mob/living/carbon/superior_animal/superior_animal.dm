@@ -193,24 +193,25 @@
 
 
 /mob/living/carbon/superior_animal/proc/handle_cheap_environment(datum/gas_mixture/environment as anything)
-	var/pressure = environment.return_pressure()
-	var/enviro_damage = (bodytemperature < min_bodytemperature) || (pressure < min_air_pressure) || (pressure > max_air_pressure)
-	if(enviro_damage) // its like this to avoid extra processing further below without using goto
-		bodytemperature += (bodytemperature - environment.temperature) * (environment.total_moles / MOLES_CELLSTANDARD) * (bodytemperature < min_bodytemperature ? 1 - heat_protection : -1 + cold_protection)
-		adjustFireLoss(bodytemperature < min_bodytemperature ? 0 : 15)
-		adjustBruteLoss((pressure < min_air_pressure  || pressure > max_air_pressure) ? 0 : 6)
-		bad_environment = TRUE
-		return FALSE
-	bad_environment = FALSE
-	if (!contaminant_immunity)
-		for(var/g in environment.gas)
-			if(gas_data.flags[g] & XGM_GAS_CONTAMINANT && environment.gas[g] > gas_data.overlay_limit[g] + 1)
-				pl_effects()
-				break
+#warn 7 minutes is all I got to play with you
+	// var/pressure = environment.return_pressure()
+	// var/enviro_damage = (pressure < min_air_pressure) || (pressure > max_air_pressure)
+	// if(enviro_damage) // its like this to avoid extra processing further below without using goto
+	// 	bodytemperature += (bodytemperature - environment.temperature) * (environment.total_moles / MOLES_CELLSTANDARD) * (bodytemperature < min_bodytemperature ? 1 - heat_protection : -1 + cold_protection)
+	// 	adjustFireLoss(bodytemperature < min_bodytemperature ? 0 : 15)
+	// 	adjustBruteLoss((pressure < min_air_pressure  || pressure > max_air_pressure) ? 0 : 6)
+	// 	bad_environment = TRUE
+	// 	return FALSE
+	// bad_environment = FALSE
+	// if (!contaminant_immunity)
+	// 	for(var/g in environment.gas)
+	// 		if(gas_data.flags[g] & XGM_GAS_CONTAMINANT && environment.gas[g] > gas_data.overlay_limit[g] + 1)
+	// 			plasma_toxic_damage()
+	// 			break
 
-	if (overkill_dust && (getFireLoss() >= maxHealth*2))
-		dust()
-		return FALSE
+	// if (overkill_dust && (getFireLoss() >= maxHealth*2))
+	// 	dust()
+	// 	return FALSE
 
 // branchless isincapacited check made for roaches.
 /mob/living/carbon/superior_animal/proc/cheap_incapacitation_check() // This works based off constants ,override it if you want it to be dynamic . Based off isincapacited

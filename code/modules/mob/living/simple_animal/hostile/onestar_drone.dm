@@ -17,7 +17,6 @@
 	max_co2 = 0
 	min_n2 = 0
 	max_n2 = 0
-	minbodytemp = 0
 	speed = 4
 	light_range = 3
 	light_color = COLOR_LIGHTING_BLUE_BRIGHT

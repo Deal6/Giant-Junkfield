@@ -252,9 +252,6 @@
 /mob/living/exosuit/GetIdCard()
 	return access_card
 
-/mob/living/exosuit/proc/return_temperature()
-	return bodytemperature
-
 /mob/living/exosuit/get_mob()
 	if(length(pilots))
 		return pick(pilots)

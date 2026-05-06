@@ -314,10 +314,11 @@
 		unEquip(item, loc)
 		item.throw_at(target, item.throw_range, item.throw_speed, src)
 
+#warn scary code
 /mob/living/carbon/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	..()
-	var/temp_inc = max(min(BODYTEMP_HEATING_MAX*(1-get_heat_protection()), exposed_temperature - bodytemperature), 0)
-	bodytemperature += temp_inc
+	// var/temp_inc = max(min(BODYTEMP_HEATING_MAX*(1-get_heat_protection()), exposed_temperature - bodytemperature), 0)
+	// bodytemperature += temp_inc
 
 /mob/living/carbon/can_use_hands()
 	if(handcuffed)

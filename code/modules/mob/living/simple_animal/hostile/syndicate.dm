@@ -90,7 +90,6 @@
 	max_co2 = 0
 	min_n2 = 0
 	max_n2 = 0
-	minbodytemp = 0
 	icon_state = "syndicatemeleespace"
 	name = "Syndicate Commando"
 	corpse = /obj/landmark/corpse/syndicatecommando
@@ -120,7 +119,6 @@
 	max_co2 = 0
 	min_n2 = 0
 	max_n2 = 0
-	minbodytemp = 0
 	corpse = /obj/landmark/corpse/syndicatecommando
 	speed = 0
 
@@ -150,7 +148,6 @@
 	max_co2 = 0
 	min_n2 = 0
 	max_n2 = 0
-	minbodytemp = 0
 
 /mob/living/simple_animal/hostile/viscerator/emp_act(severity)
 	health -= 60*severity

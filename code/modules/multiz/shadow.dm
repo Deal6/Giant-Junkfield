@@ -7,7 +7,6 @@
 	name = "shadow"
 	desc = "Z-level shadow"
 	anchored = TRUE
-	unacidable = 1
 	density = FALSE
 	alpha = 0
 	original_plane = FLOOR_PLANE

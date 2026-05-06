@@ -22,8 +22,6 @@
 	stop_automated_movement = 1
 	animate_movement = SYNC_STEPS
 
-	minbodytemp = 0
-	maxbodytemp = 350
 	min_oxy = 0
 	max_co2 = 0
 	max_tox = 0

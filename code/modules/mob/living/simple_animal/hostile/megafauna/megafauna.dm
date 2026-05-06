@@ -11,8 +11,6 @@
 	light_range = 3
 	faction = list("mining", "boss")
 	var/atom/target
-	minbodytemp = 0
-	maxbodytemp = INFINITY
 	mob_size = MOB_SIZE_LARGE
 	status_flags = 0 //No pushing, no stunning, no paralyze and no weaken.
 	layer = LARGE_MOB_LAYER //Looks weird with them slipping under mineral walls and cameras and shit otherwise

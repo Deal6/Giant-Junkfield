@@ -220,7 +220,7 @@
 
 	. = ..()
 
-/mob/living/carbon/superior_animal/pl_effects()
+/mob/living/carbon/superior_animal/plasma_toxic_damage()
 	. = ..()
 	adjustToxLoss(2)
 
@@ -240,7 +240,7 @@
 // 		for(var/g in environment.gas)
 // 			if(gas_data.flags[g] & XGM_GAS_CONTAMINANT && environment.gas[g] > gas_data.overlay_limit[g] + 1)
 // 				bad_environment = TRUE
-// 				pl_effects()
+// 				plasma_toxic_damage()
 // 				break
 
 // 		if (min_air_pressure > 0)

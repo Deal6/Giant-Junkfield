@@ -30,8 +30,6 @@
 	faction = "alien"
 	environment_smash = 2
 	status_flags = CANPUSH
-	minbodytemp = 0
-	heat_damage_per_tick = 20
 
 
 /mob/living/simple_animal/hostile/alien/drone

@@ -442,7 +442,6 @@ default behaviour is:
 
 	// shut down ongoing problems
 	radiation = 0
-	bodytemperature = T20C
 	sdisabilities = 0
 	disabilities = 0
 
