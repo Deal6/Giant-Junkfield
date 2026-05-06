@@ -9,6 +9,9 @@
 	var/embedded_flag	  //To check if we've need to roll for damage on movement while an item is imbedded in us.
 	var/obj/item/rig/wearing_rig // This is very not good, but it's much much better than calling get_rig() every update_lying_buckled_and_verb_status() call.
 	var/using_scope // This is not very good either, because I've copied it. Sorry.
+	var/codespeak_cooldown
+	species = SPECIES_HUMAN
+	stat = CONSCIOUS
 
 /mob/living/carbon/human/Initialize(new_loc, new_species)
 	hud_list[HEALTH_HUD]      = image('icons/mob/hud.dmi', src, "hudhealth100", ON_MOB_HUD_LAYER)
@@ -23,7 +26,7 @@
 	hud_list[EXCELSIOR_HUD]   = image('icons/mob/hud.dmi', src, "hudblank",     ON_MOB_HUD_LAYER)
 
 	GLOB.human_mob_list |= src
-
+	species = all_species[species]
 	if(!species)
 		if(new_species)
 			set_species(new_species,1)
