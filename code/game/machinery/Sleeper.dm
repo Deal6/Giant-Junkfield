@@ -20,7 +20,7 @@
 	beaker = new /obj/item/reagent_containers/glass/beaker/large(src)
 	update_icon()
 
-#warn Gives error. Sleeper is kill
+#warn Gives bad err0r. Sleeper is kill
 // /obj/machinery/sleeper/Process()
 // 	if(stat & (NOPOWER|BROKEN))
 // 		return

@@ -332,7 +332,7 @@ GLOBAL_LIST_EMPTY(all_catalog_entries_by_type)
 		if(findtext(i, value))
 			return TRUE
 
-#warn error BAD!!!
+#warn BAD!!!
 /datum/catalog_entry/drink/New(var/datum/reagent/V)
 /*
 	if(!istype(V))

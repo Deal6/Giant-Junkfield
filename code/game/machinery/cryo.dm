@@ -103,7 +103,6 @@
 		occupantData["oxyLoss"] = occupant.getOxyLoss()
 		occupantData["toxLoss"] = occupant.getToxLoss()
 		occupantData["fireLoss"] = occupant.getFireLoss()
-		occupantData["bodyTemperature"] = occupant.bodytemperature
 	data["occupant"] = occupantData;
 
 	data["cellTemperature"] = round(air_contents.temperature)
@@ -220,32 +219,33 @@
 	I.pixel_z = 32
 	overlays += I
 
+#warn go FUCK YOURSELF this is temperature btw
 /obj/machinery/atmospherics/unary/cryo_cell/proc/process_occupant()
-	if(air_contents.total_moles < 10)
-		return
-	if(occupant)
-		if(occupant.stat == DEAD)
-			return
-		occupant.bodytemperature += 2*(air_contents.temperature - occupant.bodytemperature)*current_heat_capacity/(current_heat_capacity + air_contents.heat_capacity())
-		occupant.bodytemperature = max(occupant.bodytemperature, air_contents.temperature) // this is so ugly i'm sorry for doing it i'll fix it later i promise
-		occupant.stat = UNCONSCIOUS
-		if(occupant.bodytemperature < T0C)
-			occupant.sleeping = max(5, (1/occupant.bodytemperature)*2000)
-			occupant.Paralyse(max(5, (1/occupant.bodytemperature)*3000))
-			if(air_contents.gas["oxygen"] > 2)
-				if(occupant.getOxyLoss()) occupant.adjustOxyLoss(-1)
-			else
-				occupant.adjustOxyLoss(-1)
-			//severe damage should heal waaay slower without proper chemicals
-			if(occupant.bodytemperature < 225)
-				var/heal_brute = occupant.getBruteLoss() ? min(1, 20/occupant.getBruteLoss()) : 0
-				var/heal_fire = occupant.getFireLoss() ? min(1, 20/occupant.getFireLoss()) : 0
-				occupant.heal_organ_damage(heal_brute,heal_fire)
-		var/has_cryo = occupant.reagents.get_reagent_amount("cryoxadone") >= 1
-		var/has_clonexa = occupant.reagents.get_reagent_amount("clonexadone") >= 1
-		var/has_cryo_medicine = has_cryo || has_clonexa
-		if(beaker && !has_cryo_medicine)
-			beaker.reagents.trans_to_mob(occupant, 1, CHEM_BLOOD, 10)
+	// if(air_contents.total_moles < 10)
+	// 	return
+	// if(occupant)
+	// 	if(occupant.stat == DEAD)
+	// 		return
+	// 	occupant.bodytemperature += 2*(air_contents.temperature - occupant.bodytemperature)*current_heat_capacity/(current_heat_capacity + air_contents.heat_capacity())
+	// 	occupant.bodytemperature = max(occupant.bodytemperature, air_contents.temperature) // this is so ugly i'm sorry for doing it i'll fix it later i promise
+	// 	occupant.stat = UNCONSCIOUS
+	// 	if(occupant.bodytemperature < T0C)
+	// 		occupant.sleeping = max(5, (1/occupant.bodytemperature)*2000)
+	// 		occupant.Paralyse(max(5, (1/occupant.bodytemperature)*3000))
+	// 		if(air_contents.gas["oxygen"] > 2)
+	// 			if(occupant.getOxyLoss()) occupant.adjustOxyLoss(-1)
+	// 		else
+	// 			occupant.adjustOxyLoss(-1)
+	// 		//severe damage should heal waaay slower without proper chemicals
+	// 		if(occupant.bodytemperature < 225)
+	// 			var/heal_brute = occupant.getBruteLoss() ? min(1, 20/occupant.getBruteLoss()) : 0
+	// 			var/heal_fire = occupant.getFireLoss() ? min(1, 20/occupant.getFireLoss()) : 0
+	// 			occupant.heal_organ_damage(heal_brute,heal_fire)
+	// 	var/has_cryo = occupant.reagents.get_reagent_amount("cryoxadone") >= 1
+	// 	var/has_clonexa = occupant.reagents.get_reagent_amount("clonexadone") >= 1
+	// 	var/has_cryo_medicine = has_cryo || has_clonexa
+	// 	if(beaker && !has_cryo_medicine)
+	// 		beaker.reagents.trans_to_mob(occupant, 1, CHEM_BLOOD, 10)
 
 /obj/machinery/atmospherics/unary/cryo_cell/proc/heat_gas_contents()
 	if(air_contents.total_moles < 1)
@@ -276,8 +276,6 @@
 		occupant.client.eye = occupant.client.mob
 		occupant.client.perspective = MOB_PERSPECTIVE
 	occupant.forceMove(get_step(loc, SOUTH))	//this doesn't account for walls or anything, but i don't forsee that being a problem.
-	if (occupant.bodytemperature < 261 && occupant.bodytemperature >= 70) //Patch by Aranclanos to stop people from taking burn damage after being ejected
-		occupant.bodytemperature = 261									  // Changed to 70 from 140 by Zuhayr due to reoccurance of bug.
 //	occupant.metabslow = 0
 	occupant = null
 	current_heat_capacity = initial(current_heat_capacity)

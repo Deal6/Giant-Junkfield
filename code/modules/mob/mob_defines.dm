@@ -53,7 +53,6 @@
 
 	var/bhunger = 0			//Carbon
 	var/ajourn = 0
-	var/seer = 0 //for cult//Carbon, probably Human
 
 	var/druggy = 0			//Carbon
 	var/confused = 0		//Carbon
@@ -73,7 +72,6 @@ While it would be entirely possible to check the mob's move handlers list for th
 	var/incorporeal_move = 0 //0 is off, 1 is normal, 2 is for ninjas.
 
 
-	var/unacidable = 0
 	var/list/pinned = list()            // List of things pinning this creature to walls (see living_defense.dm)
 	var/list/embedded = list()          // Embedded items, since simple mobs don't have organs.
 	var/list/languages = list()         // For speaking/listening.
@@ -84,8 +82,6 @@ While it would be entirely possible to check the mob's move handlers list for th
 	var/name_archive //For admin things like possession
 
 	var/timeofdeath = 0
-
-	var/bodytemperature = 310.055	//98.7 F
 
 	var/default_pixel_x = 0
 	var/default_pixel_y = 0
@@ -101,10 +97,10 @@ While it would be entirely possible to check the mob's move handlers list for th
 	var/decl/move_intent/move_intent = /decl/move_intent/run
 	var/move_intents = list(/decl/move_intent/run, /decl/move_intent/walk)
 
-	var/obj/buckled //Living
-	var/obj/item/l_hand //Living
-	var/obj/item/r_hand //Living
-	var/obj/item/back //Human/Monkey
+	var/obj/buckled			//Living
+	var/obj/item/l_hand 	//Living
+	var/obj/item/r_hand 	//Living
+	var/obj/item/back 		//Human/Monkey
 	var/obj/item/storage/s_active //Carbon
 	var/obj/item/clothing/mask/wear_mask //Carbon
 
@@ -130,14 +126,16 @@ While it would be entirely possible to check the mob's move handlers list for th
 	var/fingers_trace // md5(real_name)
 
 	var/mutation_index = 0 // Sum of active mutation tiers, approximation of how much of a mutant this mob are
-	var/list/dormant_mutations = list()
-	var/list/active_mutations = list()
-	var/list/mutation_count_by_tier = list(
-		"0" = 0, // Nero
-		"1" = 0, // Vespasian
-		"2" = 0, // Tacitus
-		"3" = 0, // Hadrian
-		"4" = 0) // Aurelien
+
+#warn mutations here
+	// var/list/dormant_mutations = list()
+	// var/list/active_mutations = list()
+	// var/list/mutation_count_by_tier = list(
+	// 	"0" = 0, // Nero
+	// 	"1" = 0, // Vespasian
+	// 	"2" = 0, // Tacitus
+	// 	"3" = 0, // Hadrian
+	// 	"4" = 0) // Aurelien
 
 	var/radiation = 0//Carbon
 

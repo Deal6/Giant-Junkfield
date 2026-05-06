@@ -623,7 +623,8 @@ Food quality is calculated based on the steps taken.
 	var/obj/item/container = parent.holder_ref.resolve()
 	if(container)
 		//Build up a list of reagents that went into this.
-		var/datum/reagents/slurry = new /datum/reagents(max=1000000, A=container)
+#warn this here
+		// var/datum/reagents/slurry = new /datum/reagents(max=1000000, A=container)
 
 		//Filter out reagents based on settings
 		if(GLOB.cwj_step_dictionary_ordered["[CWJ_ADD_REAGENT]"])
@@ -644,7 +645,8 @@ Food quality is calculated based on the steps taken.
 				#ifdef CWJ_DEBUG
 				log_debug("/recipe/proc/create_product: Transferring container reagents of [container.reagents.total_volume] to slurry of current volume [slurry.total_volume] max volume [slurry.maximum_volume]")
 				#endif
-				container.reagents.trans_to_holder(slurry, amount=container.reagents.total_volume)
+#warn bad
+				// container.reagents.trans_to_holder(slurry, amount=container.reagents.total_volume)
 
 			//Do reagent filtering on added items and produce
 			var/list/exclude_list = list()
@@ -693,7 +695,8 @@ Food quality is calculated based on the steps taken.
 					#ifdef CWJ_DEBUG
 					log_debug("/recipe/proc/create_product: Adding [added_item.reagents.total_volume] units from [added_item] to slurry")
 					#endif
-					added_item.reagents.trans_to_holder(slurry, amount=added_item.reagents.total_volume)
+#warn bad
+					// added_item.reagents.trans_to_holder(slurry, amount=added_item.reagents.total_volume)
 
 			//Purge the contents of the container we no longer need it
 			QDEL_LIST(container.contents)
@@ -722,7 +725,7 @@ Food quality is calculated based on the steps taken.
 				#ifdef CWJ_DEBUG
 				log_debug("/recipe/proc/create_product: Transferring slurry of [slurry.total_volume] to [new_item] of total volume [new_item.reagents.total_volume]")
 				#endif
-				slurry.trans_to_holder(new_item.reagents, amount=slurry.total_volume, copy=1)
+				// slurry.trans_to_holder(new_item.reagents, amount=slurry.total_volume, copy=1)
 
 				new_item?:food_quality = pointer.tracked_quality + reagent_quality
 				new_item?:cooking_description_modifier = cooking_description_modifier
@@ -741,8 +744,8 @@ Food quality is calculated based on the steps taken.
 
 			//Create our Reagent
 			container.reagents.add_reagent(reagent_id, reagent_amount, data=list("FOOD_QUALITY" = total_quality))
-
-		qdel(slurry)
+#warn bad
+		// qdel(slurry)
 
 //Extra Reagents in a recipe take away recipe quality for every extra unit added to the concoction.
 //Reagents are calculated in two areas. Here and /datum/cooking_with_jane/recipe_step/add_reagent/calculate_quality

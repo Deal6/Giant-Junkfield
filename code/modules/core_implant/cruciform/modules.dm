@@ -92,8 +92,6 @@
 	s_tone = H.s_tone
 	gender = H.gender
 	tts_seed = H.tts_seed
-	dormant_mutations = H.dormant_mutations
-	active_mutations = H.active_mutations
 	if(H.ckey)
 		ckey = H.ckey
 	if(H.mind)
@@ -117,6 +115,7 @@
 	if(ishuman(implant.wearer))
 		write_wearer(implant.wearer)
 
+#warn unrelated, but is this even in game?
 /datum/core_module/cruciform/obey/install()
 	var/laws = list("You are enslaved. You must obey the laws below.",
 			"Only [user] and persons designated by him are Inquisition agents.",

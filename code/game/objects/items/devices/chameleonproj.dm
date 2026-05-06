@@ -164,18 +164,9 @@ GLOBAL_LIST_INIT(champroj_whitelist, list())
 
 /obj/effect/dummy/chameleon/relaymove(var/mob/user, direction)
 	if(istype(loc, /turf/space)) return //No magical space movement!
-	var/move_delay = 0
-	switch(user.bodytemperature)
-		if(300 to INFINITY)
-			move_delay = 10
-		if(295 to 300)
-			move_delay = 13
-		if(280 to 295)
-			move_delay = 16
-		if(260 to 280)
-			move_delay = 20
-		else
-			move_delay = 25
+#warn muh balance!!! movement was linked to temperature here
+	var/move_delay = 25
+
 	if(!master.cell || !master.cell.checked_use(master.move_cost))
 		user.add_move_cooldown(move_delay)
 

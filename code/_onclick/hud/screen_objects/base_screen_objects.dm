@@ -666,42 +666,43 @@
 	update_icon()
 
 
+#warn temperature on hud
 /obj/screen/bodytemp/update_icon()
-	//TODO: precalculate all of this stuff when the species datum is created
-	var/mob/living/carbon/parentmobC = parentmob	// same parent mob but in correct type for accessing to species
-	var/base_temperature = parentmobC.species.body_temperature
-	if(base_temperature == null) //some species don't have a set metabolic temperature
-		base_temperature = (parentmobC.species.heat_level_1 + parentmobC.species.cold_level_1)/2
+	// //TODO: precalculate all of this stuff when the species datum is created
+	// var/mob/living/carbon/parentmobC = parentmob	// same parent mob but in correct type for accessing to species
+	// var/base_temperature = parentmobC.species.body_temperature
+	// if(base_temperature == null) //some species don't have a set metabolic temperature
+	// 	base_temperature = (parentmobC.species.heat_level_1 + parentmobC.species.cold_level_1)/2
 
-	var/temp_step
-	cut_overlays()
-	if (parentmob:bodytemperature >= base_temperature)
-		temp_step = (parentmobC.species.heat_level_1 - base_temperature)/4
+	// var/temp_step
+	// cut_overlays()
+	// if (parentmob:bodytemperature >= base_temperature)
+	// 	temp_step = (parentmobC.species.heat_level_1 - base_temperature)/4
 
-		if (parentmob:bodytemperature >= parentmobC.species.heat_level_1)
-			overlays += ovrls["temp4"]
-		else if (parentmob:bodytemperature >= base_temperature + temp_step*3)
-			overlays += ovrls["temp3"]
-		else if (parentmob:bodytemperature >= base_temperature + temp_step*2)
-			overlays += ovrls["temp2"]
-		else if (parentmob:bodytemperature >= base_temperature + temp_step*1)
-			overlays += ovrls["temp1"]
-		else
-			overlays += ovrls["temp0"]
+	// 	if (parentmob:bodytemperature >= parentmobC.species.heat_level_1)
+	// 		overlays += ovrls["temp4"]
+	// 	else if (parentmob:bodytemperature >= base_temperature + temp_step*3)
+	// 		overlays += ovrls["temp3"]
+	// 	else if (parentmob:bodytemperature >= base_temperature + temp_step*2)
+	// 		overlays += ovrls["temp2"]
+	// 	else if (parentmob:bodytemperature >= base_temperature + temp_step*1)
+	// 		overlays += ovrls["temp1"]
+	// 	else
+	// 		overlays += ovrls["temp0"]
 
-	else if (parentmob:bodytemperature < base_temperature)
-		temp_step = (base_temperature - parentmobC.species.cold_level_1)/4
+	// else if (parentmob:bodytemperature < base_temperature)
+	// 	temp_step = (base_temperature - parentmobC.species.cold_level_1)/4
 
-		if (parentmob:bodytemperature <= parentmobC.species.cold_level_1)
-			overlays += ovrls["temp-4"]
-		else if (parentmob:bodytemperature <= base_temperature - temp_step*3)
-			overlays += ovrls["temp-3"]
-		else if (parentmob:bodytemperature <= base_temperature - temp_step*2)
-			overlays += ovrls["temp-2"]
-		else if (parentmob:bodytemperature <= base_temperature - temp_step*1)
-			overlays += ovrls["temp-1"]
-		else
-			overlays += ovrls["temp0"]
+	// 	if (parentmob:bodytemperature <= parentmobC.species.cold_level_1)
+	// 		overlays += ovrls["temp-4"]
+	// 	else if (parentmob:bodytemperature <= base_temperature - temp_step*3)
+	// 		overlays += ovrls["temp-3"]
+	// 	else if (parentmob:bodytemperature <= base_temperature - temp_step*2)
+	// 		overlays += ovrls["temp-2"]
+	// 	else if (parentmob:bodytemperature <= base_temperature - temp_step*1)
+	// 		overlays += ovrls["temp-1"]
+	// 	else
+	// 		overlays += ovrls["temp0"]
 
 /obj/screen/bodytemp/DEADelize()
 	cut_overlays()

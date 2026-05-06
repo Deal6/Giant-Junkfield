@@ -380,7 +380,6 @@ GLOBAL_VAR_INIT(GLOBAL_INSIGHT_MOD, 1)
 		else
 			changeLevel(penalty*death_view_multiplier)
 
-#warn Multiple errors
 /datum/sanity/proc/onShock(amount)
 	changeLevel(-SANITY_DAMAGE_SHOCK(amount, owner.stats.getStat(STAT_VIG)))
 

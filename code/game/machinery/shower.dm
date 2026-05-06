@@ -83,7 +83,6 @@
 	..()
 	for(var/mob/living/carbon/C in src.loc)
 		wash(C)
-		check_heat(C)
 	for (var/atom/movable/G in src.loc)
 		G.clean_blood()
 
@@ -203,26 +202,24 @@
 		for(var/obj/effect/E in tile)
 			if(istype(E,/obj/effect/decal/cleanable) || istype(E,/obj/effect/overlay))
 				del(E)
-
+#warn I will continue swearing as a stress relief tactics here, translate all slurs to "inducing err0rs"
 /obj/effect/shower/Process()
 	if(!master ||!master.on)
 		return
-	for(var/mob/living/carbon/C in loc)
-		check_heat(C)
 
-/obj/effect/shower/proc/check_heat(mob/M as mob)
-	if(!master || !master.on || master.watertemp == "normal")
-		return
-	if(iscarbon(M))
-		var/mob/living/carbon/C = M
+// /obj/effect/shower/proc/check_heat(mob/M as mob)
+	// if(!master || !master.on || master.watertemp == "normal")
+	// 	return
+	// if(iscarbon(M))
+	// 	var/mob/living/carbon/C = M
 
-		if(master.watertemp == "freezing")
-			C.bodytemperature = max(80, C.bodytemperature - 80)
-			to_chat(C, SPAN_WARNING("The water is freezing!"))
-			return
-		if(master.watertemp == "boiling")
-			C.bodytemperature = min(500, C.bodytemperature + 35)
-			C.adjustFireLoss(5)
-			to_chat(C, SPAN_DANGER("The water is searing!"))
-			return
+	// 	if(master.watertemp == "freezing")
+	// 		C.bodytemperature = max(80, C.bodytemperature - 80)
+	// 		to_chat(C, SPAN_WARNING("The water is freezing!"))
+	// 		return
+	// 	if(master.watertemp == "boiling")
+	// 		C.bodytemperature = min(500, C.bodytemperature + 35)
+	// 		C.adjustFireLoss(5)
+	// 		to_chat(C, SPAN_DANGER("The water is searing!"))
+	// 		return
 //cyka blyat

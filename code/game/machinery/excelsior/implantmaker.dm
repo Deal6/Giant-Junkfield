@@ -20,56 +20,57 @@
 
 	build_time = max(10, 70-total)
 
+#warn cuz BP_ROBO
 /obj/machinery/complant_maker/attackby(var/obj/item/I, var/mob/user)
-	if(working)
-		to_chat(user, SPAN_WARNING("[src] is active. Wait for it to finish."))
-		return
+	// if(working)
+	// 	to_chat(user, SPAN_WARNING("[src] is active. Wait for it to finish."))
+	// 	return
 
-	if(default_deconstruction(I, user))
-		return
+	// if(default_deconstruction(I, user))
+	// 	return
 
-	if(default_part_replacement(I, user))
-		return
+	// if(default_part_replacement(I, user))
+	// 	return
 
-	if(panel_open)
-		return
+	// if(panel_open)
+	// 	return
 
-	var/accepted = FALSE
+	// var/accepted = FALSE
 
-	if(istype(I, /obj/item/implant) || istype(I, /obj/item/robot_parts))
-		user.remove_from_mob(I)
-		qdel(I)
-		accepted = TRUE
+	// if(istype(I, /obj/item/implant) || istype(I, /obj/item/robot_parts))
+	// 	user.remove_from_mob(I)
+	// 	qdel(I)
+	// 	accepted = TRUE
 
-	else if(istype(I, /obj/item/organ))
-		var/obj/item/organ/O = I
-		if(BP_IS_ROBOTIC(O))
-			user.remove_from_mob(I)
-			qdel(I)
-			accepted = TRUE
+	// else if(istype(I, /obj/item/organ))
+	// 	var/obj/item/organ/O = I
+	// 	if(BP_IS_ROBOTIC(O))
+	// 		user.remove_from_mob(I)
+	// 		qdel(I)
+	// 		accepted = TRUE
 
-	else if(istype(I, /obj/item/implantcase))
-		var/obj/item/implantcase/case = I
-		if(case.implant)
-			QDEL_NULL(case.implant)
-			case.update_icon()
-			accepted = TRUE
+	// else if(istype(I, /obj/item/implantcase))
+	// 	var/obj/item/implantcase/case = I
+	// 	if(case.implant)
+	// 		QDEL_NULL(case.implant)
+	// 		case.update_icon()
+	// 		accepted = TRUE
 
-	else if(istype(I, /obj/item/implanter))
-		var/obj/item/implanter/implanter = I
-		if(implanter.implant)
-			QDEL_NULL(implanter.implant)
-			implanter.update_icon()
-			accepted = TRUE
+	// else if(istype(I, /obj/item/implanter))
+	// 	var/obj/item/implanter/implanter = I
+	// 	if(implanter.implant)
+	// 		QDEL_NULL(implanter.implant)
+	// 		implanter.update_icon()
+	// 		accepted = TRUE
 
 
-	if(accepted)
-		working = TRUE
-		start_time = world.time
+	// if(accepted)
+	// 	working = TRUE
+	// 	start_time = world.time
 
-		flick(image(icon, "closing"), src)
+	// 	flick(image(icon, "closing"), src)
 
-		update_icon()
+	// 	update_icon()
 
 
 /obj/machinery/complant_maker/Process()

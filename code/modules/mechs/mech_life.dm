@@ -101,21 +101,21 @@
 	return total_draw
 
 /mob/living/exosuit/handle_environment(var/datum/gas_mixture/environment)
-	if(!environment) return
-	//Mechs and vehicles in general can be assumed to just tend to whatever ambient temperature
-	if(abs(environment.temperature - bodytemperature) > 0 )
-		bodytemperature += ((environment.temperature - bodytemperature) / 6)
+	// if(!environment) return
+	// //Mechs and vehicles in general can be assumed to just tend to whatever ambient temperature
+	// if(abs(environment.temperature - bodytemperature) > 0 )
+	// 	bodytemperature += ((environment.temperature - bodytemperature) / 6)
 
-	if(bodytemperature > material.melting_point * 1.45 ) //A bit higher because I like to assume there's a difference between a mech and a wall
-		var/damage = 5
-		if(bodytemperature > material.melting_point * 1.75 )
-			damage = 10
-		if(bodytemperature > material.melting_point * 2.15 )
-			damage = 15
-		apply_damage(damage, BURN)
+	// if(bodytemperature > material.melting_point * 1.45 ) //A bit higher because I like to assume there's a difference between a mech and a wall
+	// 	var/damage = 5
+	// 	if(bodytemperature > material.melting_point * 1.75 )
+	// 		damage = 10
+	// 	if(bodytemperature > material.melting_point * 2.15 )
+	// 		damage = 15
+	// 	apply_damage(damage, BURN)
 
-		if(prob(damage))
-			visible_message(SPAN_DANGER("\The [src]'s hull bends and buckles under the intense heat!"))
+	// 	if(prob(damage))
+	// 		visible_message(SPAN_DANGER("\The [src]'s hull bends and buckles under the intense heat!"))
 
 //	hud_heat.Update() // Don't animate for now 'til HUDs are properly converted
 

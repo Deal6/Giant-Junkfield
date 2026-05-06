@@ -562,7 +562,6 @@ BLIND     // can't see anything
 		/obj/item/ammo_casing,
 		/obj/item/handcuffs,
 		/obj/item/tank,
-		/obj/item/device/suit_cooling_unit,
 		/obj/item/cell,
 		/obj/item/storage/fancy,
 		/obj/item/flamethrower,

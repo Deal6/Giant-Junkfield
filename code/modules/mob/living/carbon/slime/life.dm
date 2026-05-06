@@ -16,42 +16,42 @@
 				spawn()
 					handle_AI()
 			handle_speech_and_mood()
-
+#warn god FUCK YOU
 /mob/living/carbon/slime/handle_environment(datum/gas_mixture/environment)
-	if(!environment)
-		adjustToxLoss(rand(10,20))
-		return
+	// if(!environment)
+	// 	adjustToxLoss(rand(10,20))
+	// 	return
 
-	//var/environment_heat_capacity = environment.heat_capacity()
-	var/loc_temp = T0C
-	if(istype(get_turf(src), /turf/space))
-		//environment_heat_capacity = loc:heat_capacity
-		var/turf/heat_turf = get_turf(src)
-		loc_temp = heat_turf.temperature
-	else if(istype(loc, /obj/machinery/atmospherics/unary/cryo_cell))
-		var/obj/machinery/atmospherics/unary/cryo_cell/M = loc
-		loc_temp = M.air_contents.temperature
-	else
-		loc_temp = environment.temperature
+	// //var/environment_heat_capacity = environment.heat_capacity()
+	// var/loc_temp = T0C
+	// if(istype(get_turf(src), /turf/space))
+	// 	//environment_heat_capacity = loc:heat_capacity
+	// 	var/turf/heat_turf = get_turf(src)
+	// 	loc_temp = heat_turf.temperature
+	// else if(istype(loc, /obj/machinery/atmospherics/unary/cryo_cell))
+	// 	var/obj/machinery/atmospherics/unary/cryo_cell/M = loc
+	// 	loc_temp = M.air_contents.temperature
+	// else
+	// 	loc_temp = environment.temperature
 
-	if(loc_temp < 310.15) // a cold place
-		bodytemperature += adjust_body_temperature(bodytemperature, loc_temp, 1)
-	else // a hot place
-		bodytemperature += adjust_body_temperature(bodytemperature, loc_temp, 1)
+	// if(loc_temp < 310.15) // a cold place
+	// 	bodytemperature += adjust_body_temperature(bodytemperature, loc_temp, 1)
+	// else // a hot place
+	// 	bodytemperature += adjust_body_temperature(bodytemperature, loc_temp, 1)
 
-	//Account for massive pressure differences
+	// //Account for massive pressure differences
 
-	if(bodytemperature < (T0C + 5)) // start calculating temperature damage etc
+	// if(bodytemperature < (T0C + 5)) // start calculating temperature damage etc
 
-		if(bodytemperature <= hurt_temperature)
-			if(bodytemperature <= die_temperature)
-				adjustToxLoss(200)
-			else
-				// could be more fancy, but doesn't worth the complexity: when the slimes goes into a cold area
-				// the damage is mostly determined by how fast its body cools
-				adjustToxLoss(30)
+	// 	if(bodytemperature <= hurt_temperature)
+	// 		if(bodytemperature <= die_temperature)
+	// 			adjustToxLoss(200)
+	// 		else
+	// 			// could be more fancy, but doesn't worth the complexity: when the slimes goes into a cold area
+	// 			// the damage is mostly determined by how fast its body cools
+	// 			adjustToxLoss(30)
 
-	updatehealth()
+	// updatehealth()
 
 	return //TODO: DEFERRED
 
