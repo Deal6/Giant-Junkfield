@@ -4,7 +4,6 @@
 	blurb = "They look like human remains. Some poor soul expired here, a million miles from home."
 
 	icobase = 'icons/mob/human_races/r_skeleton.dmi'
-	deform = 'icons/mob/human_races/r_skeleton.dmi'
 	damage_overlays = null
 	damage_mask = null
 	blood_mask = null

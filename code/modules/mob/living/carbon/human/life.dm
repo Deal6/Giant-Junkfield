@@ -38,6 +38,8 @@
 	var/global/list/overlays_cache = null
 
 /mob/living/carbon/human/Life()
+#warn calling update_icon every tick is bad
+	update_icon()
 // 	set invisibility = 0
 // 	set background = BACKGROUND_ENABLED
 
@@ -510,11 +512,6 @@
 // 		if (temp_adj < BODYTEMP_COOLING_MAX) temp_adj = BODYTEMP_COOLING_MAX
 // 		//world << "Breath: [breath.temperature], [src]: [bodytemperature], Adjusting: [temp_adj]"
 // 		bodytemperature += temp_adj
-
-// 	else if(breath.temperature >= species.heat_discomfort_level)
-// 		species.get_environment_discomfort(src,"heat")
-// 	else if(breath.temperature <= species.cold_discomfort_level)
-// 		species.get_environment_discomfort(src,"cold")
 
 
 // /mob/living/carbon/human/handle_environment(datum/gas_mixture/environment)

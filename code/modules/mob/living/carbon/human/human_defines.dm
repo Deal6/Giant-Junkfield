@@ -14,6 +14,7 @@
 	//Eye colour
 	var/eyes_color = "#000000"
 
+#warn whys there s_tone and skin_color? Which one is real
 	var/s_tone = 0	//Skin tone
 
 	//Skin colour
@@ -30,6 +31,15 @@
 	var/list/worn_underwear = list()
 
 	var/datum/backpack_setup/backpack_setup
+
+
+	#warn debug: 2 lines hack graaaaaaa
+	icon = 'icons/mob/human.dmi'
+	icon_state = "human_meat"
+
+	var/list/overlays_standing[TOTAL_LAYERS]
+	var/previous_damage_appearance // store what the body last looked like, so we only have to update it if something changed
+
 
 	//Equipment slots
 	var/obj/item/wear_suit

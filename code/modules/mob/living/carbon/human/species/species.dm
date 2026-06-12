@@ -1,3 +1,5 @@
+#warn get rid of this file
+
 /*
 	Datum-based species. Should make for much cleaner and easier to maintain race code.
 */
@@ -11,7 +13,6 @@
 
 	// Icon/appearance vars.
 	var/icobase = 'icons/mob/human_races/r_human.dmi'    // Normal icon set.
-	var/deform = 'icons/mob/human_races/r_def_human.dmi' // Mutated icon set.
 	var/faceicobase = 'icons/mob/human_face.dmi'
 
 	// Damage overlay and masks.
@@ -19,9 +20,8 @@
 	var/damage_mask = 'icons/mob/human_races/masks/dam_mask_human.dmi'
 	var/blood_mask = 'icons/mob/human_races/masks/blood_human.dmi'
 
-	var/prone_icon                                       // If set, draws this from icobase when mob is prone.
 	var/eyes = "eyes_s"                                  // Icon for eyes.
-	var/has_floating_eyes                                // Eyes will overlay over darkness (glow)
+	var/glowing_in_the_dark_eyes                                // Eyes will overlay over darkness (glow)
 	var/blood_color = "#A10808"                          // Red.
 	var/flesh_color = "#FFC896"                          // Pink.
 	var/base_color                                       // Used by carrions. Should also be used for icon previes..
@@ -31,7 +31,6 @@
 	var/icon/icon_template                               // Used for mob icon generation for non-32x32 species.
 	var/mob_size	= MOB_MEDIUM
 	var/show_ssd = "fast asleep"
-	var/virus_immune
 	var/blood_volume = 560                               // Initial blood volume.
 	var/hunger_factor = DEFAULT_HUNGER_FACTOR            // Multiplier for hunger.
 	var/taste_sensitivity = TASTE_NORMAL                 // How sensitive the species is to minute tastes.
@@ -188,27 +187,6 @@
 /datum/species/proc/get_bodytype()
 	return name
 
-
-/datum/species/proc/get_environment_discomfort(mob/living/carbon/human/H, msg_type)
-
-	if(!prob(5))
-		return
-
-	var/covered = 0 // Basic coverage can help.
-	for(var/obj/item/clothing/clothes in H)
-		if(H.l_hand == clothes|| H.r_hand == clothes)
-			continue
-		if((clothes.body_parts_covered & UPPER_TORSO) && (clothes.body_parts_covered & LOWER_TORSO))
-			covered = 1
-			break
-
-	switch(msg_type)
-		if("cold")
-			if(!covered)
-				to_chat(H, SPAN_DANGER("[pick(cold_discomfort_strings)]"))
-		if("heat")
-			if(covered)
-				to_chat(H, SPAN_DANGER("[pick(heat_discomfort_strings)]"))
 
 /datum/species/proc/sanitize_name(name)
 	return sanitizeName(name)

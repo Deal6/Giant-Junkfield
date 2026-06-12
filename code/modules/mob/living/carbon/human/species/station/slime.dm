@@ -4,7 +4,6 @@
 	mob_size = MOB_SMALL
 
 	icobase = 'icons/mob/human_races/r_slime.dmi'
-	deform = 'icons/mob/human_races/r_slime.dmi'
 
 	language = null //todo?
 	unarmed_types = list(/datum/unarmed_attack/slime_glomp)

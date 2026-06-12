@@ -1464,6 +1464,7 @@ var/list/rank_prefix = list(\
 	else
 		stop_blocking()
 
+#warn block overlay is deleted, total of 2 lines below
 /mob/living/carbon/human/proc/start_blocking()
 	if(blocking)//already blocking with an item somehow?
 		return
@@ -1472,7 +1473,7 @@ var/list/rank_prefix = list(\
 	if(HUDneed.Find("block"))
 		var/obj/screen/block/HUD = HUDneed["block"]
 		HUD.update_icon()
-	update_block_overlay()
+	// update_block_overlay()
 	return
 
 /mob/living/carbon/human/proc/stop_blocking()
@@ -1483,5 +1484,5 @@ var/list/rank_prefix = list(\
 	if(HUDneed.Find("block"))
 		var/obj/screen/block/HUD = HUDneed["block"]
 		HUD.update_icon()
-	update_block_overlay()
+	// update_block_overlay()
 	return
