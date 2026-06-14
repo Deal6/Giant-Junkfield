@@ -118,10 +118,13 @@ var/global/list/damage_icon_parts = list()
 //-----------------------------------------------------------------//
 /mob/living/carbon/human/proc/update_skeleton_layer()	// r_skeleton.dmi
 	var/icon/skeleton = image('icons/mob/human.dmi',icon_state = "skeleton")
+
 	overlays_standing[SKELETON_LAYER] += skeleton
 
 /mob/living/carbon/human/proc/update_meat_layer()	// human.dmi
 	var/icon/meat = image('icons/mob/human.dmi',icon_state = "human_meat")
+	var/icon/mask = image('icons/mob/human_races/masks/dam_mask_human.dmi', "head")
+	meat.Blend(new /icon(mask, ICON_MULTIPLY))
 	overlays_standing[MEAT_LAYER] += meat
 //-----------------------------------------------------------------//
 /mob/living/carbon/human/update_mutations(var/update_icons=1)
@@ -141,45 +144,45 @@ var/global/list/damage_icon_parts = list()
 
 /mob/living/carbon/human/UpdateDamageIcon(var/update_icons=1)
 
-	var/damage_appearance = ""
+	// var/damage_appearance = ""
 
-	for(var/obj/item/limb/limb in organs)
-		if(limb.is_stump())
-			continue
-		damage_appearance += limb.damage_state
+	// for(var/obj/item/limb/limb in organs)
+	// 	if(limb.is_stump())
+	// 		continue
+	// 	damage_appearance += limb.damage_state
 
-	if(damage_appearance == previous_damage_appearance)
-		// nothing to do here
-		return
+	// if(damage_appearance == previous_damage_appearance)
+	// 	// nothing to do here
+	// 	return
 
-	previous_damage_appearance = damage_appearance
+	// previous_damage_appearance = damage_appearance
 
-	var/image/standing_image = image(species.damage_overlays, icon_state = "00")
+	// var/image/standing_image = image(species.damage_overlays, icon_state = "00")
 
-	// blend the individual damage states with our icons
-	if(species.blood_color)
-		for(var/obj/item/limb/limb in organs)
-			if(limb.is_stump())
-				continue
+	// // blend the individual damage states with our icons
+	// if(species.blood_color)
+	// 	for(var/obj/item/limb/limb in organs)
+	// 		if(limb.is_stump())
+	// 			continue
 
-			limb.update_damstate()
-			if(limb.damage_state == "00") continue
-			var/icon/dmg_icon
-			var/cache_index = "[limb.damage_state]/[limb.organ_tag]/[species.blood_color]/[species.get_bodytype()]"
-			if(damage_icon_parts[cache_index] == null)
-				dmg_icon = new /icon(species.damage_overlays, limb.damage_state)			// the damage icon for whole human
-				dmg_icon.Blend(new /icon(species.damage_mask, limb.organ_tag), ICON_MULTIPLY)	// mask with this organ's pixels
-				dmg_icon.Blend(species.blood_color, ICON_MULTIPLY)
-				damage_icon_parts[cache_index] = dmg_icon
-			else
-				dmg_icon = damage_icon_parts[cache_index]
+	// 		limb.update_damstate()
+	// 		if(limb.damage_state == "00") continue
+	// 		var/icon/dmg_icon
+	// 		var/cache_index = "[limb.damage_state]/[limb.organ_tag]/[species.blood_color]/[species.get_bodytype()]"
+	// 		if(damage_icon_parts[cache_index] == null)
+	// 			dmg_icon = new /icon(species.damage_overlays, limb.damage_state)			// the damage icon for whole human
+	// 			dmg_icon.Blend(new /icon(species.damage_mask, limb.organ_tag), ICON_MULTIPLY)	// mask with this organ's pixels
+	// 			dmg_icon.Blend(species.blood_color, ICON_MULTIPLY)
+	// 			damage_icon_parts[cache_index] = dmg_icon
+	// 		else
+	// 			dmg_icon = damage_icon_parts[cache_index]
 
-			standing_image.overlays += dmg_icon
+	// 		standing_image.overlays += dmg_icon
 
-	overlays_standing[DAMAGE_LAYER] = standing_image
+	// overlays_standing[DAMAGE_LAYER] = standing_image
 
-	if(update_icons)
-		update_icons()
+	// if(update_icons)
+	// 	update_icons()
 
 
 //DAMAGE OVERLAYS

@@ -2,9 +2,11 @@
 // This file consists all human limbs possible. I will kill you for putting different types elsewhere.
 
 // FOR YOUR CONVENIENCE - copy "#name" into CTRL+F for navigation
+//------------------//
 // CONTENTS:
 //  #Human Skeleton
 //	#Prosthetics
+//------------------//
 
 // Base limb
 /obj/item/limb/
