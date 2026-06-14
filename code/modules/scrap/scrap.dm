@@ -195,7 +195,7 @@ GLOBAL_LIST_EMPTY(scrap_base_cache)
 			var/list/check = list(BP_L_LEG, BP_R_LEG)
 			while(check.len)
 				var/picked = pick(check)
-				var/obj/item/organ/external/affecting = H.get_organ(picked)
+				var/obj/item/limb/affecting = H.get_organ(picked)
 				if(affecting)
 #warn me when im BP_ROBOTIC YEEEEEEEEAAAAAAAAAAAAAAAAAAAAAAAH
 					// if(BP_IS_ROBOTIC(affecting))
@@ -277,7 +277,7 @@ GLOBAL_LIST_EMPTY(scrap_base_cache)
 			return FALSE
 		if(victim.gloves && prob(90))
 			return FALSE
-		var/obj/item/organ/external/BP = victim.get_organ(victim.hand ? BP_L_ARM : BP_R_ARM)
+		var/obj/item/limb/BP = victim.get_organ(victim.hand ? BP_L_ARM : BP_R_ARM)
 		if(!BP)
 			return FALSE
 		to_chat(user, SPAN_DANGER("Ouch! You cut yourself while picking through \the [src]."))

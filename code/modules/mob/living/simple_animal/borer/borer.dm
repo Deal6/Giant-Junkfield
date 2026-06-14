@@ -90,7 +90,7 @@
 /*
 	if(ishuman(host))
 		var/mob/living/carbon/human/H = host
-		var/obj/item/organ/external/head = H.get_organ(BP_HEAD)
+		var/obj/item/limb/head = H.get_organ(BP_HEAD)
 		head.implants.Remove(src) // This should be safe.
 	if(controlling)
 		detach()
@@ -271,7 +271,7 @@
 
 	if(ishuman(host))
 		var/mob/living/carbon/human/H = host
-		var/obj/item/organ/external/head = H.get_organ(BP_HEAD)
+		var/obj/item/limb/head = H.get_organ(BP_HEAD)
 		//head.implants.Remove(src)
 
 	loc = get_turf(host)

@@ -59,13 +59,13 @@
 //These procs fetch a cumulative total damage from all organs
 /mob/living/carbon/human/getBruteLoss()
 	// var/amount = 0
-	// for(var/obj/item/organ/external/O in organs)
+	// for(var/obj/item/limb/O in organs)
 	// 	amount += O.brute_dam
 	// return amount
 
 /mob/living/carbon/human/getFireLoss()
 	// var/amount = 0
-	// for(var/obj/item/organ/external/O in organs)
+	// for(var/obj/item/limb/O in organs)
 	// 	amount += O.burn_dam
 	// return amount
 
@@ -89,7 +89,7 @@
 /mob/living/carbon/human/proc/adjustBruteLossByPart(amount, organ_name, obj/damage_source)
 	// amount = amount*species.brute_mod
 	// if (organ_name in organs_by_name)
-	// 	var/obj/item/organ/external/O = get_organ(organ_name)
+	// 	var/obj/item/limb/O = get_organ(organ_name)
 
 	// 	if(amount > 0)
 	// 		O.take_damage(amount, 0, sharp=is_sharp(damage_source), edge=has_edge(damage_source), used_weapon=damage_source)
@@ -102,7 +102,7 @@
 /mob/living/carbon/human/proc/adjustFireLossByPart(var/amount, var/organ_name, var/obj/damage_source)
 	// amount = amount*species.burn_mod
 	// if (organ_name in organs_by_name)
-	// 	var/obj/item/organ/external/O = get_organ(organ_name)
+	// 	var/obj/item/limb/O = get_organ(organ_name)
 
 	// 	if(amount > 0)
 	// 		O.take_damage(0, amount, sharp=is_sharp(damage_source), edge=has_edge(damage_source), used_weapon=damage_source)
@@ -141,12 +141,12 @@
 	// var/mut_prob = min(80, amount+10)
 	// if (amount > 0)
 	// 	if (prob(mut_prob))
-	// 		var/list/obj/item/organ/external/candidates = list()
-	// 		for (var/obj/item/organ/external/O in organs)
+	// 		var/list/obj/item/limb/candidates = list()
+	// 		for (var/obj/item/limb/O in organs)
 	// 			if(!(O.status & ORGAN_MUTATED))
 	// 				candidates |= O
 	// 		if (candidates.len)
-	// 			var/obj/item/organ/external/O = pick(candidates)
+	// 			var/obj/item/limb/O = pick(candidates)
 	// 			O.mutate()
 	// 			to_chat(src, "<span class = 'notice'>Something is not right with your [O.name]...</span>")
 	// 			return
@@ -189,16 +189,16 @@
 
 //Returns a list of damaged organs
 /mob/living/carbon/human/proc/get_damaged_organs(var/brute, var/burn)
-	// var/list/obj/item/organ/external/parts = list()
-	// for(var/obj/item/organ/external/O in organs)
+	// var/list/obj/item/limb/parts = list()
+	// for(var/obj/item/limb/O in organs)
 	// 	if((brute && O.brute_dam) || (burn && O.burn_dam))
 	// 		parts += O
 	// return parts
 
 //Returns a list of damageable organs
 /mob/living/carbon/human/proc/get_damageable_organs()
-	// var/list/obj/item/organ/external/parts = list()
-	// for(var/obj/item/organ/external/O in organs)
+	// var/list/obj/item/limb/parts = list()
+	// for(var/obj/item/limb/O in organs)
 	// 	if(O.is_damageable())
 	// 		parts += O
 	// return parts
@@ -208,9 +208,9 @@
 //It automatically updates health status
 #warn commented
 /mob/living/carbon/human/heal_organ_damage(var/brute, var/burn, var/additionally_brute_percent = 0, var/additionaly_burn_percent = 0)
-	// var/list/obj/item/organ/external/parts = get_damaged_organs(brute,burn)
+	// var/list/obj/item/limb/parts = get_damaged_organs(brute,burn)
 	// if(!parts.len)	return
-	// var/obj/item/organ/external/picked = pick(parts)
+	// var/obj/item/limb/picked = pick(parts)
 	// if(picked.heal_damage(brute + (picked.brute_dam/100 * additionally_brute_percent),burn + (picked.burn_dam/100 * additionaly_burn_percent)))
 	// 	UpdateDamageIcon()
 	// 	BITSET(hud_updateflag, HEALTH_HUD)
@@ -224,9 +224,9 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 //It automatically updates damage overlays if necesary
 //It automatically updates health status
 /mob/living/carbon/human/take_organ_damage(var/brute, var/burn, var/sharp = FALSE, var/edge = FALSE)
-	var/list/obj/item/organ/external/parts = get_damageable_organs()
+	var/list/obj/item/limb/parts = get_damageable_organs()
 	if(!parts.len)	return
-	var/obj/item/organ/external/picked = pick(parts)
+	var/obj/item/limb/picked = pick(parts)
 	if(picked.take_damage(brute,burn,sharp,edge))
 		UpdateDamageIcon()
 		BITSET(hud_updateflag, HEALTH_HUD)
@@ -236,11 +236,11 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 
 //Heal MANY external organs, in random order
 /mob/living/carbon/human/heal_overall_damage(var/brute, var/burn)
-// 	var/list/obj/item/organ/external/parts = get_damaged_organs(brute,burn)
+// 	var/list/obj/item/limb/parts = get_damaged_organs(brute,burn)
 
 // 	var/update = 0
 // 	while(parts.len && (brute>0 || burn>0) )
-// 		var/obj/item/organ/external/picked = pick(parts)
+// 		var/obj/item/limb/picked = pick(parts)
 
 // 		var/brute_was = picked.brute_dam
 // 		var/burn_was = picked.burn_dam
@@ -259,10 +259,10 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 // // damage MANY external organs, in random order
 // /mob/living/carbon/human/take_overall_damage(brute, burn, sharp = FALSE, edge = FALSE, used_weapon)
 // 	if(status_flags & GODMODE)	return	//godmode
-// 	var/list/obj/item/organ/external/parts = get_damageable_organs()
+// 	var/list/obj/item/limb/parts = get_damageable_organs()
 // 	var/update = 0
 // 	while(parts.len && (brute>0 || burn>0) )
-// 		var/obj/item/organ/external/picked = pick(parts)
+// 		var/obj/item/limb/picked = pick(parts)
 
 // 		var/brute_was = picked.brute_dam
 // 		var/burn_was = picked.burn_dam
@@ -294,11 +294,11 @@ This function restores the subjects blood to max.
 This function restores all organs.
 */
 /mob/living/carbon/human/restore_all_organs()
-// 	for(var/obj/item/organ/external/current_organ in organs)
+// 	for(var/obj/item/limb/current_organ in organs)
 // 		current_organ.rejuvenate()
 
 // /mob/living/carbon/human/proc/HealDamage(zone, brute, burn)
-// 	var/obj/item/organ/external/E = get_organ(zone)
+// 	var/obj/item/limb/E = get_organ(zone)
 // 	if(istype(E, /obj/item/organ/external))
 // 		if (E.heal_damage(brute, burn))
 // 			UpdateDamageIcon()
@@ -343,7 +343,7 @@ This function restores all organs.
 	// 			damage = damage*species.brute_mod
 	// 		if(BURN)
 	// 			damage = damage*species.burn_mod
-	// var/obj/item/organ/external/organ
+	// var/obj/item/limb/organ
 	// if(isorgan(def_zone))
 	// 	organ = def_zone
 	// else

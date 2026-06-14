@@ -399,7 +399,7 @@
 // 			if(eyes.damage >= eyes.min_broken_damage)
 // 				if(M.stat != 2)
 // 					to_chat(M, SPAN_WARNING("You go blind!"))
-// 		var/obj/item/organ/external/affecting = H.get_organ(BP_HEAD)
+// 		var/obj/item/limb/affecting = H.get_organ(BP_HEAD)
 // 		if(affecting.take_damage(7))
 // 			M:UpdateDamageIcon()
 // 	else

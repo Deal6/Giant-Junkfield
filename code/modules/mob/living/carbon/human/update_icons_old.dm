@@ -185,7 +185,7 @@ var/global/list/damage_icon_parts = list()
 
 	var/damage_appearance = ""
 
-	for(var/obj/item/organ/external/O in organs)
+	for(var/obj/item/limb/O in organs)
 		if(O.is_stump())
 			continue
 		damage_appearance += O.damage_state
@@ -200,7 +200,7 @@ var/global/list/damage_icon_parts = list()
 
 	// blend the individual damage states with our icons
 	if(species.blood_color)
-		for(var/obj/item/organ/external/O in organs)
+		for(var/obj/item/limb/O in organs)
 			if(O.is_stump())
 				continue
 
@@ -248,7 +248,7 @@ var/global/list/damage_icon_parts = list()
 				icon_key += "nolips"
 
 			for(var/organ_tag in species.has_limbs)
-				var/obj/item/organ/external/part = organs_by_name[organ_tag]
+				var/obj/item/limb/part = organs_by_name[organ_tag]
 				if(isnull(part))
 					icon_key += "[organ_tag]Missed"
 					continue
@@ -266,7 +266,7 @@ var/global/list/damage_icon_parts = list()
 			//BEGIN CACHED ICON GENERATION.
 			base_icon = new('icons/mob/human.dmi',"blank")
 
-			for(var/obj/item/organ/external/part in organs)
+			for(var/obj/item/limb/part in organs)
 				var/icon/temp = part.get_icon(skeleton)
 				if(!temp)
 					continue
@@ -337,7 +337,7 @@ var/global/list/damage_icon_parts = list()
 	//Reset our hair
 	overlays_standing[HAIR_LAYER]	= null
 
-	// var/obj/item/organ/external/head/head_organ = get_organ(BP_HEAD)
+	// var/obj/item/limb/head/head_organ = get_organ(BP_HEAD)
 	if(!head_organ || head_organ.is_stump() )
 		if(update_icons)
 			update_icons()
@@ -1143,7 +1143,7 @@ var/global/list/damage_icon_parts = list()
 /mob/living/carbon/human/proc/update_surgery(var/update_icons=1)
 	// overlays_standing[SURGERY_LAYER] = null
 	// var/image/total = new
-	// for(var/obj/item/organ/external/E in organs)
+	// for(var/obj/item/limb/E in organs)
 	// 	if(E.open)
 	// 		var/image/I = image("icon"='icons/mob/surgery.dmi', "icon_state"="[E.name][round(E.open)]", "layer"=-SURGERY_LAYER)
 	// 		total.overlays += I

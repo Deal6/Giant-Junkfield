@@ -574,7 +574,7 @@
 		var/mob/living/carbon/human/H = src
 		if(H.health - H.halloss <= HEALTH_THRESHOLD_SOFTCRIT)
 			for(var/name in H.organs_by_name)
-				var/obj/item/organ/external/e = H.organs_by_name[name]
+				var/obj/item/limb/e = H.organs_by_name[name]
 				if(e && H.lying)
 					if(((e.status & ORGAN_BROKEN && !(e.status & ORGAN_SPLINTED)) || e.status & ORGAN_BLEEDING) && (H.getBruteLoss() + H.getFireLoss() >= 100))
 						return 1
@@ -981,9 +981,9 @@ mob/proc/yank_out_object()
 /*
 	if(ishuman(src))
 		var/mob/living/carbon/human/H = src
-		var/obj/item/organ/external/affected
+		var/obj/item/limb/affected
 
-		for(var/obj/item/organ/external/organ in H.organs) //Grab the organ holding the implant.
+		for(var/obj/item/limb/organ in H.organs) //Grab the organ holding the implant.
 			for(var/obj/item/O in organ.implants)
 				if(O == selection)
 					affected = organ

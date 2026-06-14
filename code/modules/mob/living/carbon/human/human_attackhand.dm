@@ -12,7 +12,7 @@
 #warn redo human attacking
 // 	var/mob/living/carbon/human/H = M
 // 	if(istype(H))
-// 		var/obj/item/organ/external/temp = H.organs_by_name[BP_R_ARM]
+// 		var/obj/item/limb/temp = H.organs_by_name[BP_R_ARM]
 // 		if(H.hand)
 // 			temp = H.organs_by_name[BP_L_ARM]
 // 		if(!temp || !temp.is_usable())
@@ -35,7 +35,7 @@
 // 				playsound(loc, 'sound/weapons/punchmiss.ogg', 25, 1, -1)
 // 				visible_message("\red <B>[H] has attempted to punch [src]!</B>")
 // 				return 0
-// 			var/obj/item/organ/external/affecting = get_organ(ran_zone(H.targeted_organ))
+// 			var/obj/item/limb/affecting = get_organ(ran_zone(H.targeted_organ))
 
 // //			if(HULK in H.mutations)
 // //				damage += 5
@@ -175,8 +175,8 @@
 	// 		var/stat_damage = max(0, min(15, (H.stats.getStat(STAT_ROB) / 4)))
 	// 		var/limb_efficiency_multiplier = 1
 	// 		var/hit_zone = H.targeted_organ
-	// 		var/obj/item/organ/external/affecting = get_organ(hit_zone)
-	// 		var/obj/item/organ/external/current_hand = H.organs_by_name[H.hand ? BP_L_ARM : BP_R_ARM]
+	// 		var/obj/item/limb/affecting = get_organ(hit_zone)
+	// 		var/obj/item/limb/current_hand = H.organs_by_name[H.hand ? BP_L_ARM : BP_R_ARM]
 
 	// 		if(current_hand)
 	// 			limb_efficiency_multiplier = 1 * (current_hand.limb_efficiency / 100)
@@ -311,7 +311,7 @@
 	// 	var/mob/living/L = user
 	// 	penetration = L.armor_divisor
 	// var/dam_zone = pick(organs_by_name)
-	// var/obj/item/organ/external/affecting = get_organ(ran_zone(dam_zone))
+	// var/obj/item/limb/affecting = get_organ(ran_zone(dam_zone))
 	// var/dam = damage_through_armor(damage, BRUTE, affecting, ARMOR_MELEE, penetration, sharp=is_sharp, edge=is_edge, wounding_multiplier = wounding)
 	// if(dam > 0)
 	// 	affecting.add_autopsy_data("[attack_message] by \a [user]", dam)
@@ -335,7 +335,7 @@
 	// var/target_zone = check_zone(def_zone)
 	// if(!target_zone)
 	// 	return 0
-	// var/obj/item/organ/external/organ = get_organ(check_zone(target_zone))
+	// var/obj/item/limb/organ = get_organ(check_zone(target_zone))
 	// if(!organ || organ.is_nerve_struck() || organ.nerve_struck == -1)
 	// 	return 0
 

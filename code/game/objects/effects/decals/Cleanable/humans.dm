@@ -70,8 +70,8 @@ var/global/list/image/splatter_cache=list()
 		return
 	if(amount < 1)
 		return
-	// var/obj/item/organ/external/l_leg = perp.get_organ(BP_L_LEG)
-	// var/obj/item/organ/external/r_leg = perp.get_organ(BP_R_LEG)
+	// var/obj/item/limb/l_leg = perp.get_organ(BP_L_LEG)
+	// var/obj/item/limb/r_leg = perp.get_organ(BP_R_LEG)
 	var/hasfeet = 1
 	// if((!l_leg || l_leg.is_stump()) && (!r_leg || r_leg.is_stump()))
 	// 	hasfeet = 0

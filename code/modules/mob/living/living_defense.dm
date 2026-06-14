@@ -98,7 +98,7 @@
 				apply_damage(dmg, dmg_type, def_zone, armor_divisor, wounding_multiplier, sharp, edge, used_weapon)
 				if(ishuman(src) && def_zone && dmg >= 20)
 					var/mob/living/carbon/human/H = src
-					var/obj/item/organ/external/o = H.get_organ(def_zone)
+					var/obj/item/limb/o = H.get_organ(def_zone)
 					if (o && o.status & ORGAN_SPLINTED)
 						visible_message(SPAN_WARNING("The splints break off [src] after being hit!"),
 								SPAN_WARNING("Your splints break off after being hit!"))

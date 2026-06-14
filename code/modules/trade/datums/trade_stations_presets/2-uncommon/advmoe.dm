@@ -53,7 +53,7 @@
 		/datum/reagent/stim/boxer = offer_data("Boxer bottle (60u)", 3200, 2),
 		/datum/reagent/stim/turbo = offer_data("TURBO bottle (60u)", 3200, 2),
 		/obj/item/device/mmi/digital/posibrain = offer_data("positronic brain", 5000, 2),
-		/obj/item/organ/external/robotic/moebius/reinforced = offer_data("Moebius \"R++\" prosthetics", 1000, 6),
+		/obj/item/limb/robotic/moebius/reinforced = offer_data("Moebius \"R++\" prosthetics", 1000, 6),
 		/datum/reagent/nanites/uncapped/control_booster_utility = offer_data("Control Booster Utility bottle (60u)", 30000, 1),
 		/datum/reagent/nanites/uncapped/control_booster_combat = offer_data("Control Booster Combat bottle (60u)", 30000, 1),
 		/obj/item/slime_extract/lightpink = offer_data("light pink slime extract", 10000, 1),

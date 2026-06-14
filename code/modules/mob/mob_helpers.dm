@@ -10,7 +10,7 @@
 #warn warn
 /mob/living/carbon/human/isSynthetic()
 	// If they are 100% robotic, they count as synthetic.
-	// for(var/obj/item/organ/external/E in organs)
+	// for(var/obj/item/limb/E in organs)
 	// 	if(!BP_IS_ROBOTIC(E))
 	// 		return FALSE
 	return TRUE

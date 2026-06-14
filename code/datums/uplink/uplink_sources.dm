@@ -69,7 +69,7 @@ GLOBAL_LIST_INIT(default_uplink_source_priority, list(
 	if(!istype(H))
 		return SETUP_FAILED
 #warn bad
-	// var/obj/item/organ/external/head = H.organs_by_name[BP_HEAD]
+	// var/obj/item/limb/head = H.organs_by_name[BP_HEAD]
 	// if(!head)
 	// 	return SETUP_FAILED
 

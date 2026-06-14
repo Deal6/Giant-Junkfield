@@ -67,7 +67,7 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 				if(istype(H.organs_by_name[OD.organ_tag], OD.default_type)) // these lists contain abnormalilities, so normalities are skipped.
 					continue
 				else
-					var/obj/item/organ/external/organthing = H.organs_by_name[OD.organ_tag]
+					var/obj/item/limb/organthing = H.organs_by_name[OD.organ_tag]
 					if(organthing.is_stump())
 						wounds.Add("[organthing.name] instead of [OD.name]")
 					else

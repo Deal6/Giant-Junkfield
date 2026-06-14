@@ -26,7 +26,7 @@
 	// 		return
 
 	// 	var/mob/living/carbon/human/H = target.current
-	// 	for(var/obj/item/organ/external/E in H.organs)
+	// 	for(var/obj/item/limb/E in H.organs)
 
 #warn harm traitor bad
 			// if(E.status & ORGAN_BROKEN)
@@ -36,14 +36,14 @@
 		// 	var/list/organ_data = H.species.has_limbs[limb_tag]
 		// 	var/limb_type = organ_data["path"]
 		// 	var/found
-		// 	for(var/obj/item/organ/external/E in H.organs)
+		// 	for(var/obj/item/limb/E in H.organs)
 		// 		if(limb_type == E.type)
 		// 			found = TRUE
 		// 			break
 		// 	if(!found)
 		// 		harm_points += 2
 
-		// var/obj/item/organ/external/head/head = H.get_organ(BP_HEAD)
+		// var/obj/item/limb/head/head = H.get_organ(BP_HEAD)
 
 #warn Traitor disfigurement below
 		// if(head && head.disfigured) // If you cut off the head, it's not quite "harm"

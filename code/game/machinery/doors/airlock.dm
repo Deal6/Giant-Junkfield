@@ -836,7 +836,7 @@ There are 9 wires.
 			playsound(loc, 'sound/effects/bang.ogg', 25, 1)
 			if(!istype(H.head, /obj/item/clothing/head/armor/helmet))
 				visible_message(SPAN_WARNING("[user] headbutts the airlock."))
-				var/obj/item/organ/external/affecting = H.get_organ(BP_HEAD)
+				var/obj/item/limb/affecting = H.get_organ(BP_HEAD)
 				H.Weaken(5)
 				if(affecting.take_damage(10, 0))
 					H.UpdateDamageIcon()

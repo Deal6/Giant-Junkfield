@@ -334,7 +334,7 @@
 /*
 /datum/craft_recipe/makeshift_leg
 	name = "Makeshift prosthetic left leg"
-	result = /obj/item/organ/external/robotic/makeshift/l_leg
+	result = /obj/item/limb/robotic/makeshift/l_leg
 	steps = list(
 		list(CRAFT_MATERIAL, 5, MATERIAL_STEEL, "time" = 0),
 		list(QUALITY_CUTTING, 10, 10),
@@ -348,11 +348,11 @@
 
 /datum/craft_recipe/makeshift_leg/right
 	name = "Makeshift prosthetic right leg"
-	result = /obj/item/organ/external/robotic/makeshift/r_leg
+	result = /obj/item/limb/robotic/makeshift/r_leg
 
 /datum/craft_recipe/makeshift_arm
 	name = "Makeshift prosthetic left arm"
-	result = /obj/item/organ/external/robotic/makeshift/l_arm
+	result = /obj/item/limb/robotic/makeshift/l_arm
 	steps = list(
 		list(CRAFT_MATERIAL, 8, MATERIAL_STEEL, "time" = 0),
 		list(QUALITY_CUTTING, 10, 10),
@@ -365,7 +365,7 @@
 
 /datum/craft_recipe/makeshift_arm/right
 	name = "Makeshift prosthetic right arm"
-	result = /obj/item/organ/external/robotic/makeshift/r_arm
+	result = /obj/item/limb/robotic/makeshift/r_arm
 
 /datum/craft_recipe/trash_bag
 	name = "trash bag"

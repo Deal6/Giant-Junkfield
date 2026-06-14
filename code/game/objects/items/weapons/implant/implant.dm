@@ -10,7 +10,7 @@
 	matter = list(MATERIAL_STEEL = 1, MATERIAL_GLASS = 1)
 	var/implanted = FALSE
 	var/mob/living/carbon/human/wearer
-	var/obj/item/organ/external/part
+	var/obj/item/limb/part
 	var/implant_overlay = "implantstorage_deathalarm"
 	var/allow_reagents = FALSE
 	var/malfunction = MALFUNCTION_NONE
@@ -51,7 +51,7 @@
 
 //return TRUE for implanter icon update.
 /obj/item/implant/proc/install(mob/living/target, organ, mob/user)
-	// var/obj/item/organ/external/affected
+	// var/obj/item/limb/affected
 	// if (ishuman(target))
 	// 	var/mob/living/carbon/human/H = target
 	// 	affected = H.organs_by_name[organ]
@@ -88,10 +88,10 @@
 	// return TRUE
 	#warn Implant install
 
-/obj/item/implant/proc/can_install(var/mob/living/target, var/obj/item/organ/external/E)
+/obj/item/implant/proc/can_install(var/mob/living/target, var/obj/item/limb/E)
 	return TRUE
 
-/obj/item/implant/proc/on_install(var/mob/living/target, var/obj/item/organ/external/E)
+/obj/item/implant/proc/on_install(var/mob/living/target, var/obj/item/limb/E)
 
 /obj/item/implant/proc/uninstall()
 	// on_uninstall()

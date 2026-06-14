@@ -26,7 +26,7 @@ var/global/list/sparring_attack_cache = list()
 	// 	return 0
 
 	// // Check if they have a functioning hand.
-	// var/obj/item/organ/external/E = user.organs_by_name[BP_L_ARM]
+	// var/obj/item/limb/E = user.organs_by_name[BP_L_ARM]
 	// if(E && !E.is_stump())
 	// 	return 1
 
@@ -101,7 +101,7 @@ var/global/list/sparring_attack_cache = list()
 		target.apply_effect(3, WEAKEN)
 
 /datum/unarmed_attack/proc/show_attack(var/mob/living/carbon/human/user, var/mob/living/carbon/human/target, var/zone, var/attack_damage)
-	var/obj/item/organ/external/affecting = target.get_organ(zone)
+	var/obj/item/limb/affecting = target.get_organ(zone)
 	user.visible_message(SPAN_WARNING("[user] [pick(attack_verb)] [target] in the [affecting.name]!"))
 	playsound(user.loc, attack_sound, 25, 1, -1)
 
@@ -134,7 +134,7 @@ var/global/list/sparring_attack_cache = list()
 	damage = 0
 
 /datum/unarmed_attack/punch/show_attack(var/mob/living/carbon/human/user, var/mob/living/carbon/human/target, var/zone, var/attack_damage)
-	var/obj/item/organ/external/affecting = target.get_organ(zone)
+	var/obj/item/limb/affecting = target.get_organ(zone)
 	var/organ = affecting.name
 
 	attack_damage = CLAMP(attack_damage, 1, 5) // We expect damage input of 1 to 5 for this proc. But we leave this check juuust in case.
@@ -191,7 +191,7 @@ var/global/list/sparring_attack_cache = list()
 	// if(!(zone in (BP_LEGS + BP_GROIN)))
 	// 	return 0
 
-	// var/obj/item/organ/external/E = user.organs_by_name[BP_L_LEG]
+	// var/obj/item/limb/E = user.organs_by_name[BP_L_LEG]
 	// if(E && !E.is_stump())
 	// 	return 1
 
@@ -208,7 +208,7 @@ var/global/list/sparring_attack_cache = list()
 	return damage + (shoes ? shoes.force : 0)
 
 /datum/unarmed_attack/kick/show_attack(var/mob/living/carbon/human/user, var/mob/living/carbon/human/target, var/zone, var/attack_damage)
-	var/obj/item/organ/external/affecting = target.get_organ(zone)
+	var/obj/item/limb/affecting = target.get_organ(zone)
 	var/organ = affecting.name
 
 	attack_damage = CLAMP(attack_damage, 1, 5)
@@ -235,7 +235,7 @@ var/global/list/sparring_attack_cache = list()
 	// if (!user.lying && (target.lying || (zone in list(BP_L_LEG, BP_R_LEG))))
 	// 	if(target.grabbed_by == user && target.lying)
 	// 		return 0
-	// 	var/obj/item/organ/external/E = user.organs_by_name[BP_L_LEG]
+	// 	var/obj/item/limb/E = user.organs_by_name[BP_L_LEG]
 	// 	if(E && !E.is_stump())
 	// 		return 1
 
@@ -250,7 +250,7 @@ var/global/list/sparring_attack_cache = list()
 	return damage + (shoes ? shoes.force : 0)
 
 /datum/unarmed_attack/stomp/show_attack(var/mob/living/carbon/human/user, var/mob/living/carbon/human/target, var/zone, var/attack_damage)
-	var/obj/item/organ/external/affecting = target.get_organ(zone)
+	var/obj/item/limb/affecting = target.get_organ(zone)
 	var/organ = affecting.name
 	var/obj/item/clothing/shoes = user.shoes
 

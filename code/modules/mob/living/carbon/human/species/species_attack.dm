@@ -14,7 +14,7 @@
 	edge = TRUE
 
 /datum/unarmed_attack/claws/show_attack(var/mob/living/carbon/human/user, var/mob/living/carbon/human/target, var/zone, var/attack_damage)
-	var/obj/item/organ/external/affecting = target.get_organ(zone)
+	var/obj/item/limb/affecting = target.get_organ(zone)
 
 	attack_damage = CLAMP(attack_damage, 1, 5)
 
@@ -79,7 +79,7 @@
 	return damage
 
 /datum/unarmed_attack/stomp/weak/show_attack(var/mob/living/carbon/human/user, var/mob/living/carbon/human/target, var/zone, var/attack_damage)
-	var/obj/item/organ/external/affecting = target.get_organ(zone)
+	var/obj/item/limb/affecting = target.get_organ(zone)
 	user.visible_message(SPAN_WARNING("[user] jumped up and down on \the [target]'s [affecting.name]!"))
 	playsound(user.loc, attack_sound, 25, 1, -1)
-	
+

@@ -761,7 +761,7 @@
 	// 			var/found_limbs = 0
 	// 			var/list/limbs_to_remove = list()
 	// 			while(tries > 0)
-	// 				var/obj/item/organ/external/E = user.get_organ(pick(list(BP_L_ARM, BP_L_LEG, BP_R_ARM, BP_R_LEG)))
+	// 				var/obj/item/limb/E = user.get_organ(pick(list(BP_L_ARM, BP_L_LEG, BP_R_ARM, BP_R_LEG)))
 	// 				if(E && !(E in limbs_to_remove) && !E.is_stump())
 	// 					limbs_to_remove += E
 	// 					found_limbs++
@@ -770,13 +770,13 @@
 	// 				var/limb_count = 2
 	// 				while(limb_count > 0)
 	// 					limb_count--
-	// 					var/obj/item/organ/external/E = pick(limbs_to_remove)
+	// 					var/obj/item/limb/E = pick(limbs_to_remove)
 	// 					limbs_to_remove -= E
 	// 					E.droplimb(TRUE, DROPLIMB_BLUNT)
 
 
 	// 			else //nice try, asshole
-	// 				var/obj/item/organ/external/head/head = user.get_organ(BP_HEAD)
+	// 				var/obj/item/limb/head/head = user.get_organ(BP_HEAD)
 	// 				if(head && !head.is_stump())
 	// 					head.droplimb(TRUE, DROPLIMB_BLUNT)
 	// 				else

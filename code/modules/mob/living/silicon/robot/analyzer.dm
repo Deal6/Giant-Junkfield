@@ -66,7 +66,7 @@
 	// 		to_chat(user, SPAN_NOTICE("External prosthetics:"))
 	// 		var/organ_found
 	// 		if(H.internal_organs.len)
-	// 			for(var/obj/item/organ/external/E in H.organs)
+	// 			for(var/obj/item/limb/E in H.organs)
 	// 				if(!BP_IS_ROBOTIC(E))
 	// 					continue
 	// 				organ_found = 1

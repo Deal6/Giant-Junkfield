@@ -8,7 +8,7 @@
 	// 		if(on_turf)
 	// 			I.throw_at(get_edge_target_turf(src,pick(alldirs)),rand(1,max_range),30)
 
-	// for(var/obj/item/organ/external/E in src.organs)
+	// for(var/obj/item/limb/E in src.organs)
 	// 	if (!(keep_only_robotics && !(E.nature == MODIFICATION_SILICON)))
 	// 		E.droplimb(TRUE, DROPLIMB_EDGE, 1)
 	// 		if(on_turf)

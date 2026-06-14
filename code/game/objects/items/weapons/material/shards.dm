@@ -173,7 +173,7 @@
 			var/list/check = list(BP_L_LEG, BP_R_LEG)
 			while(check.len)
 				var/picked = pick(check)
-				var/obj/item/organ/external/affecting = H.get_organ(picked)
+				var/obj/item/limb/affecting = H.get_organ(picked)
 				if(affecting)
 					if(BP_IS_ROBOTIC(affecting))
 						return

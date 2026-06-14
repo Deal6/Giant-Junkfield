@@ -42,7 +42,7 @@
 // 		if(ishuman(victim))
 // 			var/organ_health
 // 			var/organ_damage
-// 			for(var/obj/item/organ/external/E in victim.organs)
+// 			for(var/obj/item/limb/E in victim.organs)
 // 				organ_health += E.total_internal_health
 // 				organ_damage += E.severity_internal_wounds
 // 			internal_health = organ_health ? round((1 - (organ_damage / organ_health)) * 100) : 100

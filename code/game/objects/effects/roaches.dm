@@ -58,7 +58,7 @@
 // /obj/item/roach_egg/Destroy()
 // 	STOP_PROCESSING(SSobj, src)
 // 	if(istype(loc, /obj/item/organ/external)) // In case the egg is still inside an organ
-// 		var/obj/item/organ/external/O = loc
+// 		var/obj/item/limb/O = loc
 // 		O.implants -= src
 
 // 	. = ..()
@@ -67,7 +67,7 @@
 // // /obj/item/roach_egg/Process()
 // // 	if (isturf(src.loc) || istype(src.loc, /obj/structure/closet) || istype(src.loc, /obj/item/organ/external)) // suppresses hatching when not in a suitable loc
 // // 		if(amount_grown >= 100)
-// // 			var/obj/item/organ/external/O
+// // 			var/obj/item/limb/O
 // // 			if(istype(loc, /obj/item/organ/external)) // In case you want to implant some roach eggs into someone, gross!
 // // 				O = loc
 // // 				src.visible_message(SPAN_WARNING("A roachling makes its way out of [O.owner ? "[O.owner]\'s [O.name]" : "\the [O]"]!"))

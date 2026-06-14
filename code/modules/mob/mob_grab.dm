@@ -406,7 +406,7 @@
 // 	//clicking on the victim while grabbing them
 // 	if(M == affecting)
 // 		if(ishuman(affecting))
-// 			var/obj/item/organ/external/hit_zone = assailant.targeted_organ
+// 			var/obj/item/limb/hit_zone = assailant.targeted_organ
 // 			flick(hud.icon_state, hud)
 // 			switch(assailant.a_intent)
 // 				if(I_HELP)
@@ -421,7 +421,7 @@
 // 						force_vomit(affecting, assailant)
 // 					else
 // 						var/mob/living/carbon/human/H = affecting
-// 						var/obj/item/organ/external/o = H.get_organ(hit_zone)
+// 						var/obj/item/limb/o = H.get_organ(hit_zone)
 
 // 						if(o.status & ORGAN_BLEEDING)
 // 							slow_bleeding(affecting, assailant, o)

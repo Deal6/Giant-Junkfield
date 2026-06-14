@@ -157,7 +157,7 @@
 // 					var/obj/item/rig/RIG = H.get_equipped_item(slot_back)
 // 					if((istype(RIG) && RIG.suit_is_deployed()) || istype(SS))
 // 						injtime = injtime * 2
-// 						var/obj/item/organ/external/affected = H.get_organ(BP_CHEST)
+// 						var/obj/item/limb/affected = H.get_organ(BP_CHEST)
 // 						if(BP_IS_ROBOTIC(affected))
 // 							to_chat(user, SPAN_WARNING("Injection port on [target]'s suit is refusing your [src]."))
 // 							// I think rig is advanced enough for this, and people will learn what causes this error
@@ -168,7 +168,7 @@
 // 					// check without message
 // 					else if(!H.can_inject(user, FALSE))
 // 						// lets check if user is easily fooled
-// 						var/obj/item/organ/external/affected = H.get_organ(user.targeted_organ)
+// 						var/obj/item/limb/affected = H.get_organ(user.targeted_organ)
 // 						if(BP_IS_LIFELIKE(affected) && user && user.stats.getStat(STAT_BIO) < STAT_LEVEL_BASIC)
 // 							break_syringe(user = user)
 // 							to_chat(user, SPAN_WARNING("\The [src] have broken while trying to inject [target]."))
@@ -203,7 +203,7 @@
 // 				// user's stat check that causing pain if they are amateur
 // 				var/mob/living/carbon/human/H = target
 // 				if(istype(H))
-// 					var/obj/item/organ/external/affecting = H.get_organ(user.targeted_organ)
+// 					var/obj/item/limb/affecting = H.get_organ(user.targeted_organ)
 // 					if(user && user.stats.getStat(STAT_BIO) < STAT_LEVEL_BASIC)
 // 						// if(prob(affecting.get_damage() - user.stats.getStat(STAT_BIO)))
 // 						// 	var/pain = rand(min(30,affecting.get_damage()), max(affecting.get_damage() + 30,60) - user.stats.getStat(STAT_BIO))
@@ -255,7 +255,7 @@
 // 	// 	var/mob/living/carbon/human/H = target
 
 // 	// 	var/target_zone = ran_zone(check_zone(user.targeted_organ, target))
-// 	// 	var/obj/item/organ/external/affecting = H.get_organ(target_zone)
+// 	// 	var/obj/item/limb/affecting = H.get_organ(target_zone)
 
 // 	// 	if (!affecting || affecting.is_stump())
 // 	// 		to_chat(user, SPAN_DANGER("They are missing that limb!"))

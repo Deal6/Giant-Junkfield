@@ -137,11 +137,11 @@
 		/obj/item/implant/tracking = 10,
 		/obj/item/implant/chem = 10,
 		#warn robotics were here
-		// /obj/item/organ/external/robotic/l_arm = 20,
-		// /obj/item/organ/external/robotic/r_arm = 20,
-		// /obj/item/organ/external/robotic/l_leg = 20,
-		// /obj/item/organ/external/robotic/r_leg = 20,
-		// /obj/item/organ/external/robotic/groin = 10,
+		// /obj/item/limb/robotic/l_arm = 20,
+		// /obj/item/limb/robotic/r_arm = 20,
+		// /obj/item/limb/robotic/l_leg = 20,
+		// /obj/item/limb/robotic/r_leg = 20,
+		// /obj/item/limb/robotic/groin = 10,
 		/obj/item/implantcase = 30,
 		/obj/item/implanter = 30,
 		/obj/item/stack/material/steel{amount = 10} = 30,
@@ -334,11 +334,11 @@ obj/structure/salvageable/bliss/Initialize()
 		/obj/item/implant/chem = 30,
 		/obj/item/stock_parts/matter_bin/one_star = 60,
 		#warn robotics are still here
-		// /obj/item/organ/external/robotic/l_arm = 20,
-		// /obj/item/organ/external/robotic/r_arm = 20,
-		// /obj/item/organ/external/robotic/l_leg = 20,
-		// /obj/item/organ/external/robotic/r_leg = 20,
-		// /obj/item/organ/external/robotic/groin = 10,
+		// /obj/item/limb/robotic/l_arm = 20,
+		// /obj/item/limb/robotic/r_arm = 20,
+		// /obj/item/limb/robotic/l_leg = 20,
+		// /obj/item/limb/robotic/r_leg = 20,
+		// /obj/item/limb/robotic/groin = 10,
 		/obj/item/implantcase = 30,
 		/obj/item/implanter = 30
 	)

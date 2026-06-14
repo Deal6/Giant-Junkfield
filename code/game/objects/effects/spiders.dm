@@ -90,7 +90,7 @@
 /obj/effect/spider/eggcluster/Destroy()
 	STOP_PROCESSING(SSobj, src)
 	// if(istype(loc, /obj/item/organ/external))
-	// 	var/obj/item/organ/external/O = loc
+	// 	var/obj/item/limb/O = loc
 	// 	O.implants -= src
 
 	. = ..()
@@ -99,7 +99,7 @@
 	// amount_grown += rand(0,2)
 	// if(amount_grown >= 100)
 	// 	var/num = rand(spiderlings_lower,spiderlings_upper)
-	// 	var/obj/item/organ/external/O
+	// 	var/obj/item/limb/O
 	// 	if(istype(loc, /obj/item/organ/external))
 	// 		O = loc
 
@@ -141,7 +141,7 @@
 	// 	entry_vent = null
 	// walk(src, 0)
 	// if (istype(loc, /obj/item/organ/external))
-	// 	var/obj/item/organ/external/O = loc
+	// 	var/obj/item/limb/O = loc
 	// 	O.implants -= src
 	. = ..()
 
@@ -231,7 +231,7 @@
 			qdel(src)
 	else if(isorgan(loc))
 		if(!amount_grown) amount_grown = 1
-		var/obj/item/organ/external/O = loc
+		var/obj/item/limb/O = loc
 		//if(!O.owner || O.owner.stat == DEAD || amount_grown > 80)
 		// if(!O.owner || amount_grown > 80)
 

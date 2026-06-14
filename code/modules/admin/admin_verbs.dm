@@ -113,7 +113,9 @@ GLOBAL_LIST_INIT(admin_verbs_debug_extra, list(
 	/client/proc/testZAScolors_remove,
 	/client/proc/atmos_toggle_debug,
 	/client/proc/spawn_tanktransferbomb,
-	/client/proc/debug_human_sprite))
+	#warn warn
+	// /client/proc/debug_human_sprite
+	))
 
 GLOBAL_LIST_INIT(admin_verbs_permissions, list(
 	/client/proc/edit_admin_permissions))

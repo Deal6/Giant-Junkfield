@@ -364,7 +364,7 @@ var/list/rank_prefix = list(\
 //Returns "Unknown" if facially disfigured and real_name if not. Useful for setting name when polyacided or when updating a human's name variable
 /mob/living/carbon/human/get_face_name()
 #warn there's a stump in your face
-	// var/obj/item/organ/external/head = get_organ(BP_HEAD)
+	// var/obj/item/limb/head = get_organ(BP_HEAD)
 	// if(!head || head.is_stump() || !real_name) // || (HUSK in mutations) || head.disfigured	//disfigured. use id-name if possible
 	// 	return "Unknown"
 	return real_name
@@ -403,7 +403,7 @@ var/list/rank_prefix = list(\
 	if(!def_zone)
 		def_zone = pick(BP_L_ARM, BP_R_ARM)
 
-	var/obj/item/organ/external/affected_organ = get_organ(check_zone(def_zone))
+	var/obj/item/limb/affected_organ = get_organ(check_zone(def_zone))
 	siemens_coeff *= get_siemens_coefficient_organ(affected_organ)
 
 	return ..(shock_damage, source, siemens_coeff, def_zone)
@@ -662,7 +662,7 @@ var/list/rank_prefix = list(\
 /mob/living/carbon/human/proc/check_has_mouth()
 	#warn I must scream
 	// // Todo, check stomach organ when implemented.
-	// var/obj/item/organ/external/H = get_organ(BP_HEAD)
+	// var/obj/item/limb/H = get_organ(BP_HEAD)
 	// if(!H || !(H.functions & BODYPART_REAGENT_INTAKE))
 	// 	return FALSE
 	// return TRUE
@@ -773,7 +773,7 @@ var/list/rank_prefix = list(\
 #warn Phantom pains incoming
 	// var/list/visible_implants = list()
 
-	// for(var/obj/item/organ/external/organ in organs)
+	// for(var/obj/item/limb/organ in organs)
 	// 	for(var/obj/item/I in (organ.implants & organ.embedded))
 	// 		visible_implants += I
 
@@ -781,7 +781,7 @@ var/list/rank_prefix = list(\
 
 /mob/living/carbon/human/embedded_needs_process()
 #warn whatever
-	// for(var/obj/item/organ/external/organ in organs)
+	// for(var/obj/item/limb/organ in organs)
 	// 	for(var/obj/item/O in organ.implants)
 	// 		if(is_sharp(O))	// Only sharp items can cause issues
 	// 			return TRUE
@@ -789,7 +789,7 @@ var/list/rank_prefix = list(\
 
 /mob/living/carbon/human/proc/handle_embedded_objects()
 #warn Ehm... No. Please
-	// for(var/obj/item/organ/external/organ in organs)
+	// for(var/obj/item/limb/organ in organs)
 	// 	if(organ.status & ORGAN_SPLINTED) //Splints prevent movement.
 	// 		continue
 
@@ -1105,12 +1105,12 @@ var/list/rank_prefix = list(\
 	// 	else
 	// 		// Pick an existing non-robotic limb, if possible.
 	// 		for(target_zone in BP_ALL_LIMBS)
-	// 			var/obj/item/organ/external/affecting = get_organ(target_zone)
+	// 			var/obj/item/limb/affecting = get_organ(target_zone)
 	// 			if(affecting && BP_IS_ORGANIC(affecting) || BP_IS_ASSISTED(affecting))
 	// 				break
 
 
-	// var/obj/item/organ/external/affecting = get_organ(target_zone)
+	// var/obj/item/limb/affecting = get_organ(target_zone)
 	// var/fail_msg
 	// if(!affecting)
 	// 	. = 0
@@ -1286,7 +1286,7 @@ var/list/rank_prefix = list(\
 #warn if you call something "should have process" you might already see where things got bad
 // /mob/living/carbon/human/should_have_process(organ_check)
 
-// 	var/obj/item/organ/external/affecting
+// 	var/obj/item/limb/affecting
 // 	if(organ_check in list(OP_HEART, OP_LUNGS, OP_STOMACH))
 // 		affecting = organs_by_name[BP_CHEST]
 // 	else if(organ_check in list(OP_LIVER, OP_KIDNEYS, OP_KIDNEY_LEFT, OP_KIDNEY_RIGHT))
@@ -1302,7 +1302,7 @@ var/list/rank_prefix = list(\
 
 	// to_chat(src, SPAN_NOTICE("You check yourself for injuries."))
 
-	// for(var/obj/item/organ/external/org in organs)
+	// for(var/obj/item/limb/org in organs)
 	// 	var/list/status = list()
 	// 	var/brutedamage = org.brute_dam
 	// 	var/burndamage = org.burn_dam

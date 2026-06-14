@@ -135,7 +135,7 @@ This saves us from having to call add_fingerprint() any time something is put in
 
 #warn
 /mob/living/carbon/human/proc/has_organ(name, check_usablility = FALSE)
-	// var/obj/item/organ/external/O = organs_by_name[name]
+	// var/obj/item/limb/O = organs_by_name[name]
 	// return (O && !O.is_stump() && (!check_usablility || O.is_usable()))
 
 /mob/living/carbon/human/u_equip(obj/item/W as obj)

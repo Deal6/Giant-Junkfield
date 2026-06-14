@@ -30,7 +30,7 @@
 
 // 	if (ishuman(M))
 // 		var/mob/living/carbon/human/H = M
-// 		var/obj/item/organ/external/affecting = H.get_organ(user.targeted_organ)
+// 		var/obj/item/limb/affecting = H.get_organ(user.targeted_organ)
 
 // 		if(!affecting)
 // 			to_chat(user, SPAN_WARNING("What [user.targeted_organ]?"))
@@ -134,7 +134,7 @@
 
 // 	if (ishuman(M))
 // 		var/mob/living/carbon/human/H = M
-// 		var/obj/item/organ/external/affecting = H.get_organ(user.targeted_organ)
+// 		var/obj/item/limb/affecting = H.get_organ(user.targeted_organ)
 
 // 		if(!affecting)
 // 			to_chat(user, SPAN_WARNING("What [user.targeted_organ]?"))
@@ -240,7 +240,7 @@
 
 // 	if (ishuman(M))
 // 		var/mob/living/carbon/human/H = M
-// 		var/obj/item/organ/external/affecting = H.get_organ(user.targeted_organ)
+// 		var/obj/item/limb/affecting = H.get_organ(user.targeted_organ)
 
 // 		if(!affecting)
 // 			to_chat(user, SPAN_WARNING("What [user.targeted_organ]?"))
@@ -312,7 +312,7 @@
 // 		return
 
 // 	var/mob/living/carbon/human/H = M
-// 	var/obj/item/organ/external/affecting = H.get_organ(user.targeted_organ)
+// 	var/obj/item/limb/affecting = H.get_organ(user.targeted_organ)
 
 // 	if(!affecting)
 // 		to_chat(user, SPAN_WARNING("What [user.targeted_organ]?"))
@@ -412,7 +412,7 @@
 
 // 	if (ishuman(M))
 // 		var/mob/living/carbon/human/H = M
-// 		var/obj/item/organ/external/affecting = H.get_organ(user.targeted_organ)
+// 		var/obj/item/limb/affecting = H.get_organ(user.targeted_organ)
 
 // 		if(!affecting)
 // 			to_chat(user, SPAN_WARNING("What [user.targeted_organ]?"))
@@ -473,7 +473,7 @@
 
 // 	if (ishuman(M))
 // 		var/mob/living/carbon/human/H = M
-// 		var/obj/item/organ/external/affecting = H.get_organ(user.targeted_organ)
+// 		var/obj/item/limb/affecting = H.get_organ(user.targeted_organ)
 
 // 		if(!affecting)
 // 			to_chat(user, SPAN_WARNING("What [user.targeted_organ]?"))

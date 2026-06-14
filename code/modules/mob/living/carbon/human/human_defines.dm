@@ -33,12 +33,7 @@
 	var/datum/backpack_setup/backpack_setup
 
 
-	#warn debug: 2 lines hack graaaaaaa
-	icon = 'icons/mob/human.dmi'
-	icon_state = "human_meat"
 
-	var/list/overlays_standing[TOTAL_LAYERS]
-	var/previous_damage_appearance // store what the body last looked like, so we only have to update it if something changed
 
 
 	//Equipment slots

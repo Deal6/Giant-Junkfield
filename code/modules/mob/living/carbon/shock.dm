@@ -46,7 +46,7 @@
 
 #warn below
 /mob/living/carbon/human/get_limb_damage()
-	// for(var/obj/item/organ/external/organ in organs)
+	// for(var/obj/item/limb/organ in organs)
 	// 	var/limb_damage = min(organ.burn_dam + organ.brute_dam, organ.max_damage)	// Limbs can be damaged beyond their max damage, but max pain is max damage
 	// 	. += limb_damage
 	// 	. += organ.internal_wound_hal_dam

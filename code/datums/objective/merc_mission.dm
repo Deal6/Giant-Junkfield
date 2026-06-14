@@ -84,7 +84,7 @@
 		if (!IS_SHIP_LEVEL(H.z))
 			continue
 
-		var/obj/item/organ/external/affecting = H.get_organ(BP_HEAD)
+		var/obj/item/limb/affecting = H.get_organ(BP_HEAD)
 		affecting.take_damage(9999) //Headgib. Very dead
 
 

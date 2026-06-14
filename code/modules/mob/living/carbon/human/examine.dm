@@ -193,7 +193,7 @@
 
 	//splints
 	for(var/organ in list(BP_R_ARM, BP_L_ARM, BP_R_LEG, BP_L_LEG, BP_GROIN, BP_HEAD, BP_CHEST))
-		var/obj/item/organ/external/o = get_organ(organ)
+		var/obj/item/limb/o = get_organ(organ)
 		if(o && o.status & ORGAN_SPLINTED)
 			msg += "<span class='warning'>[T.He] [T.has] a splint on [T.his] [o.name]!</span>\n"
 
@@ -240,7 +240,7 @@
 	// 	var/datum/organ_description/OD = species.has_limbs[organ_tag]
 	// 	var/organ_descriptor = OD.name
 
-	// 	var/obj/item/organ/external/E = organs_by_name[organ_tag]
+	// 	var/obj/item/limb/E = organs_by_name[organ_tag]
 	// 	if(!E)
 	// 		wound_flavor_text["[organ_descriptor]"] = "<span class='warning'><b>[T.He] [T.is] missing [T.his] [organ_descriptor].</b></span>\n"
 	// 	else if(E.is_stump())
@@ -248,7 +248,7 @@
 	// 	else
 	// 		continue
 
-	// for(var/obj/item/organ/external/temp in organs)
+	// for(var/obj/item/limb/temp in organs)
 	// 	if(BP_IS_SILICON(temp))
 	// 		var/part_display_name
 	// 		if(copytext(temp.name, 1, 6) == "robot")

@@ -22,7 +22,7 @@
 	// if(is_neotheology_disciple(wearer))
 	// 	to_chat(owner_mob, SPAN_WARNING("[wearer]'s cruciform prevents activation"))
 	// 	return
-	// var/obj/item/organ/external/affected = wearer.organs_by_name[BP_HEAD || BP_CHEST]
+	// var/obj/item/limb/affected = wearer.organs_by_name[BP_HEAD || BP_CHEST]
 	// if(BP_IS_ROBOTIC(affected))
 	// 	to_chat(owner_mob, SPAN_WARNING("[src] cannot be activated in a prosthetic limb."))
 	// 	return
@@ -66,7 +66,7 @@
 			to_chat(wearer, "\red <font size=3><b>[pain_message]</b></font>")
 		if(prob(1)) //around 0.75 limbs per transformation
 			if(prob(50))
-				var/obj/item/organ/external/E = wearer.get_organ(pick(list(BP_L_ARM, BP_L_LEG, BP_R_ARM, BP_R_LEG)))
+				var/obj/item/limb/E = wearer.get_organ(pick(list(BP_L_ARM, BP_L_LEG, BP_R_ARM, BP_R_LEG)))
 				if(E)
 					E.droplimb(FALSE, DROPLIMB_BLUNT)
 				else

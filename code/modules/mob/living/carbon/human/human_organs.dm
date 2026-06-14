@@ -19,7 +19,7 @@
 // 	last_dam = damage_this_tick
 // 	if(force_process)
 // 		bad_external_organs.Cut()
-// 		for(var/obj/item/organ/external/Ex in organs)
+// 		for(var/obj/item/limb/Ex in organs)
 // 			bad_external_organs |= Ex
 
 // 	//processing internal organs is pretty cheap, do that first.
@@ -34,14 +34,14 @@
 // 	if(!force_process && !bad_external_organs.len)
 // 		return
 
-// 	for(var/obj/item/organ/external/E in organs)
+// 	for(var/obj/item/limb/E in organs)
 // 		E.handle_bones()
 
 // 		// If there is a flag from an internal injury, queue it for processing
 // 		if(E.status & ORGAN_MUTATED|ORGAN_INFECTED|ORGAN_WOUNDED)
 // 			bad_external_organs |= E
 
-// 	for(var/obj/item/organ/external/E in bad_external_organs)
+// 	for(var/obj/item/limb/E in bad_external_organs)
 // 		if(!E)
 // 			continue
 // 		if(!E.need_process())
@@ -72,7 +72,7 @@
 
 // 	// Calculate limb effect on stance
 // 	for(var/limb_tag in BP_LEGS)
-// 		var/obj/item/organ/external/E = organs_by_name[limb_tag]
+// 		var/obj/item/limb/E = organs_by_name[limb_tag]
 
 // 		// A missing limb causes high stance damage
 // 		if(!E)
@@ -105,7 +105,7 @@
 // 	// You should not be able to pick anything up, but stranger things have happened.
 // 	if(l_hand)
 // 		for(var/limb_tag in list(BP_L_ARM))
-// 			var/obj/item/organ/external/E = get_organ(limb_tag)
+// 			var/obj/item/limb/E = get_organ(limb_tag)
 // 			if(!E)
 // 				visible_message(SPAN_DANGER("Lacking a functioning left hand, \the [src] drops \the [l_hand]."))
 // 				drop_from_inventory(l_hand)
@@ -113,7 +113,7 @@
 
 // 	if(r_hand)
 // 		for(var/limb_tag in list(BP_R_ARM))
-// 			var/obj/item/organ/external/E = get_organ(limb_tag)
+// 			var/obj/item/limb/E = get_organ(limb_tag)
 // 			if(!E)
 // 				visible_message(SPAN_DANGER("Lacking a functioning right hand, \the [src] drops \the [r_hand]."))
 // 				drop_from_inventory(r_hand)
@@ -123,7 +123,7 @@
 // 	if(!l_hand && !r_hand)
 // 		return
 
-// 	for (var/obj/item/organ/external/E in organs)
+// 	for (var/obj/item/limb/E in organs)
 // 		if(!E || !(E.functions & BODYPART_GRASP) || (E.status & ORGAN_SPLINTED))
 // 			continue
 
@@ -183,7 +183,7 @@
 // 	if (appendage_check == BP_CHEST)
 // 		return TRUE
 
-// 	var/obj/item/organ/external/appendage
+// 	var/obj/item/limb/appendage
 // 	appendage = organs_by_name[appendage_check]
 
 // 	if(appendage && !appendage.is_stump())
@@ -200,7 +200,7 @@
 // 	if(!E)
 // 		if(organ_type in BP_ALL_LIMBS)
 // 			var/datum/organ_description/organ_data = species.has_limbs[organ_type]
-// 			var/obj/item/organ/external/O = organ_data.create_organ(src)
+// 			var/obj/item/limb/O = organ_data.create_organ(src)
 // 			var/datum/reagent/organic/blood/B = locate(/datum/reagent/organic/blood) in vessel.reagent_list
 // 			blood_splatter(src,B,1)
 // 			O.set_dna(src)
@@ -221,7 +221,7 @@
 // 			return TRUE
 // 	else
 // 		if(organ_type in BP_ALL_LIMBS)
-// 			var/obj/item/organ/external/O = E
+// 			var/obj/item/limb/O = E
 // 			if (heal && (O.damage > 0 || O.status & (ORGAN_BROKEN)))
 // 				O.status &= ~ORGAN_BROKEN
 // 				for(var/datum/wound/W in O.wounds)
@@ -239,7 +239,7 @@
 // 				return TRUE
 // 	return FALSE
 // /mob/living/carbon/human/get_limb_efficiency(bodypartdefine)
-// 	var/obj/item/organ/external/E = get_organ(bodypartdefine)
+// 	var/obj/item/limb/E = get_organ(bodypartdefine)
 // 	if(E)
 // 		return E.limb_efficiency
 // 	return 0

@@ -83,7 +83,7 @@
 
 
 // 		// if(life_tick % 2)	//Upadated every 2 life ticks, lots of for loops in this, needs to feel smother in the UI
-// 		// 	for(var/obj/item/organ/external/E in organs)
+// 		// 	for(var/obj/item/limb/E in organs)
 // 		// 		E.update_limb_efficiency()
 // 		// 	total_blood_req = 0
 // 		// 	total_oxygen_req = 0
@@ -223,7 +223,7 @@
 
 // 	if(mutation_index)
 // 		if(get_active_mutation(src, MUTATION_REJECT))
-// 			for(var/obj/item/organ/external/limb in organs)
+// 			for(var/obj/item/limb/limb in organs)
 // 				for(var/obj/thing in limb.implants)
 // 					if(istype(thing, /obj/item/implant))
 // 						var/obj/item/implant/implant = thing
@@ -282,7 +282,7 @@
 // 				take_overall_damage(0, 5 * RADIATION_SPEED_COEFFICIENT, used_weapon = "Radiation Burns")
 // 			if(prob(1))
 // 				to_chat(src, SPAN_WARNING("You feel strange!"))
-// 				var/obj/item/organ/external/E = pick(organs)
+// 				var/obj/item/limb/E = pick(organs)
 // 				E.mutate()
 // 				emote("gasp")
 
@@ -956,7 +956,7 @@
 // 			var/limb_health
 // 			var/limb_damage
 
-// 			for(var/obj/item/organ/external/E in organs)
+// 			for(var/obj/item/limb/E in organs)
 // 				organ_health += E.total_internal_health
 // 				organ_damage += E.severity_internal_wounds
 // 				limb_health += E.max_damage
@@ -1117,7 +1117,7 @@
 // 		var/list/tags_to_grow = list(BP_HEAD, BP_CHEST, BP_GROIN, BP_L_ARM, BP_R_ARM, BP_L_LEG, BP_R_LEG)
 // 		var/upper_body_nature
 
-// 		for(var/obj/item/organ/external/E in organs)
+// 		for(var/obj/item/limb/E in organs)
 // 			if(!E.is_stump())
 // 				tags_to_grow -= E.organ_tag
 // 				if(E.organ_tag == BP_CHEST)

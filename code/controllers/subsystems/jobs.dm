@@ -589,8 +589,8 @@ SUBSYSTEM_DEF(job)
 				captain_announcement.Announce("All hands, Captain [H.real_name] on deck!", new_sound=announce_sound)
 
 	if(istype(H)) //give humans wheelchairs, if they need them.
-		var/obj/item/organ/external/l_leg = H.get_organ(BP_L_LEG)
-		var/obj/item/organ/external/r_leg = H.get_organ(BP_R_LEG)
+		var/obj/item/limb/l_leg = H.get_organ(BP_L_LEG)
+		var/obj/item/limb/r_leg = H.get_organ(BP_R_LEG)
 		if(!l_leg || !r_leg)
 			var/obj/structure/bed/chair/wheelchair/W = new /obj/structure/bed/chair/wheelchair(H.loc)
 			H.buckled = W

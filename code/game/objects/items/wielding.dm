@@ -120,7 +120,7 @@
 #warn twohand wielding
 	// if(ishuman(M))
 	// 	var/mob/living/carbon/human/H = M
-	// 	var/obj/item/organ/external/hand = H.organs_by_name[check_hand]
+	// 	var/obj/item/limb/hand = H.organs_by_name[check_hand]
 	// 	if(istype(hand) && hand.is_usable())
 	// 		return TRUE
 	// return FALSE

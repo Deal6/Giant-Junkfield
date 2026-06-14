@@ -234,7 +234,7 @@
 	// 	if(isliving(loc))
 	// 		var/mob/living/carbon/human/host = loc
 	// 		if(istype(host))
-	// 			for(var/obj/item/organ/external/organ in host.organs)
+	// 			for(var/obj/item/limb/organ in host.organs)
 	// 				for(var/obj/item/O in organ.implants)
 	// 					if(O == src)
 	// 						organ.implants -= src
@@ -279,7 +279,7 @@
 	if(stunmode)
 		var/agony = agonyforce
 		var/stun = stunforce
-		var/obj/item/organ/external/affecting = null
+		var/obj/item/limb/affecting = null
 		if(ishuman(target))
 			var/mob/living/carbon/human/H = target
 			affecting = H.get_organ(user.targeted_organ)

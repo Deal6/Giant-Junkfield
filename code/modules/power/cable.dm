@@ -558,7 +558,7 @@ obj/structure/cable/proc/cableColor(var/colorC)
 #warn bad
 	// if(ishuman(M))
 	// 	var/mob/living/carbon/human/H = M
-	// 	var/obj/item/organ/external/S = H.organs_by_name[user.targeted_organ]
+	// 	var/obj/item/limb/S = H.organs_by_name[user.targeted_organ]
 
 	// 	if (!S) return
 	// 	if(!BP_IS_ROBOTIC(S) || user.a_intent != I_HELP)

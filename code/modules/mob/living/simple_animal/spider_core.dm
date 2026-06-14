@@ -83,7 +83,7 @@
 			for(var/P in powers)
 				powerinstances += new P()
 
-		var/obj/item/organ/external/chest/chest = H.get_organ(BP_CHEST) // get_organ with no arguments defaults to BP_CHEST, but it makes it less readable
+		var/obj/item/limb/chest/chest = H.get_organ(BP_CHEST) // get_organ with no arguments defaults to BP_CHEST, but it makes it less readable
 		core.replaced(chest)
 		for(var/item in core.active_spiders)
 			var/obj/item/implant/carrion_spider/CS = item

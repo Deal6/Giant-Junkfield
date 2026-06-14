@@ -83,7 +83,7 @@
 	var/mob/living/user = loc
 	var/agony = agonyforce
 	var/stun = stunforce
-	var/obj/item/organ/external/affecting = null
+	var/obj/item/limb/affecting = null
 	if(ishuman(L))
 		var/mob/living/carbon/human/H = L
 		affecting = H.get_organ(user.targeted_organ)

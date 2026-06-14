@@ -36,7 +36,7 @@
 #warn bad
 	// if (ishuman(user))
 	// 	var/mob/living/carbon/human/H = user
-	// 	var/obj/item/organ/external/temp = H.organs_by_name[BP_R_ARM]
+	// 	var/obj/item/limb/temp = H.organs_by_name[BP_R_ARM]
 	// 	if (user.hand)
 	// 		temp = H.organs_by_name[BP_L_ARM]
 	// 	if(temp && !temp.is_usable())

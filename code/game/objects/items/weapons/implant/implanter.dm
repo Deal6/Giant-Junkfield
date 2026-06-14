@@ -43,7 +43,7 @@
 // 			to_chat(user, SPAN_WARNING("You can't implant through clothes."))
 // 			return
 
-// 	var/obj/item/organ/external/affected = null
+// 	var/obj/item/limb/affected = null
 // 	if(ishuman(M))
 // 		var/mob/living/carbon/human/H = M
 // 		affected = H.get_organ(user.targeted_organ)
@@ -108,7 +108,7 @@
 // 	if(!istype(M) || !mod)
 // 		return
 
-// 	var/obj/item/organ/external/affected = null
+// 	var/obj/item/limb/affected = null
 // 	if(ishuman(M))
 // 		var/mob/living/carbon/human/H = M
 // 		affected = H.get_organ(user.targeted_organ)

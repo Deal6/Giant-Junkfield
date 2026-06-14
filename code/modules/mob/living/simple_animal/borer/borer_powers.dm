@@ -76,7 +76,7 @@
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 
-		var/obj/item/organ/external/E = H.organs_by_name[BP_HEAD]
+		var/obj/item/limb/E = H.organs_by_name[BP_HEAD]
 		if(!E || E.is_stump())
 			to_chat(src, SPAN_WARNING("\The [H] does not have a head!"))
 			return // Causes wonky behavior, although it does work in some cases.
@@ -136,7 +136,7 @@
 				replace_brain()
 			else
 				// If they're in normally, implant removal can get them out.
-				var/obj/item/organ/external/head = H.get_organ(BP_HEAD)
+				var/obj/item/limb/head = H.get_organ(BP_HEAD)
 				head.implants += src
 */
 
@@ -176,7 +176,7 @@
 	H.internal_organs_by_efficiency[BP_BRAIN] += B
 	H.internal_organs |= B
 
-	var/obj/item/organ/external/affecting = H.get_organ(BP_HEAD)
+	var/obj/item/limb/affecting = H.get_organ(BP_HEAD)
 	affecting.implants -= src
 
 	var/s2h_id = src.computer_id

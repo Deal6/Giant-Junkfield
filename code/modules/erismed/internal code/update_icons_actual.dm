@@ -1,4 +1,4 @@
-#warn understand proc MapColors, dont delete until understood
+#warn understand proc MapColors, dont delete warn until understood
 
 // relevant info in [human_defines.dm]
 
@@ -13,34 +13,73 @@ var/global/list/light_overlay_cache = list()
 #define SKELETON_LAYER	1
 #define MEAT_LAYER		2
 
-#define DAMAGE_LAYER		2
-#define SURGERY_LAYER		3
-#define IMPLANTS_LAYER		4
-#define UNDERWEAR_LAYER 	5
-#define UNIFORM_LAYER		6
-#define ID_LAYER			7
-#define SHOES_LAYER			8
-#define GLOVES_LAYER		9
-#define BELT_LAYER			10
-#define SUIT_LAYER			11
-#define TAIL_LAYER			12
-#define GLASSES_LAYER		13
-#define BELT_LAYER_ALT		14
-#define BACK_LAYER			15
-#define SUIT_STORE_LAYER	16
-#define HAIR_LAYER			17
-#define L_EAR_LAYER			18
-#define R_EAR_LAYER			19
-#define FACEMASK_LAYER		20
-#define HEAD_LAYER			21
-#define COLLAR_LAYER		22
-#define HANDCUFF_LAYER		23
-#define LEGCUFF_LAYER		24
-#define L_HAND_LAYER		25
-#define R_HAND_LAYER		26
-#define FIRE_LAYER			27
-#define BLOCKING_LAYER		28
-#define TOTAL_LAYERS		28
+#define DAMAGE_LAYER 3
+#define SURGERY_LAYER 4
+#define IMPLANTS_LAYER 5
+#define UNDERWEAR_LAYER 6
+#define UNIFORM_LAYER 7
+#define ID_LAYER 8
+#define SHOES_LAYER 9
+#define GLOVES_LAYER 10
+#define BELT_LAYER 11
+#define SUIT_LAYER 12
+#define TAIL_LAYER 13
+#define GLASSES_LAYER 14
+#define BELT_LAYER_ALT 15
+#define BACK_LAYER 16
+#define SUIT_STORE_LAYER 17
+#define HAIR_LAYER 18
+#define L_EAR_LAYER 19
+#define R_EAR_LAYER 20
+#define FACEMASK_LAYER 21
+#define HEAD_LAYER 22
+#define COLLAR_LAYER 23
+#define HANDCUFF_LAYER 24
+#define LEGCUFF_LAYER 25
+#define L_HAND_LAYER 26
+#define R_HAND_LAYER 27
+#define FIRE_LAYER 28
+#define BLOCKING_LAYER 29
+#define TOTAL_LAYERS 29
+
+// ------------------------------------//
+#warn crutch
+/obj/item/limb/update_icon()				//
+// 	var/gender = "_m"								//
+// 	gender = owner.gender == FEMALE ? "_f" : "_m"	//
+// 	if(organ_tag)
+// 		icon = 'icons/mob/human_races/r_human.dmi'
+// 		icon_state = "[organ_tag][gender]"
+
+
+
+
+
+// 	var/mob_icon = new/icon(icon, icon_state)
+
+
+// 	if(skin_tone)
+// 		if(skin_tone >= 0)
+// 			mob_icon.Blend(rgb(skin_tone, skin_tone, skin_tone), ICON_ADD)
+// 		else
+// 			mob_icon.Blend(rgb(-skin_tone,  -skin_tone,  -skin_tone), ICON_SUBTRACT)
+// 	else
+// 		if(skin_col)
+// 			mob_icon.Blend(skin_col, ICON_ADD)
+
+// #warn what? figure out why EAST
+// 	// dir = EAST
+// 	icon = mob_icon
+// ------------------------------------//
+
+/mob/living/carbon/human/
+	#warn debug: 2 lines hack graaaaaaa
+	icon = 'icons/mob/human.dmi'
+	icon_state = "human_meat"
+
+	var/list/overlays_standing[TOTAL_LAYERS]
+	var/previous_damage_appearance // store what the body last looked like, so we only have to update it if something changed
+	var/list/crutch_limb_list = list()
 
 //////////////////////////////////
 
@@ -76,8 +115,15 @@ var/global/list/light_overlay_cache = list()
 
 var/global/list/damage_icon_parts = list()
 
-//////////////////////////////////
+//-----------------------------------------------------------------//
+/mob/living/carbon/human/proc/update_skeleton_layer()	// r_skeleton.dmi
+	var/icon/skeleton = image('icons/mob/human.dmi',icon_state = "skeleton")
+	overlays_standing[SKELETON_LAYER] += skeleton
 
+/mob/living/carbon/human/proc/update_meat_layer()	// human.dmi
+	var/icon/meat = image('icons/mob/human.dmi',icon_state = "human_meat")
+	overlays_standing[MEAT_LAYER] += meat
+//-----------------------------------------------------------------//
 /mob/living/carbon/human/update_mutations(var/update_icons=1)
 	return
 
@@ -97,7 +143,7 @@ var/global/list/damage_icon_parts = list()
 
 	var/damage_appearance = ""
 
-	for(var/obj/item/organ/external/limb in organs)
+	for(var/obj/item/limb/limb in organs)
 		if(limb.is_stump())
 			continue
 		damage_appearance += limb.damage_state
@@ -112,7 +158,7 @@ var/global/list/damage_icon_parts = list()
 
 	// blend the individual damage states with our icons
 	if(species.blood_color)
-		for(var/obj/item/organ/external/limb in organs)
+		for(var/obj/item/limb/limb in organs)
 			if(limb.is_stump())
 				continue
 
@@ -143,43 +189,43 @@ var/global/list/damage_icon_parts = list()
 /////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////
 
-//BASE MOB SPRITE
+//BASE MOB SPRITE AKA NAKED HUMAN
 /mob/living/carbon/human/proc/update_body(var/update_icons=1)
 
-	//Create a new, blank icon for our mob to use.
-	if(stand_icon)
-		qdel(stand_icon)
+// 	//Create a new, blank icon for our mob to use.
+// 	if(stand_icon)
+// 		qdel(stand_icon)
 
-		stand_icon = new('icons/mob/human.dmi',"blank")
-			for(var/organ_tag in species.has_limbs)
-				var/obj/item/organ/external/part = organs_by_name[organ_tag]
-				if(isnull(part))
-					continue
-				// NOTE: limbs themselves HOLD an "icon_position" value.
-				//That part makes left and right legs drawn topmost and lowermost when human looks WEST or EAST
-				//And no change in rendering for other parts (they icon_position is 0, so goes to 'else' part)
-				if(part.icon_position&(LEFT|RIGHT))
-					var/icon/blank_human = new('icons/mob/human.dmi',"blank")
-					blank_human.Insert(new/icon(temp,dir=NORTH),dir=NORTH)
-					blank_human.Insert(new/icon(temp,dir=SOUTH),dir=SOUTH)
-					if(!(part.icon_position & LEFT))
-						blank_human.Insert(new/icon(temp,dir=EAST),dir=EAST)
-					if(!(part.icon_position & RIGHT))
-						blank_human.Insert(new/icon(temp,dir=WEST),dir=WEST)
-					base_icon.Blend(blank_human, ICON_OVERLAY)
-					if(part.icon_position & LEFT)
-						blank_human.Insert(new/icon(temp,dir=EAST),dir=EAST)
-					if(part.icon_position & RIGHT)
-						blank_human.Insert(new/icon(temp,dir=WEST),dir=WEST)
-					base_icon.Blend(blank_human, ICON_UNDERLAY)
-				else
-					base_icon.Blend(temp, ICON_OVERLAY)
+// 		stand_icon = new('icons/mob/human.dmi',"blank")
+// 			for(var/organ_tag in species.has_limbs)
+// 				var/obj/item/limb/part = organs_by_name[organ_tag]
+// 				if(isnull(part))
+// 					continue
+// 				// NOTE: limbs themselves HOLD an "icon_position" value.
+// 				//That part makes left and right legs drawn topmost and lowermost when human looks WEST or EAST
+// 				//And no change in rendering for other parts (they icon_position is 0, so goes to 'else' part)
+// 				if(part.icon_position&(LEFT|RIGHT))
+// 					var/icon/blank_human = new('icons/mob/human.dmi',"blank")
+// 					blank_human.Insert(new/icon(temp,dir=NORTH),dir=NORTH)
+// 					blank_human.Insert(new/icon(temp,dir=SOUTH),dir=SOUTH)
+// 					if(!(part.icon_position & LEFT))
+// 						blank_human.Insert(new/icon(temp,dir=EAST),dir=EAST)
+// 					if(!(part.icon_position & RIGHT))
+// 						blank_human.Insert(new/icon(temp,dir=WEST),dir=WEST)
+// 					base_icon.Blend(blank_human, ICON_OVERLAY)
+// 					if(part.icon_position & LEFT)
+// 						blank_human.Insert(new/icon(temp,dir=EAST),dir=EAST)
+// 					if(part.icon_position & RIGHT)
+// 						blank_human.Insert(new/icon(temp,dir=WEST),dir=WEST)
+// 					base_icon.Blend(blank_human, ICON_UNDERLAY)
+// 				else
+// 					base_icon.Blend(temp, ICON_OVERLAY)
 
-		//END CACHED ICON GENERATION.
-		stand_icon.Blend(base_icon,ICON_OVERLAY)
+// 		//END CACHED ICON GENERATION.
+// 		stand_icon.Blend(base_icon,ICON_OVERLAY)
 
-	if(update_icons)
-		update_icons()
+// 	if(update_icons)
+// 		update_icons()
 
 // //UNDERWEAR OVERLAY
 
@@ -203,7 +249,7 @@ var/global/list/damage_icon_parts = list()
 	// //Reset our hair
 	// overlays_standing[HAIR_LAYER]	= null
 
-	// // var/obj/item/organ/external/head/head_organ = get_organ(BP_HEAD)
+	// // var/obj/item/limb/head/head_organ = get_organ(BP_HEAD)
 	// if(!head_organ || head_organ.is_stump() )
 	// 	if(update_icons)
 	// 		update_icons()
@@ -266,6 +312,8 @@ var/global/list/damage_icon_parts = list()
 /mob/living/carbon/human/regenerate_icons()
 	..()
 	if(HasMovementHandler(/datum/movement_handler/mob/transformation) || QDELETED(src))		return
+	update_skeleton_layer()
+	update_meat_layer()
 	update_mutations(0)
 	update_implants(0)
 	update_body(0)
@@ -999,7 +1047,7 @@ var/global/list/damage_icon_parts = list()
 /mob/living/carbon/human/proc/update_surgery(var/update_icons=1)
 	// overlays_standing[SURGERY_LAYER] = null
 	// var/image/total = new
-	// for(var/obj/item/organ/external/E in organs)
+	// for(var/obj/item/limb/E in organs)
 	// 	if(E.open)
 	// 		var/image/I = image("icon"='icons/mob/surgery.dmi', "icon_state"="[E.name][round(E.open)]", "layer"=-SURGERY_LAYER)
 	// 		total.overlays += I

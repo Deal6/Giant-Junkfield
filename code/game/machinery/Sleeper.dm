@@ -76,7 +76,7 @@
 // 			data["pulse"] = H.get_pulse(GETPULSE_TOOL)
 // 			var/organ_health
 // 			var/organ_damage
-// 			for(var/obj/item/organ/external/E in H.organs)
+// 			for(var/obj/item/limb/E in H.organs)
 // 				organ_health += E.total_internal_health
 // 				organ_damage += E.severity_internal_wounds
 // 			data["internal_health"] = round((1 - (organ_health ? organ_damage / organ_health : 0)) * 100)

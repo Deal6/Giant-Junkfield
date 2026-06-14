@@ -184,7 +184,7 @@ var/list/lost_cruciforms = list()
 		return
 	for(var/obj/O in wearer)
 		if(istype(O, /obj/item/organ/external))
-			var/obj/item/organ/external/R = O
+			var/obj/item/limb/R = O
 			// if(!BP_IS_ROBOTIC(R))
 			// 	continue
 

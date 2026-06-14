@@ -137,8 +137,8 @@
 			. = MOVEMENT_HANDLED
 			if(ishuman(mob))
 			// 	var/mob/living/carbon/human/driver = mob
-			// 	var/obj/item/organ/external/l_arm = driver.get_organ(BP_L_ARM)
-			// 	var/obj/item/organ/external/r_arm = driver.get_organ(BP_R_ARM)
+			// 	var/obj/item/limb/l_arm = driver.get_organ(BP_L_ARM)
+			// 	var/obj/item/limb/r_arm = driver.get_organ(BP_R_ARM)
 			// 	if((!l_arm || l_arm.is_stump()) && (!r_arm || r_arm.is_stump()))
 			// 		return // No arms to drive your chair? Tough luck!
 			// //drunk wheelchair driving

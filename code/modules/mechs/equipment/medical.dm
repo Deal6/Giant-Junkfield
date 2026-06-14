@@ -123,7 +123,7 @@
 // 	passive_power_use = 1.5 KILOWATTS
 // 	var/mob/living/carbon/human/mending_target = null
 // 	var/mob/living/exosuit/mech = null
-// 	var/obj/item/organ/external/affecting = null
+// 	var/obj/item/limb/affecting = null
 // 	var/trauma_charges_stored = 0
 // 	var/trauma_storage_max = 30
 
@@ -174,7 +174,7 @@
 // 		mending_target = null
 // 		affecting = null
 // 		return
-// 	var/obj/item/organ/external/checking
+// 	var/obj/item/limb/checking
 // 	if(!affecting || (affecting && affecting.is_bandaged()))
 // 		for(var/zone in BP_ALL_LIMBS)
 // 			checking = mending_target.organs_by_name[zone]

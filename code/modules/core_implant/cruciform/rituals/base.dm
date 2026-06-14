@@ -72,7 +72,7 @@
 
 #warn NT core reject thiiing
 /datum/ritual/cruciform/base/reject/perform(mob/living/carbon/human/H, obj/item/implant/core_implant/C)
-	// for(var/obj/item/organ/external/limb in H)
+	// for(var/obj/item/limb/limb in H)
 	// 	for(var/obj/thing in limb.implants)
 	// 		if(thing != C)
 	// 			if(istype(thing, /obj/item/implant))
@@ -363,7 +363,7 @@
 #warn bad
 	// if(ishuman(H))
 	// 	var/mob/living/carbon/human/M = H
-		// var/obj/item/organ/external/E = M.organs_by_name[BP_CHEST]
+		// var/obj/item/limb/E = M.organs_by_name[BP_CHEST]
 		// for (var/i = 0; i < 5;i++)
 		// 	E.take_damage(5, BRUTE, sharp = FALSE)
 		// 	//Deal 25 damage in five hits. Using multiple small hits mostly prevents internal damage
@@ -396,7 +396,7 @@
 	if(ishuman(M) && M.is_dead())
 #warn bad
 		// var/mob/living/carbon/human/H = M
-		// var/obj/item/organ/external/E = H.organs_by_name[BP_CHEST]
+		// var/obj/item/limb/E = H.organs_by_name[BP_CHEST]
 		// E.take_damage(15)
 		// H.custom_pain("You feel the cruciform ripping out of your chest!",1)
 		CI.uninstall()

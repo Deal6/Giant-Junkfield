@@ -50,7 +50,7 @@
 				var/d = rand(round(I.force / 4), I.force)
 				if(ishuman(src))
 					var/mob/living/carbon/human/H = src
-					var/obj/item/organ/external/organ = H.get_organ(BP_CHEST)
+					var/obj/item/limb/organ = H.get_organ(BP_CHEST)
 					if (istype(organ))
 						if(organ.take_damage(d, BRUTE))
 							H.UpdateDamageIcon()
@@ -79,7 +79,7 @@
 /mob/living/carbon/attack_hand(mob/M as mob)
 	// if (ishuman(M))
 	// 	var/mob/living/carbon/human/H = M
-	// 	var/obj/item/organ/external/temp = H.organs_by_name[BP_R_ARM]
+	// 	var/obj/item/limb/temp = H.organs_by_name[BP_R_ARM]
 	// 	if (H.hand)
 	// 		temp = H.organs_by_name[BP_L_ARM]
 	// 	if(temp && !temp.is_usable())
@@ -199,7 +199,7 @@
 			var/mob/living/carbon/human/H = src
 			if(istype(H))
 				show_ssd = H.species.show_ssd
-				var/obj/item/organ/external/O = H.get_organ(M.targeted_organ)
+				var/obj/item/limb/O = H.get_organ(M.targeted_organ)
 				target_organ_exists = (O && O.is_usable())
 			if(show_ssd && !client && !teleop)
 				M.visible_message(SPAN_NOTICE("[M] shakes [src] trying to wake [t_him] up!"), \

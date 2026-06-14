@@ -307,7 +307,7 @@
 			zones_1 = list(BP_GROIN, BP_L_LEG, BP_R_LEG)
 			zones_2 = list(BP_GROIN, BP_L_LEG, BP_R_LEG, BP_L_ARM, BP_R_ARM)
 		var/damage_zone = prob(50) ? pick(zones_1) : pick(zones_2) // More likely to damage legs and groin
-		var/obj/item/organ/external/affecting = human.get_organ(damage_zone)
+		var/obj/item/limb/affecting = human.get_organ(damage_zone)
 		if(affecting)
 			var/damage_dealt = human.damage_through_armor(tresspass_damage, BRUTE, damage_zone, ARMOR_MELEE, sharp = TRUE, edge = TRUE, wounding_multiplier = 1)
 			human.updatehealth()

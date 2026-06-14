@@ -190,7 +190,7 @@
 				M.adjustBruteLoss(damage)
 				return
 
-			var/obj/item/organ/external/affecting
+			var/obj/item/limb/affecting
 
 			switch(pick(list("head","knee","elbow")))
 				if("knee")

@@ -32,7 +32,7 @@
 	// 	var/obj/item/rig/RIG = H.get_equipped_item(slot_back)
 	// 	if((istype(RIG) && RIG.suit_is_deployed()) || istype(SS))
 	// 		injtime = 30
-	// 		var/obj/item/organ/external/affected = H.get_organ(BP_CHEST)
+	// 		var/obj/item/limb/affected = H.get_organ(BP_CHEST)
 	// 		if(BP_IS_ROBOTIC(affected))
 	// 			to_chat(user, SPAN_WARNING("Injection port on [M]'s suit is refusing your [src]."))
 	// 			// I think rig is advanced enough for this, and people will learn what causes this error
@@ -43,7 +43,7 @@
 	// 	// check without message
 	// 	else if(!H.can_inject(user, FALSE))
 	// 		// lets check if user is easily fooled
-	// 		var/obj/item/organ/external/affected = H.get_organ(user.targeted_organ)
+	// 		var/obj/item/limb/affected = H.get_organ(user.targeted_organ)
 	// 		if(BP_IS_LIFELIKE(affected) && user && user.stats.getStat(STAT_BIO) < STAT_LEVEL_BASIC)
 	// 			if(M.reagents)
 	// 				var/trans = reagents.remove_any(amount_per_transfer_from_this)

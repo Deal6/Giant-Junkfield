@@ -27,7 +27,7 @@
 /datum/design/research/item/mmi_radio
 /datum/design/research/item/dna_scanner
 
-/obj/item/organ/external/head
+/obj/item/limb/head
 
 /datum/design/research/item/implant/chemical
 /datum/design/research/item/autodoc
@@ -53,6 +53,9 @@
 
 
 // # FUCKING ELSE
+/obj/item/limb/proc/is_usable()
+	// return !is_nerve_struck() && !(status & (ORGAN_DEAD))
+
 /datum/reagents/proc/get_master_reagent_id()
 /datum/effect/effect/smoke_spread/chem
 /datum/reagents/proc/handle_reactions()
@@ -63,7 +66,7 @@
 /mob/living/carbon/human/proc/handle_organs()
 
 
-/obj/item/organ/external/proc/droplimb() //Fully rework and maybe change name too
+/obj/item/limb/proc/droplimb() //Fully rework and maybe change name too
 
 
 /obj/item/organ/proc/is_usable()
@@ -220,6 +223,10 @@
 
 	// Catalog stuff
 	var/appear_in_default_catalog = TRUE
+
+
+
+
 
 /datum/reagent/toxin/mutagen/moeball
 

@@ -173,7 +173,7 @@
 	..()
 	// var/list/valid_targets = (GLOB.player_list & GLOB.living_mob_list & GLOB.human_mob_list) - mind_holder
 	// target = pick(valid_targets)
-	// for(var/obj/item/organ/external/E in target.organs)
+	// for(var/obj/item/limb/E in target.organs)
 	// 	valid_organs += E
 	// for(var/obj/item/organ/O in target.internal_organs)
 	// 	valid_organs += O

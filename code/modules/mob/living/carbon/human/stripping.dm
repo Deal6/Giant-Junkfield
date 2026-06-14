@@ -15,7 +15,7 @@
 			if(!user.stats.getPerk(PERK_FAST_FINGERS))
 				visible_message(SPAN_DANGER("\The [user] is trying to empty \the [src]'s pockets!"))
 			else
-				to_chat(user, SPAN_NOTICE("You silently try to empty \the [src]'s pockets."))	
+				to_chat(user, SPAN_NOTICE("You silently try to empty \the [src]'s pockets."))
 			if(do_mob(user,src,HUMAN_STRIP_DELAY,progress = 1))
 				empty_pockets(user)
 			return
@@ -118,7 +118,7 @@
 	if(can_reach_splints)
 		var/removed_splint
 		for(var/organ in list(BP_R_ARM, BP_L_ARM, BP_R_LEG, BP_L_LEG, BP_GROIN, BP_HEAD, BP_CHEST))
-			var/obj/item/organ/external/o = get_organ(organ)
+			var/obj/item/limb/o = get_organ(organ)
 			if (o && o.status & ORGAN_SPLINTED)
 				var/obj/item/W = new /obj/item/stack/medical/splint(get_turf(src), 1)
 				o.status &= ~ORGAN_SPLINTED

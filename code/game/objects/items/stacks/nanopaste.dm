@@ -34,7 +34,7 @@
 
 // 	if (ishuman(M))		//Repairing robolimbs
 // 		var/mob/living/carbon/human/H = M
-// 		var/obj/item/organ/external/S = H.get_organ(user.targeted_organ)
+// 		var/obj/item/limb/S = H.get_organ(user.targeted_organ)
 
 // 		if(S && BP_IS_ROBOTIC(S) && S.get_damage() && S.open == 0)
 // 			for(var/datum/wound/W in S.wounds)

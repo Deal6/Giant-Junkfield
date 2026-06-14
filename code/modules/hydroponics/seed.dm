@@ -146,7 +146,7 @@
 
 	if(!target_limb)
 		target_limb = pick(BP_ALL_LIMBS)
-	var/obj/item/organ/external/affecting = target.get_organ(target_limb)
+	var/obj/item/limb/affecting = target.get_organ(target_limb)
 	var/damage = 0
 
 	if(get_trait(TRAIT_CARNIVOROUS))

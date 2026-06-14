@@ -42,7 +42,7 @@
 // 		W.time_inflicted = time_inflicted
 // 		return W
 
-// /obj/item/autopsy_scanner/proc/add_data(var/obj/item/organ/external/O, mob/living/carbon/user)
+// /obj/item/autopsy_scanner/proc/add_data(var/obj/item/limb/O, mob/living/carbon/user)
 // 	if(!O.autopsy_data.len && !O.trace_chemicals.len) return
 
 // 	for(var/V in O.autopsy_data)
@@ -188,7 +188,7 @@
 
 // 	src.timeofdeath = M.timeofdeath
 
-// 	var/obj/item/organ/external/S = M.get_organ(user.targeted_organ)
+// 	var/obj/item/limb/S = M.get_organ(user.targeted_organ)
 // 	if(!S)
 // 		to_chat(usr, SPAN_WARNING("You can't scan this body part."))
 // 		return

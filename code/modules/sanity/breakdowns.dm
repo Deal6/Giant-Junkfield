@@ -196,7 +196,7 @@
 						"[holder.owner] tries to peel [G.his] own skin off!",
 						"[holder.owner] bites [G.his] own limbs uncontrollably!"
 					))))
-					var/list/obj/item/organ/external/parts = holder.owner.get_damageable_organs()
+					var/list/obj/item/limb/parts = holder.owner.get_damageable_organs()
 					if(parts.len)
 						holder.owner.damage_through_armor(rand(2,4), def_zone = pick(parts))
 
@@ -479,7 +479,7 @@
 
 /datum/breakdown/common/desire_for_chrome/can_occur()
 #warn warn
-	// for(var/obj/item/organ/external/Ex in holder.owner.organs)
+	// for(var/obj/item/limb/Ex in holder.owner.organs)
 	// 	if(!BP_IS_ROBOTIC(Ex))
 	// 		return TRUE
 	return FALSE

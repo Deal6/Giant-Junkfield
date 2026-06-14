@@ -55,7 +55,7 @@
 		/obj/item/reagent_containers,
 		/obj/item/spacecash,
 		/obj/item/device/mind_fryer,
-		/obj/item/organ/external/head,
+		/obj/item/limb/head,
 		/obj/item/oddity/secdocs,
 		/obj/item/stack/telecrystal //To reload the uplink
 		)
@@ -66,7 +66,7 @@
 		var/mob/living/carbon/human/H = target
 		if(H.stat == DEAD)
 			if(H.get_organ(BP_HEAD))
-				var/obj/item/organ/external/E = H.get_organ(BP_HEAD)
+				var/obj/item/limb/E = H.get_organ(BP_HEAD)
 				user.visible_message(SPAN_DANGER("[user] is beginning to rip the [H]'s head off!"),SPAN_DANGER("You are beginning to rip the [H]'s head off."))
 				if(!do_mob(user, H, 16 SECONDS))
 					to_chat(user, SPAN_DANGER("You was interrupted!"))

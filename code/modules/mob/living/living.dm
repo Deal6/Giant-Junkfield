@@ -102,7 +102,7 @@
 	var/t = shooter:targeted_organ
 	if(t in list(BP_EYES, BP_MOUTH))
 		t = BP_HEAD
-	var/obj/item/organ/external/def_zone = ran_zone(t)
+	var/obj/item/limb/def_zone = ran_zone(t)
 	return def_zone
 
 /******************************************************************************
@@ -132,7 +132,7 @@
 //		return FALSE
 	// var/divided_damage = (burn_amount)/(organs.len)
 	// var/extradam = 0	//added to when organ is at max dam
-	// for(var/obj/item/organ/external/affecting in organs)
+	// for(var/obj/item/limb/affecting in organs)
 	// 	//TODO: fix the extradam stuff. Or, ebtter yet...rewrite this entire proc ~Carn
 	// 	if(affecting.take_damage(divided_damage+extradam, BURN))
 	// 		UpdateDamageIcon()
@@ -813,7 +813,7 @@ default behaviour is:
 		// is_busy = TRUE
 		// var/groinmult = 1
 		// if(H)
-		// 	var/obj/item/organ/external/groin = H.get_organ(BP_GROIN)
+		// 	var/obj/item/limb/groin = H.get_organ(BP_GROIN)
 		// 	if(groin.limb_efficiency <= 0)
 		// 		to_chat(src, SPAN_WARNING("You are too damaged to be able to get up."))
 		// 		return FALSE

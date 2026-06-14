@@ -97,7 +97,7 @@
 
 // 	if(user.targeted_organ == BP_R_ARM || user.targeted_organ == BP_L_ARM)
 // 		var/has_hand
-// 		var/obj/item/organ/external/O = H.organs_by_name[BP_R_ARM]
+// 		var/obj/item/limb/O = H.organs_by_name[BP_R_ARM]
 // 		if(istype(O) && !O.is_stump())
 // 			has_hand = 1
 // 		else

@@ -61,8 +61,8 @@
 	// if(user.stat)
 	// 	return
 	// for(var/limb_tag in BP_ALL_LIMBS)
-	// 	var/obj/item/organ/external/organ_to_check = organs_by_name[limb_tag]
-	// 	if(!organ_to_check || istype(organ_to_check , /obj/item/organ/external/stump))
+	// 	var/obj/item/limb/organ_to_check = organs_by_name[limb_tag]
+	// 	if(!organ_to_check || istype(organ_to_check , /obj/item/limb/stump))
 	// 		missing_limb_tag = limb_tag
 	// 		break
 	// if(!missing_limb_tag)

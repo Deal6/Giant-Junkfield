@@ -390,7 +390,7 @@
 	// 	if(isliving(loc))
 	// 		var/mob/living/carbon/human/host = loc
 	// 		if(istype(host))
-	// 			for(var/obj/item/organ/external/organ in host.organs)
+	// 			for(var/obj/item/limb/organ in host.organs)
 	// 				for(var/obj/item/O in organ.implants)
 	// 					if(O == src)
 	// 						organ.implants -= src

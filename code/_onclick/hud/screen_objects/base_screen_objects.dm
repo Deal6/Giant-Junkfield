@@ -1247,7 +1247,7 @@ obj/screen/fire/DEADelize()
 // /obj/screen/bionics/update_icon()
 // 	var/mob/living/carbon/human/H = parentmob
 // 	if(istype(H))
-// 		var/obj/item/organ/external/E = H.organs_by_name[target_organ]
+// 		var/obj/item/limb/E = H.organs_by_name[target_organ]
 // 		if(E?.module)
 // 			invisibility = 0
 // 			return
@@ -1256,7 +1256,7 @@ obj/screen/fire/DEADelize()
 // /obj/screen/bionics/Click()
 // 	var/mob/living/carbon/human/H = parentmob
 // 	// if(istype(H))
-// 	// 	var/obj/item/organ/external/E = H.organs_by_name[target_organ]
+// 	// 	var/obj/item/limb/E = H.organs_by_name[target_organ]
 // 	// 	E?.module?.activate(H, E)
 //-----------------------bionics (implant)------------------------------
 /obj/screen/implant_bionics

@@ -2,7 +2,7 @@
 #warn grabs inspects and stuff
 // /obj/item/grab/proc/inspect_organ(mob/living/carbon/human/H, mob/user, var/target_zone)
 
-// 	var/obj/item/organ/external/E = H.get_organ(target_zone)
+// 	var/obj/item/limb/E = H.get_organ(target_zone)
 
 // 	if(!E || E.is_stump())
 // 		to_chat(user, SPAN_NOTICE("[H] is missing that bodypart."))
@@ -62,7 +62,7 @@
 // 		if(!bad)
 // 			to_chat(user, SPAN_NOTICE("[H]'s skin is normal."))
 
-// /obj/item/grab/proc/slow_bleeding(mob/living/carbon/human/H, mob/user, var/obj/item/organ/external/bodypart)
+// /obj/item/grab/proc/slow_bleeding(mob/living/carbon/human/H, mob/user, var/obj/item/limb/bodypart)
 
 // 	if(bodypart.is_stump() || !bodypart)
 // 		to_chat(user, SPAN_WARNING("They are missing that limb!"))
@@ -101,7 +101,7 @@
 // 	if(state < GRAB_AGGRESSIVE)
 // 		to_chat(attacker, SPAN_WARNING("You require a better grab to do this."))
 // 		return
-// 	var/obj/item/organ/external/organ = target.get_organ(check_zone(target_zone))
+// 	var/obj/item/limb/organ = target.get_organ(check_zone(target_zone))
 // 	// if(!organ || organ.nerve_struck == -1)
 // 		return
 // 	visible_message(SPAN_WARNING("[attacker] tries to put [target]'s [organ.name] into a jointlock."))
