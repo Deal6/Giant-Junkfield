@@ -121,11 +121,41 @@ var/global/list/damage_icon_parts = list()
 
 	overlays_standing[SKELETON_LAYER] += skeleton
 
+
+
+
+
+
+
+
+// // DEL
+// var/icon/combined_icon
+// 			var/cache_index = "[O.damage_state]/[O.organ_tag]/[species.blood_color]/[species.get_bodytype()]"
+// 			if(damage_icon_parts[cache_index] == null)
+// 				combined_icon = new /icon(species.damage_overlays, O.damage_state)			// the damage icon for whole human
+// 				combined_icon.Blend(new /icon(species.damage_mask, O.organ_tag), ICON_MULTIPLY)	// mask with this organ's pixels
+// 				combined_icon.Blend(species.blood_color, ICON_MULTIPLY)
+// 				damage_icon_parts[cache_index] = combined_icon
+// 			else
+// 				combined_icon = damage_icon_parts[cache_index]
+
+// 			standing_image.overlays += combined_icon
+
+// 	overlays_standing[DAMAGE_LAYER] = standing_image
+
+// 	if(update_icons)   update_icons()
+
+
+
+
 /mob/living/carbon/human/proc/update_meat_layer()	// human.dmi
-	var/icon/meat = image('icons/mob/human.dmi',icon_state = "human_meat")
-	var/icon/mask = image('icons/mob/human_races/masks/dam_mask_human.dmi', "head")
-	meat.Blend(new /icon(mask, ICON_MULTIPLY))
-	overlays_standing[MEAT_LAYER] += meat
+	var/image/finished_image = image('icons/mob/human.dmi', icon_state = "blank")
+	var/icon/meat = icon('icons/mob/human.dmi',icon_state = "human_meat")
+	var/icon/mask = icon('icons/mob/human_races/masks/dam_mask_human.dmi', icon_state = "head")
+
+	meat.Blend(mask, ICON_MULTIPLY)
+	finished_image.overlays += meat
+	overlays_standing[MEAT_LAYER] += finished_image
 //-----------------------------------------------------------------//
 /mob/living/carbon/human/update_mutations(var/update_icons=1)
 	return
