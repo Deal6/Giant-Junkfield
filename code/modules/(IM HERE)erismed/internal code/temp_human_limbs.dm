@@ -150,19 +150,7 @@
 	spawn_blacklisted = TRUE
 	bad_type = /obj/item/limb/robotic/excelsior
 
-/obj/item/limb/robotic/excelsior/l_arm
 
-/obj/item/limb/robotic/excelsior/r_arm
-
-/obj/item/limb/robotic/excelsior/l_leg
-
-/obj/item/limb/robotic/excelsior/r_leg
-
-/obj/item/limb/robotic/excelsior/groin
-
-/obj/item/limb/robotic/excelsior/chest
-
-/obj/item/limb/robotic/excelsior/head
 
 /obj/item/limb/robotic/one_star
 	name = "One star"
