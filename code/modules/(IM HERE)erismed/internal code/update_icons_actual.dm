@@ -73,7 +73,7 @@ var/global/list/light_overlay_cache = list()
 // ------------------------------------//
 
 /mob/living/carbon/human/
-	#warn debug: 2 lines hack graaaaaaa
+	#warn bad: 2 lines only for a human. try and find a way to not do it???
 	icon = 'icons/mob/human.dmi'
 	icon_state = "human_meat"
 
@@ -145,17 +145,19 @@ var/global/list/damage_icon_parts = list()
 
 // 	if(update_icons)   update_icons()
 
-
-
-
+//-----------------------------------------------------------------------------//
+/proc/APPLY_MASK_A_TO_B(var/icon/A, var/stateA , var/icon/B, var/stateB, var/image/return_image)
+	if(!return_image)	// if return_image isn't set... then we are working with human sprites!
+		return_image = image('icons/mob/human.dmi', icon_state = "blank")
+	A = icon(A, stateA)
+	B = icon(B, stateB)
+	A.Blend(B, ICON_MULTIPLY)
+	return_image.overlays += A
+	return return_image
+//-----------------------------------------------------------------------------//
 /mob/living/carbon/human/proc/update_meat_layer()	// human.dmi
-	var/image/finished_image = image('icons/mob/human.dmi', icon_state = "blank")
-	var/icon/meat = icon('icons/mob/human.dmi',icon_state = "human_meat")
-	var/icon/mask = icon('icons/mob/human_races/masks/dam_mask_human.dmi', icon_state = "head")
 
-	meat.Blend(mask, ICON_MULTIPLY)
-	finished_image.overlays += meat
-	overlays_standing[MEAT_LAYER] += finished_image
+	overlays_standing[MEAT_LAYER] += APPLY_MASK_A_TO_B('icons/mob/human.dmi', "human_meat", 'icons/mob/human_races/masks/dam_mask_human.dmi', "head")
 //-----------------------------------------------------------------//
 /mob/living/carbon/human/update_mutations(var/update_icons=1)
 	return
