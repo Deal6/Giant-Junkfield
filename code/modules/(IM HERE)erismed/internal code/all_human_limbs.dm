@@ -4,17 +4,31 @@
 // FOR YOUR CONVENIENCE - copy "#name" into CTRL+F for navigation
 //------------------//
 // CONTENTS:
+//	#Base Limb
+//  #Flesh limbs
 //  #Human Skeleton
 //	#Prosthetics
 //------------------//
 
-// Base limb
+// #Base limb
+
 /obj/item/limb/
-	#warn generation_flags SUCK. Replace with something more understandable.
+	name = "coder limb"
+	desc = "If you didn't kill any coders around here, you need to report it."
+	bad_type = /obj/item/limb/
+	#warn generation_flags. they exists. mayhaps replace them
 	var/generation_flags = ORGAN_HAS_BONES | ORGAN_HAS_BLOOD_VESSELS | ORGAN_HAS_MUSCLES | ORGAN_HAS_NERVES
 	var/status
 
-	bad_type = TRUE
+// #Flesh limbs
+
+/obj/item/limb/head
+/obj/item/limb/chest
+/obj/item/limb/l_arm
+/obj/item/limb/r_arm
+/obj/item/limb/groin
+/obj/item/limb/l_leg
+/obj/item/limb/r_leg
 
 
 //---------------------------//
@@ -137,20 +151,6 @@
 
 /obj/item/limb/robotic/moebius/reinforced/head
 
-/obj/item/limb/robotic/excelsior
-	name = "Excelsior"
-	desc = "Plasma reinforced black prosthesis designed for heavy combat."
-	// force_icon = 'icons/mob/human_races/cyberlimbs/excelsior.dmi'
-	// model = "excelsior"
-	armor = list(melee = 5, bullet = 5, energy = 5, bomb = 35, bio = 100, rad = 100)
-	matter = list(MATERIAL_STEEL = 2, MATERIAL_PLASTEEL = 1, MATERIAL_PLASMA = 0.5) //Plasma needed as a material that excelsiors can't teleport in
-	// max_damage = 65
-	// min_broken_damage = 45
-	price_tag = 600
-	spawn_blacklisted = TRUE
-	bad_type = /obj/item/limb/robotic/excelsior
-
-
 
 /obj/item/limb/robotic/one_star
 	name = "One star"
@@ -197,3 +197,5 @@
 /obj/item/limb/robotic/makeshift/groin
 
 /obj/item/limb/robotic/makeshift/chest
+
+//

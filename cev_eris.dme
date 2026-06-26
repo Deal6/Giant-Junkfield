@@ -1304,7 +1304,6 @@
 #include "code\modules\(IM HERE)erismed\internal code\erismed_crutches.dm"
 #include "code\modules\(IM HERE)erismed\internal code\flesh_limbs.dm"
 #include "code\modules\(IM HERE)erismed\internal code\prosthtetic_limbs.dm"
-#include "code\modules\(IM HERE)erismed\internal code\temp_human_limbs.dm"
 #include "code\modules\(IM HERE)erismed\internal code\update_icons_actual.dm"
 #include "code\modules\acting\acting_items.dm"
 #include "code\modules\admin\admin.dm"
