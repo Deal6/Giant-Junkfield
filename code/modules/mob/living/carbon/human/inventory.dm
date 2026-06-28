@@ -133,11 +133,6 @@ This saves us from having to call add_fingerprint() any time something is put in
 		qdel(W)
 	return null
 
-#warn
-/mob/living/carbon/human/proc/has_organ(name, check_usablility = FALSE)
-	// var/obj/item/limb/O = organs_by_name[name]
-	// return (O && !O.is_stump() && (!check_usablility || O.is_usable()))
-
 /mob/living/carbon/human/u_equip(obj/item/W as obj)
 	if(src.client)
 		src.client.screen -= W

@@ -1301,6 +1301,7 @@
 #include "code\js\menus.dm"
 #include "code\modules\(IM HERE)erismed\access_to_erismed.dm"
 #include "code\modules\(IM HERE)erismed\icontest.dm"
+#include "code\modules\(IM HERE)erismed\sorting_pile.dm"
 #include "code\modules\(IM HERE)erismed\_external_use\icon interaction.dm"
 #include "code\modules\(IM HERE)erismed\internal code\erismed_crutches.dm"
 #include "code\modules\(IM HERE)erismed\internal code\update_icons_actual.dm"

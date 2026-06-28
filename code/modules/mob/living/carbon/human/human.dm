@@ -38,6 +38,15 @@
 		name = real_name
 		if(mind)
 			mind.name = real_name
+	#warn temp???
+	new /obj/item/limb/head(src)
+	new /obj/item/limb/chest(src)
+	new /obj/item/limb/l_arm(src)
+	new /obj/item/limb/r_arm(src)
+	new /obj/item/limb/groin(src)
+	new /obj/item/limb/l_leg(src)
+	new /obj/item/limb/r_leg(src)
+
 	. = ..()
 
 

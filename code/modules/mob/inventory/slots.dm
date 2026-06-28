@@ -31,7 +31,7 @@
 		if(islist(req_organ))
 			var/found_organ = FALSE
 			for(var/organ in req_organ)
-				if(owner.has_organ(organ, req_organ[organ]))
+				if(owner.get_limb(organ, req_organ[organ]))
 					found_organ = TRUE
 					break
 			if(!found_organ)
@@ -39,7 +39,7 @@
 					to_chat(owner, SPAN_WARNING("You can' equip this [I]!"))
 				return FALSE
 		else
-			if(!owner.has_organ(req_organ))
+			if(!owner.get_limb(req_organ))
 				if(!disable_warning)
 					to_chat(owner, SPAN_WARNING("You have nothing you can thear this [I] on."))
 				return FALSE
@@ -81,7 +81,7 @@
 	if(..())
 		// We should check all organs here
 		for(var/organ in req_organ)
-			if(!owner.has_organ(organ))
+			if(!owner.get_limb(organ))
 				return FALSE
 		return TRUE
 

@@ -6,9 +6,6 @@ explosion_act
 meteor_act
 
 */
-#warn bad
-/mob/living/carbon/human/bullet_act(var/obj/item/projectile/P, var/def_zone)
-
 
 /mob/living/carbon/human/hit_impact(damage, dir, hit_zone)
 
