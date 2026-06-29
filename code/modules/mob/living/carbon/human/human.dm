@@ -13,6 +13,17 @@
 	species = SPECIES_HUMAN
 	stat = CONSCIOUS
 
+	#warn TEMP???!!!
+	var/limbs_to_spawn = list(
+		/obj/item/limb/head,
+		/obj/item/limb/chest,
+		/obj/item/limb/l_arm,
+		/obj/item/limb/r_arm,
+		/obj/item/limb/groin,
+		/obj/item/limb/l_leg,
+		/obj/item/limb/r_leg,
+	)
+
 /mob/living/carbon/human/Initialize(new_loc, new_species)
 	hud_list[HEALTH_HUD]      = image('icons/mob/hud.dmi', src, "hudhealth100", ON_MOB_HUD_LAYER)
 	hud_list[STATUS_HUD]      = image('icons/mob/hud.dmi', src, "hudhealthy",   ON_MOB_HUD_LAYER)
@@ -38,14 +49,11 @@
 		name = real_name
 		if(mind)
 			mind.name = real_name
+
 	#warn temp???
-	new /obj/item/limb/head(src)
-	new /obj/item/limb/chest(src)
-	new /obj/item/limb/l_arm(src)
-	new /obj/item/limb/r_arm(src)
-	new /obj/item/limb/groin(src)
-	new /obj/item/limb/l_leg(src)
-	new /obj/item/limb/r_leg(src)
+	for(var/limb_type in limbs_to_spawn)
+		var/obj/item/limb/new_limb = new limb_type(src)
+		new_limb.icon_gender = gender
 
 	. = ..()
 
