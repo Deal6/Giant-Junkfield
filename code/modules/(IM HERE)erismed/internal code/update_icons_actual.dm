@@ -1,7 +1,6 @@
+// DEV NOTES
 #warn understand proc MapColors, dont delete warn until understood
-
-// relevant info in [human_defines.dm]
-
+//-----------------------------------------------------------------------------------
 
 var/global/list/human_icon_cache = list()
 
@@ -12,35 +11,36 @@ var/global/list/light_overlay_cache = list()
 //Human Overlays Indexes/////////
 #define SKELETON_LAYER	1
 #define MEAT_LAYER		2
+#define SKIN_LAYER		3
 
-#define DAMAGE_LAYER 3
-#define SURGERY_LAYER 4
-#define IMPLANTS_LAYER 5
-#define UNDERWEAR_LAYER 6
-#define UNIFORM_LAYER 7
-#define ID_LAYER 8
-#define SHOES_LAYER 9
-#define GLOVES_LAYER 10
-#define BELT_LAYER 11
-#define SUIT_LAYER 12
-#define TAIL_LAYER 13
-#define GLASSES_LAYER 14
-#define BELT_LAYER_ALT 15
-#define BACK_LAYER 16
-#define SUIT_STORE_LAYER 17
-#define HAIR_LAYER 18
-#define L_EAR_LAYER 19
-#define R_EAR_LAYER 20
-#define FACEMASK_LAYER 21
-#define HEAD_LAYER 22
-#define COLLAR_LAYER 23
-#define HANDCUFF_LAYER 24
-#define LEGCUFF_LAYER 25
-#define L_HAND_LAYER 26
-#define R_HAND_LAYER 27
-#define FIRE_LAYER 28
-#define BLOCKING_LAYER 29
-#define TOTAL_LAYERS 29
+#define DAMAGE_LAYER 4
+#define SURGERY_LAYER 5
+#define IMPLANTS_LAYER 6
+#define UNDERWEAR_LAYER 7
+#define UNIFORM_LAYER 8
+#define ID_LAYER 9
+#define SHOES_LAYER 10
+#define GLOVES_LAYER 11
+#define BELT_LAYER 12
+#define SUIT_LAYER 13
+#define TAIL_LAYER 14
+#define GLASSES_LAYER 15
+#define BELT_LAYER_ALT 16
+#define BACK_LAYER 17
+#define SUIT_STORE_LAYER 18
+#define HAIR_LAYER 19
+#define L_EAR_LAYER 20
+#define R_EAR_LAYER 21
+#define FACEMASK_LAYER 22
+#define HEAD_LAYER 23
+#define COLLAR_LAYER 24
+#define HANDCUFF_LAYER 25
+#define LEGCUFF_LAYER 26
+#define L_HAND_LAYER 27
+#define R_HAND_LAYER 28
+#define FIRE_LAYER 29
+#define BLOCKING_LAYER 30
+#define TOTAL_LAYERS 30
 
 // ------------------------------------//
 #warn crutch
@@ -145,18 +145,11 @@ var/global/list/damage_icon_parts = list()
 
 // 	if(update_icons)   update_icons()
 
-//-----------------------------------------------------------------------------//
-/proc/APPLY_MASK_A_TO_B(var/icon/A, var/stateA , var/icon/B, var/stateB, var/image/return_image)
-	if(!return_image)	// if return_image isn't set... then we are working with human sprites!
-		return_image = image('icons/mob/human.dmi', icon_state = "blank")
-	A = icon(A, stateA)
-	B = icon(B, stateB)
-	A.Blend(B, ICON_MULTIPLY)
-	return_image.overlays += A
-	return return_image
-//-----------------------------------------------------------------------------//
-/mob/living/carbon/human/proc/update_meat_layer()	// human.dmi
 
+/mob/living/carbon/human/proc/update_meat_layer()	// human.dmi
+	overlays_standing[MEAT_LAYER] = null
+
+	#warn only head
 	overlays_standing[MEAT_LAYER] += APPLY_MASK_A_TO_B('icons/mob/human.dmi', "human_meat", 'icons/mob/human_races/masks/dam_mask_human.dmi', "head")
 //-----------------------------------------------------------------//
 /mob/living/carbon/human/update_mutations(var/update_icons=1)
@@ -175,6 +168,7 @@ var/global/list/damage_icon_parts = list()
 
 
 /mob/living/carbon/human/UpdateDamageIcon(var/update_icons=1)
+	for(var/injury in current_injuries)
 
 	// var/damage_appearance = ""
 
@@ -220,13 +214,41 @@ var/global/list/damage_icon_parts = list()
 //DAMAGE OVERLAYS
 //constructs damage icon for each organ from mask * damage field and saves it in our overlays_ lists
 
-#warn
-/////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////
 
 //BASE MOB SPRITE AKA NAKED HUMAN
-/mob/living/carbon/human/proc/update_body(var/update_icons=1)
+/mob/living/carbon/human/proc/update_body()
+	overlays_standing[SKIN_LAYER] = null
+	var/icon/empty_icon = icon('icons/mob/human.dmi',"blank")
+	var/image/temp_image = image('icons/mob/human.dmi',"blank")
+	for(var/obj/item/limb/limb in contents)
+		var/icon/limb_mob_icon = limb.get_mob_icon()
 
+		// If we have two different legs, say - ONE os prosthetic and the second is FLESH, we'll need to know which one to draw above when looking EAST or WEST.
+		if(limb.left_or_right)
+			if((limb.left_or_right & RIGHT) && (limb.left_or_right & LEFT))
+				CRASH("LIMB CONTAINS BOTH RIGHT AND LEFT INSIDE ITS left_or_right VAR")
+			empty_icon.Insert(new/icon(limb_mob_icon,dir=NORTH),dir=NORTH)
+			empty_icon.Insert(new/icon(limb_mob_icon,dir=SOUTH),dir=SOUTH)
+			if(limb.left_or_right & RIGHT)
+				empty_icon.Insert(new/icon(limb_mob_icon,dir=EAST),dir=EAST)
+				empty_icon.Blend(limb_mob_icon, ICON_OVERLAY)
+				empty_icon.Insert(new/icon(limb_mob_icon,dir=WEST),dir=WEST)
+				empty_icon.Blend(limb_mob_icon, ICON_UNDERLAY)
+
+			if(limb.left_or_right & LEFT)
+				empty_icon.Insert(new/icon(limb_mob_icon,dir=EAST),dir=EAST)
+				empty_icon.Blend(limb_mob_icon, ICON_OVERLAY)
+				empty_icon.Insert(new/icon(limb_mob_icon,dir=WEST),dir=WEST)
+				empty_icon.Blend(limb_mob_icon, ICON_UNDERLAY)
+		else
+			empty_icon.Blend(limb_mob_icon, ICON_OVERLAY)
+
+
+		temp_image.overlays += empty_icon
+	overlays_standing[SKIN_LAYER] += temp_image
+
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 // 	//Create a new, blank icon for our mob to use.
 // 	if(stand_icon)
 // 		qdel(stand_icon)
