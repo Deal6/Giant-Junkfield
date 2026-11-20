@@ -168,7 +168,7 @@ var/global/list/damage_icon_parts = list()
 
 
 /mob/living/carbon/human/UpdateDamageIcon(var/update_icons=1)
-	for(var/injury in current_injuries)
+	// for(var/injury in current_injuries)
 
 	// var/damage_appearance = ""
 
